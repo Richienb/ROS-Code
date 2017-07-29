@@ -1,6 +1,18 @@
 print('Setting Up And Enabling ROS Code')
 
-def message(text):
+def message_print(text):
 	print(text)
+	
+def add_print(firstnum, secondnum):
+    print(firstnum + secondnum)
+
+def subtract_print(firstnum, secondnum):
+    print(firstnum - secondnum)
+
+def multiply_print(firstnum, secondnum):
+    print(firstnum * secondnum)
+
+def divide_print(firstnum, secondnum):
+    print(firstnum / secondnum)
   
 print('Finished Setting Up ROS Code')
