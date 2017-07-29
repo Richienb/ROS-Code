@@ -43,5 +43,9 @@ def divide_write(firstnum, secondnum):
 
 def error(text):
     raise RuntimeError(text)
-  
+
+def store(value):
+	ros_stored = value
+	global ros_stored
+
 print('Finished Setting Up ROS Code')
