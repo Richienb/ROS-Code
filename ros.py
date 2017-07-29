@@ -1,5 +1,15 @@
 print('Setting Up And Enabling ROS Code')
 
+def debug_varglobal():
+    global ros_output
+    global ros_stored
+	
+def debug_supresswarnings():
+    import warnings
+    warnings.filterwarnings("ignore")
+
+debug_supresswarnings()
+	
 def message_print(text):
 	print(text)
 	
