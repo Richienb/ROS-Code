@@ -26,20 +26,20 @@ def divide_print(firstnum, secondnum):
     print(firstnum / secondnum)
 
 def add_write(firstnum, secondnum):
+	global ros_output
     ros_output = (firstnum + secondnum)
-    global ros_output
 
 def subtract_write(firstnum, secondnum):
+	global ros_output
     ros_output = (firstnum - secondnum)
-    global ros_output
-
+	
 def multiply_write(firstnum, secondnum):
+	global ros_output
     ros_output = (firstnum * secondnum)
-    global ros_output
 
 def divide_write(firstnum, secondnum):
+	global ros_output
     ros_output = (firstnum / secondnum)
-    global ros_output
 
 def error(text):
     raise RuntimeError(text)
