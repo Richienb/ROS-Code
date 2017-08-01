@@ -47,5 +47,12 @@ def error(text):
 def store(value):
 	ros_stored = value
 	global ros_stored
+	
+def wait_time(time):
+    from time import sleep
+    sleep(time)
+
+def wait_enter():
+    ros_entervar = input('')
 
 print('Finished Setting Up ROS Code')
