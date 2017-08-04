@@ -26,27 +26,27 @@ def divide_print(firstnum, secondnum):
     print(firstnum / secondnum)
 
 def add_write(firstnum, secondnum):
-	global ros_output
+    global ros_output
     ros_output = (firstnum + secondnum)
 
 def subtract_write(firstnum, secondnum):
-	global ros_output
+    global ros_output
     ros_output = (firstnum - secondnum)
 	
 def multiply_write(firstnum, secondnum):
-	global ros_output
+    global ros_output
     ros_output = (firstnum * secondnum)
 
 def divide_write(firstnum, secondnum):
-	global ros_output
+    global ros_output
     ros_output = (firstnum / secondnum)
 
 def error(text):
     raise RuntimeError(text)
 
 def store(value):
-	ros_stored = value
-	global ros_stored
+    global ros_stored
+    ros_stored = value
 	
 def wait_time(time):
     from time import sleep
