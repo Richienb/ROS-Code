@@ -49,8 +49,8 @@ def store(value):
     ros_stored = value
 	
 def wait_time(time):
-    from time import sleep
-    sleep(time)
+    from time import sleep as rosfunc_sleep
+    rosfunc_sleep(time)
 
 def wait_enter():
     ros_entervar = input('')
