@@ -15,4 +15,4 @@ ___
 ### Contributers: https://github.com/Richienb/ROS-Code/graphs/contributors
 ### Licence: https://github.com/Richienb/ROS-Code/blob/master/LICENSE
 ___
-## Founder: Richie Bendall
+## Founder: [Richie Bendall](https://www.richie-bendall.ml)
