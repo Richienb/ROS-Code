@@ -13,4 +13,4 @@
 ### Releases: https://github.com/Richienb/ROS-Code/releases
 ### Contributers: https://github.com/Richienb/ROS-Code/graphs/contributors
 ### Licence: https://github.com/Richienb/ROS-Code/blob/master/LICENSE
-[GitHub](https://github.com/)
+### Founder: [Richie Bendall](https://www.richie-bendall.ml)
