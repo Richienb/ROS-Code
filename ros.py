@@ -40,9 +40,35 @@ def multiply_write(firstnum, secondnum):
 def divide_write(firstnum, secondnum):
     global ros_output
     ros_output = (firstnum / secondnum)
+	
+def equation(operation, firstnum, secondnum, argument):
+	if isnumber(firstnum) and isnumber(secondnum):
+		if argument == 'write':
+			global ros_output
+			if operation == 'plus':
+				ros_output = (firstnum + secondnum)
+			elif operation == 'minus':
+				ros_output = (firstnum - secondnum)
+			elif operation == 'multiply':
+				ros_output = (firstnum * secondnum)
+			elif operation == 'divide':
+				ros_output = (firstnum / secondnum)
+			else:
+				raise RuntimeError('An Error Has Occured. Error Code: 0003')
+		elif argument == 'print':
+		
+		elif argument == 'return':
+			
+		else:
+			raise RuntimeError('An Error Has Occured. Error Code: 0001')
+	else:
+		raise RuntimeError('An Error Has Occured. Error Code: 0002')
 
 def error(text):
     raise RuntimeError(text)
+	
+def errorcode(text, code)
+	raise RuntimeError(text, "Error Code: ", code)
 
 def store(value):
     global ros_stored
@@ -54,5 +80,28 @@ def wait_time(time):
 
 def wait_enter():
     ros_entervar = input('')
-
+	
+def isdecimal(x):
+    try:
+        a = float(x)
+    except ValueError:
+        return False
+    else:
+        return True
+def isinteger(x):
+    try:
+        a = float(x)
+        b = int(a)
+    except ValueError:
+        return False
+    else:
+        return a == b
+	
+def isnumber(n):
+	valuea = isdecimal(n)
+	valueb = isinteger(n)
+	If valuea() or valueb():
+		return True
+	Else:
+		return False
 print('Finished Setting Up ROS Code')
