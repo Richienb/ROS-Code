@@ -56,9 +56,9 @@ def equation(operation, firstnum, secondnum, argument):
 			else:
 				raise RuntimeError('An Error Has Occured. Error Code: 0003')
 		elif argument == 'print':
-		
+                    print('test')
 		elif argument == 'return':
-			
+		    print('test')
 		else:
 			raise RuntimeError('An Error Has Occured. Error Code: 0001')
 	else:
@@ -67,7 +67,7 @@ def equation(operation, firstnum, secondnum, argument):
 def error(text):
     raise RuntimeError(text)
 	
-def errorcode(text, code)
+def errorcode(text, code):
 	raise RuntimeError(text, "Error Code: ", code)
 
 def store(value):
@@ -100,8 +100,8 @@ def isinteger(x):
 def isnumber(n):
 	valuea = isdecimal(n)
 	valueb = isinteger(n)
-	If valuea() or valueb():
+	if valuea() or valueb():
 		return True
-	Else:
+	else:
 		return False
 print('Finished Setting Up ROS Code')
