@@ -4,6 +4,7 @@
 ### To Suggest A New Feature, Edit The File And Commit Your Changed To A Pull Request.
 ### If You Want To Add A New Feature, Modify The Code And Start A Pull Request.
 ### Unless Completely Nessesary(For Example: Fixing An Emergency) Don't Directly Commit To The Master, Start A Pull Request.
+___
 ## Useful Links:
 ### File An Issue: https://github.com/richienb/ros-code/issues
 ### Pull Requests: https://github.com/Richienb/ROS-Code/pulls
@@ -13,4 +14,5 @@
 ### Releases: https://github.com/Richienb/ROS-Code/releases
 ### Contributers: https://github.com/Richienb/ROS-Code/graphs/contributors
 ### Licence: https://github.com/Richienb/ROS-Code/blob/master/LICENSE
-### Founder: [Richie Bendall](https://www.richie-bendall.ml)
+___
+## Founder: [Richie Bendall](https://www.richie-bendall.ml)
