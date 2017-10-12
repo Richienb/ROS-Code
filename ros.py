@@ -1,12 +1,31 @@
-print('Setting Up And Enabling ROS Code')
+print('Loading ROS Code')
 
+global debugenabled
+debugenabled == false
+
+def debugstate(State):
+	if State == 'Enable':
+		debugenabled == true
+		print('Debug Mode Has Been Enabled')
+	elif State == 'Disable':
+		debugenabled == false
+		print('Debug Mode Has Been Disabled')
+	else:
+		raise RuntimeError('An Error Has Occured: Invalid Debug State Entered (0005)')
+		
 def debug_varglobal():
-    global ros_output
-    global ros_stored
+	if debugenabled == true:
+		global ros_output
+		global ros_stored
+	else:
+		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
 	
 def debug_supresswarnings():
-    import warnings
-    warnings.filterwarnings("ignore")
+	if debugenabled == true:
+		import warnings
+		warnings.filterwarnings("ignore")
+	else:
+		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
 
 debug_supresswarnings()
 	
@@ -40,10 +59,10 @@ def multiply_write(firstnum, secondnum):
 def divide_write(firstnum, secondnum):
     global ros_output
     ros_output = (firstnum / secondnum)
-	
+#
 def equation(operation, firstnum, secondnum, argument):
 	if not isnumber(firstnum) and isnumber(secondnum):
-		raise RuntimeError('An Error Has Occured. Error Code: 0002')
+		raise RuntimeError('An Error Has Occured: One Of The Values Specified Is Not A Number (0002)')
 		return False
 	if argument == 'write':
 		global ros_output
@@ -56,7 +75,7 @@ def equation(operation, firstnum, secondnum, argument):
 		elif operation == 'divide':
 			ros_output = (firstnum / secondnum)
 		else:
-			raise RuntimeError('An Error Has Occured. Error Code: 0003')
+			raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
 	elif argument == 'print':
 		if operation == 'plus':
 			print(firstnum + secondnum)
@@ -67,7 +86,7 @@ def equation(operation, firstnum, secondnum, argument):
 		elif operation == 'divide':
 			print(firstnum / secondnum)
 		else:
-			raise RuntimeError('An Error Has Occured. Error Code: 0003')
+			raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
 	elif argument == 'print':
 		if operation == 'plus':
 			return (firstnum + secondnum)
@@ -78,41 +97,41 @@ def equation(operation, firstnum, secondnum, argument):
 		elif operation == 'divide':
 			return (firstnum / secondnum)
 		else:
-			raise RuntimeError('An Error Has Occured. Error Code: 0003')
-
-def error(text):
-    raise RuntimeError(text)
-	
-def errorcode(text, code):
-	raise RuntimeError(text, "Error Code: ", code)
-
+			raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
+	else:
+		RuntimeError('An Error Has Occured: You Entered An Invalid Output Mehthod (0004)')
+# Throw A Runtime Error
+def ThrowError(ErrorText):
+	raise RuntimeError(ErrorText, ' (0001)')
+# Store A Value In The ROS_Stored Variable
 def store(value):
     global ros_stored
     ros_stored = value
-	
-def wait_time(time):
+# Delay For A Specific Amount Of Seconds
+def delay(Seconds):
     from time import sleep as rosfunc_sleep
-    rosfunc_sleep(time)
-
+    rosfunc_sleep(seconds)
+#Waits For The User To Press Enter
 def wait_enter():
     ros_entervar = input('')
-	
-def isdecimal(x):
+# Check If A Number Is A Decimal:
+def isdecimal(Value):
     try:
-        a = float(x)
+        a = float(Value)
     except ValueError:
         return False
     else:
         return True
-def isinteger(x):
+# Check If A Number Is An Integer (Full Number):
+def isinteger(Value):
     try:
-        a = float(x)
+        a = float(Value)
         b = int(a)
     except ValueError:
         return False
     else:
         return True
-	
+# Check If A Value Is Convertable To A Number (Decimal And Integer):
 def isnumber(Value):
 	valuea = isdecimal(Value)
 	valueb = isinteger(Value)
@@ -120,4 +139,5 @@ def isnumber(Value):
 		return True
 	else:
 		return False
-print('Finished Setting Up ROS Code')
+
+print('Finished Loading ROS Code')
