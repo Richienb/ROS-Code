@@ -113,10 +113,10 @@ def isinteger(x):
     else:
         return True
 	
-def isnumber(n):
-	valuea = isdecimal(n)
-	valueb = isinteger(n)
-	if valuea() or valueb():
+def isnumber(Value):
+	valuea = isdecimal(Value)
+	valueb = isinteger(Value)
+	if valuea and valueb:
 		return True
 	else:
 		return False
