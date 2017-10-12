@@ -78,8 +78,8 @@ def equation(operation, firstnum, secondnum, argument):
 		RuntimeError('An Error Has Occured: You Entered An Invalid Output Mehthod (0004)')
 		
 # Throw A Runtime Error
-def ThrowError(ErrorText):
-	raise RuntimeError(ErrorText, ' (0001)')
+def throwerror(errortext):
+	raise RuntimeError(errortext, ' (0001)')
 	
 # Store A Value In The ros_stored Variable
 def store(value):
