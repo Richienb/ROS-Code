@@ -1,65 +1,41 @@
 print('Loading ROS Code')
 
+# Prepare Debug Enabled Variable For Toggling Debug Mode
 global debugenabled
-debugenabled == false
+debugenabled = False
 
+# DEBUG: Enable Or Disable Debug Mode
 def debugstate(State):
 	if State == 'Enable':
-		debugenabled == true
+		debugenabled == True
 		print('Debug Mode Has Been Enabled')
 	elif State == 'Disable':
-		debugenabled == false
+		debugenabled == False
 		print('Debug Mode Has Been Disabled')
 	else:
 		raise RuntimeError('An Error Has Occured: Invalid Debug State Entered (0005)')
 		
+# DEBUG: Make ROS Code Variables Global
 def debug_varglobal():
-	if debugenabled == true:
+	if debugenabled == True:
 		global ros_output
 		global ros_stored
 	else:
 		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
-	
+		
+# DEBUG: Supress All Warnings
 def debug_supresswarnings():
-	if debugenabled == true:
+	if debugenabled == True:
 		import warnings
 		warnings.filterwarnings("ignore")
 	else:
 		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
-
-debug_supresswarnings()
-	
+		
+# Print A Message
 def message_print(text):
 	print(text)
 	
-def add_print(firstnum, secondnum):
-    print(firstnum + secondnum)
-
-def subtract_print(firstnum, secondnum):
-    print(firstnum - secondnum)
-
-def multiply_print(firstnum, secondnum):
-    print(firstnum * secondnum)
-
-def divide_print(firstnum, secondnum):
-    print(firstnum / secondnum)
-
-def add_write(firstnum, secondnum):
-    global ros_output
-    ros_output = (firstnum + secondnum)
-
-def subtract_write(firstnum, secondnum):
-    global ros_output
-    ros_output = (firstnum - secondnum)
-	
-def multiply_write(firstnum, secondnum):
-    global ros_output
-    ros_output = (firstnum * secondnum)
-
-def divide_write(firstnum, secondnum):
-    global ros_output
-    ros_output = (firstnum / secondnum)
-#
+# Solve A Maths Equation
 def equation(operation, firstnum, secondnum, argument):
 	if not isnumber(firstnum) and isnumber(secondnum):
 		raise RuntimeError('An Error Has Occured: One Of The Values Specified Is Not A Number (0002)')
@@ -87,7 +63,7 @@ def equation(operation, firstnum, secondnum, argument):
 			print(firstnum / secondnum)
 		else:
 			raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
-	elif argument == 'print':
+	elif argument == 'return':
 		if operation == 'plus':
 			return (firstnum + secondnum)
 		elif operation == 'minus':
@@ -100,20 +76,25 @@ def equation(operation, firstnum, secondnum, argument):
 			raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
 	else:
 		RuntimeError('An Error Has Occured: You Entered An Invalid Output Mehthod (0004)')
+		
 # Throw A Runtime Error
 def ThrowError(ErrorText):
 	raise RuntimeError(ErrorText, ' (0001)')
+	
 # Store A Value In The ROS_Stored Variable
 def store(value):
     global ros_stored
     ros_stored = value
+	
 # Delay For A Specific Amount Of Seconds
 def delay(Seconds):
     from time import sleep as rosfunc_sleep
     rosfunc_sleep(seconds)
+	
 #Waits For The User To Press Enter
 def wait_enter():
     ros_entervar = input('')
+	
 # Check If A Number Is A Decimal:
 def isdecimal(Value):
     try:
@@ -122,6 +103,7 @@ def isdecimal(Value):
         return False
     else:
         return True
+		
 # Check If A Number Is An Integer (Full Number):
 def isinteger(Value):
     try:
@@ -131,6 +113,7 @@ def isinteger(Value):
         return False
     else:
         return True
+		
 # Check If A Value Is Convertable To A Number (Decimal And Integer):
 def isnumber(Value):
 	valuea = isdecimal(Value)
