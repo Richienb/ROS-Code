@@ -42,47 +42,43 @@ def divide_write(firstnum, secondnum):
     ros_output = (firstnum / secondnum)
 	
 def equation(operation, firstnum, secondnum, argument):
-	if isnumber(firstnum) and isnumber(secondnum):
-            break
-        else
-            raise RuntimeError('An Error Has Occured. Error Code: 0002')
-            return False
+	if not isnumber(firstnum) and isnumber(secondnum):
+		raise RuntimeError('An Error Has Occured. Error Code: 0002')
+		return False
 	if argument == 'write':
-	    global ros_output
-	    if operation == 'plus':
-                ros_output = (firstnum + secondnum)
-	    elif operation == 'minus':
-                ros_output = (firstnum - secondnum)
-	    elif operation == 'multiply':
-		ros_output = (firstnum * secondnum)
-	    elif operation == 'divide':
-                ros_output = (firstnum / secondnum)
-	    else:
-                raise RuntimeError('An Error Has Occured. Error Code: 0003')
-	    elif argument == 'print':
+		global ros_output
 		if operation == 'plus':
-                    print(firstnum + secondnum)
+			ros_output = (firstnum + secondnum)
 		elif operation == 'minus':
-                    print(firstnum - secondnum)
+			ros_output = (firstnum - secondnum)
 		elif operation == 'multiply':
-                    print(firstnum * secondnum)
+			ros_output = (firstnum * secondnum)
 		elif operation == 'divide':
-                    print(firstnum / secondnum)
+			ros_output = (firstnum / secondnum)
 		else:
-                    raise RuntimeError('An Error Has Occured. Error Code: 0003')
-            elif argument == 'print':
-                if operation == 'plus':
-                    return (firstnum + secondnum)
-                    elif operation == 'minus':
-                        return (firstnum - secondnum)
-                    elif operation == 'multiply':
-                        return (firstnum * secondnum)
-                    elif operation == 'divide':
-                        return (firstnum / secondnum)
-                    else:
-                        raise RuntimeError('An Error Has Occured. Error Code: 0003')
+			raise RuntimeError('An Error Has Occured. Error Code: 0003')
+	elif argument == 'print':
+		if operation == 'plus':
+			print(firstnum + secondnum)
+		elif operation == 'minus':
+			print(firstnum - secondnum)
+		elif operation == 'multiply':
+			print(firstnum * secondnum)
+		elif operation == 'divide':
+			print(firstnum / secondnum)
 		else:
-		    raise RuntimeError('An Error Has Occured. Error Code: 0001')
+			raise RuntimeError('An Error Has Occured. Error Code: 0003')
+	elif argument == 'print':
+		if operation == 'plus':
+			return (firstnum + secondnum)
+		elif operation == 'minus':
+			return (firstnum - secondnum)
+		elif operation == 'multiply':
+			return (firstnum * secondnum)
+		elif operation == 'divide':
+			return (firstnum / secondnum)
+		else:
+			raise RuntimeError('An Error Has Occured. Error Code: 0003')
 
 def error(text):
     raise RuntimeError(text)
@@ -115,7 +111,7 @@ def isinteger(x):
     except ValueError:
         return False
     else:
-        return a == b
+        return True
 	
 def isnumber(n):
 	valuea = isdecimal(n)
