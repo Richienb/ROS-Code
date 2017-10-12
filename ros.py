@@ -81,7 +81,7 @@ def equation(operation, firstnum, secondnum, argument):
 def ThrowError(ErrorText):
 	raise RuntimeError(ErrorText, ' (0001)')
 	
-# Store A Value In The ROS_Stored Variable
+# Store A Value In The ros_stored Variable
 def store(value):
     global ros_stored
     ros_stored = value
@@ -91,7 +91,7 @@ def delay(Seconds):
     from time import sleep as rosfunc_sleep
     rosfunc_sleep(seconds)
 	
-#Waits For The User To Press Enter
+# Waits For The User To Press Enter
 def wait_enter():
     ros_entervar = input('')
 	
