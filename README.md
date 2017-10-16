@@ -6,4 +6,4 @@ ___
 ## Useful Links:
 ### [Issues](https://github.com/richienb/ros-code/issues) | [Pull Requests](https://github.com/Richienb/ROS-Code/pulls) | [Wikipedia](https://github.com/Richienb/ROS-Code/wiki) | [Commits](https://github.com/Richienb/ROS-Code/commits) | [Branches](https://github.com/Richienb/ROS-Code/branches) | [Releases](https://github.com/Richienb/ROS-Code/releases) | [Contributers](https://github.com/Richienb/ROS-Code/graphs/contributors) | [Licence](https://github.com/Richienb/ROS-Code/blob/master/LICENSE)
 ___
-## Founder: [Richie Bendall](https://www.richie-bendall.ml)
+> Founder: [Richie Bendall](https://www.richie-bendall.ml)
