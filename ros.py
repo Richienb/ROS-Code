@@ -5,11 +5,11 @@ global debugenabled
 debugenabled = False
 
 # DEBUG: Enable Or Disable Debug Mode
-def debugstate(State):
-	if State == 'Enable':
+def debugstate(state):
+	if state == 'Enable':
 		debugenabled == True
 		print('Debug Mode Has Been Enabled')
-	elif State == 'Disable':
+	elif state == 'Disable':
 		debugenabled == False
 		print('Debug Mode Has Been Disabled')
 	else:
@@ -87,7 +87,7 @@ def store(value):
     ros_stored = value
 	
 # Delay For A Specific Amount Of Seconds
-def delay(Seconds):
+def delay(seconds):
     from time import sleep as rosfunc_sleep
     rosfunc_sleep(seconds)
 	
@@ -96,18 +96,18 @@ def wait_enter():
     ros_entervar = input('')
 	
 # Check If A Number Is A Decimal:
-def isdecimal(Value):
+def isdecimal(value):
     try:
-        a = float(Value)
+        a = float(value)
     except ValueError:
         return False
     else:
         return True
 		
 # Check If A Number Is An Integer (Full Number):
-def isinteger(Value):
+def isinteger(value):
     try:
-        a = float(Value)
+        a = float(value)
         b = int(a)
     except ValueError:
         return False
@@ -116,11 +116,50 @@ def isinteger(Value):
 		
 # Check If A Value Is Convertable To A Number (Decimal And Integer):
 def isnumber(Value):
-	valuea = isdecimal(Value)
-	valueb = isinteger(Value)
+	valuea = isdecimal(value)
+	valueb = isinteger(value)
 	if valuea and valueb:
 		return True
 	else:
 		return False
+	
+# Check If A Variable Is Empty
+def isempty(variable):
+	if variable == '':
+		return true
+	else:
+		return false
 
+# Tools For Directories (If Exists And Make)
+def directory(operation, directory):
+	import os
+	if operation == 'exists':
+		if os.path.exists(directory):
+			return true
+		else:
+			return false
+	elif operation == 'create':
+		if os.path.exists(directory):
+			raise RuntimeError('An Error Has Occured: Directory Already Exists (0007)')
+		else:
+			os.makedirs(directory)
+	elif operation == 'delete':
+		if os.path.exists(directory):
+			os.rmdir(directory)
+		else:
+			raise RuntimeError('An Error Has Occured: Directory Doesn\'t Exist (0009)')
+	else:
+		raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
+
+# Download A File
+def filedownload(source, destination)
+import urllib
+if isempty(source) == False And isempty(destination) == False:
+	try:
+		urllib.urlretrieve(source, destination)
+	except:
+		raise RuntimeError('An Error Has Occured: File Download Error (0010)')
+else:
+	('An Error Has Occured: Source Or Destination Invalid (0011)')
+	
 print('Finished Loading ROS Code')
