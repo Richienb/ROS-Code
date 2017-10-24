@@ -5,6 +5,9 @@ python:
 
 branches:
  - master
+ 
+ git:
+  depth: 3
 
 script:
  - python ros.py
