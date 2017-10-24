@@ -8,3 +8,6 @@ branches:
 
 script:
  - python ros.py
+
+notifications:
+  email: false
