@@ -152,7 +152,7 @@ def directory(operation, directory):
 		raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
 
 # Download A File
-def filedownload(source, destination)
+def filedownload(source, destination):
 import urllib
 if isempty(source) == False And isempty(destination) == False:
 	try:
