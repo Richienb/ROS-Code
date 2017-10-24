@@ -154,11 +154,14 @@ def directory(operation, directory):
 # Download A File
 def filedownload(source, destination):
 	import urllib
-	if isempty(source) == False And isempty(destination) == False:
-		try:
-			urllib.urlretrieve(source, destination)
-		except:
-			raise RuntimeError('An Error Has Occured: File Download Error (0010)')
+	if not isempty(source):
+		if not isempty(destination):
+			try:
+				urllib.urlretrieve(source, destination)
+			except:
+				raise RuntimeError('An Error Has Occured: File Download Error (0010)')
+		else:
+			('An Error Has Occured: Source Or Destination Invalid (0011)')
 	else:
 		('An Error Has Occured: Source Or Destination Invalid (0011)')
 	
