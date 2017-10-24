@@ -6,6 +6,9 @@ python:
 branches:
  - master
 
+before_script:
+  skip_cleanup: true
+
 script:
  - python ros.py
 
