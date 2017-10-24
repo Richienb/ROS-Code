@@ -8,6 +8,3 @@ branches:
 
 script:
  - python ros.py
-
-deploy:
-  skip_cleanup: true
