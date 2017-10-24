@@ -7,7 +7,6 @@ branches:
  - master
 
 script:
-skip_cleanup: true
  - python ros.py
 
 notifications:
