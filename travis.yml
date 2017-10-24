@@ -1,0 +1,10 @@
+language: python
+
+python:
+ - 3.4.2
+
+branches:
+ - master
+
+script:
+ - python ros.py
