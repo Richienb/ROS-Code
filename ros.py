@@ -130,7 +130,7 @@ def isempty(variable):
 	else:
 		return false
 
-# Tools For Directories (If Exists And Make)
+# Tools For Directories (If Exists, Make And Delete)
 def directory(operation, directory):
 	import os
 	if operation == 'exists':
@@ -161,8 +161,52 @@ def filedownload(source, destination):
 			except:
 				raise RuntimeError('An Error Has Occured: File Download Error (0010)')
 		else:
-			('An Error Has Occured: Source Or Destination Invalid (0011)')
+			raise RuntimeError('An Error Has Occured: Source Or Destination Invalid (0011)')
 	else:
-		('An Error Has Occured: Source Or Destination Invalid (0011)')
+		raise RuntimeError('An Error Has Occured: Source Or Destination Invalid (0011)')
 	
+# Tools For Files (If Exists, Make And Delete)
+def file(operation, path):
+	if operation == 'exists':
+		import os.path
+		if os.path.isfile(path):
+			return true
+		else:
+			return false
+	elif operation == 'read':
+		if file('exists', path):
+			F = open(path, "w") 
+			return f
+		else:
+			raise RuntimeError('An Error Has Occured: File Not Found (0012)')
+	elif operation == 'delete':
+		import os
+		if file('exists', path):
+			os.remove(path)
+		else:
+			raise RuntimeError('An Error Has Occured: File Not Found (0012)')
+	elif operation == 'create':
+		if not file('exists', path):
+			f = open(path, "w+")
+			f.close()
+		else:
+			raise RuntimeError('An Error Has Occured: File Already Exists (0013)')
+	else:
+		raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
+	
+# Tools For Text Files
+def text(operation, path, argument):
+	if operation == 'write':
+		if file('exists', path):
+			file_object = open(path, "w")
+			fh.write(argument)
+		else:
+			raise RuntimeError('An Error Has Occured: File Not Found (0012)')
+	elif operation == 'append':
+		if file('exists', path):
+			fh = open(path, "a") 
+			fh.write(argument) 
+			fh.close 
+		else:
+			raise RuntimeError('An Error Has Occured: File Not Found (0012)')
 print('Finished Loading ROS Code')
