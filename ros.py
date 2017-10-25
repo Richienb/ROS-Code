@@ -217,7 +217,7 @@ def about():
 	print('Type "ros.licence" To Read The Licence')
 	
 # Convert A Unicode Value To A Symbol
-def unicode(value):
+def convertunicode(value):
 	import unicode
 	try:
 		return unicode.charcode(value)
@@ -225,7 +225,7 @@ def unicode(value):
 		raise RuntimeError('Invalid Symbol Value (0014)')
 		
 # Convert A ASCII Value To A Symbol
-def ascii(value):
+def convertascii(value):
 	try:
 		return chr(value)
 	except ValueError:
