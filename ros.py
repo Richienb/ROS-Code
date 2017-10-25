@@ -222,7 +222,14 @@ def unicode(value):
 	try:
 		return unicode.charcode(value)
 	except UnicodeEncodeError:
-		raise RuntimeError('Invalid Unicode Value (0014)')
+		raise RuntimeError('Invalid Symbol Value (0014)')
+		
+# Convert A ASCII Value To A Symbol
+def ascii(value):
+	try:
+		return chr(value)
+	except ValueError:
+		raise RuntimeError('Invalid Symbol Value (0014)')
 
 # Licence Information
 def licence():
