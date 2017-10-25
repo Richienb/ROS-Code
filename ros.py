@@ -224,4 +224,9 @@ def licence():
 	print('Conditions: License and copyright notice And State changes')
 	print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
 	
+# Convert A Unicode Value To A Symbol
+def unicode(value):
+	import unicode
+	return unicode.charcode(U+2588)
+	
 print('Finished Loading ROS Code')
