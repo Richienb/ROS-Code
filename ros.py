@@ -209,4 +209,19 @@ def text(operation, path, argument):
 			fh.close 
 		else:
 			raise RuntimeError('An Error Has Occured: File Not Found (0012)')
+			
+# About Information
+def about():
+	print('You Are Using ROS Code')
+	print('ROS Code Is Licenced Under The Apache License 2.0')
+	print('Type "ros.licence" To Read The Licence')
+	
+# Licence Information
+def licence():
+	print('ROS Code Is Licenced Under The Apache License 2.0')
+	print('Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+	print('Limitations: Trademark use, Liability And Warranty')
+	print('Conditions: License and copyright notice And State changes')
+	print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
+	
 print('Finished Loading ROS Code')
