@@ -216,17 +216,20 @@ def about():
 	print('ROS Code Is Licenced Under The Apache License 2.0')
 	print('Type "ros.licence" To Read The Licence')
 	
-# Licence Information
-def licence():
-	print('ROS Code Is Licenced Under The Apache License 2.0')
-	print('Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
-	print('Limitations: Trademark use, Liability And Warranty')
-	print('Conditions: License and copyright notice And State changes')
-	print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
-	
 # Convert A Unicode Value To A Symbol
 def unicode(value):
 	import unicode
-	return unicode.charcode(U+2588)
+	try:
+		return unicode.charcode(value)
+	except UnicodeEncodeError:
+		raise RuntimeError('Invalid Unicode Value (0014)')
+
+# Licence Information
+def licence():
+	print('ROS Code Is Licenced Under The Apache License 2.0')
+	print(unicode('2714'), 'Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+	print(unicode('274C'), 'Limitations: Trademark use, Liability And Warranty')
+	print(unicode('1f6c8'), 'Conditions: License and copyright notice And State changes')
+	print(unicode('1f4d6'), 'To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
 	
 print('Finished Loading ROS Code')
