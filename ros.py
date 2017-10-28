@@ -240,6 +240,24 @@ def convertascii(value, command):
 			raise RuntimeError('Invalid Symbol (0015)')
 	else:
 		raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
+		
+# Convert Text To Binary Form
+def convertbinary(value):
+	try:
+		return bin(value)
+	except ValueError:
+		raise RuntimeError('Invalid Value (0016)')
+		
+# Get A Random Number
+def random(minimum, maximum):
+	if isnumber(minimum):
+		if isnumber(maximum):
+			from random import randint as randomnumber
+			return randomnumber(minimum, maximum)
+		else:
+			raise RuntimeError('Invalid Value (0016)')
+	else:
+		raise RuntimeError('Invalid Value (0016)')
 
 # Licence Information
 def licence():
