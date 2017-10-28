@@ -227,11 +227,19 @@ def convertunicode(value):
 		raise RuntimeError('Invalid Symbol Value (0014)')
 		
 # Convert A ASCII Value To A Symbol
-def convertascii(value):
-	try:
-		return chr(value)
-	except ValueError:
-		raise RuntimeError('Invalid Symbol Value (0014)')
+def convertascii(value, command):
+	if command == 'to':
+		try:
+			return chr(value)
+		except ValueError:
+			raise RuntimeError('Invalid Symbol Value (0014)')
+	elif command == 'from':
+		try:
+			return ord(value)
+		except ValueError:
+			raise RuntimeError('Invalid Symbol (0015)')
+	else:
+		raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
 
 # Licence Information
 def licence():
