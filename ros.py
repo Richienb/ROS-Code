@@ -117,10 +117,8 @@ def isinteger(value):
         return True
 		
 # Check If A Value Is Convertable To A Number (Decimal And Integer):
-def isnumber(Value):
-	valuea = isdecimal(value)
-	valueb = isinteger(value)
-	if valuea and valueb:
+def isnumber(value):
+	if isdecimal(value) or isinteger(value):
 		return True
 	else:
 		return False
@@ -128,18 +126,18 @@ def isnumber(Value):
 # Check If A Variable Is Empty
 def isempty(variable):
 	if variable == '':
-		return true
+		return True
 	else:
-		return false
+		return False
 
 # Tools For Directories (If Exists, Make And Delete)
 def directory(operation, directory):
 	import os
 	if operation == 'exists':
 		if os.path.exists(directory):
-			return true
+			return True
 		else:
-			return false
+			return False
 	elif operation == 'create':
 		if os.path.exists(directory):
 			raise RuntimeError('An Error Has Occured: Directory Already Exists (0007)')
@@ -172,13 +170,13 @@ def file(operation, path):
 	if operation == 'exists':
 		import os.path
 		if os.path.isfile(path):
-			return true
+			return True
 		else:
-			return false
+			return False
 	elif operation == 'read':
 		if file('exists', path):
 			F = open(path, "w") 
-			return f
+			return F
 		else:
 			raise RuntimeError('An Error Has Occured: File Not Found (0012)')
 	elif operation == 'delete':
@@ -217,14 +215,6 @@ def about():
 	print('You Are Using ROS Code')
 	print('ROS Code Is Licenced Under The Apache License 2.0')
 	print('Type "ros.licence" To Read The Licence')
-	
-# Convert A Unicode Value To A Symbol
-def convertunicode(value):
-	import unicode
-	try:
-		return unicode.charcode(value)
-	except UnicodeEncodeError:
-		raise RuntimeError('Invalid Symbol Value (0014)')
 		
 # Convert A ASCII Value To A Symbol
 def convertascii(value, command):
@@ -262,10 +252,10 @@ def random(minimum, maximum):
 # Licence Information
 def licence():
 	print('ROS Code Is Licenced Under The Apache License 2.0')
-	print(unicode('2714'), 'Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
-	print(unicode('274C'), 'Limitations: Trademark use, Liability And Warranty')
-	print(unicode('1f6c8'), 'Conditions: License and copyright notice And State changes')
-	print(unicode('1f4d6'), 'To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
+	print('Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+	print('Limitations: Trademark use, Liability And Warranty')
+	print('Conditions: License and copyright notice And State changes')
+	print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
 	
 print('Finished Loading ROS Code')
 
