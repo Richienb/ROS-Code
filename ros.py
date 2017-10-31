@@ -97,6 +97,13 @@ def delay(seconds):
 def wait_enter():
     ros_entervar = input('')
 	
+# Return The Opposite Of A Boolean
+def opposite(boolean):
+	try:
+		return not boolean
+	except:
+		raise RuntimeError('An Error Has Occured: Nor A Bool Or Len Was Provided (0014)')
+	
 # Check If A Number Is A Decimal:
 def isdecimal(value):
     try:
@@ -116,20 +123,67 @@ def isinteger(value):
     else:
         return True
 		
-# Check If A Value Is Convertable To A Number (Decimal And Integer):
+# Check If A Value Is Convertable To A Number (Decimal And Integer)
 def isnumber(value):
-	if isdecimal(value) or isinteger(value):
-		return True
-	else:
+	try:
+		x = int(value)
+		break
+	except ValueError:
 		return False
+	else:
+		return True
 	
+# Check If A Number Is Even
+def iseven(number):
+	return number % 2 == 0
+	
+def isodd(number):
+	return opposite(iseven(number))
+
 # Check If A Variable Is Empty
 def isempty(variable):
 	if variable == '':
 		return True
 	else:
 		return False
+	
+# Check If A Variable Is Infinite
+def isinfinite(variable):
+	import math
+	if math.isfinite(variable):
+		return true
+	else:
+		return false
+# Find The Length Of A String
+def length(string):
+	try:
+		return len(string)
+	except OverflowError:
+		raise RuntimeError('An Error Has Occured: The Length Exceeds The Limit (', charlimit(), ') (0015)')
 
+# Get The Character Limit
+def charlimit():
+	import sys
+	return sys.maxsize
+
+# Get The Highest Unicode Value
+def unilimit():
+	import sys
+	return sys.maxunicode
+
+# Get The Current Platform
+def platform():
+	import sys
+	return sys.platform
+
+# Get The Largest Integer Less Than Or Equal To
+def less_or_equal(number):
+	import math
+	try:
+		return math.floor(number)
+	except:
+		raise RuntimeError('An Error Has Occured: Number Not Provided (0016)')
+		
 # Tools For Directories (If Exists, Make And Delete)
 def directory(operation, directory):
 	import os
