@@ -127,7 +127,6 @@ def isinteger(value):
 def isnumber(value):
 	try:
 		x = int(value)
-		break
 	except ValueError:
 		return False
 	else:
