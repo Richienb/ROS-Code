@@ -97,6 +97,10 @@ def delay(seconds):
 def wait_enter():
     ros_entervar = input('')
 	
+# Convert A Variable To A String
+def convertstring(value):
+	return str(value)
+
 # Return The Opposite Of A Boolean
 def opposite(boolean):
 	try:
