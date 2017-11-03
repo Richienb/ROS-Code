@@ -163,6 +163,10 @@ def less_or_equal(number):
 	except:
 		raise RuntimeError('An Error Has Occured: Number Not Provided (0016)')
 		
+# Join Two Strings
+def join(firststring, secondstring):
+	return (convertstring(firststring) + convertstring(secondstring)
+		
 # Tools For Directories (If Exists, Make And Delete)
 def directory(operation, directory):
 	import os
