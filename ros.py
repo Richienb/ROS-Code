@@ -323,7 +323,7 @@ def randomstr(list):
 # Get The Time Since 00:00 On 1 January 1970
 def timesince():
 	from time import time as time_now
-	return = time_now()
+	return time_now()
 
 # Licence Information
 def licence():
