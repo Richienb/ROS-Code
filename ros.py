@@ -3,19 +3,22 @@
 print('Loading ROS Code')
 
 # Prepare Debug Enabled Variable For Toggling Debug Mode
-global debugenabled
-debugenabled = False
+def debug_debugstatesetup():
+	global debugenabled
+	debugenabled = False
+
+debug_debugstatesetup()
 
 # DEBUG: Enable Or Disable Debug Mode
 def debugstate(state):
-	if state == 'Enable':
-		debugenabled == True
-		print('Debug Mode Has Been Enabled')
-	elif state == 'Disable':
-		debugenabled == False
-		print('Debug Mode Has Been Disabled')
-	else:
-		raise RuntimeError('An Error Has Occured: Invalid Debug State Entered (0005)')
+    if state == 'Enable':
+        debugenabled = True
+        print('Debug Mode Has Been Enabled')
+    elif state == 'Disable':
+        debugenabled = False
+        print('Debug Mode Has Been Disabled')
+    else:
+        raise RuntimeError('An Error Has Occured: Invalid Debug State Entered (0005)')
 		
 # DEBUG: Make ROS Code Variables Global
 def debug_varglobal():
@@ -41,7 +44,6 @@ def message_print(text):
 def equation(operation, firstnum, secondnum):
 	if not isnumber(firstnum) and isnumber(secondnum):
 		raise RuntimeError('An Error Has Occured: One Of The Values Specified Is Not A Number (0002)')
-		return False
 	if operation == 'plus':
 		return (firstnum + secondnum)
 	elif operation == 'minus':
@@ -62,7 +64,7 @@ def avgmean(values):
 	import statistics
 	try:
 		return statistics.mean(values)
-	except StatisticsError:
+	except:
 		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 
 # Get The Mode Of A List Of Values
@@ -70,7 +72,7 @@ def avgmode(values):
 	import statistics
 	try:
 		return statistics.mode(values)
-	except StatisticsError:
+	except:
 		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 
 # Get The Median Of A List Of Values
@@ -78,7 +80,7 @@ def avgmedian(values):
 	import statistics
 	try:
 		return statistics.median(values)
-	except StatisticsError:
+	except:
 		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 
 # Throw A Runtime Error
@@ -87,8 +89,8 @@ def throwerror(errortext):
 	
 # Store A Value In The ros_stored Variable
 def store(value):
-    global ros_stored
-    ros_stored = value
+	global ros_stored
+	ros_stored = value
 	
 # Delay For A Specific Amount Of Seconds
 def delay(seconds):
@@ -97,7 +99,7 @@ def delay(seconds):
 	
 # Waits For The User To Press Enter
 def wait_enter():
-    ros_entervar = input('')
+    input('')
 	
 # Convert A Variable To A String
 def convertstring(value):
@@ -110,34 +112,30 @@ def opposite(boolean):
 	except:
 		raise RuntimeError('An Error Has Occured: Nor A Bool Or Len Was Provided (0014)')
 	
-# Check If A Number Is A Decimal:
+# Check If A Number Is A Decimal
 def isdecimal(value):
-    try:
-        a = float(value)
-    except ValueError:
-        return False
-    else:
-        return True
+	return bool(isinstance(value, float))
+	
+# Check If A Variable Is A String 
+def isstring(variable):
+	return bool(isinstance(variable, str))
+
+# Check If A Variable Is A Specific Type
+def istype(variable, typeexpected):
+	return bool(isinstance(variable, typeexpected))
 		
-# Check If A Number Is An Integer (Full Number):
+# Check If A Number Is An Integer (Full Number)
 def isinteger(value):
-    try:
-        a = float(value)
-        b = int(a)
-    except ValueError:
-        return False
-    else:
-        return True
-		
+	return bool(isinstance(value, int))
+
+# Check For A Boolean
+def isboolean(value):
+	return isinstance(value, bool)
+	
 # Check If A Value Is Convertable To A Number (Decimal And Integer)
 def isnumber(value):
-	try:
-		x = int(value)
-	except ValueError:
-		return False
-	else:
-		return True
-		
+	return bool(isinteger(value) or isnumber(value))
+
 # Check If A Number Is Even
 def iseven(number):
 	return number % 2 == 0
@@ -148,18 +146,12 @@ def isodd(number):
 
 # Check If A Variable Is Empty
 def isempty(variable):
-	if variable == '':
-		return True
-	else:
-		return False
+	return bool(variable == '')
 	
 # Check If A Variable Is Infinite
 def isinfinite(variable):
 	import math
-	if math.isfinite(variable):
-		return true
-	else:
-		return false
+	return bool(math.isfinite(variable))
 	
 # Find The Length Of A Value
 def length(value):
@@ -192,17 +184,14 @@ def less_or_equal(number):
 		raise RuntimeError('An Error Has Occured: Number Not Provided (0016)')
 		
 # Join Two Strings
-def join(firststring, secondstring):
-	return (convertstring(firststring) + convertstring(secondstring)
-		
+def jointext(firststring, secondstring):
+	return str(firststring) + str(secondstring)
+
 # Tools For Directories (If Exists, Make And Delete)
 def dirtool(operation, directory):
 	import os
 	if operation == 'exists':
-		if os.path.exists(directory):
-			return True
-		else:
-			return False
+		return bool(os.path.exists(directory))
 	elif operation == 'create':
 		if os.path.exists(directory):
 			raise RuntimeError('An Error Has Occured: Directory Already Exists (0007)')
@@ -222,7 +211,7 @@ def filedownload(source, destination):
 	if not isempty(source):
 		if not isempty(destination):
 			try:
-				urllib.urlretrieve(source, destination)
+				urllib.request.urlretrieve(source, destination)
 			except:
 				raise RuntimeError('An Error Has Occured: File Download Error (0010)')
 		else:
@@ -234,10 +223,7 @@ def filedownload(source, destination):
 def file(operation, path):
 	if operation == 'exists':
 		import os.path
-		if os.path.isfile(path):
-			return True
-		else:
-			return False
+		return bool(os.path.isfile(path))
 	elif operation == 'read':
 		if file('exists', path):
 			F = open(path, "w") 
@@ -263,7 +249,7 @@ def file(operation, path):
 def text(operation, path, argument):
 	if operation == 'write':
 		if file('exists', path):
-			file_object = open(path, "w")
+			fh = open(path, "w")
 			fh.write(argument)
 		else:
 			raise RuntimeError('An Error Has Occured: File Not Found (0012)')
@@ -271,7 +257,6 @@ def text(operation, path, argument):
 		if file('exists', path):
 			fh = open(path, "a") 
 			fh.write(argument) 
-			fh.close 
 		else:
 			raise RuntimeError('An Error Has Occured: File Not Found (0012)')
 			
@@ -385,10 +370,10 @@ def getbrowser():
 	webbrowser.get(using=None)
 	
 # Choose A Random Item From A List
-def randomstr(list):
+def randomstr(valuelist):
 	from random import choice
 	try:
-		return choice(list)
+		return choice(valuelist)
 	except IndexError:
 		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 		
