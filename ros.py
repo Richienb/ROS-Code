@@ -42,17 +42,16 @@ def equation(operation, firstnum, secondnum):
 	if not isnumber(firstnum) and isnumber(secondnum):
 		raise RuntimeError('An Error Has Occured: One Of The Values Specified Is Not A Number (0002)')
 		return False
-		global ros_output
-		if operation == 'plus':
-			return (firstnum + secondnum)
-		elif operation == 'minus':
-			return (firstnum - secondnum)
-		elif operation == 'multiply':
-			return (firstnum * secondnum)
-		elif operation == 'divide':
-			return (firstnum / secondnum)
-		else:
-			raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
+	if operation == 'plus':
+		return (firstnum + secondnum)
+	elif operation == 'minus':
+		return (firstnum - secondnum)
+	elif operation == 'multiply':
+		return (firstnum * secondnum)
+	elif operation == 'divide':
+		return (firstnum / secondnum)
+	else:
+		raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
 			
 # Throw A Runtime Error
 def throwerror(errortext):
