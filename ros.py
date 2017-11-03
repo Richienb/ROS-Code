@@ -53,6 +53,30 @@ def equation(operation, firstnum, secondnum):
 	else:
 		raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
 			
+# Get The Mean Of A List Of Values
+def avgmean(values):
+	import statistics
+	try:
+		return statistics.mean(values)
+	except StatisticsError:
+		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
+
+# Get The Mode Of A List Of Values
+def avgmode(values):
+	import statistics
+	try:
+		return statistics.mode(values)
+	except StatisticsError:
+		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
+
+# Get The Median Of A List Of Values
+def avgmedian(values):
+	import statistics
+	try:
+		return statistics.median(values)
+	except StatisticsError:
+		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
+
 # Throw A Runtime Error
 def throwerror(errortext):
 	raise RuntimeError(errortext, ' (0001)')
