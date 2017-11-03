@@ -196,7 +196,7 @@ def join(firststring, secondstring):
 	return (convertstring(firststring) + convertstring(secondstring)
 		
 # Tools For Directories (If Exists, Make And Delete)
-def directory(operation, directory):
+def dirtool(operation, directory):
 	import os
 	if operation == 'exists':
 		if os.path.exists(directory):
