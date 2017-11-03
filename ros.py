@@ -52,7 +52,11 @@ def equation(operation, firstnum, secondnum):
 		return (firstnum / secondnum)
 	else:
 		raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
-			
+
+# Find The Power Of A Number
+def power(number, power):
+		return pow(number, power)
+	
 # Get The Mean Of A List Of Values
 def avgmean(values):
 	import statistics
@@ -278,7 +282,7 @@ def about():
 	print('Type "ros.licence" To Read The Licence')
 		
 # Convert A ASCII Value To A Symbol
-def convertascii(value, command):
+def convertsymbol(value, command):
 	if command == 'to':
 		try:
 			return chr(value)
@@ -291,7 +295,48 @@ def convertascii(value, command):
 			raise RuntimeError('Invalid Symbol (0015)')
 	else:
 		raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
-		
+			
+# Get The Type Of A Value
+def gettype(value):
+	return type(value)
+			
+# Get All Available Charaters For A Type
+def availchar(charactertype):
+	import string
+	if charactertype == 'letters':
+			return string.ascii_letters
+	elif charactertype == 'lowercase':
+			return string.ascii_lowercase
+	elif charactertype == 'uppercase':
+			return string.ascii_uppercase
+	elif charactertype == 'digits':
+			return string.digits
+	elif charactertype == 'hexdigits':
+			return string.hexdigits
+	elif charactertype == 'punctuation':
+			return string.punctuation
+	elif charactertype == 'printable':
+			return string.printable
+	elif charactertype == 'whitespace':
+			return string.whitespace
+	else:
+			raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
+
+# Get Maximum And Minimum Years
+def yearlimit(limittype):
+	import datetime
+	if limittype == 'min':
+			return datetime.MINYEAR
+	elif limittype == 'max':
+			return datetime.MAXYEAR
+	else:
+			raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
+			
+# Get The Timezone Code
+def timezone():
+	import time
+	return time.timezone
+			
 # Convert Text To Binary Form
 def convertbinary(value):
 	try:
