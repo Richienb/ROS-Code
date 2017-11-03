@@ -110,11 +110,12 @@ def isnumber(value):
 		return False
 	else:
 		return True
-	
+		
 # Check If A Number Is Even
 def iseven(number):
 	return number % 2 == 0
 	
+# Check If A Number Is Odd
 def isodd(number):
 	return opposite(iseven(number))
 
@@ -132,10 +133,11 @@ def isinfinite(variable):
 		return true
 	else:
 		return false
-# Find The Length Of A String
-def length(string):
+	
+# Find The Length Of A Value
+def length(value):
 	try:
-		return len(string)
+		return len(convertstring(value))
 	except OverflowError:
 		raise RuntimeError('An Error Has Occured: The Length Exceeds The Limit (', charlimit(), ') (0015)')
 
@@ -271,7 +273,7 @@ def convertbinary(value):
 		raise RuntimeError('Invalid Value (0016)')
 		
 # Get A Random Number
-def random(minimum, maximum):
+def randomnum(minimum, maximum):
 	if isnumber(minimum):
 		if isnumber(maximum):
 			from random import randint as randomnumber
@@ -280,6 +282,48 @@ def random(minimum, maximum):
 			raise RuntimeError('Invalid Value (0016)')
 	else:
 		raise RuntimeError('Invalid Value (0016)')
+		
+# Open A Link In A Webbrowser
+def openurl(url):
+	import webbrowser
+	try:
+		webbrowser.open(url)
+	except webbrowser.Error:
+		raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
+		
+# Open A Link In A New Window Of A Webbrowser
+def newwindow(url):
+	import webbrowser
+	try:
+		webbrowser.open_new(url)
+	except webbrowser.Error:
+		raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
+		
+# Open A Link In A New Tab Of A Webbrowser
+def newtab(url):
+	import webbrowser
+	try:
+		webbrowser.open_new_tab(url)
+	except webbrowser.Error:
+		raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
+		
+# Get The Name Of The Browser Currently Being Used
+def getbrowser():
+	import webbrowser
+	webbrowser.get(using=None)
+	
+# Choose A Random Item From A List
+def randomstr(list):
+	from random import choice
+	try:
+		return choice(list)
+	except IndexError:
+		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
+		
+# Get The Time Since 00:00 On 1 January 1970
+def timesince():
+	from time import time as time_now
+	return = time_now()
 
 # Licence Information
 def licence():
