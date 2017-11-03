@@ -38,34 +38,11 @@ def message_print(text):
 	print(text)
 	
 # Solve A Maths Equation
-def equation(operation, firstnum, secondnum, argument):
+def equation(operation, firstnum, secondnum):
 	if not isnumber(firstnum) and isnumber(secondnum):
 		raise RuntimeError('An Error Has Occured: One Of The Values Specified Is Not A Number (0002)')
 		return False
-	if argument == 'write':
 		global ros_output
-		if operation == 'plus':
-			ros_output = (firstnum + secondnum)
-		elif operation == 'minus':
-			ros_output = (firstnum - secondnum)
-		elif operation == 'multiply':
-			ros_output = (firstnum * secondnum)
-		elif operation == 'divide':
-			ros_output = (firstnum / secondnum)
-		else:
-			raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
-	elif argument == 'print':
-		if operation == 'plus':
-			print(firstnum + secondnum)
-		elif operation == 'minus':
-			print(firstnum - secondnum)
-		elif operation == 'multiply':
-			print(firstnum * secondnum)
-		elif operation == 'divide':
-			print(firstnum / secondnum)
-		else:
-			raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
-	elif argument == 'return':
 		if operation == 'plus':
 			return (firstnum + secondnum)
 		elif operation == 'minus':
@@ -76,9 +53,7 @@ def equation(operation, firstnum, secondnum, argument):
 			return (firstnum / secondnum)
 		else:
 			raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
-	else:
-		RuntimeError('An Error Has Occured: You Entered An Invalid Output Mehthod (0004)')
-		
+			
 # Throw A Runtime Error
 def throwerror(errortext):
 	raise RuntimeError(errortext, ' (0001)')
