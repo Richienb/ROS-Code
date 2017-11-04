@@ -414,6 +414,13 @@ def randomstr(valuelist):
 def timesince():
 	from time import time as time_now
 	return time_now()
+	
+# Get User input
+def userinput(prompttext):
+	try:
+		return input(prompttext)
+	except:
+		return input(str(prompttext))
 
 # Licence Information
 def licence():
