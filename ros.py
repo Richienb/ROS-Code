@@ -292,7 +292,7 @@ def convertbinary(value, argument):
 			raise RuntimeError('Invalid Value (0016)')
 			
 # Convert A Base 10 Number To A Custom Base
-def convertbase(number, base):
+def convertbase(number, base=10):
 	import string
 	integer = number
 	if not integer: return '0'
