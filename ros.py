@@ -58,30 +58,30 @@ def equation(operation, firstnum, secondnum):
 # Find The Power Of A Number
 def power(number, power):
 		return pow(number, power)
-	
-# Get The Mean Of A List Of Values
-def avgmean(values):
-	import statistics
-	try:
-		return statistics.mean(values)
-	except:
-		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 
-# Get The Mode Of A List Of Values
-def avgmode(values):
+# Do An Average Command
+def average(numbers, type=None):
 	import statistics
 	try:
-		return statistics.mode(values)
+		statistics.mean(numbers)
 	except:
 		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
-
-# Get The Median Of A List Of Values
-def avgmedian(values):
-	import statistics
-	try:
-		return statistics.median(values)
-	except:
-		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
+	if type == 'mean':
+		return statistics.mean(numbers)
+	elif type == 'mode':
+		return statistics.mode(numbers)
+	elif type == 'median':
+		return statistics.median(numbers)
+	elif type == 'min':
+		return min(numbers)
+	elif type == 'max':
+		return max(numbers)
+	elif type == 'range':
+		return max(numbers) - min(numbers)
+	elif type == None:
+		return average(numbers, 'mean')
+	else:
+		raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
 
 # Throw A Runtime Error
 def throwerror(errortext):
@@ -134,7 +134,19 @@ def isboolean(value):
 	
 # Check If A Value Is Convertable To A Number (Decimal And Integer)
 def isnumber(value):
-	return bool(isinteger(value) or isnumber(value))
+	try:
+		return bool(isinteger(value) or isnumber(value))
+	except:
+		return False
+		
+# Change The Casing Of Text
+def case(variable, argument):
+	if argument == 'uppercase':
+		return variable.upper()
+	elif argument == 'lowercase':
+		return variable.lower()
+	else:
+		case('hI', 'uppercase')
 
 # Check If A Number Is Even
 def iseven(number):
@@ -264,7 +276,20 @@ def text(operation, path, argument):
 def about():
 	print('You Are Using ROS Code')
 	print('ROS Code Is Licenced Under The Apache License 2.0')
-	print('Type "ros.licence" To Read The Licence')
+	print('Type "ros.licence()" To Read The Licence')
+	
+# Convert Text To Binary Form
+def convertbinary(value, argument):
+	if argument == 'to':
+		try:
+			return bin(value)
+		except:
+			raise RuntimeError('Invalid Value (0016)')
+	elif argument == 'from':
+		try:
+			return format(value)
+		except:
+			raise RuntimeError('Invalid Value (0016)')
 		
 # Convert A ASCII Value To A Symbol
 def convertsymbol(value, command):
@@ -321,13 +346,6 @@ def yearlimit(limittype):
 def timezone():
 	import time
 	return time.timezone
-			
-# Convert Text To Binary Form
-def convertbinary(value):
-	try:
-		return bin(value)
-	except ValueError:
-		raise RuntimeError('Invalid Value (0016)')
 		
 # Get A Random Number
 def randomnum(minimum, maximum):
