@@ -290,7 +290,22 @@ def convertbinary(value, argument):
 			return format(value)
 		except:
 			raise RuntimeError('Invalid Value (0016)')
-		
+			
+# Convert A Base 10 Number To A Custom Base
+def convertbase(number, base):
+	import string
+	integer = number
+	if not integer: return '0'
+	sign = 1 if integer > 0 else -1
+	alphanum = string.digits + string.ascii_lowercase
+	nums = alphanum[:base]
+	res = ''
+	integer *= sign
+	while integer:
+                integer, mod = divmod(integer, base)
+                res += nums[mod]
+	return ('' if sign == 1 else '-') + res[::-1]
+
 # Convert A ASCII Value To A Symbol
 def convertsymbol(value, command):
 	if command == 'to':
