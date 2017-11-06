@@ -55,9 +55,35 @@ def equation(operation, firstnum, secondnum):
 	else:
 		raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
 
+# Preform Scientific Operations
+def scientific(number, operation):
+	import math
+	if operation == 'log':
+		return math.log(number, 10)
+	elif operation == 'acos':
+		return math.acos(number)
+	elif operation == 'asin':
+		return math.asin(number)
+	elif operation == 'atan':
+		return math.atan(number)
+	elif operation == 'cos':
+		return math.cos(number)
+	elif operation == 'hypot':
+		return math.hypot(number)
+	elif operation == 'sin':
+		return math.sin(number)
+	elif operation == 'tan':
+		return math.tan(number)
+
 # Find The Power Of A Number
 def power(number, power):
-		return pow(number, power)
+	import math
+	return math.pow(number, power)
+
+# Find The Squareroot Of A number
+def squareroot(number):
+	import math
+	return math.sqrt(number)
 
 # Do An Average Command
 def average(numbers, type=None):
