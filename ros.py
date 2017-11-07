@@ -35,7 +35,43 @@ def debug_supresswarnings():
 		warnings.filterwarnings("ignore")
 	else:
 		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
+
+# Check If A Keyword Relates To Python
+def pykeyword(keyword=None):
+	import keyword
+	return keyword.iskeyword(str(keyword))
+
+# Reload A Module
+def modulereload(modulename):
+	import importlib
+	importlib.reload(modulename)
+
+# Exit The Execution
+def exitexecution(args=None):
+	import sys
+	sys.exit(args)
+
+# Configure Warnings
+def warnconfig(action='default'):
+	import warnings
+	if action == 'default':
+		warnings.filterwarnings("default")
+	elif action == 'error':
+		warnings.filterwarnings("error")
+	elif action == 'ignore':
+		warnings.filterwarnings("ignore")
+	elif action == 'always':
+		warnings.filterwarnings("always")
+	elif action == 'module':
+		warnings.filterwarnings("module")
+	elif action == 'once':
+		warnings.filterwarnings("once")
 		
+# Print Python Copyright Information
+def pycopyright():
+	import sys
+	return sys.copyright
+
 # Print A Message
 def message_print(text):
 	print(text)
@@ -75,6 +111,39 @@ def scientific(number, operation):
 	elif operation == 'tan':
 		return math.tan(number)
 
+# Compare 2 Values
+def compare(value1, value2, comparision):
+	import operator
+	if comparision == 'is':
+		return operator.is_(value1, value2)
+	elif comparision == 'or':
+		return operator.or_(value1, value2)
+	elif comparision == 'and':
+		return operator.and_(value1, value2)
+
+# Return A Random String In Hexadecimal
+def tokhex(length=10, urlsafe=False):
+	import secrets
+	if urlsafe == True:
+		return secrets.token_urlsafe(length)
+	else:
+		return secrets.token_hex(length)
+	
+
+# Get A Constant
+def constant(constanttype):
+	import math
+	if constanttype == 'pi':
+		return math.pi
+	elif constanttype == 'e':
+		return math.e
+	elif constanttype == 'tau':
+		return math.tau
+	elif constanttype == 'inf':
+		return math.inf
+	elif constanttype == 'nan':
+		return math.nan
+	
 # Find The Power Of A Number
 def power(number, power):
 	import math
