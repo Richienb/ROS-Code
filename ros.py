@@ -37,9 +37,12 @@ def debug_supresswarnings():
 		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
 
 # Check If A Keyword Relates To Python
-def pykeyword(keyword=None):
+def pykeyword(operation='list', keywordtotest=None):
 	import keyword
-	return keyword.iskeyword(str(keyword))
+	if operation == 'list':
+		return str(keyword.kwlist)
+	elif operation == 'check':
+		return keyword.iskeyword(str(keywordtotest))
 
 # Reload A Module
 def modulereload(modulename):
@@ -155,7 +158,7 @@ def squareroot(number):
 	return math.sqrt(number)
 
 # Do An Average Command
-def average(numbers, type=None):
+def average(numbers, type='mean'):
 	import statistics
 	try:
 		statistics.mean(numbers)
@@ -173,8 +176,6 @@ def average(numbers, type=None):
 		return max(numbers)
 	elif type == 'range':
 		return max(numbers) - min(numbers)
-	elif type == None:
-		return average(numbers, 'mean')
 	else:
 		raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
 
