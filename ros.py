@@ -123,6 +123,57 @@ def compare(value1, value2, comparision):
 		return operator.or_(value1, value2)
 	elif comparision == 'and':
 		return operator.and_(value1, value2)
+		
+# Compare 2 Numbers
+def comparenum(value1, value2, comparison):
+	if isnumber(value1) and isnumber(value2):
+		comparison = case(comparison, 'lowercase')
+		if comparison == 'equals':
+			return value1 == value2
+		elif comparison == 'not equal':
+			return value1 != value2
+		elif comparison == 'less than':
+			return value1 < value2
+		elif comparison == 'greater than':
+			return value1 > value2
+		elif comparison == 'more than':
+			return value1 > value2
+		elif comparison == 'less than or equal to':
+			return value1 <= value2
+		elif comparison == 'greater than or equal to':
+			return value1 >= value2
+		elif comparison == 'more than or equal to':
+			return value1 >= value2
+			
+# Get The Day Of The Week For A Specific Day
+def dayofweek(day, month, year, format=True):
+	import calendar
+	if format == False:
+		return calendar.weekday(year, month, day) + 1
+	else:
+		if calendar.weekday(year, month, day) == 0:
+			return 'Monday'
+		elif calendar.weekday(year, month, day) == 1:
+			return 'Tuesday'
+		elif calendar.weekday(year, month, day) == 2:
+			return 'Wednesday'
+		elif calendar.weekday(year, month, day) == 3:
+			return 'Thursday'
+		elif calendar.weekday(year, month, day) == 4:
+			return 'Friday'
+		elif calendar.weekday(year, month, day) == 5:
+			return 'Saturday'
+		elif calendar.weekday(year, month, day) == 6:
+			return 'Sunday'
+			
+# Check If A Year Is A Leap Year
+def leapyear(year, querytype='is'):
+	import calendar
+	querytype == case(querytype, 'lowercase')
+	if querytype == 'is':
+		return calendar.isleap(year)
+	elif querytype == 'closest':
+		return year % 4
 
 # Return A Random String In Hexadecimal
 def tokhex(length=10, urlsafe=False):
@@ -236,13 +287,11 @@ def isnumber(value):
 		return False
 		
 # Change The Casing Of Text
-def case(variable, argument):
+def case(variable, argument='uppercase'):
 	if argument == 'uppercase':
 		return variable.upper()
 	elif argument == 'lowercase':
 		return variable.lower()
-	else:
-		case('hI', 'uppercase')
 
 # Check If A Number Is Even
 def iseven(number):
@@ -268,6 +317,7 @@ def length(value):
 	except OverflowError:
 		raise RuntimeError('An Error Has Occured: The Length Exceeds The Limit (', charlimit(), ') (0015)')
 
+# Simulate A Cow Saying Text
 def cowsay(text=''):
 	cowtext = str(text)
 	topbar = ' '
@@ -287,8 +337,35 @@ def cowsay(text=''):
 	print(spacing + '     U  ||----w | ')
 	print(spacing + '        ||     || ')
 	
+# Get The Corresponding Letter In A String
 def getletter(variable, letternumber):
 	return str(variable)[letternumber - 1]
+
+# Play A Chance Game
+def chancegame(gamename='dice'):
+	if gamename == 'dice':
+		return randomnum(1, 6)
+	elif gamename == 'die':
+		return randomnum(1, 6)
+	elif gamename == 'coin':
+		if randomnum(1, 2) == 1:
+			return 'Heads'
+		else:
+			return 'Tails'
+	elif gamename == 'truth':
+		truthnum = randomnum(1, 4)
+		if truthnum == 1:
+			return 'Truth'
+		elif truthnum == 2:
+			return 'Maybe'
+		elif truthnum == 3:
+			return 'Maybe'
+		else:
+			return 'Lie'
+
+# Check If Something Is On The List
+def onlist(list, item):
+	return item in list
 
 # Get The Character Limit
 def charlimit():
@@ -409,6 +486,22 @@ def convertbinary(value, argument):
 		except:
 			raise RuntimeError('Invalid Value (0016)')
 			
+# Make The Text Forwards Or Backwards
+def reversetext(text, ignoretype=False):
+	if ignoretype == False:
+		if isinteger(text):
+			start = str(text)
+			end = start[::-1]
+			return int(end)
+		elif isdecimal(text):
+			start = str(text)
+			end = text[::-1]
+			return float(end)
+		else:
+			return str(text)[::-1]
+	else:
+		return str(text)[::-1]
+		
 # Convert A Base 10 Number To A Custom Base
 def convertbase(number, base=10):
 	import string
