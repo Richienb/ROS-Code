@@ -268,6 +268,28 @@ def length(value):
 	except OverflowError:
 		raise RuntimeError('An Error Has Occured: The Length Exceeds The Limit (', charlimit(), ') (0015)')
 
+def cowsay(text=''):
+	cowtext = str(text)
+	topbar = ' '
+	bottombar = ' '
+	spacing = ''
+	for i in range (len(text) + 2):
+		topbar = topbar + '_'
+		bottombar = bottombar + '-'
+	for ii in range ((int(len(topbar) / 2)) + 1):
+		spacing = spacing + ' '
+	print(topbar)
+	print("( " + cowtext + " )")
+	print(bottombar)
+	print(spacing + 'o   ^__^ ')
+	print(spacing + ' o  (oO)\_______' )
+	print(spacing + '    (__)\       )\/\ ')
+	print(spacing + '     U  ||----w | ')
+	print(spacing + '        ||     || ')
+	
+def getletter(variable, letternumber):
+	return str(variable)[letternumber - 1]
+
 # Get The Character Limit
 def charlimit():
 	import sys
