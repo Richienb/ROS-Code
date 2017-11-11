@@ -36,6 +36,29 @@ def debug_supresswarnings():
 	else:
 		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
 
+# Check If A Number Is A Prime Number
+def isprime(number):
+	if number == 1:
+		return False
+	for i in range(2,int(number**0.5)+1):
+		if number%i==0:
+			return False
+	return True
+	
+# Make A Paragraph Space
+def paraspace(paragraphspaces=1):
+	for i in range(paragraphspaces):
+			print('', end='\n')
+			
+# Split A String
+def splitstring(string, split_character=' '):
+	return string.split(split_character)
+	
+def sort(list, key=None):
+	if key == None:
+		return sorted(list)
+	return sorted(list, key)
+
 # Check If A Keyword Relates To Python
 def pykeyword(operation='list', keywordtotest=None):
 	import keyword
@@ -50,9 +73,9 @@ def modulereload(modulename):
 	importlib.reload(modulename)
 
 # Exit The Execution
-def exitexecution(args=None):
+def exitexecution(arguments=None):
 	import sys
-	sys.exit(args)
+	sys.exit(arguments)
 
 # Configure Warnings
 def warnconfig(action='default'):
@@ -95,10 +118,10 @@ def equation(operation, firstnum, secondnum):
 		raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
 
 # Preform Scientific Operations
-def scientific(number, operation):
+def scientific(number, operation, logbase=10):
 	import math
 	if operation == 'log':
-		return math.log(number, 10)
+		return math.log(number, logbase)
 	elif operation == 'acos':
 		return math.acos(number)
 	elif operation == 'asin':
