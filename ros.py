@@ -318,7 +318,7 @@ def length(value):
 		raise RuntimeError('An Error Has Occured: The Length Exceeds The Limit (', charlimit(), ') (0015)')
 
 # Simulate A Cow Saying Text
-def cowsay(text=''):
+def cowsay(text='', align='centre'):
 	cowtext = str(text)
 	topbar = ' '
 	bottombar = ' '
@@ -326,8 +326,14 @@ def cowsay(text=''):
 	for i in range (len(text) + 2):
 		topbar = topbar + '_'
 		bottombar = bottombar + '-'
-	for ii in range ((int(len(topbar) / 2)) + 1):
-		spacing = spacing + ' '
+	if align == 'centre' or align == 'center':
+		for ii in range ((int(len(topbar) / 2)) + 1):
+			spacing = spacing + ' '
+	elif align == 'left':
+		spacing = ' '
+	elif align == 'right':
+		for iii in range (len(text) + 2):
+			spacing = spacing + ' '
 	print(topbar)
 	print("( " + cowtext + " )")
 	print(bottombar)
@@ -634,12 +640,19 @@ def userinput(prompttext):
 		return input(str(prompttext))
 
 # Licence Information
-def licence():
-	print('ROS Code Is Licenced Under The Apache License 2.0')
-	print('Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
-	print('Limitations: Trademark use, Liability And Warranty')
-	print('Conditions: License and copyright notice And State changes')
-	print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
+def licence(raw=False):
+	if raw == False:
+		print('ROS Code Is Licenced Under The Apache License 2.0')
+		print(u'\u2714' + ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+		print(u'\u274c' + ' Limitations: Trademark use, Liability And Warranty')
+		print(u'\u2139' + ' Conditions: License and copyright notice And State changes')
+		print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
+	else:
+		print('ROS Code Is Licenced Under The Apache License 2.0')
+		print('Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+		print('Limitations: Trademark use, Liability And Warranty')
+		print('Conditions: License and copyright notice And State changes')
+		print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
 	
 print('Finished Loading ROS Code')
 
