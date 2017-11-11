@@ -66,6 +66,14 @@ def pykeyword(operation='list', keywordtotest=None):
 		return str(keyword.kwlist)
 	elif operation == 'check':
 		return keyword.iskeyword(str(keywordtotest))
+		
+# Convert 0 Or 1 To False Or True
+def bintobool(integer):
+	if isinteger(integer) and integer < 2 and integer > -1:
+		if integer == 0:
+			return False
+		elif integer == 1:
+			return True
 
 # Reload A Module
 def modulereload(modulename):
