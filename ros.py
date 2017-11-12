@@ -657,7 +657,7 @@ def randomstr(valuelist):
 	try:
 		return choice(valuelist)
 	except IndexError:
-		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
+		raise RuntimeError('An Error Has Occured: List Not Specified (0004)')
 		
 # Get The Time Since 00:00 On 1 January 1970
 def timesince():
