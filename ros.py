@@ -235,7 +235,7 @@ def power(number, power):
 	import math
 	return math.pow(number, power)
 
-# Find The Squareroot Of A number
+# Find The Squareroot Of A Number
 def squareroot(number):
 	import math
 	return math.sqrt(number)
