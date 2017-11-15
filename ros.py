@@ -54,7 +54,6 @@ def paraspace(paragraphspaces=1):
 def splitstring(string, split_character=' '):
 	return string.split(split_character)
 	
-# Sort A List
 def sort(list, key=None):
 	if key == None:
 		return sorted(list)
@@ -235,7 +234,7 @@ def power(number, power):
 	import math
 	return math.pow(number, power)
 
-# Find The Squareroot Of A Number
+# Find The Squareroot Of A number
 def squareroot(number):
 	import math
 	return math.sqrt(number)
@@ -596,6 +595,31 @@ def availchar(charactertype):
 	else:
 			raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
 
+# Get The Value Of A Word
+def wordvalue(word):
+	total = 0
+	for i in range(len(word)):
+		total += letternum(word[i])
+	return total
+	
+def textbetween(variable, firstnum=None, secondnum=None, type='regular'):
+	if type == 'regular':
+		return variable[firstnum:secondnum]
+	elif type == 'toend':
+		return variable[firstnum:]
+	elif type == 'tostart':
+		return variable[:secondnum]
+
+# Get The Number Corresponding To A Letter
+def letternum(letter):
+	if len(letter) == 1 and isstring(letter) :
+		letter = case(letter, 'lowercase')
+		alphaletters = availchar('lowercase')
+		for i in range(len(alphaletters)):
+			if getletter(letter, 1) == getletter(alphaletters, i + 1):
+				return i + 1
+
+
 # Get Maximum And Minimum Years
 def yearlimit(limittype):
 	import datetime
@@ -657,7 +681,7 @@ def randomstr(valuelist):
 	try:
 		return choice(valuelist)
 	except IndexError:
-		raise RuntimeError('An Error Has Occured: List Not Specified (0004)')
+		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 		
 # Get The Time Since 00:00 On 1 January 1970
 def timesince():
