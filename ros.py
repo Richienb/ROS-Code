@@ -601,7 +601,8 @@ def wordvalue(word):
 	for i in range(len(word)):
 		total += letternum(word[i])
 	return total
-	
+
+# Get The Text Between Two Parts
 def textbetween(variable, firstnum=None, secondnum=None, type='regular'):
 	if type == 'regular':
 		return variable[firstnum:secondnum]
