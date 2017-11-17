@@ -329,20 +329,14 @@ def numprop(value, propertyexpected):
 	if propertyexpected == 'triangular':
 		import math
 		x = (math.sqrt(8*value + 1) - 1) / 2
-		if x - int(x) > 0:
-			return False
-		else:
-			return True
+		return bool(x - int(x) > 0)
 	elif propertyexpected == 'square':
 		from math import sqrt
 		return sqrt(value).is_integer()
 	elif propertyexpected == 'cube':
 		x = value**(1/3)
 		x = int(round(x))
-		if x**3 == value:
-			return True
-		else:
-			return False
+		return bool(x**3 == value)
 	elif propertyexpected == 'even':
 		return value % 2 == 0
 	elif propertyexpected == 'odd':
@@ -357,9 +351,9 @@ def numprop(value, propertyexpected):
 # Toggle A Number Between Positive And Negative
 def posnegtoggle(number):
 	if bool(number > 0):
-		return number - number - number
+		return number - number * 2
 	elif bool(number < 0):
-		return number + abs(number) + abs(number)
+		return number + abs(number) * 2
 	elif bool(number == 0):
 		return number
 		
@@ -369,10 +363,7 @@ def difference(num1, num2):
 		
 # Check If A Number Is Divisable By Another Number
 def divisable(num1, num2):
-	if num1 % num2 == 0:
-		return True
-	else:
-		return False
+	return bool(num1 % num2 == 0)
 
 # Check If A Variable Is Empty
 def isempty(variable):
