@@ -432,6 +432,11 @@ def chancegame(gamename='dice'):
 			return 'Maybe'
 		else:
 			return 'Lie'
+	elif gamename == 'yes':
+		if randomnum(1, 2) == 1:
+			return 'Yes'
+		else:
+			return 'No'
 
 # Check If Something Is On The List
 def onlist(list, item):
