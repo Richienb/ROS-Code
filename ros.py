@@ -324,13 +324,55 @@ def case(variable, argument='uppercase'):
 	elif argument == 'lowercase':
 		return variable.lower()
 
-# Check If A Number Is Even
-def iseven(number):
-	return number % 2 == 0
-	
-# Check If A Number Is Odd
-def isodd(number):
-	return opposite(iseven(number))
+# Check If A Number Is A Type
+def numprop(value, propertyexpected):
+	if propertyexpected == 'triangular':
+		import math
+		x = (math.sqrt(8*value + 1) - 1) / 2
+		if x - int(x) > 0:
+			return False
+		else:
+			return True
+	elif propertyexpected == 'square':
+		from math import sqrt
+		return sqrt(value).is_integer()
+	elif propertyexpected == 'cube':
+		x = value**(1/3)
+		x = int(round(x))
+		if x**3 == value:
+			return True
+		else:
+			return False
+	elif propertyexpected == 'even':
+		return value % 2 == 0
+	elif propertyexpected == 'odd':
+		return not(value % 2 == 0)
+	elif propertyexpected == 'positive':
+		return bool(value > 0)
+	elif propertyexpected == 'negative':
+		return bool(value < 0)
+	elif propertyexpected == 'zero':
+		return bool(value == 0)
+		
+# Toggle A Number Between Positive And Negative
+def posnegtoggle(number):
+	if bool(number > 0):
+		return number - number - number
+	elif bool(number < 0):
+		return number + abs(number) + abs(number)
+	elif bool(number == 0):
+		return number
+		
+# Find The Difference Between 2 Numbers
+def difference(num1, num2):
+	return abs(num1-num2)
+		
+# Check If A Number Is Divisable By Another Number
+def divisable(num1, num2):
+	if num1 % num2 == 0:
+		return True
+	else:
+		return False
 
 # Check If A Variable Is Empty
 def isempty(variable):
