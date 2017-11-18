@@ -214,7 +214,15 @@ def tokhex(length=10, urlsafe=False):
 	else:
 		return secrets.token_hex(length)
 	
-
+# Show A Type Of Face
+def face(facetype='smiley'):
+	if facetype == 'smiley':
+		print('😃')
+	elif facetype == 'straight':
+		print('😐')
+	elif facetype == 'sad':
+		print('☹')
+		
 # Get A Constant
 def constant(constanttype):
 	import math
