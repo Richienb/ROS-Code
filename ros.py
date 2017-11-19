@@ -331,6 +331,8 @@ def case(variable, argument='uppercase'):
 		return variable.upper()
 	elif argument == 'lowercase':
 		return variable.lower()
+	elif argument == 'sentence':
+		return str(variable[0].upper()) + str(variable[1:])
 
 # Check If A Number Is A Type
 def numprop(value, propertyexpected):
