@@ -67,6 +67,22 @@ def pykeyword(operation='list', keywordtotest=None):
 	elif operation == 'check':
 		return keyword.iskeyword(str(keywordtotest))
 		
+# Check If A Number Is In The Fibonacci Sequence
+def isfib(number):
+	num1 = 1
+	num2 = 1
+	while True:
+		if num2 <= number:
+			if num2 == number:
+				return True
+			else:
+				tempnum = num2
+				num2 += num1
+				num1 = tempnum
+		else:
+			return False
+			
+		
 # Convert 0 Or 1 To False Or True
 def bintobool(integer):
 	if isinteger(integer) and integer < 2 and integer > -1:
@@ -324,6 +340,17 @@ def isnumber(value):
 		return bool(isinteger(value) or isnumber(value))
 	except:
 		return False
+		
+# Sing Happy Birthday
+def happybirthday(person):
+	from time import sleep as delay
+	print('Happy Birthday To You')
+	delay(2)
+	print('Happy Birthday To You')
+	delay(2)
+	print('Happy Birthday Dear ' + str(case(person, argument='sentence')))
+	delay(2)
+	print('Happy Birthday To You')
 		
 # Change The Casing Of Text
 def case(variable, argument='uppercase'):
@@ -722,7 +749,10 @@ def newtab(url):
 # Get The Name Of The Browser Currently Being Used
 def getbrowser():
 	import webbrowser
-	webbrowser.get(using=None)
+	try:
+		webbrowser.get(using=None)
+	except:
+		return None
 	
 # Choose A Random Item From A List
 def randomstr(valuelist):
