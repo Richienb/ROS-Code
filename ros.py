@@ -123,8 +123,9 @@ def pycopyright():
 	return sys.copyright
 
 # Print A Message
-def message_print(text):
-	print(text)
+def message_print(text, times=1):
+	for i in range(times):
+		print(text)
 	
 # Solve A Maths Equation
 def equation(operation, firstnum, secondnum):
