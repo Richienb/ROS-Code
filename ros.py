@@ -254,7 +254,30 @@ def fracsimplify(numerator, denominator):
 			numerator = numerator / checknum
 			denominator = denominator / checknum
 	return str(int(numerator)) + '/' + str(int(denominator))
-		
+	
+# Convert A Circle Measurement
+def circleconvert(amount, currentformat, newformat):
+	from math import pi
+	currentformat = currentformat.lower()
+	newformat = newformat.lower()
+	if currentformat == newformat:
+		return amount
+	if currentformat == 'radius':
+		if newformat == 'diameter':
+			return amount * 2
+		elif newformat == 'circumference':
+			return amount * 2 * pi
+	elif currentformat == 'diameter':
+		if newformat == 'radius':
+			return amount / 2
+		elif newformat == 'circumference':
+			return amount * pi
+	elif currentformat == 'circumference':
+		if newformat == 'radius':
+			return amount / pi / 2
+		elif newformat == 'diameter':
+			return amount / pi
+
 # Get The Amount Of Nummbers Divisable By A Number
 def amountdiv(number, minnum, maxnum):
 	amount = 0
