@@ -239,6 +239,29 @@ def face(facetype='smiley'):
 		print('😐')
 	elif facetype == 'sad':
 		print('☹')
+
+# Simplify A Fraction
+def fracsimplify(numerator, denominator):
+	if numerator == denominator:
+		return '1/1'
+	elif numerator > denominator:
+		limit = int(numerator / 2)
+	elif numerator < denominator:
+		limit = int(denominator / 2)
+	for i in range(2, limit):
+		checknum = limit - i
+		if numerator % checknum == 0 and denominator % checknum == 0:
+			numerator = numerator / checknum
+			denominator = denominator / checknum
+	return str(int(numerator)) + '/' + str(int(denominator))
+		
+# Get The Amount Of Nummbers Divisable By A Number
+def amountdiv(number, minnum, maxnum):
+	amount = 0
+	for i in range(minnum, maxnum + 1):
+		if number % i == 0:
+			amount += 1
+	return amount
 		
 # Get A Constant
 def constant(constanttype):
@@ -603,13 +626,9 @@ def convertbinary(value, argument):
 def reversetext(text, ignoretype=False):
 	if ignoretype == False:
 		if isinteger(text):
-			start = str(text)
-			end = start[::-1]
-			return int(end)
+			return int(str(text)[::-1])
 		elif isdecimal(text):
-			start = str(text)
-			end = text[::-1]
-			return float(end)
+			return float(str(text)[::-1])
 		else:
 			return str(text)[::-1]
 	else:
@@ -1010,7 +1029,7 @@ def licence(raw=False):
 		print('Limitations: Trademark use, Liability And Warranty')
 		print('Conditions: License and copyright notice And State changes')
 		print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
-	
+
 print('Finished Loading ROS Code')
 
 # End ROS Code
