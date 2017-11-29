@@ -52,8 +52,13 @@ def paraspace(paragraphspaces=1):
 			
 # Split A String
 def splitstring(string, split_character=' '):
-	return string.split(split_character)
+	return str(string).split(split_character)
 	
+# Split A String And Get A Specific Part
+def splitstringpart(string, split_character=' ', part=1):
+	return str(string).split(split_character)[int(part - 1)]
+	
+# Sort A List Into A Specific Order
 def sort(list, key=None):
 	if key == None:
 		return sorted(list)
@@ -81,7 +86,47 @@ def isfib(number):
 				num1 = tempnum
 		else:
 			return False
+
+# Check If The User Is A Person
+def captcha():
+	from random import randint as randomnum
+	from random import choice as randomitem
+	from time import sleep as delay
+	numbervalues = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10}
+	numbertext = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
+	if randomnum(1, 2) == 2:
+		parta = randomitem(numbertext)
+	else:
+		parta = randomnum(1, 10)
+	if randomnum(1, 2) == 2:
+		partb = randomitem(numbertext)
+	else:
+		partb = randomnum(1, 10)
+	tryanswer = input('CAPTCHA: What\'s ' + str(parta) + ' + ' + str(partb) + '? Your Answer (In Digits): ')
+	if not bool(isinstance(parta, int)):
+		parta = numbervalues[parta]
+	if not bool(isinstance(partb, int)):
+		partb = numbervalues[partb]
+	try:
+		tryanswer = int(tryanswer)
+	except:
+		return False
+	if parta + partb == tryanswer:
+		return True
+	else:
+		return False
 			
+# Set Or Get The Content In The Clipbaord
+def clipboard(action='get', text=None):
+	import clipboard
+	if action == 'get':
+		return clipboard.paste()
+	elif action == 'set':
+		clipboard.copy(str(text))
+	elif action == 'append':
+		clipboard.copy(str(clipboard.paste) + str(text))
+	elif action == 'preceed':
+		clipboard.copy(str(text) + str(clipboard.paste))
 		
 # Convert 0 Or 1 To False Or True
 def bintobool(integer):
@@ -162,6 +207,60 @@ def scientific(number, operation, logbase=10):
 	elif operation == 'tan':
 		return math.tan(number)
 
+# Get The Lowest Common Multiple In Two Numbers
+def lcm(num1, num2):
+	if num1 > num2:
+		bigger = num1
+	else:
+		bigger = num2
+	while True:
+		if bigger % num1 == 0 and bigger % num2 == 0:
+			return bigger
+		else:
+			bigger += 1
+	
+# Get The Higest Common Factor In Two Numbers
+def hcf(num1, num2):
+	if num1 > num2:
+		smaller = num2
+	else:
+		smaller = num1
+	for i in range(2, smaller + 1):
+		if num1 % i == 0 and num2 % i == 0:
+			return i
+			
+# Get The Factors Of A Number
+def factors(number):
+	factors = ''
+	for i in range(1, number + 1):
+		if number % i == 0:
+			factors += (str(i) + ', ')
+	factors = factors.split(str(number))[0] + str(number)
+	return factors
+	
+# Generate A Completely Random Password
+def randpassword(length):
+	import string
+	from random import randint as randomnum
+	charstouse = string.ascii_letters + string.digits + string.punctuation
+	password = ''
+	for i in range(length):
+		password += str(charstouse[randomnum(1, len(charstouse))])
+	return password
+	
+# Generate A Random Character
+def randchar():
+	from string import printable as charlist
+	from string import whitespace as unwanted
+	from random import randint as randomnum
+	while True:
+		try:
+			trychar = charlist[randomnum(1, len(charlist))]
+			if len(trychar) == 1 and not(trychar in unwanted):
+				return trychar
+		except:
+			nothing = None
+
 # Compare 2 Values
 def compare(value1, value2, comparision):
 	import operator
@@ -171,6 +270,20 @@ def compare(value1, value2, comparision):
 		return operator.or_(value1, value2)
 	elif comparision == 'and':
 		return operator.and_(value1, value2)
+		
+# Use Euler's Formula
+def eulercalc(faces, edges, verticies):
+	return verticies + edges - faces
+		
+# Get The Sides Of A Shape
+def shapesides(inputtocheck):
+	inputtocheck = inputtocheck.lower()
+	shapestosides = {'triangle': 3, 'square': 4, 'pentagon': 5, 'hexagon': 6, 'heptagon': 7, 'octagon': 8, 'nonagon': 9, 'decagon': 10, \
+	'hendecagon': 11, 'dodecagon': 12, 'triskaidecagon': 13, 'tetrakaidecagon': 14, 'pentadecagon': 15, 'hexakaidecagon': 16, 'heptadecagon': 17, 'octakaidecagon': 18, 'enneadecagon': 19, 'Icosagon': 20, \
+	'triacontagon': 30, 'tetracontagon': 40, 'pentacontagon': 50, 'hexacontagon': 60, 'heptacontagon': 70, 'octacontagon': 80, 'enneacontagon': 90, 'hectagon': 100, \
+	'chiliagon': 1000, 'myriagon': 10000, 'megagon': 1000000, 'googolgon': pow(10, 100)}
+	if inputtype == 'shape':
+		return shapestosides[inputtocheck]
 		
 # Compare 2 Numbers
 def comparenum(value1, value2, comparison):
@@ -192,6 +305,21 @@ def comparenum(value1, value2, comparison):
 			return value1 >= value2
 		elif comparison == 'more than or equal to':
 			return value1 >= value2
+			
+# Get The Quadrant Of Coordinates
+def quadrant(xaxis,  yaxis):
+	xneg = bool(xaxis < 0)
+	yneg = bool(yaxis < 0)
+	if xneg == True:
+		if yneg == False:
+			return 2
+		else:
+			return 3
+	elif xneg == False:
+		if yneg == False:
+			return 1
+		else:
+			return 4
 			
 # Get The Day Of The Week For A Specific Day
 def dayofweek(day, month, year, format=True):
