@@ -86,7 +86,20 @@ def isfib(number):
 				num1 = tempnum
 		else:
 			return False
-
+			
+# Do Paper Scissors Rock
+def psr(choice):
+	from random import randint as randomnum
+	choice = choice.lower()
+	choices = {'paper': 1, 'papers': 1, 'scissor': 2, 'scissors': 2, 'rock': 3, 'rocks': 3}
+	pcchoice = randomnum(0, 3)
+	if pcchoice == choices[choice]:
+		return 'Tie'
+	elif pcchoice < choices[choice]:
+		return 'Win'
+	elif pcchoice > choices[choice]:
+		return 'Loose'
+	
 # Check If The User Is A Person
 def captcha():
 	from random import randint as randomnum
@@ -288,7 +301,7 @@ def shapesides(inputtocheck):
 # Compare 2 Numbers
 def comparenum(value1, value2, comparison):
 	if isnumber(value1) and isnumber(value2):
-		comparison = case(comparison, 'lowercase')
+		comparison = comparison.lower()
 		if comparison == 'equals':
 			return value1 == value2
 		elif comparison == 'not equal':
@@ -307,9 +320,9 @@ def comparenum(value1, value2, comparison):
 			return value1 >= value2
 			
 # Get The Quadrant Of Coordinates
-def quadrant(xaxis,  yaxis):
-	xneg = bool(xaxis < 0)
-	yneg = bool(yaxis < 0)
+def quadrant(xcoord,  ycoord):
+	xneg = bool(xcoord < 0)
+	yneg = bool(ycoord < 0)
 	if xneg == True:
 		if yneg == False:
 			return 2
@@ -320,6 +333,25 @@ def quadrant(xaxis,  yaxis):
 			return 1
 		else:
 			return 4
+			
+# Flip Coordinates Over A Specific Axis
+def flipcoords(xcoord, ycoord, axis):
+	axis = axis.lower()
+	if axis == 'y':
+		if xcoord > 0:
+			return str(xcoord - xcoord - xcoord) + ', ' + str(ycoord)
+		elif xcoord < 0:
+			return str(xcoord + abs(xcoord) * 2) + ', ' + str(ycoord)
+		elif xcoord == 0:
+			return str(xcoord) + ', ' + str(ycoord)
+	elif axis == 'x':
+		if ycoord > 0:
+			return str(xcoord) + ', ' + str(ycoord - ycoord - ycoord)
+		elif ycoord < 0:
+			return str(ycoord + abs(ycoord) * 2) + ', ' + str(xcoord)
+		elif ycoord == 0:
+			return str(xcoord) + ', ' + str(ycoord)
+
 			
 # Get The Day Of The Week For A Specific Day
 def dayofweek(day, month, year, format=True):
@@ -345,7 +377,7 @@ def dayofweek(day, month, year, format=True):
 # Check If A Year Is A Leap Year
 def leapyear(year, querytype='is'):
 	import calendar
-	querytype == case(querytype, 'lowercase')
+	querytype == querytype.lower()
 	if querytype == 'is':
 		return calendar.isleap(year)
 	elif querytype == 'closest':
@@ -361,6 +393,7 @@ def tokhex(length=10, urlsafe=False):
 	
 # Show A Type Of Face
 def face(facetype='smiley'):
+	facetype = facetype.lower()
 	if facetype == 'smiley':
 		print('😃')
 	elif facetype == 'straight':
@@ -417,6 +450,7 @@ def amountdiv(number, minnum, maxnum):
 # Get A Constant
 def constant(constanttype):
 	import math
+	constanttype = constanttype.lower()
 	if constanttype == 'pi':
 		return math.pi
 	elif constanttype == 'e':
@@ -441,6 +475,7 @@ def squareroot(number):
 # Do An Average Command
 def average(numbers, type='mean'):
 	import statistics
+	type = type.lower()
 	try:
 		statistics.mean(numbers)
 	except:
@@ -469,14 +504,19 @@ def store(value):
 	global ros_stored
 	ros_stored = value
 	
+# Get The Stored Variable
+def getstored():
+	return ros_stored
+	
 # Delay For A Specific Amount Of Seconds
 def delay(seconds):
     from time import sleep as rosfunc_sleep
     rosfunc_sleep(seconds)
 	
 # Waits For The User To Press Enter
-def wait_enter():
-    input('')
+def wait_enter(times=1):
+	for i in range(times):
+		input('')
 	
 # Convert A Variable To A String
 def convertstring(value):
@@ -595,6 +635,7 @@ def length(value):
 
 # Simulate A Cow Saying Text
 def cowsay(text='', align='centre'):
+	align = align.lower()
 	cowtext = str(text)
 	topbar = ' '
 	bottombar = ' '
@@ -625,6 +666,7 @@ def getletter(variable, letternumber):
 
 # Play A Chance Game
 def chancegame(gamename='dice'):
+	gamename = gamename.lower()
 	if gamename == 'dice':
 		return randomnum(1, 6)
 	elif gamename == 'die':
@@ -683,6 +725,7 @@ def jointext(firststring, secondstring):
 
 # Tools For Directories (If Exists, Make And Delete)
 def dirtool(operation, directory):
+	operation = operation.lower()
 	import os
 	if operation == 'exists':
 		return bool(os.path.exists(directory))
@@ -715,6 +758,7 @@ def filedownload(source, destination):
 	
 # Tools For Files (If Exists, Make And Delete)
 def file(operation, path):
+	operation = operation.lower()
 	if operation == 'exists':
 		import os.path
 		return bool(os.path.isfile(path))
@@ -741,6 +785,7 @@ def file(operation, path):
 	
 # Tools For Text Files
 def text(operation, path, argument):
+	operation = operation.lower()
 	if operation == 'write':
 		if file('exists', path):
 			fh = open(path, "w")
@@ -1023,6 +1068,7 @@ def convertbase(number, base=10):
 
 # Convert A ASCII Value To A Symbol
 def convertsymbol(value, command):
+	command = command.lower()
 	if command == 'to':
 		try:
 			return chr(value)
@@ -1081,7 +1127,7 @@ def textbetween(variable, firstnum=None, secondnum=None, type='regular'):
 # Get The Number Corresponding To A Letter
 def letternum(letter):
 	if len(letter) == 1 and isstring(letter) :
-		letter = case(letter, 'lowercase')
+		letter = letter.lower
 		alphaletters = availchar('lowercase')
 		for i in range(len(alphaletters)):
 			if getletter(letter, 1) == getletter(alphaletters, i + 1):
