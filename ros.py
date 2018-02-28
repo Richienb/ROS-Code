@@ -49,6 +49,10 @@ def isprime(number):
 def paraspace(paragraphspaces=1):
 	for i in range(paragraphspaces):
 			print('', end='\n')
+		
+# Get The Absolute Value Of A Number
+def absolutenum(number):
+	return abs(number)
 			
 # Split A String
 def splitstring(string, split_character=' '):
@@ -128,7 +132,7 @@ def captcha():
 		return True
 	else:
 		return False
-			
+
 # Set Or Get The Content In The Clipbaord
 def clipboard(action='get', text=None):
 	import clipboard
@@ -148,6 +152,24 @@ def bintobool(integer):
 			return False
 		elif integer == 1:
 			return True
+
+# Count The Amount Of Syllables In A Word
+def countsyllables(word):
+        count = 0
+        vowels = 'aeiouy'
+        word = word.lower().strip(".:;?!")
+        if word[0] in vowels:
+            count +=1
+        for index in range(1,len(word)):
+             if word[index] in vowels and word[index-1] not in vowels:
+                 count +=1
+        if word.endswith('e'):
+        	count -= 1
+        if word.endswith('le'):
+        	count += 1
+        if count == 0:
+            count +=1
+        return count
 
 # Reload A Module
 def modulereload(modulename):
@@ -318,6 +340,10 @@ def comparenum(value1, value2, comparison):
 			return value1 >= value2
 		elif comparison == 'more than or equal to':
 			return value1 >= value2
+	
+# Print Text A Specific Amount Of Times
+def texttimes(text, times):
+	return times * str(text)
 			
 # Get The Quadrant Of Coordinates
 def quadrant(xcoord,  ycoord):
@@ -1133,7 +1159,6 @@ def letternum(letter):
 			if getletter(letter, 1) == getletter(alphaletters, i + 1):
 				return i + 1
 
-
 # Get Maximum And Minimum Years
 def yearlimit(limittype):
 	import datetime
@@ -1200,10 +1225,58 @@ def randomstr(valuelist):
 	except IndexError:
 		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 		
+# Return The List Equally Spaced
+def spacelist(list):
+	output = ''
+	space = ''
+	output += str(list[0])
+	space += ' '
+	for listnum in range(1, len(list)):
+		output += space
+		output += str(list[listnum])
+	return output
+
+# List Or Count The Numbers Between Two Numbers
+def numlistbetween(num1, num2, option='list', listoption='string'):
+	if option == 'list':
+		if listoption == 'string':
+			output = ''
+			output += str(num1)
+			for currentnum in range(num1 + 1, num2 + 1):
+				output += ','
+				output += str(currentnum)
+		elif listoption == 'list':
+			output = []
+			for currentnum in range(num1, num2 + 1):
+				output.append(str(currentnum))
+			return output
+	elif option == 'count':
+		return num2 - num1
+	
+# Align Text When Given Full Length
+def textalign(text, maxlength, align='left'):
+	spaces = ''
+	if align == 'left':
+		return text
+	elif align == 'centre' or align == 'center':
+		for i in range(int((maxlength - len(text)) / 2)):
+			spaces += ' '
+	elif align == 'right':
+		for i in range(maxlength - len(text)):
+			spaces += ' '
+	return spaces + text
+		
 # Get The Time Since 00:00 On 1 January 1970
 def timesince():
 	from time import time as time_now
 	return time_now()
+	
+# Fix The Formatting Of Decimals And Integers
+def decintfix(decorint=0):
+	if str(decorint)[-2:] == '.0':
+		return int(decorint)
+	else:
+		return float(decorint)
 
 # Get The Current Date Or Time
 def getdatetime(timedateformat='complete'):
