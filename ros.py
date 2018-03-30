@@ -43,7 +43,11 @@ def shellcommand(command):
   
 # Update All Packages Installed By Pip
 def pipupdate():
-
+	import pip
+	from subprocess import call
+	packages = [dist.project_name for dist in pip.get_installed_distributions()]
+	call("pip install --upgrade " + ' '.join(packages), shell=True)
+	
 # Check If A Number Is A Prime Number
 def isprime(number):
 	if number == 1:
