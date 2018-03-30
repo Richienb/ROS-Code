@@ -120,7 +120,6 @@ def psr(choice):
 def captcha():
 	from random import randint as randomnum
 	from random import choice as randomitem
-	from time import sleep as delay
 	tryanswer = ''
 	numbervalues = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10}
 	numbertext = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
@@ -531,8 +530,8 @@ def getstored():
 	
 # Delay For A Specific Amount Of Seconds
 def delay(seconds):
-    from time import sleep as rosfunc_sleep
-    rosfunc_sleep(seconds)
+    from time import sleep as delay_function
+    delay_function(seconds)
 	
 # Waits For The User To Press Enter
 def wait_enter(times=1):
