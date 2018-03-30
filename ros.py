@@ -1313,7 +1313,7 @@ def userinput(prompttext):
 	except:
 		return input(str(prompttext))
 		
-# Licence Information
+# License Information
 def licence(raw=False):
 	if raw == False:
 		print('ROS Code Is Licenced Under The Apache License 2.0')
