@@ -145,7 +145,7 @@ def captcha():
 	else:
 		return False
 
-# Set Or Get The Content In The Clipbaord
+# Set Or Get The Content In The Clipboard
 def clipboard(action='get', text=None):
 	import clipboard
 	if action == 'get':
@@ -248,7 +248,7 @@ def lcm(num1, num2):
 		else:
 			bigger += 1
 	
-# Get The Higest Common Factor In Two Numbers
+# Get The Highest Common Factor In Two Numbers
 def hcf(num1, num2):
 	if num1 > num2:
 		smaller = num2
@@ -371,7 +371,6 @@ def flipcoords(xcoord, ycoord, axis):
 			return str(ycoord + abs(ycoord) * 2) + ', ' + str(xcoord)
 		elif ycoord == 0:
 			return str(xcoord) + ', ' + str(ycoord)
-
 			
 # Get The Day Of The Week For A Specific Day
 def dayofweek(day, month, year, format=True):
@@ -459,7 +458,7 @@ def circleconvert(amount, currentformat, newformat):
 		elif newformat == 'diameter':
 			return amount / pi
 
-# Get The Amount Of Nummbers Divisable By A Number
+# Get The Amount Of Numbers Divisible By A Number
 def amountdiv(number, minnum, maxnum):
 	amount = 0
 	for i in range(minnum, maxnum + 1):
@@ -487,7 +486,7 @@ def power(number, power):
 	import math
 	return math.pow(number, power)
 
-# Find The Squareroot Of A number
+# Find The Square Root Of A number
 def squareroot(number):
 	import math
 	return math.sqrt(number)
@@ -569,7 +568,7 @@ def isinteger(value):
 def isboolean(value):
 	return isinstance(value, bool)
 	
-# Check If A Value Is Convertable To A Number (Decimal And Integer)
+# Check If A Value Is Able To Be Converted To A Number (Decimal And Integer)
 def isnumber(value):
 	try:
 		return bool(isinteger(value) or isnumber(value))
@@ -633,7 +632,7 @@ def posnegtoggle(number):
 def difference(num1, num2):
 	return abs(num1-num2)
 		
-# Check If A Number Is Divisable By Another Number
+# Check If A Number Is Divisible By Another Number
 def divisable(num1, num2):
 	return bool(num1 % num2 == 0)
 
@@ -850,7 +849,7 @@ def reversetext(text, ignoretype=False):
 	else:
 		return str(text)[::-1]
 		
-# Convert A Time Peroid To Another One
+# Convert A Time Period To Another One
 def converttime(time, currentformat, newformat):
 	currentformat = currentformat.lower()
 	newformat = newformat.lower()
@@ -1106,7 +1105,7 @@ def convertsymbol(value, command):
 def gettype(value):
 	return type(value)
 			
-# Get All Available Charaters For A Type
+# Get All Available Characters For A Type
 def availchar(charactertype):
 	import string
 	if charactertype == 'letters':
@@ -1179,7 +1178,7 @@ def randomnum(minimum, maximum):
 	else:
 		raise RuntimeError('Invalid Value (0016)')
 		
-# Open A Link In A Webbrowser
+# Open A Link In A Web Browser
 def openurl(url):
 	import webbrowser
 	try:
@@ -1187,7 +1186,7 @@ def openurl(url):
 	except webbrowser.Error:
 		raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
 		
-# Open A Link In A New Window Of A Webbrowser
+# Open A Link In A New Window Of A Web Browser
 def newwindow(url):
 	import webbrowser
 	try:
@@ -1195,7 +1194,7 @@ def newwindow(url):
 	except webbrowser.Error:
 		raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
 		
-# Open A Link In A New Tab Of A Webbrowser
+# Open A Link In A New Tab Of A Web Browser
 def newtab(url):
 	import webbrowser
 	try:
@@ -1312,7 +1311,7 @@ def userinput(prompttext):
 	except:
 		return input(str(prompttext))
 		
-# Licence Information
+# License Information
 def licence(raw=False):
 	if raw == False:
 		print('ROS Code Is Licenced Under The Apache License 2.0')
@@ -1359,7 +1358,7 @@ def debug_varglobal():
 	else:
 		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
 		
-# DEBUG: Supress All Warnings
+# DEBUG: Suppress All Warnings
 def debug_supresswarnings():
 	if debugenabled == True:
 		import warnings
@@ -1464,7 +1463,7 @@ def captcha():
 	else:
 		return False
 
-# Set Or Get The Content In The Clipbaord
+# Set Or Get The Content In The Clipboard
 def clipboard(action='get', text=None):
 	import clipboard
 	if action == 'get':
@@ -1567,7 +1566,7 @@ def lcm(num1, num2):
 		else:
 			bigger += 1
 	
-# Get The Higest Common Factor In Two Numbers
+# Get The Highest Common Factor In Two Numbers
 def hcf(num1, num2):
 	if num1 > num2:
 		smaller = num2
@@ -1778,7 +1777,7 @@ def circleconvert(amount, currentformat, newformat):
 		elif newformat == 'diameter':
 			return amount / pi
 
-# Get The Amount Of Nummbers Divisable By A Number
+# Get The Amount Of Numbers Divisible By A Number
 def amountdiv(number, minnum, maxnum):
 	amount = 0
 	for i in range(minnum, maxnum + 1):
@@ -1806,7 +1805,7 @@ def power(number, power):
 	import math
 	return math.pow(number, power)
 
-# Find The Squareroot Of A number
+# Find The Square Root Of A number
 def squareroot(number):
 	import math
 	return math.sqrt(number)
@@ -1888,7 +1887,7 @@ def isinteger(value):
 def isboolean(value):
 	return isinstance(value, bool)
 	
-# Check If A Value Is Convertable To A Number (Decimal And Integer)
+# Check If A Value Is Able To Be Converted To A Number (Decimal And Integer)
 def isnumber(value):
 	try:
 		return bool(isinteger(value) or isnumber(value))
@@ -1952,7 +1951,7 @@ def posnegtoggle(number):
 def difference(num1, num2):
 	return abs(num1-num2)
 		
-# Check If A Number Is Divisable By Another Number
+# Check If A Number Is Divisible By Another Number
 def divisable(num1, num2):
 	return bool(num1 % num2 == 0)
 
@@ -2169,7 +2168,7 @@ def reversetext(text, ignoretype=False):
 	else:
 		return str(text)[::-1]
 		
-# Convert A Time Peroid To Another One
+# Convert A Time Period To Another One
 def converttime(time, currentformat, newformat):
 	currentformat = currentformat.lower()
 	newformat = newformat.lower()
@@ -2425,7 +2424,7 @@ def convertsymbol(value, command):
 def gettype(value):
 	return type(value)
 			
-# Get All Available Charaters For A Type
+# Get All Available Characters For A Type
 def availchar(charactertype):
 	import string
 	if charactertype == 'letters':
@@ -2498,7 +2497,7 @@ def randomnum(minimum, maximum):
 	else:
 		raise RuntimeError('Invalid Value (0016)')
 		
-# Open A Link In A Webbrowser
+# Open A Link In A Web Browser
 def openurl(url):
 	import webbrowser
 	try:
@@ -2506,7 +2505,7 @@ def openurl(url):
 	except webbrowser.Error:
 		raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
 		
-# Open A Link In A New Window Of A Webbrowser
+# Open A Link In A New Window Of A Web Browser
 def newwindow(url):
 	import webbrowser
 	try:
@@ -2514,7 +2513,7 @@ def newwindow(url):
 	except webbrowser.Error:
 		raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
 		
-# Open A Link In A New Tab Of A Webbrowser
+# Open A Link In A New Tab Of A Web Browser
 def newtab(url):
 	import webbrowser
 	try:
