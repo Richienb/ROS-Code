@@ -22,7 +22,7 @@ def debugstate(state):
 		
 # DEBUG: Make ROS Code Variables Global
 def debug_varglobal():
-	if debugenabled == True:
+	if debugenabled is True:
 		global ros_output
 		global ros_stored
 	else:
@@ -30,7 +30,7 @@ def debug_varglobal():
 		
 # DEBUG: Suppress All Warnings
 def debug_supresswarnings():
-	if debugenabled == True:
+	if debugenabled is True:
 		import warnings
 		warnings.filterwarnings("ignore")
 	else:
@@ -76,7 +76,7 @@ def splitstringpart(string, split_character=' ', part=1):
 	
 # Sort A List Into A Specific Order
 def sort(list, key=None):
-	if key == None:
+	if key is None:
 		return sorted(list)
 	return sorted(list, key)
 
@@ -344,13 +344,13 @@ def texttimes(text, times):
 def quadrant(xcoord,  ycoord):
 	xneg = bool(xcoord < 0)
 	yneg = bool(ycoord < 0)
-	if xneg == True:
-		if yneg == False:
+	if xneg is True:
+		if yneg is False:
 			return 2
 		else:
 			return 3
-	elif xneg == False:
-		if yneg == False:
+	elif xneg is False:
+		if yneg is False:
 			return 1
 		else:
 			return 4
@@ -377,7 +377,7 @@ def flipcoords(xcoord, ycoord, axis):
 # Get The Day Of The Week For A Specific Day
 def dayofweek(day, month, year, format=True):
 	import calendar
-	if format == False:
+	if format is False:
 		return calendar.weekday(year, month, day) + 1
 	else:
 		if calendar.weekday(year, month, day) == 0:
@@ -407,7 +407,7 @@ def leapyear(year, querytype='is'):
 # Return A Random String In Hexadecimal
 def tokhex(length=10, urlsafe=False):
 	import secrets
-	if urlsafe == True:
+	if urlsafe is True:
 		return secrets.token_urlsafe(length)
 	else:
 		return secrets.token_hex(length)
@@ -841,7 +841,7 @@ def convertbinary(value, argument):
 			
 # Make The Text Forwards Or Backwards
 def reversetext(text, ignoretype=False):
-	if ignoretype == False:
+	if ignoretype is False:
 		if isinteger(text):
 			return int(str(text)[::-1])
 		elif isdecimal(text):
@@ -1315,7 +1315,7 @@ def userinput(prompttext):
 		
 # License Information
 def licence(raw=False):
-	if raw == False:
+	if raw is False:
 		print('ROS Code Is Licenced Under The Apache License 2.0')
 		print(u'\u2714' + ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
 		print(u'\u274c' + ' Limitations: Trademark use, Liability And Warranty')
