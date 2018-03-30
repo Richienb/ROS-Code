@@ -140,10 +140,7 @@ def captcha():
 		tryanswer = int(tryanswer)
 	except:
 		return False
-	if parta + partb == tryanswer:
-		return True
-	else:
-		return False
+	return parta + partb == tryanswer
 
 # Set Or Get The Content In The Clipboard
 def clipboard(action='get', text=None):
@@ -283,11 +280,9 @@ def randchar():
 	from string import whitespace as unwanted
 	from random import randint as randomnum
 	while True:
-		try:
-			trychar = charlist[randomnum(1, len(charlist))]
-			if len(trychar) == 1 and not(trychar in unwanted):
-				return trychar
-		except: None
+		trychar = charlist[randomnum(1, len(charlist))]
+		if len(trychar) == 1 and not(trychar in unwanted):
+			return trychar
 
 # Compare 2 Values
 def compare(value1, value2, comparision):
@@ -345,13 +340,11 @@ def quadrant(xcoord,  ycoord):
 	if xneg is True:
 		if yneg is False:
 			return 2
-		else:
-			return 3
+		return 3
 	elif xneg is False:
 		if yneg is False:
 			return 1
-		else:
-			return 4
+		return 4
 			
 # Flip Coordinates Over A Specific Axis
 def flipcoords(xcoord, ycoord, axis):
@@ -396,7 +389,7 @@ def dayofweek(day, month, year, format=True):
 # Check If A Year Is A Leap Year
 def leapyear(year, querytype='is'):
 	import calendar
-	querytype == querytype.lower()
+	querytype = querytype.lower()
 	if querytype == 'is':
 		return calendar.isleap(year)
 	elif querytype == 'closest':
@@ -407,8 +400,7 @@ def tokhex(length=10, urlsafe=False):
 	import secrets
 	if urlsafe is True:
 		return secrets.token_urlsafe(length)
-	else:
-		return secrets.token_hex(length)
+	return secrets.token_hex(length)
 	
 # Show A Type Of Face
 def face(facetype='smiley'):
@@ -693,8 +685,7 @@ def chancegame(gamename='dice'):
 	elif gamename == 'coin':
 		if randomnum(1, 2) == 1:
 			return 'Heads'
-		else:
-			return 'Tails'
+		return 'Tails'
 	elif gamename == 'truth':
 		truthnum = randomnum(1, 4)
 		if truthnum == 1:
@@ -703,13 +694,11 @@ def chancegame(gamename='dice'):
 			return 'Maybe'
 		elif truthnum == 3:
 			return 'Maybe'
-		else:
-			return 'Lie'
+		return 'Lie'
 	elif gamename == 'yes':
 		if randomnum(1, 2) == 1:
 			return 'Yes'
-		else:
-			return 'No'
+		return 'No'
 
 # Check If Something Is On The List
 def onlist(list, item):
@@ -844,10 +833,8 @@ def reversetext(text, ignoretype=False):
 			return int(str(text)[::-1])
 		elif isdecimal(text):
 			return float(str(text)[::-1])
-		else:
-			return str(text)[::-1]
-	else:
 		return str(text)[::-1]
+	return str(text)[::-1]
 		
 # Convert A Time Period To Another One
 def converttime(time, currentformat, newformat):
