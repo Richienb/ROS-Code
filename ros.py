@@ -121,6 +121,7 @@ def captcha():
 	from random import randint as randomnum
 	from random import choice as randomitem
 	from time import sleep as delay
+	tryanswer = ''
 	numbervalues = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10}
 	numbertext = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
 	if randomnum(1, 2) == 2:
@@ -272,10 +273,10 @@ def randpassword(length):
 	import string
 	from random import randint as randomnum
 	charstouse = string.ascii_letters + string.digits + string.punctuation
-	newpass = ''
+	password = ''
 	for i in range(length):
-		newpass += str(charstouse[randomnum(1, len(charstouse))])
-	return newpass
+		password += str(charstouse[randomnum(1, len(charstouse))])
+	return password
 	
 # Generate A Random Character
 def randchar():
