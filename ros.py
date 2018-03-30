@@ -1170,31 +1170,31 @@ def randomnum(minimum, maximum):
 def mailto(to, cc, bcc, subject, body, autorun=True):
 	import webbrowser
 	mailurl = 'mailto:' + str(to)
-	if cc == None and bcc == None and subject == None and body == None:
-		if autorun == True:
+	if cc is None and bcc is None and subject is None and body is None:
+		if autorun is True:
 			webbrowser.open_new_tab(str(mailurl))
 		return str(mailurl)
 	mailurl += '?'
-	if not cc == None:
+	if not cc is None:
 		mailurl += 'cc=' + str(cc)
 		added = True
 	added = False
-	if not bcc == None:
-		if added == True:
+	if not bcc is None:
+		if added is True:
 			mailurl += '&'
 		mailurl += 'bcc=' + str(cc)
 		added = True
-	if not subject == None:
-		if added == True:
+	if not subject is None:
+		if added is True:
 			mailurl += '&'
 		mailurl += 'subject=' + str(subject)
 		added = True
-	if not body == None:
-		if added == True:
+	if not body is None:
+		if added is True:
 			mailurl += '&'
 		mailurl += 'body=' + str(body)
 		added = True
-	if autorun == True:
+	if autorun is True:
 		webbrowser.open_new_tab(str(mailurl))
 	else:
 		return mailurl
