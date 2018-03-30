@@ -1166,6 +1166,39 @@ def randomnum(minimum, maximum):
 	else:
 		raise RuntimeError('Invalid Value (0016)')
 		
+# Generate And Run MailTo
+def mailto(to, cc, bcc, subject, body, autorun=True):
+	import webbrowser
+	mailurl = 'mailto:' + str(to)
+	if cc == None and bcc == None and subject == None and body == None:
+		if autorun == True:
+			webbrowser.open_new_tab(str(mailurl))
+		return str(mailurl)
+	mailurl += '?'
+	if not cc == None:
+		mailurl += 'cc=' + str(cc)
+		added = True
+	added = False
+	if not bcc == None:
+		if added == True:
+			mailurl += '&'
+		mailurl += 'bcc=' + str(cc)
+		added = True
+	if not subject == None:
+		if added == True:
+			mailurl += '&'
+		mailurl += 'subject=' + str(subject)
+		added = True
+	if not body == None:
+		if added == True:
+			mailurl += '&'
+		mailurl += 'body=' + str(body)
+		added = True
+	if autorun == True:
+		webbrowser.open_new_tab(str(mailurl))
+	else:
+		return mailurl
+		
 # Open A Link In A Web Browser
 def openurl(url):
 	import webbrowser
