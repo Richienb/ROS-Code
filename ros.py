@@ -75,10 +75,10 @@ def splitstringpart(string, split_character=' ', part=1):
 	return str(string).split(split_character)[int(part - 1)]
 	
 # Sort A List Into A Specific Order
-def sort(list, key=None):
+def sort(listtosort, key=None):
 	if key is None:
-		return sorted(list)
-	return sorted(list, key)
+		return sorted(listtosort)
+	return sorted(listtosort, key)
 
 # Check If A Keyword Relates To Python
 def pykeyword(operation='list', keywordtotest=None):
@@ -368,7 +368,7 @@ def flipcoords(xcoord, ycoord, axis):
 # Get The Day Of The Week For A Specific Day
 def dayofweek(day, month, year, formatresult=True):
 	import calendar
-	if format is False:
+	if formatresult is False:
 		return calendar.weekday(year, month, day) + 1
 	else:
 		if calendar.weekday(year, month, day) == 0:
@@ -484,24 +484,24 @@ def squareroot(number):
 	return math.sqrt(number)
 
 # Do An Average Command
-def average(numbers, type='mean'):
+def average(numbers, averagetype='mean'):
 	import statistics
 	type = type.lower()
 	try:
 		statistics.mean(numbers)
 	except:
 		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
-	if type == 'mean':
+	if averagetype == 'mean':
 		return statistics.mean(numbers)
-	elif type == 'mode':
+	elif averagetype == 'mode':
 		return statistics.mode(numbers)
-	elif type == 'median':
+	elif averagetype == 'median':
 		return statistics.median(numbers)
-	elif type == 'min':
+	elif averagetype == 'min':
 		return min(numbers)
-	elif type == 'max':
+	elif averagetype == 'max':
 		return max(numbers)
-	elif type == 'range':
+	elif averagetype == 'range':
 		return max(numbers) - min(numbers)
 	else:
 		raise RuntimeError('An Error Has Occured: You Entered An Invalid Operation (0003)')
@@ -701,8 +701,8 @@ def chancegame(gamename='dice'):
 		return 'No'
 
 # Check If Something Is On The List
-def onlist(list, item):
-	return item in list
+def onlist(listtocheck, item):
+	return item in listtocheck
 
 # Get The Character Limit
 def charlimit():
@@ -1050,8 +1050,8 @@ def converttime(time, currentformat, newformat):
 			return time * 1000 / 100
 		
 # Reverse A List
-def reverselist(list):
-	return list.reverse()
+def reverselist(listtoreverse):
+	return listtoreverse.reverse()
 	
 # Replace Text In A Variable
 def replacetext(string, texttofind, texttoreplace):
@@ -1123,12 +1123,12 @@ def wordvalue(word):
 	return total
 
 # Get The Text Between Two Parts
-def textbetween(variable, firstnum=None, secondnum=None, type='regular'):
-	if type == 'regular':
+def textbetween(variable, firstnum=None, secondnum=None, locationoftext='regular'):
+	if locationoftext == 'regular':
 		return variable[firstnum:secondnum]
-	elif type == 'toend':
+	elif locationoftext == 'toend':
 		return variable[firstnum:]
-	elif type == 'tostart':
+	elif locationoftext == 'tostart':
 		return variable[:secondnum]
 
 # Get The Number Corresponding To A Letter
@@ -1207,14 +1207,14 @@ def randomstr(valuelist):
 		raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 		
 # Return The List Equally Spaced
-def spacelist(list):
+def spacelist(listtospace):
 	output = ''
 	space = ''
-	output += str(list[0])
+	output += str(listtospace[0])
 	space += ' '
-	for listnum in range(1, len(list)):
+	for listnum in range(1, len(listtospace)):
 		output += space
-		output += str(list[listnum])
+		output += str(listtospace[listnum])
 	return output
 
 # List Or Count The Numbers Between Two Numbers
