@@ -1256,8 +1256,7 @@ def timesince():
 def decintfix(decorint=0):
 	if str(decorint)[-2:] == '.0':
 		return int(decorint)
-	else:
-		return float(decorint)
+	return float(decorint)
 
 # Get The Current Date Or Time
 def getdatetime(timedateformat='complete'):
