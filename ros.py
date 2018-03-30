@@ -366,7 +366,7 @@ def flipcoords(xcoord, ycoord, axis):
 
 			
 # Get The Day Of The Week For A Specific Day
-def dayofweek(day, month, year, format=True):
+def dayofweek(day, month, year, formatresult=True):
 	import calendar
 	if format is False:
 		return calendar.weekday(year, month, day) + 1
