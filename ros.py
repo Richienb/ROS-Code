@@ -28,7 +28,7 @@ def debug_varglobal():
 	else:
 		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
 		
-# DEBUG: Supress All Warnings
+# DEBUG: Suppress All Warnings
 def debug_supresswarnings():
 	if debugenabled == True:
 		import warnings
