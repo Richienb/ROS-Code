@@ -1118,7 +1118,7 @@ def availchar(charactertype):
 # Get The Value Of A Word
 def wordvalue(word):
 	total = 0
-	for i in range(len(word)):
+	for i in enumerate(word):
 		total += letternum(word[i])
 	return total
 
