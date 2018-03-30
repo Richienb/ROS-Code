@@ -11,14 +11,14 @@ debug_debugstatesetup()
 
 # DEBUG: Enable Or Disable Debug Mode
 def debugstate(state):
-    if state == 'Enable':
-        debugenabled = True
-        print('Debug Mode Has Been Enabled')
-    elif state == 'Disable':
-        debugenabled = False
-        print('Debug Mode Has Been Disabled')
-    else:
-        raise RuntimeError('An Error Has Occured: Invalid Debug State Entered (0005)')
+	if state == 'Enable':
+		debugenabled = True
+		print('Debug Mode Has Been Enabled')
+	elif state == 'Disable':
+		debugenabled = False
+		print('Debug Mode Has Been Disabled')
+	else:
+		raise RuntimeError('An Error Has Occured: Invalid Debug State Entered (0005)')
 		
 # DEBUG: Make ROS Code Variables Global
 def debug_varglobal():
