@@ -2,8 +2,8 @@
 ### Watch The Video [Here](https://www.ros-code.ga/Watch)
 ___
 
-**Travis Build:**
-[![Build Status](https://travis-ci.org/Richienb/ROS-Code.svg?branch=master)](https://travis-ci.org/Richienb/ROS-Code)
+**Integrations:**
+[![Build Status](https://travis-ci.org/Richienb/ROS-Code.svg?branch=master)](https://travis-ci.org/Richienb/ROS-Code) [![CodeFactor](https://www.codefactor.io/repository/github/richienb/ros-code/badge)](https://www.codefactor.io/repository/github/richienb/ros-code)
 
 **Contributer Activity:**
 [![GitHub issues](https://img.shields.io/github/issues/Richienb/ROS-Code.svg)](https://github.com/Richienb/ROS-Code/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/Richienb/ROS-Code.svg)](https://github.com/Richienb/ROS-Code/pulls) [![GitHub forks](https://img.shields.io/github/forks/Richienb/ROS-Code.svg)](https://github.com/Richienb/ROS-Code/network) [![GitHub stars](https://img.shields.io/github/stars/Richienb/ROS-Code.svg)](https://github.com/Richienb/ROS-Code/stargazers) 
