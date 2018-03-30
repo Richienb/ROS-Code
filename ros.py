@@ -272,10 +272,10 @@ def randpassword(length):
 	import string
 	from random import randint as randomnum
 	charstouse = string.ascii_letters + string.digits + string.punctuation
-	password = ''
+	newpass = ''
 	for i in range(length):
-		password += str(charstouse[randomnum(1, len(charstouse))])
-	return password
+		newpass += str(charstouse[randomnum(1, len(charstouse))])
+	return newpass
 	
 # Generate A Random Character
 def randchar():
