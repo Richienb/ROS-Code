@@ -287,8 +287,7 @@ def randchar():
 			trychar = charlist[randomnum(1, len(charlist))]
 			if len(trychar) == 1 and not(trychar in unwanted):
 				return trychar
-		except:
-			nothing = None
+		except: None
 
 # Compare 2 Values
 def compare(value1, value2, comparision):
