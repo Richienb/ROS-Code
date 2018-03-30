@@ -486,7 +486,7 @@ def squareroot(number):
 # Do An Average Command
 def average(numbers, averagetype='mean'):
 	import statistics
-	type = type.lower()
+	averagetype = averagetype.lower()
 	try:
 		statistics.mean(numbers)
 	except:
