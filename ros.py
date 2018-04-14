@@ -48,6 +48,11 @@ def pipupdate():
 	packages = [dist.project_name for dist in pip.get_installed_distributions()]
 	call("pip install --upgrade " + ' '.join(packages))
 	
+# Get Shell Based Input And 2 Outputs As A List
+def shellinput(initialtext=">> ", splitpart=" "):
+	shelluserinput = input(str(initialtext))
+	return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(shelluserinput.split(str(splitpart))):]]
+	
 # Check If A Number Is A Prime Number
 def isprime(number):
 	if number == 1:
