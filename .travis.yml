@@ -1,0 +1,13 @@
+language: python
+
+python:
+ - 3.6.5
+
+branches:
+ - master
+
+script:
+ - python compile.py
+
+notifications:
+  email: false
