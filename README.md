@@ -67,4 +67,4 @@ runcode("test.ros")
 
 ___
 
-> Founder: [Richie Bendall](https://www.richie-bendall.ml)
+> Creator: [Richie Bendall](https://www.richie-bendall.ml)
