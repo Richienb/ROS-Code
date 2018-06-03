@@ -1,5 +1,5 @@
 from sys import argv as args
-from syntax import *
+import syntax
 
 with open(args[1]) as f:
     content = f.readlines()
@@ -14,7 +14,7 @@ with open(args[1]) as f:
             printtext = preprint.replace("(", "('")
             lastprinttext = printtext.replace(")", "')")
             try:
-                exec(lastprinttext)
+                exec("syntax." + lastprinttext)
             except Exception as e:
                 print(e.args)
                 buildstring = ''
