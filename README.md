@@ -2,9 +2,9 @@
 ROS Code is a revolutionary new way to code featuring a fast installation, a simple syntax and is provided as a python library. For more information go to <https://www.ros-code.ga> and to watch the video, go [here](https://www.ros-code.ga/Watch).
 ___
 
-[![Build Status](https://travis-ci.org/Richienb/ROS-Code.svg?style=for-the-badge)](https://travis-ci.org/Richienb/ROS-Code) [![CodeFactor](https://www.codefactor.io/repository/github/richienb/ros-code/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/richienb/ros-code) 
+[![Build Status](https://travis-ci.org/Richienb/ROS-Code.svg?style=for-the-badge&branch=master)](https://travis-ci.org/Richienb/ROS-Code) [![CodeFactor](https://www.codefactor.io/repository/github/richienb/ros-code/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/richienb/ros-code) 
 
-[![GitHub release](https://img.shields.io/github/release/Richienb/ROS-Code.svg?style=for-the-badge)](https://github.com/Richienb/ROS-Code/releases) [![GitHub last commit](https://img.shields.io/github/last-commit/Richienb/ROS-Code.svg?style=for-the-badge)](https://github.com/Richienb/ROS-Code/commits/master)
+[![GitHub Release](https://img.shields.io/github/release/Richienb/ROS-Code.svg?style=for-the-badge)](https://github.com/Richienb/ROS-Code/releases) [![GitHub Last Commit](https://img.shields.io/github/last-commit/Richienb/ROS-Code.svg?style=for-the-badge)](https://github.com/Richienb/ROS-Code/commits/master)
 
 ___
 
