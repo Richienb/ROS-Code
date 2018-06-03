@@ -7,7 +7,8 @@ branches:
  - master
 
 script:
- - python compile.py
+ cd src
+ - python compile.py test.ros
 
 notifications:
   email: false
