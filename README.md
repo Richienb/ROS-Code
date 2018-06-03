@@ -19,7 +19,7 @@ ___
 
 ## Syntax:
 
-Statement separator-terminator: \n
+Statement separator-terminator: `\n`
 
 Secondary separator: `&`
 
