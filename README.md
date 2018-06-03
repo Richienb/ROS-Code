@@ -35,4 +35,36 @@ Block comments: `!!!`
 
 ___
 
+## Usage In The Commandline:
+
+```batchfile
+:: This is what you would enter into a batchfile (Windows Terminal - Cmd) to use ROS Code
+:: You may need to tinker this to work with your terminal
+
+:: Clone the repository using git (you could download as zip instead)
+git clone https://github.com/Richienb/ROS-Code.git
+
+:: Navigate to the source code directory
+cd ROS-Code\src
+
+:: Run the compiler with test.ros as input
+python compile.py test.ros
+```
+
+___
+
+## Usage In Python:
+
+```python
+# Ensure you are running this inside the source code directory (src) of the project
+
+# Import the ROS COde python api and rename it to runcode
+from rospyapi import compilefile as runcode
+
+# Execute the ROS Code file
+runcode("test.ros")
+```
+
+___
+
 > Founder: [Richie Bendall](https://www.richie-bendall.ml)
