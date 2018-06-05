@@ -14,16 +14,16 @@ with open(args[1]) as f:
             printtext = preprint.replace("(", "('")
             lastprinttext = printtext.replace(")", "')")
             try:
-                exec("syntax." + lastprinttext)
+                exec(str("syntax." + lastprinttext))
             except Exception as e:
                 print(e.args)
                 buildstring = ''
                 for value in range(len(list(e.args))):
-                    buildstring += (list(e.args)[value] + " "`  `   1`  )
+                    buildstring += (list(e.args)[value] + " ")
                 print("ERROR: A problem occured while running line " + str(value) + " because of " + str(e.args[0]) + " Error Information: " + buildstring)
             print(lastprinttext)
-            #exec(content[value])
-        #elif len(content.split(" ")) == 1:
+            #exec(lastprinttext)
+        #elif len(content.split(".")) == 1:
         #    raise RuntimeError('No Parameters For ' + content[value].split(" ")[0] + ' Provided!')
 
 print("Hello, World")
