@@ -1135,6 +1135,10 @@ def wordvalue(word):
 		total += letternum(word[i])
 	return total
 
+# Get the Range Of The Length
+def enum(arguments):
+	return enumerate(arguments)
+
 # Get The Text Between Two Parts
 def textbetween(variable, firstnum=None, secondnum=None, locationoftext='regular'):
 	if locationoftext == 'regular':
