@@ -4,7 +4,7 @@ import syntax
 with open(args[1]) as f:
     content = f.readlines()
     content = [x.strip() for x in content]
-    for value in range(len(content)):
+    for value in enumerate(content):
         if len(content[value].split(" ")) > 1 and not(content[value][0] == "!"):
             firstpart = content[value].split(".")[0]
             lenoffirstpart = len(content[value].split(".")[0])
@@ -18,7 +18,7 @@ with open(args[1]) as f:
             except Exception as e:
                 print(e.args)
                 buildstring = ''
-                for value in range(len(list(e.args))):
+                for value in enumerate(list(e.args))):
                     buildstring += (list(e.args)[value] + " ")
                 print("ERROR: A problem occured while running line " + str(value) + " because of " + str(e.args[0]) + " Error Information: " + buildstring)
             print(lastprinttext)
