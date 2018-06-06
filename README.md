@@ -1,5 +1,7 @@
 ## Welcome To The Official Github Page Of ROS Code
 ROS Code is a revolutionary new way to code featuring a fast installation, a simple syntax and is provided as a python library. For more information go to <www.ros-code.ga> and to watch the video, go [here](https://www.ros-code.ga/Watch).
+
+**ROS Code 2.0 is currently being developed! [View Development Branch](https://github.com/Richienb/ROS-Code/tree/dev)**
 ___
 
 **Integrations:**
