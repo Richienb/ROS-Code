@@ -25,5 +25,3 @@ with open(args[1]) as f:
             #exec(lastprinttext)
         #elif len(content.split(".")) == 1:
         #    raise RuntimeError('No Parameters For ' + content[value].split(" ")[0] + ' Provided!')
-
-print("Hello, World")
