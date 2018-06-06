@@ -65,7 +65,7 @@ def isprime(number):
 # Make A Paragraph Space
 def paraspace(paragraphspaces=1):
 	for i in range(paragraphspaces):
-			print('', end='\n')
+		print('', end='\n')
 		
 # Get The Absolute Value Of A Number
 def absolutenum(number):
