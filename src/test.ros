@@ -1,7 +1,10 @@
-!________________!
-! ROS CODE 2.0   !
-! TESTBED        !
-!________________!
-print."Hello World"
-Lorem ipsum dolor sit amet
+! This is a single line comment
+
+!!!
+This line should be ignored
+and this one as well
+!!!
+
+print_message.This is what the syntax looks like
+
 consectetur adipiscing elit
