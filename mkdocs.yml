@@ -1,0 +1,5 @@
+site_name: ROS Code Documentation
+pages:
+    - Home: home.md
+    - About: about.md
+theme: material
