@@ -1,18 +1,3 @@
-#ifndef Py_PGEN_H
-#define Py_PGEN_H
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-/* Parser generator interface */
-
-extern grammar *meta_grammar(void);
-
-struct _node;
-extern grammar *pgen(struct _node *);
-
-#ifdef __cplusplus
-}
-#endif
-#endif /* !Py_PGEN_H */
+version https://git-lfs.github.com/spec/v1
+oid sha256:3f191f850b206800a02d831df69c60be486b5a590ba3746aa74c3fd326f419bd
+size 271

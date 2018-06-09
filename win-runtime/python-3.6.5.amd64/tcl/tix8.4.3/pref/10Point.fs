@@ -1,23 +1,3 @@
-#
-# $Id: 10Point.fs,v 1.2 2002/01/24 09:17:02 idiscovery Exp $
-#
-
-proc tixSetFontset {} {
-    global tixOption tcl_platform
-
-    switch -- $tcl_platform(platform) "windows" {
-	# This should be Tahoma for Win2000/XP
-	set font "MS Sans Sherif"
-	set fixedfont "Courier New"
-    } unix {
-	set font "helvetica"
-	set fixedfont "courier"
-    }
-
-    set tixOption(font)         [list $font -10]
-    set tixOption(bold_font)    [list $font -10 bold]
-    set tixOption(menu_font)    [list $font -10]
-    set tixOption(italic_font)  [list $font -10 bold italic]
-    set tixOption(fixed_font)   [list $fixedfont -10]
-    set tixOption(border1)      1
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a10d4aab1b438f2c6a0944e2425c93470dc75a5b123bd3c2ffd901e2616852ee
+size 641

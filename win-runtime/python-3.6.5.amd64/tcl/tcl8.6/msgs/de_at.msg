@@ -1,35 +1,3 @@
-# created by tools/loadICU.tcl -- do not edit
-namespace eval ::tcl::clock {
-    ::msgcat::mcset de_AT MONTHS_ABBREV [list \
-        "J\u00e4n"\
-        "Feb"\
-        "M\u00e4r"\
-        "Apr"\
-        "Mai"\
-        "Jun"\
-        "Jul"\
-        "Aug"\
-        "Sep"\
-        "Okt"\
-        "Nov"\
-        "Dez"\
-        ""]
-    ::msgcat::mcset de_AT MONTHS_FULL [list \
-        "J\u00e4nner"\
-        "Februar"\
-        "M\u00e4rz"\
-        "April"\
-        "Mai"\
-        "Juni"\
-        "Juli"\
-        "August"\
-        "September"\
-        "Oktober"\
-        "November"\
-        "Dezember"\
-        ""]
-    ::msgcat::mcset de_AT DATE_FORMAT "%Y-%m-%d"
-    ::msgcat::mcset de_AT TIME_FORMAT "%T"
-    ::msgcat::mcset de_AT TIME_FORMAT_12 "%T"
-    ::msgcat::mcset de_AT DATE_TIME_FORMAT "%a %d %b %Y %T %z"
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:80513a9969a12a8fb01802d6fc3015712a4efdda64552911a1bb3ea7a098d02c
+size 812

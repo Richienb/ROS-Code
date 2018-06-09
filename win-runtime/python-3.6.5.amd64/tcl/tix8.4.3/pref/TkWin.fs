@@ -1,16 +1,3 @@
-#
-# $Id: TkWin.fs,v 1.2 2001/12/09 05:03:09 idiscovery Exp $
-#
-
-proc tixSetFontset {} {
-
-    global tixOption
-
-    set tixOption(font)         "windows-message"
-    set tixOption(bold_font)    "windows-status"
-    set tixOption(menu_font)    "windows-menu"
-    set tixOption(italic_font)  "windows-message"
-    set tixOption(fixed_font)   "systemfixed"
-    set tixOption(border1)      1
-}
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:64dc0c6da745a96460a68398ed52be932a3d44c24dc9bfe2848b852e62f01b6e
+size 390

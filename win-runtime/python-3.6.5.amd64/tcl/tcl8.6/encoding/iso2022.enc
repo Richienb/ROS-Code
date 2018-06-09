@@ -1,14 +1,3 @@
-# Encoding file: iso2022, escape-driven
-E
-name		iso2022
-init		{}
-final		{}
-iso8859-1	\x1b(B
-jis0201		\x1b(J
-gb1988		\x1b(T
-jis0208		\x1b$B
-jis0208		\x1b$@
-jis0212		\x1b$(D
-gb2312		\x1b$A
-ksc5601		\x1b$(C
-jis0208		\x1b&@\x1b$B
+version https://git-lfs.github.com/spec/v1
+oid sha256:753dda518a7e9f6dc0309721b1faae58c9661f545801da9f04728391f70be2d0
+size 226

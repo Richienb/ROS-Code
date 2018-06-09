@@ -1,6 +1,3 @@
-# created by tools/loadICU.tcl -- do not edit
-namespace eval ::tcl::clock {
-    ::msgcat::mcset en_ZW DATE_FORMAT "%d %B %Y"
-    ::msgcat::mcset en_ZW TIME_FORMAT_12 "%l:%M:%S %P"
-    ::msgcat::mcset en_ZW DATE_TIME_FORMAT "%d %B %Y %l:%M:%S %P %z"
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:91088bbbf58a704185dec13dbd421296bbd271a1aebbcb3ef85a99cecd848ff8
+size 251

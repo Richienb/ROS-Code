@@ -1,7 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-
-set TZData(:America/Panama) {
-    {-9223372036854775808 -19088 0 LMT}
-    {-2524502512 -19176 0 CMT}
-    {-1946918424 -18000 0 EST}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:0e323d15ea84d4b6e838d5dcd99aee68666af97a770da2af84b7bdca4ab1dbba
+size 179

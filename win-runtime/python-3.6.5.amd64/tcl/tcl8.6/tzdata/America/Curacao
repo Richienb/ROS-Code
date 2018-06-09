@@ -1,7 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-
-set TZData(:America/Curacao) {
-    {-9223372036854775808 -16547 0 LMT}
-    {-1826738653 -16200 0 ANT}
-    {-157750200 -14400 0 AST}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:1200bde9befd7ad388acf4c7ad7285cc72ff06454b281116bdb12f869c5ee205
+size 179

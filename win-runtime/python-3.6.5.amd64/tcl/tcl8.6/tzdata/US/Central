@@ -1,5 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-if {![info exists TZData(America/Chicago)]} {
-    LoadTimeZoneFile America/Chicago
-}
-set TZData(:US/Central) $TZData(:America/Chicago)
+version https://git-lfs.github.com/spec/v1
+oid sha256:16c7ffce60495e5b0cb65d6d5a0c3c5aa9e62bd6bc067abd3cd0f691da41c952
+size 179

@@ -1,8 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-
-set TZData(:Pacific/Guam) {
-    {-9223372036854775808 -51660 0 LMT}
-    {-3944626740 34740 0 LMT}
-    {-2177487540 36000 0 GST}
-    {977493600 36000 0 ChST}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ce4d3d493e625da15a8b4cd3008d9cbdf20c73101c82f4d675f5b773f4a5cf70
+size 204

@@ -1,2 +1,3 @@
-package ifneeded Tix 8.4.3 [list load [file join $dir tix84g.dll] Tix]
-package ifneeded wm_default 1.0 [list source [file join $dir pref WmDefault.tcl]]
+version https://git-lfs.github.com/spec/v1
+oid sha256:8bb4bb5d0448509966cf959548fb387923a9aa5e275f28910d6991db83934927
+size 155

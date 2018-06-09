@@ -1,6 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-
-set TZData(:Africa/Abidjan) {
-    {-9223372036854775808 -968 0 LMT}
-    {-1830383032 0 0 GMT}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a5dc7bfb4f569361d438c8cf13a146cc2641a1a884acf905bb51da28ff29a900
+size 141

@@ -1,7 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-
-set TZData(:Pacific/Pitcairn) {
-    {-9223372036854775808 -31220 0 LMT}
-    {-2177421580 -30600 0 PNT}
-    {893665800 -28800 0 PST}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:73024a9a7ccfaee298560c4b857288c46c4a3f643141a09457922d9c6e7771ab
+size 179

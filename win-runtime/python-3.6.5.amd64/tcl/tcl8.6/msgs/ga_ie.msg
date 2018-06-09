@@ -1,7 +1,3 @@
-# created by tools/loadICU.tcl -- do not edit
-namespace eval ::tcl::clock {
-    ::msgcat::mcset ga_IE DATE_FORMAT "%d.%m.%y"
-    ::msgcat::mcset ga_IE TIME_FORMAT "%T"
-    ::msgcat::mcset ga_IE TIME_FORMAT_12 "%T"
-    ::msgcat::mcset ga_IE DATE_TIME_FORMAT "%a %d %b %Y %T %z"
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:2072e48c98b480db5677188836485b4605d5a9d99870ac73b5bfe9dcc6db46f4
+size 279

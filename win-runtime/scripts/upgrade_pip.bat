@@ -1,7 +1,3 @@
-@echo off
-call "%~dp0env.bat"
-echo this will upgrade pip with latest version, then patch it for WinPython portability ok ?
-pause
-"%WINPYDIR%\python.exe" -m pip install --upgrade pip
-"%WINPYDIR%\python.exe" -c "from winpython import wppm;dist=wppm.Distribution(r'%WINPYDIR%');dist.patch_standard_packages('pip', to_movable=True)
-pause
+version https://git-lfs.github.com/spec/v1
+oid sha256:66f8ef734d53328ecb94daf2887a4bf67b587c7c81ce1958d4ddec1ffca9c10a
+size 341

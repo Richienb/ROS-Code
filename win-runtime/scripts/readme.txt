@@ -1,5 +1,3 @@
-These batch files are required to run WinPython icons.
-
-These files should help the user writing his/her own
-specific batch file to call Python scripts inside WinPython.
-The environment variables are set-up in 'env_.bat' and 'env_for_icons.bat'.
+version https://git-lfs.github.com/spec/v1
+oid sha256:a516f8da48bf459e89c67d0f5928b3d80e9fd5d152c38972061cb83139397be9
+size 249

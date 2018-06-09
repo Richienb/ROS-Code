@@ -1,21 +1,3 @@
-
-#ifndef Py_PYGETOPT_H
-#define Py_PYGETOPT_H
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifndef Py_LIMITED_API
-PyAPI_DATA(int) _PyOS_opterr;
-PyAPI_DATA(int) _PyOS_optind;
-PyAPI_DATA(wchar_t *) _PyOS_optarg;
-
-PyAPI_FUNC(void) _PyOS_ResetGetOpt(void);
-
-PyAPI_FUNC(int) _PyOS_GetOpt(int argc, wchar_t **argv, wchar_t *optstring);
-#endif /* !Py_LIMITED_API */
-
-#ifdef __cplusplus
-}
-#endif
-#endif /* !Py_PYGETOPT_H */
+version https://git-lfs.github.com/spec/v1
+oid sha256:fa456e4ecb5546f2e7003bc9fb87fd7fcd6fe9e9de56e59b6b7285a0161e1132
+size 431

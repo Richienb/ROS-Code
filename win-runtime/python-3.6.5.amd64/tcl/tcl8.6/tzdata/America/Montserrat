@@ -1,5 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-if {![info exists TZData(America/Port_of_Spain)]} {
-    LoadTimeZoneFile America/Port_of_Spain
-}
-set TZData(:America/Montserrat) $TZData(:America/Port_of_Spain)
+version https://git-lfs.github.com/spec/v1
+oid sha256:0fed15d7d58e8a732110ff6765d0d148d15acbb0251ee867ce7596933e999865
+size 205

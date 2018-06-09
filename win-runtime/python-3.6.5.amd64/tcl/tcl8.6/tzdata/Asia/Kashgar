@@ -1,5 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-if {![info exists TZData(Asia/Urumqi)]} {
-    LoadTimeZoneFile Asia/Urumqi
-}
-set TZData(:Asia/Kashgar) $TZData(:Asia/Urumqi)
+version https://git-lfs.github.com/spec/v1
+oid sha256:e2965af4328fb065a82e8a21ff342c29a5942c2edd304ce1c9087a23a91b65e1
+size 169

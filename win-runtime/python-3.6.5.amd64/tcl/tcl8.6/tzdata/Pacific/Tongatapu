@@ -1,14 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-
-set TZData(:Pacific/Tongatapu) {
-    {-9223372036854775808 44360 0 LMT}
-    {-2177497160 44400 0 TOT}
-    {-915193200 46800 0 TOT}
-    {915102000 46800 0 TOT}
-    {939214800 50400 1 TOST}
-    {953384400 46800 0 TOT}
-    {973342800 50400 1 TOST}
-    {980596800 46800 0 TOT}
-    {1004792400 50400 1 TOST}
-    {1012046400 46800 0 TOT}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:5a883e39019cfd2d49e7bfd3d13ff0d37793c3316f9f72609aadca2d91d94788
+size 379

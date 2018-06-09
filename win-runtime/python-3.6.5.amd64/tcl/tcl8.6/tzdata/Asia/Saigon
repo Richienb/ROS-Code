@@ -1,5 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-if {![info exists TZData(Asia/Ho_Chi_Minh)]} {
-    LoadTimeZoneFile Asia/Ho_Chi_Minh
-}
-set TZData(:Asia/Saigon) $TZData(:Asia/Ho_Chi_Minh)
+version https://git-lfs.github.com/spec/v1
+oid sha256:73e1850bb0827043024eafa1934190413cb36ea6fe18c90ea86b9dbc1d61eebf
+size 183

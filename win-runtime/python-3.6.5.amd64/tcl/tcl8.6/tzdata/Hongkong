@@ -1,5 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-if {![info exists TZData(Asia/Hong_Kong)]} {
-    LoadTimeZoneFile Asia/Hong_Kong
-}
-set TZData(:Hongkong) $TZData(:Asia/Hong_Kong)
+version https://git-lfs.github.com/spec/v1
+oid sha256:cf8bfec73d36026955fa6f020f42b6360a64ed870a88c575a5aa0cd9756ef51b
+size 174

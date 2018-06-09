@@ -1,14 +1,3 @@
-#!/usr/bin/env python3
-
-# Make a reST file compliant to our pre-commit hook.
-# Currently just remove trailing whitespace.
-
-import sys
-
-import patchcheck
-
-def main(argv=sys.argv):
-    patchcheck.normalize_docs_whitespace(argv[1:])
-
-if __name__ == '__main__':
-    sys.exit(main())
+version https://git-lfs.github.com/spec/v1
+oid sha256:b9f624b9893045d12688a6cbe6248fb2e1ce03b2206490d5f4bfb6d12f0c25ce
+size 293

@@ -1,5 +1,3 @@
-# created by tools/tclZIC.tcl - do not edit
-if {![info exists TZData(Pacific/Chatham)]} {
-    LoadTimeZoneFile Pacific/Chatham
-}
-set TZData(:NZ-CHAT) $TZData(:Pacific/Chatham)
+version https://git-lfs.github.com/spec/v1
+oid sha256:cecf81746557f6f957fef12dbd202151f614451f52d7f6a35c72b830075c478d
+size 176

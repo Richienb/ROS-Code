@@ -1,19 +1,3 @@
-
-/* simple namespace object interface */
-
-#ifndef NAMESPACEOBJECT_H
-#define NAMESPACEOBJECT_H
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifndef Py_LIMITED_API
-PyAPI_DATA(PyTypeObject) _PyNamespace_Type;
-
-PyAPI_FUNC(PyObject *) _PyNamespace_New(PyObject *kwds);
-#endif /* !Py_LIMITED_API */
-
-#ifdef __cplusplus
-}
-#endif
-#endif /* !NAMESPACEOBJECT_H */
+version https://git-lfs.github.com/spec/v1
+oid sha256:9a5b3549a0a9f9f115208717b83737a4ea14a1ef453f8983715d540f35c74af7
+size 368
