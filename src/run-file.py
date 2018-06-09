@@ -12,8 +12,9 @@ with open(args[1]) as f:
     ignoreline = False
     content = f.readlines()
     content = [x.strip() for x in content]
+    content = [x.strip() for x in content if x.strip()]
     for value in enumerate(content):
-        if not(value[1][0] == "!") and ignoreline == False:
+        if not(value[1].startswith('!')) and ignoreline == False:
             firstpart = value[1].split(".")[0]
             lenoffirstpart = len(value[1].split(".")[0])
             afterpart = str(value[1][lenoffirstpart + 1:])
@@ -29,7 +30,7 @@ with open(args[1]) as f:
                     type(e).__name__, str(value[0] + 1), str(e.args[0]))
                 print(message)
                 quit(1)
-        elif content[value[0]][0] == "!!!":
+        elif value[1].startswith('!!!'):
             ignoreline = not(ignoreline)
 
 quit(0)
