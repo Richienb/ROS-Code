@@ -8,7 +8,8 @@ branches:
 
 script:
  - cd src
- - python run-file.py test.ros
+ - python run-file.py "test.ros"
+ - python run-line.py "print_message.Hello World"
 
 notifications:
   email: false

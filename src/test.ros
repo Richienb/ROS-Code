@@ -5,6 +5,4 @@ This line should be ignored
 and this one as well
 !!!
 
-print_message.This is what the syntax looks like
-
-consectetur adipiscing elit
+print_message.Hello World
