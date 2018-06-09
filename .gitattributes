@@ -1,5 +1,4 @@
 # Python Gitattributes
-
 # Source files
 # ============
 *.pxd		text
@@ -7,7 +6,6 @@
 *.py3 		text
 *.pyw 		text
 *.pyx  		text
-
 # Binary files
 # ============
 *.db		binary
@@ -16,19 +14,15 @@
 *.pyc 		binary
 *.pyd		binary
 *.pyo 		binary
-
 # Note: .db, .p, and .pkl files are associated
 # with the python modules ``pickle``, ``dbm.*``,
 # ``shelve``, ``marshal``, ``anydbm``, & ``bsddb``
 # (among others).
-
 # Visual Studio Gitattributes
-
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
-
 ###############################################################################
 # Set the merge driver for project and solution files
 #
@@ -40,7 +34,6 @@
 # intervention with every merge. To do so, just comment the entries below and
 # uncomment the group further below
 ###############################################################################
-
 *.sln        text eol=crlf
 *.csproj     text eol=crlf
 *.vbproj     text eol=crlf
@@ -53,13 +46,10 @@
 *.modelproj  text eol=crlf
 *.sqlproj    text eol=crlf
 *.wmaproj    text eol=crlf
-
 *.xproj      text eol=crlf
 *.props      text eol=crlf
 *.filters    text eol=crlf
 *.vcxitems   text eol=crlf
-
-
 #*.sln       merge=binary
 #*.csproj    merge=binary
 #*.vbproj    merge=binary
@@ -72,8 +62,8 @@
 #*.modelproj merge=binary
 #*.sqlproj   merge=binary
 #*.wwaproj   merge=binary
-
 #*.xproj     merge=binary
 #*.props     merge=binary
 #*.filters   merge=binary
 #*.vcxitems  merge=binary
+*.exe filter=lfs diff=lfs merge=lfs -text
