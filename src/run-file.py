@@ -15,7 +15,6 @@ with open(args[1]) as f:
     content = [x.strip() for x in content if x.strip()]
     content = [x.split(" ; ") for x in content]
     for value in enumerate(content):
-        print(str(value[1]))
         if not(value[1].startswith('!')) and ignoreline == False:
             firstpart = value[1].split(".")[0]
             lenoffirstpart = len(value[1].split(".")[0])
