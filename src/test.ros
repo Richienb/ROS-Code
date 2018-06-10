@@ -5,4 +5,4 @@ This line should be ignored
 and this one as well
 !!!
 
-print_message.Hello World
+print_message.Hello World ; print_message.This is multiple line!

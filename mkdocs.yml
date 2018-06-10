@@ -1,4 +1,6 @@
 site_name: ROS Code Documentation
 pages:
-    - Home: home.md
+    - Home: index.md
+    - Contributing: contribute.md
+    - Code Of Conduct: codeofconduct.md
 theme: material

@@ -11,7 +11,6 @@ except IndexError:
 with open(args[1]) as f:
     ignoreline = False
     content = args[1]
-    print(content[0])
     if not(value[1].startswith('!')) and ignoreline == False:
         firstpart = value[1].split(".")[0]
         lenoffirstpart = len(value[1].split(".")[0])
