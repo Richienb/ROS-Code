@@ -5,8 +5,6 @@ ___
 
 [![Build Status](https://img.shields.io/travis/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://travis-ci.org/Richienb/ROS-Code) [![CodeFactor](https://www.codefactor.io/repository/github/richienb/ros-code/badge?longCache=true&style=for-the-badge)](https://www.codefactor.io/repository/github/richienb/ros-code)
 
-[![GitHub Release](https://img.shields.io/github/release/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/releases) [![GitHub Last Commit](https://img.shields.io/github/last-commit/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/commits/master)
-
 ___
 
 ### [READ MORE](https://www.ros-code.ga)
