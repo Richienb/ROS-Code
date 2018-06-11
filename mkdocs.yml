@@ -2,5 +2,6 @@ site_name: ROS Code Documentation
 pages:
     - Home: index.md
     - Contributing: contribute.md
+    - Information Badges: badges.md
     - Code Of Conduct: codeofconduct.md
 theme: material
