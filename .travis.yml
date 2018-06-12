@@ -12,6 +12,7 @@ script:
  - #python run-line.py "print_message.Hello World"
 
 after_success:
+  - cd ..
   - git config user.name "Richienb";
   - git config user.email "richiebendall@gmail.com";
   - git remote add gh-token "https://${GH_TOKEN}@github.com/Richienb/ROS-Code.git";
