@@ -7,7 +7,7 @@ In order to edit the documentation, you will need:
 - An installation of Python 3.
 - Pip to install `mkdocs` and `mkdocs-material`.
 
-```batchfile
+```bat
 :: Install mkdocs using pip
 pip install mkdocs
 :: Install mkdocs-material using pip
@@ -16,7 +16,7 @@ pip install mkdocs-material
 
 After installing mkdocs, start a local server in order to view your changes live.
 
-```batchfile
+```bat
 :: Navigate to the main repository directory
 cd C:\ROS-Code
 :: Start the mkdocs local server
@@ -27,16 +27,19 @@ Now you can navigate to the URL shown in the terminal (usually [127.0.0.1:8000](
 
 ### Building
 
+!!! note "Automatic Building"
+    The documentation will automatically be built via [Travis CI](https://travis-ci.org/Richienb/ROS-Code) if the build succeeds.
+
 Build the documentation to the `site` folder locally.
 
-```batchfile
+```bat
 :: Build the documentation locally
 mkdocs build
 ```
 
 Deploy the documentation to the `gh-pages` branch in the repository.
 
-```batchfile
+```bat
 :: Deploy the documentation online
 mkdocs gh-deploy
 ```
@@ -60,7 +63,7 @@ ___
 
 Example:
 
-```batchfile
+```bat
 python run-file.py test.ros
 ```
 
@@ -68,7 +71,7 @@ python run-file.py test.ros
 
 Example:
 
-```batchfile
+```bat
 python run-line.py print_message.Hello World
 ```
 
@@ -85,7 +88,7 @@ The code above enables functionality for the `print_message.Hello World` command
 
 - The `run.bat` file is just an easier way to run the following code
 
-```batchfile
+```bat
 @echo off
 python run-file.py test.ros
 pause

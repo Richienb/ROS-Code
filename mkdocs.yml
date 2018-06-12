@@ -1,7 +1,70 @@
+# Project Information
 site_name: ROS Code Documentation
+site_description: ROS Code is a revolutionary, modern and pleasing programming language to code in featuring a streamlined and speedy installation, a very straightforward and simplistic syntax and is provided as a Python 3 library.
+site_author: Richie Bendall
+site_url: https://www.ros-code.ga
+
+# Repository
+repo_name: Richienb/ROS-Code
+repo_url: https://github.com/Richienb/ROS-Code
+edit_uri: ""
+
+# Copyright
+copyright: 'Copyright &copy; 2017 - 2018 Richie Bendall'
+
+# Configuration
+theme:
+  name: material
+  palette:
+    primary: 'indigo'
+    accent: 'red'
+  font:
+    text: 'Product Sans'
+    code: 'Roboto Mono'
+  language: 'en'
+  favicon: 'assets/images/favicon.ico'
+
+# Page Tree
 pages:
     - Home: index.md
     - Contributing: contribute.md
+    - Commands: commands.md
     - Information Badges: badges.md
+    - Version 1.0: versionone.md
     - Code Of Conduct: codeofconduct.md
-theme: material
+
+# Customization
+extra:
+  social:
+    - type: globe
+      link: https://www.richie-bendall.ml
+    - type: github-alt
+      link: https://github.com/Richienb
+
+# Extensions
+markdown_extensions:
+  - markdown.extensions.admonition
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde

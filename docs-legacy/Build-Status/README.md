@@ -11,21 +11,21 @@ ___
 Image URL:
 
     https://travis-ci.org/Richienb/ROS-Code.svg?branch=master
-    
+
 Markdown:
 
 ```markdown
 [![Build Status](https://travis-ci.org/Richienb/ROS-Code.svg?branch=master)](https://travis-ci.org/Richienb/ROS-Code)
 ```
-     
+
 Textile:
 
     !https://travis-ci.org/Richienb/ROS-Code.svg?branch=master!:https://travis-ci.org/Richienb/ROS-Code
-    
+
 Rdoc:
 
     {<img src="https://travis-ci.org/Richienb/ROS-Code.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/Richienb/ROS-Code]
-    
+
 AsciiDoc:
 
 ```asciidoc
@@ -36,11 +36,11 @@ RST:
 
     .. image:: https://travis-ci.org/Richienb/ROS-Code.svg?branch=master
     :target: https://travis-ci.org/Richienb/ROS-Code
-    
-Pod: 
+
+Pod:
 
     =for html <a href="https://travis-ci.org/Richienb/ROS-Code"><img src="https://travis-ci.org/Richienb/ROS-Code.svg?branch=master"></a>
-    
+
 CCTray:
 
     #https://api.travis-ci.org/repos/Richienb/ROS-Code/cc.xml?branch=master

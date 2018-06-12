@@ -39,7 +39,7 @@ ___
 
 ## Usage In The Commandline
 
-```batchfile
+```bat
 :: This is what you would enter into a batchfile (Windows Terminal - Cmd) to use ROS Code
 :: You may need to tinker this to work with your terminal
 
