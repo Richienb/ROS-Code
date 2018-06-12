@@ -7,7 +7,17 @@ branches:
  - master
 
 script:
- - python ros.py
+ - cd src
+ - python run-file.py "test.ros"
+ - python run-line.py "print_message.Hello World"
+
+after_success:
+  - git config user.name "Richienb";
+  - git config user.email "richiebendall@gmail.com";
+  - git remote add gh-token "https://${GH_TOKEN}@github.com/Richienb/ROS-Code.git";
+  - git fetch gh-token && git fetch gh-token gh-pages:gh-pages;
+  - pip install mkdocs mkdocs-material
+  - mkdocs gh-deploy -v --clean --remote-name gh-token;
 
 notifications:
   email: false
