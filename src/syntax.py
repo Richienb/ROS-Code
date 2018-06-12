@@ -1,7 +1,3 @@
-# Start ROS Code
-
-print('Loading ROS Code')
-
 # Prepare Debug Enabled Variable For Toggling Debug Mode
 def debug_debugstatesetup():
 	global debugenabled
@@ -1362,7 +1358,3 @@ def licence(raw=False):
 		print('Limitations: Trademark use, Liability And Warranty')
 		print('Conditions: License and copyright notice And State changes')
 		print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
-
-print('Finished Loading ROS Code')
-
-# End ROS Code

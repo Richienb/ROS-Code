@@ -11,9 +11,8 @@ except IndexError:
 with open(args[1]) as f:
     ignoreline = False
     content = f.readlines()
-    content = [x.strip() for x in content]
+    #content = [x.split(" ; ") for x in content if x.strip()]
     content = [x.strip() for x in content if x.strip()]
-    content = [x.split(" ; ") for x in content]
     for value in enumerate(content):
         if not(value[1].startswith('!')) and ignoreline == False:
             firstpart = value[1].split(".")[0]
@@ -27,8 +26,7 @@ with open(args[1]) as f:
                 exec(str("syntax." + lastprinttext))
             except Exception as e:
                 template = "ERROR: An error of type {0} occured while running line {1} because {2}"
-                message = template.format(
-                    type(e).__name__, str(value[0] + 1), str(e.args[0]))
+                message = template.format(type(e).__name__, str(value[0] + 1), str(e.args[0]))
                 print(message)
                 quit(1)
         elif value[1].startswith('!!!'):

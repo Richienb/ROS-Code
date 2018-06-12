@@ -9,7 +9,7 @@ branches:
 script:
  - cd src
  - python run-file.py "test.ros"
- - python run-line.py "print_message.Hello World"
+ - #python run-line.py "print_message.Hello World"
 
 after_success:
   - git config user.name "Richienb";
