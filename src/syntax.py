@@ -54,10 +54,9 @@ def colourcode(colourcode, destinationcode, longhex=False):
 	from colour import Color
 	c = Color(colourcode)
 	if destinationcode == "hex":
-		if longhex == True:
+		if longhex is True:
 			return c.hex_l(colourcode)
-		else:
-			return c.hex(colourcode)
+		return c.hex(colourcode)
 	elif destinationcode == "hsl":
 		return c.hsl(colourcode)
 	elif destinationcode == "rgb":
