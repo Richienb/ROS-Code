@@ -9,4 +9,13 @@ ___
 
 ___
 
+- This project is completely open source with welcomed contributions and a goal of keeping the stable version as bug free as possible.a
+- Our goal is to develop a programming language which is easily understandable by programming beginners and intermediates.
+- This project is licensed under the open source certified license, Apache Licence 2.
+- Our fast mirror, Mediafire will quickly download all required files.
+- The express and PUP and PUA free installer will quickly install the application for you with minimal effort.
+- Bugs and feature requests can be easily posted on the Issues section of the Github repository.
+
+___
+
 > Creator: [Richie Bendall](https://www.richie-bendall.ml)

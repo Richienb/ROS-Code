@@ -27,15 +27,26 @@ theme:
 # Page Tree
 pages:
     - Home: index.md
-    - Contributing: contribute.md
-    - Commands: commands.md
-    - Information Badges: badges.md
-    - Recommended Syntax: syntax.md
-    - Installation: installation.md
-    - Usage: usage.md
-    - Packages Used: packages.md
-    - Version 1.0: versionone.md
-    - Code Of Conduct: codeofconduct.md
+    - Main:
+      - Information Badges: badges.md
+      - Installation: installation.md
+      - Commands: commands.md
+    - Other:
+      - Recommended Syntax: syntax.md
+      - API Usage: api-usage.md
+    - Contribution:
+      - Edit Documentation: edit-docs.md
+      - Edit The Source Code: edit-code.md
+      - Packages Used: packages.md
+    - Version 1.0:
+      - Home: versionone.md
+      - Build Status: versionone-buildstatus.md
+      - Enable: versionone-enable.md
+      - Download And Install: versionone-install.md
+      - Troubleshooting: versionone-troubleshooting.md
+    - Fine Print:
+      - Code Of Conduct: codeofconduct.md
+      - License: license.md
 
 # Customization
 extra:
@@ -47,6 +58,7 @@ extra:
 
 # Extensions
 markdown_extensions:
+  - smarty
   - markdown.extensions.admonition
   - markdown.extensions.codehilite:
       guess_lang: false
