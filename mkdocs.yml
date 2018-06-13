@@ -30,6 +30,7 @@ pages:
     - Contributing: contribute.md
     - Commands: commands.md
     - Information Badges: badges.md
+    - Packages Used: packages.md
     - Version 1.0: versionone.md
     - Code Of Conduct: codeofconduct.md
 

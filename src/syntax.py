@@ -75,6 +75,28 @@ def colourcode(colourcode, destinationcode, longhex=False):
 	elif destinationcode == "lum":
 		return c.luminance(colourcode)
 
+# Change The Colour
+def changecolour(colourcode, action, amount=100):
+	from colour import Color
+	c = Color(colourcode)
+	elif action == "red":
+		c.red = amount / 100
+		return c
+	elif action == "blue":
+		c.blue = amount / 100
+		return c
+	elif action == "green":
+		c.green = amount / 100
+		return c
+	elif action == "hue":
+		c.hue = amount / 100
+		return c
+	elif action == "sat":
+		c.saturation = amount / 100
+		return c
+	elif action == "lum":
+		c.luminance = amount / 100
+		return c
 
 # Check If A Number Is A Prime Number
 def isprime(number):
