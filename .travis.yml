@@ -12,6 +12,9 @@ python:
 branches:
   - master
 
+before_install:
+  - openssl aes-256-cbc -K $encrypted_dac6f82e1309_key -iv $encrypted_dac6f82e1309_iv -in deploy-key.enc -out deploy-key -d
+
 before_script:
   - pip install mkdocs mkdocs-material
   - pip install MarkdownHighlight
@@ -21,7 +24,6 @@ script:
   - python run-file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
   - cd ..
-  - openssl aes-256-cbc -K $encrypted_dac6f82e1309_key -iv $encrypted_dac6f82e1309_iv -in deploy-key.enc -out deploy-key -d
   - chmod 600 deploy-key
   - eval `ssh-agent -s`
   - ssh-add deploy-key
