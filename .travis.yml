@@ -1,8 +1,6 @@
 env:
   global:
-    - GIT_NAME: "'Richienb'"
-    - GIT_EMAIL: richiebendall@gmail.com
-    - GH_REF: git@github.com:Richienb/ROS-Code.git
+    - secure: "RoIQBH62eo0b/gguWf+JVXMyHSaAL/ilTWnfSbi9OapDWlhskQC3Ugk+LISnjdMswNuP3fOHhXSUU/72BsoFVL5LCssR3I8hy2J4GK1MmYUNyJNlUaYx+I7R1HlvxZWEvZP80BE1F8pDVFuIrWS+icqIfhaIasjPh0C7yPwoElbxk/9dXCZC9AJOUZJUFs55j5etF1RweKOglKlCBXdkrbMlT9vKwcqy0B1WUQiMNq37YpM7gFE5fl9Vn6fZ2v2YqpIllUh/1d+iYQcb2EPoyVInrpFFuYUhhZNRyaoMnuM9EMM8c+5nCgo+Dl+fs6p8847n84sOB3ag0vIdSqyp1eafLPa4niI8yayIrwfk82Yh1mf3BSP2A3ZAvgGNT/RPU0lq3QU6cAXSI6o5zYkfCvowxhG8xt5A+y8a8XiUc6M3nPpopKxvXxMoxGIiYTyFJaKkcSiTR4jl6GUe9evrrSpzSiSAkaY8yHyN+og51dKG0SvLvHD3yPBuGIF9+TVLN281Z2muRa/3NczACM2c2bKMlCf22+OsF8u/gtnzefbWJK7BbHd6cYN2Z0ZsSIHaUEygFtm7vT/fiu+3yMoXupvGv+PQ3kHS6c47UhYU5K3Td+vORByMEzfhtkr2qvEKMLOGxsywuA21pYYYvJesrL+5OEibUlyGczbRok82K+w="
 
 language: python
 
@@ -12,26 +10,22 @@ python:
 branches:
   - master
 
-before_install:
-  - openssl aes-256-cbc -K $encrypted_dac6f82e1309_key -iv $encrypted_dac6f82e1309_iv -in deploy-key.enc -out deploy-key -d
-
-before_script:
-  - pip install mkdocs mkdocs-material
-  - pip install MarkdownHighlight
+install:
+- pip install mkdocs mkdocs-material
 
 script:
   - cd src
   - python run-file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
-  - cd ..
-  - chmod 600 deploy-key
-  - eval `ssh-agent -s`
-  - ssh-add deploy-key
-  - git config user.name "Richienb"
-  - git config user.email "richiebendall@gmail.com"
-  - git remote add gh-token "${GH_REF}";
-  - git fetch gh-token && git fetch gh-token gh-pages:gh-pages;
-  - if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then echo "Pushing to github"; PYTHONPATH=src/ mkdocs gh-deploy -v --clean --remote-name gh-token; git push gh-token gh-pages; fi;
+  - mkdocs build --verbose --clean --strict
+
+deploy:
+ provider: pages
+ skip_cleanup: true
+ github_token: $GH_TOKEN
+ local_dir: site
+ on:
+   branch: master
 
 notifications:
   email: false
