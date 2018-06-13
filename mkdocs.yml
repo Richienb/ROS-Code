@@ -30,6 +30,9 @@ pages:
     - Contributing: contribute.md
     - Commands: commands.md
     - Information Badges: badges.md
+    - Recommended Syntax: syntax.md
+    - Installation: installation.md
+    - Usage: usage.md
     - Packages Used: packages.md
     - Version 1.0: versionone.md
     - Code Of Conduct: codeofconduct.md

@@ -1,1 +1,1 @@
-python compile.py test.ros
+python run-file.py test.ros

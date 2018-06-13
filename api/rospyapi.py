@@ -1,4 +1,4 @@
 from os import system
 
 def compilefile(filepath):
-    system("compile.py " + str(filepath))
+    system("run-file.py " + str(filepath))
