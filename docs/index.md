@@ -69,10 +69,4 @@ runcode("test.ros")
 
 ___
 
-## Commands
-
-Command Documentation Coming Soon!
-
-___
-
 > Creator: [Richie Bendall](https://www.richie-bendall.ml)
