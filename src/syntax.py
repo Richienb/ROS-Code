@@ -49,6 +49,33 @@ def shellinput(initialtext=">> ", splitpart=" "):
 	shelluserinput = input(str(initialtext))
 	return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(shelluserinput.split(str(splitpart))):]]
 
+# Convert Colour Codes
+def colourcode(colourcode, destinationcode, longhex=False):
+	from colour import Color
+	c = Color(colourcode)
+	if destinationcode == "hex":
+		if longhex == True:
+			return c.hex_l(colourcode)
+		else:
+			return c.hex(colourcode)
+	elif destinationcode == "hsl":
+		return c.hsl(colourcode)
+	elif destinationcode == "rgb":
+		return c.rgb(colourcode)
+	elif destinationcode == "red":
+		return c.red(colourcode)
+	elif destinationcode == "blue":
+		return c.blue(colourcode)
+	elif destinationcode == "green":
+		return c.green(colourcode)
+	elif destinationcode == "hue":
+		return c.hue(colourcode)
+	elif destinationcode == "sat":
+		return c.saturation(colourcode)
+	elif destinationcode == "lum":
+		return c.luminance(colourcode)
+
+
 # Check If A Number Is A Prime Number
 def isprime(number):
 	if number == 1:
