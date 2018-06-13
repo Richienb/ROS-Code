@@ -79,7 +79,7 @@ def colourcode(colourcode, destinationcode, longhex=False):
 def changecolour(colourcode, action, amount=100):
 	from colour import Color
 	c = Color(colourcode)
-	elif action == "red":
+	if action == "red":
 		c.red = amount / 100
 		return c
 	elif action == "blue":
