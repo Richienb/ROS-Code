@@ -23,6 +23,12 @@ deploy:
   local_dir: site
   on:
     branch: master
+<<<<<<< HEAD
+=======
+
+after_success:
+  - bash docs-scripts/clearcache.sh -k "$AUTH_KEY" -e "$AUTH_EMAIL" -z "$ZONE"
+>>>>>>> 1227496adb699cadde7de4bf517c8148149a0e34
 
 notifications:
   email: false
