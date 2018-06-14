@@ -1,7 +1,3 @@
-env:
-  global:
-    - secure: "RoIQBH62eo0b/gguWf+JVXMyHSaAL/ilTWnfSbi9OapDWlhskQC3Ugk+LISnjdMswNuP3fOHhXSUU/72BsoFVL5LCssR3I8hy2J4GK1MmYUNyJNlUaYx+I7R1HlvxZWEvZP80BE1F8pDVFuIrWS+icqIfhaIasjPh0C7yPwoElbxk/9dXCZC9AJOUZJUFs55j5etF1RweKOglKlCBXdkrbMlT9vKwcqy0B1WUQiMNq37YpM7gFE5fl9Vn6fZ2v2YqpIllUh/1d+iYQcb2EPoyVInrpFFuYUhhZNRyaoMnuM9EMM8c+5nCgo+Dl+fs6p8847n84sOB3ag0vIdSqyp1eafLPa4niI8yayIrwfk82Yh1mf3BSP2A3ZAvgGNT/RPU0lq3QU6cAXSI6o5zYkfCvowxhG8xt5A+y8a8XiUc6M3nPpopKxvXxMoxGIiYTyFJaKkcSiTR4jl6GUe9evrrSpzSiSAkaY8yHyN+og51dKG0SvLvHD3yPBuGIF9+TVLN281Z2muRa/3NczACM2c2bKMlCf22+OsF8u/gtnzefbWJK7BbHd6cYN2Z0ZsSIHaUEygFtm7vT/fiu+3yMoXupvGv+PQ3kHS6c47UhYU5K3Td+vORByMEzfhtkr2qvEKMLOGxsywuA21pYYYvJesrL+5OEibUlyGczbRok82K+w="
-
 language: python
 
 python:
@@ -21,12 +17,15 @@ script:
   - mkdocs build --verbose --clean --strict
 
 deploy:
- provider: pages
- skip_cleanup: true
- github_token: $GH_TOKEN
- local_dir: site
- on:
-   branch: master
+  provider: pages
+  skip_cleanup: true
+  github_token: $GH_TOKEN
+  local_dir: site
+  on:
+    branch: master
+
+after_success:
+  - bash docs-scripts/clearcache.sh -k "$AUTH_KEY" -e "$AUTH_EMAIL" -z "$ZONE"
 
 notifications:
   email: false
