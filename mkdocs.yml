@@ -56,17 +56,14 @@ extra:
     - type: github-alt
       link: https://github.com/Richienb
 
+extra_css:
+  - css/details-support.css
+
+extra_javascript:
+  - js/details-support.js
+
 # Extensions
 markdown_extensions:
-  - smarty
-  - markdown.extensions.admonition
-  - markdown.extensions.codehilite:
-      guess_lang: false
-  - markdown.extensions.def_list
-  - markdown.extensions.footnotes
-  - markdown.extensions.meta
-  - markdown.extensions.toc:
-      permalink: true
   - pymdownx.arithmatex
   - pymdownx.betterem:
       smart_enable: all
@@ -76,7 +73,6 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_generator: !!python/name:pymdownx.emoji.to_svg
   - pymdownx.inlinehilite
-  - pymdownx.keys
   - pymdownx.magiclink
   - pymdownx.mark
   - pymdownx.smartsymbols
@@ -84,3 +80,13 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - markdown.extensions.tables
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
+      permalink: true
+  - smarty
+  - admonition

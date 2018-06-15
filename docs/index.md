@@ -9,7 +9,7 @@ ___
 
 ___
 
-- This project is completely open source with welcomed contributions and a goal of keeping the stable version as bug free as possible.a
+- This project is completely open source with welcomed contributions and a goal of keeping the stable version as bug free as possible.
 - Our goal is to develop a programming language which is easily understandable by programming beginners and intermediates.
 - This project is licensed under the open source certified license, Apache Licence 2.
 - Our fast mirror, Mediafire will quickly download all required files.

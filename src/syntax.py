@@ -1,36 +1,5 @@
-# Prepare Debug Enabled Variable For Toggling Debug Mode
-def debug_debugstatesetup():
-	global debugenabled
-	debugenabled = False
-
-debug_debugstatesetup()
-
-# DEBUG: Enable Or Disable Debug Mode
-def debugstate(state):
-	if state == 'Enable':
-		debugenabled = True
-		print('Debug Mode Has Been Enabled')
-	elif state == 'Disable':
-		debugenabled = False
-		print('Debug Mode Has Been Disabled')
-	else:
-		raise RuntimeError('An Error Has Occured: Invalid Debug State Entered (0005)')
-
-# DEBUG: Make ROS Code Variables Global
-def debug_varglobal():
-	if debugenabled is True:
-		global ros_output
-		global ros_stored
-	else:
-		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
-
-# DEBUG: Suppress All Warnings
-def debug_supresswarnings():
-	if debugenabled is True:
-		import warnings
-		warnings.filterwarnings("ignore")
-	else:
-		raise RuntimeError('An Error Has Occured: Debug Mode Not Enabled (0006)')
+global ros_output
+global ros_stored
 
 # Execute A Shell Command
 def shellcommand(command):
