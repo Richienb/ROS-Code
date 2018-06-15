@@ -78,6 +78,11 @@ def catwalk(text):
 def converttabs(text, spaces):
     return text.replace('\t', ' ' * spaces)
 
+# Wrap text around the screen when given the size
+def wraptext(text, maxlength):
+    import textwrap
+    return textwrap.wrap(text, maxlength)
+
 # Check If A Number Is A Prime Number
 def isprime(number):
 	if number == 1:
