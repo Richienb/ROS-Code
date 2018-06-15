@@ -88,6 +88,11 @@ def wraptext(text, maxlength):
     import textwrap
     return textwrap.wrap(text, maxlength)
 
+# Unindent some text
+def unindent(text):
+    import textwrap
+    textwrap.dedent(text)
+
 # Check If A Number Is A Prime Number
 def isprime(number):
 	if number == 1:
