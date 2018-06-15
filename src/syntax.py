@@ -1,3 +1,4 @@
+# Ensure Storage Variables Are Global
 global ros_output
 global ros_stored
 
