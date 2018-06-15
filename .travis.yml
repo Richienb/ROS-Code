@@ -1,6 +1,6 @@
-sudo: false
+sudo:              false
 
-language: python
+language:          python
 
 python:
   - 3.6.5
@@ -22,12 +22,12 @@ before_deploy:
   - mkdocs build --verbose --clean --strict
 
 deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $github_token
-  local_dir: site
+  provider:        pages
+  skip_cleanup:    true
+  github_token:    $github_token
+  local_dir:       site
   on:
-    branch: master
+    branch:        master
 
 notifications:
-  email: false
+  email:           false
