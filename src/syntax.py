@@ -74,6 +74,10 @@ def changecolour(colourcode, action, amount=100):
 def catwalk(text):
     return " ".join(text.split())
 
+# Convert tabs to spaces
+def converttabs(text, spaces):
+    return text.replace('\t', ' ' * spaces)
+
 # Check If A Number Is A Prime Number
 def isprime(number):
 	if number == 1:
