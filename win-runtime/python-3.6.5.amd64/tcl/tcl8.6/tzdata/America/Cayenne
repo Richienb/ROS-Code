@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9db8d93a0d69abb263d02d9fac0a47f8ceaa7470e8fc2f47b62694bb1f0032a2
-size 178
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:America/Cayenne) {
+    {-9223372036854775808 -12560 0 LMT}
+    {-1846269040 -14400 0 GFT}
+    {-71092800 -10800 0 GFT}
+}

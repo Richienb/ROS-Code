@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6917c89a78ed54dd0c5c9968e5149d42727a9299723ec1d2ebd531a65ad37227
-size 174
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(Asia/Shanghai)]} {
+    LoadTimeZoneFile Asia/Shanghai
+}
+set TZData(:Asia/Harbin) $TZData(:Asia/Shanghai)

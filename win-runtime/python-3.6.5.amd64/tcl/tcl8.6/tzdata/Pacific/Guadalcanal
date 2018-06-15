@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b11415b7ddc5077fa4d902c41f0fecc5918e3fe3612e38166ec71c443d0601b3
-size 151
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Pacific/Guadalcanal) {
+    {-9223372036854775808 38388 0 LMT}
+    {-1806748788 39600 0 SBT}
+}

@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:83c45cfdde3005e1e8115e4b82286a9d2511ad56013aad1cc1693613b13279bd
-size 231
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Pacific/Nauru) {
+    {-9223372036854775808 40060 0 LMT}
+    {-1545131260 41400 0 NRT}
+    {-877347000 32400 0 JST}
+    {-800960400 41400 0 NRT}
+    {294323400 43200 0 NRT}
+}

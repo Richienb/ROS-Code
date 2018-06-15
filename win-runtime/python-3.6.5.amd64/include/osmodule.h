@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c3cf9eb8d709f9032e86e9ecefdf2a26fdfcf5f3a0afb6c3a1b470e8e97d6a0b
-size 308
+
+/* os module interface */
+
+#ifndef Py_OSMODULE_H
+#define Py_OSMODULE_H
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03060000
+PyAPI_FUNC(PyObject *) PyOS_FSPath(PyObject *path);
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+#endif /* !Py_OSMODULE_H */

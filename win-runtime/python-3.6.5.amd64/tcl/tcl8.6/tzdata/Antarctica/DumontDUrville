@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3e5dfc12f351a8f93b2c469fd05a4349784be6425e342f3de65ee1b4a7dea3be
-size 207
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Antarctica/DumontDUrville) {
+    {-9223372036854775808 0 0 -00}
+    {-725846400 36000 0 PMT}
+    {-566992800 0 0 -00}
+    {-415497600 36000 0 DDUT}
+}

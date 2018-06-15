@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:40f003b0d2fdc4534d32c2464145d412c2b88143f708f95b325b45c13da51ee3
-size 520
+@echo off
+set winpython_ini=%~dp0..\\settings\winpython.ini
+echo [debug]>"%winpython_ini%"
+echo state = disabled>>"%winpython_ini%"
+echo [environment]>>"%winpython_ini%"
+echo ## <?> Uncomment lines to override environment variables>>"%winpython_ini%"
+echo #HOME = %%HOMEDRIVE%%%%HOMEPATH%%\Documents\WinPython%%WINPYVER%%\settings>>"%winpython_ini%"
+echo #JUPYTER_DATA_DIR = %%HOME%%>>"%winpython_ini%"
+echo #WINPYWORKDIR = %%HOMEDRIVE%%%%HOMEPATH%%\Documents\WinPython%%WINPYVER%%\Notebooks>>"%winpython_ini%"

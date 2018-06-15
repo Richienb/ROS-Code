@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3a5db7c2c71f95c495d0884001f82599e794118452e2748e95a7565523546a8e
-size 176
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(Europe/Oslo)]} {
+    LoadTimeZoneFile Europe/Oslo
+}
+set TZData(:Arctic/Longyearbyen) $TZData(:Europe/Oslo)

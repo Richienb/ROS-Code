@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f2a81b7e95d49cec3c8952463b727129b4dc43d58adc64bb7cab642d3d191039
-size 190
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(America/Whitehorse)]} {
+    LoadTimeZoneFile America/Whitehorse
+}
+set TZData(:Canada/Yukon) $TZData(:America/Whitehorse)

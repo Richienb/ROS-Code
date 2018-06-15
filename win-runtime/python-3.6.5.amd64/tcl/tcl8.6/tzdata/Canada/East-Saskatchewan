@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:af04a4558e31c9864b92fe3403011f7a2fbd837e1314a7bb5af552d5aed06457
-size 190
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(America/Regina)]} {
+    LoadTimeZoneFile America/Regina
+}
+set TZData(:Canada/East-Saskatchewan) $TZData(:America/Regina)

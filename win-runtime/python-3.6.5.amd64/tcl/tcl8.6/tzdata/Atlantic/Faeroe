@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7c6a6bcf5aaeab1bb57482df1bbc934d367390782f6d8c5783dbbbe663169a9b
-size 181
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(Atlantic/Faroe)]} {
+    LoadTimeZoneFile Atlantic/Faroe
+}
+set TZData(:Atlantic/Faeroe) $TZData(:Atlantic/Faroe)

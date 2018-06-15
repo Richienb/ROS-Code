@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:77ea0243a11d187c995ce8d83370c6682bc39d2c39809892a48251123ff19a1e
-size 198
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(Australia/Brisbane)]} {
+    LoadTimeZoneFile Australia/Brisbane
+}
+set TZData(:Australia/Queensland) $TZData(:Australia/Brisbane)

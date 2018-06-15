@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d1f5ffd2574a009474230e0aa764256b039b1d78d91a1cb944b21776377b5b70
-size 214
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(America/Argentina/Cordoba)]} {
+    LoadTimeZoneFile America/Argentina/Cordoba
+}
+set TZData(:America/Rosario) $TZData(:America/Argentina/Cordoba)

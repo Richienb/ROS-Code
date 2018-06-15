@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d442e5bbb801c004a7903f6c217149fcda521088705ac9fecb0bc3b3058981bf
-size 237
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(America/Argentina/Catamarca)]} {
+    LoadTimeZoneFile America/Argentina/Catamarca
+}
+set TZData(:America/Argentina/ComodRivadavia) $TZData(:America/Argentina/Catamarca)

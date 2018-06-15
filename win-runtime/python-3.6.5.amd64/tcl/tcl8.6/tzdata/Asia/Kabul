@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:58a8b20c1cb4c0c2f329a0e7869e1f11223e1ac35ac2c275930543a79689170b
-size 171
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Asia/Kabul) {
+    {-9223372036854775808 16608 0 LMT}
+    {-2524538208 14400 0 AFT}
+    {-788932800 16200 0 AFT}
+}

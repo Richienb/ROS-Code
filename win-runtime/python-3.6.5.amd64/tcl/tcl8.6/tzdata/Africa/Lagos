@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:eeda5b96968552c12b916b39217005bf773a99ca17996893bc87bcc09966b954
-size 141
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Africa/Lagos) {
+    {-9223372036854775808 816 0 LMT}
+    {-1588464816 3600 0 WAT}
+}

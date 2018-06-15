@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9339f71384b466ea9a5210d84eabbec5eb61deaa0689589804999b3ea34fd1b4
-size 173
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Asia/Brunei) {
+    {-9223372036854775808 27580 0 LMT}
+    {-1383464380 27000 0 BNT}
+    {-1167636600 28800 0 BNT}
+}

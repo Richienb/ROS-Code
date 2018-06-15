@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d23882718eceb397d330b463dca1c7e266134f060e0aed421f056e7379e3e1a3
-size 154
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Atlantic/South_Georgia) {
+    {-9223372036854775808 -8768 0 LMT}
+    {-2524512832 -7200 0 GST}
+}

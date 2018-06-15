@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:eb8fdbcfde9e2a2aa829e784d402966f61a5bf6f2034e0cb06a24facb5b87874
-size 194
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(Australia/Lord_Howe)]} {
+    LoadTimeZoneFile Australia/Lord_Howe
+}
+set TZData(:Australia/LHI) $TZData(:Australia/Lord_Howe)

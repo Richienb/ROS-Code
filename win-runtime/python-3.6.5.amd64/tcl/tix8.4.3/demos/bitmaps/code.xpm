@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d7e28727ad9b43f8ec367d083de7497aa8f695bdb9f351e50b21c204e1a75174
-size 620
+/* XPM */
+static char * code_xpm[] = {
+"30 15 4 1",
+" 	c gray94",
+".	c #c0c0ff",
+"X	c #606060",
+"o	c black",
+"                              ",
+" ............................X",
+" ............................X",
+" ...ooo............o.........X",
+" ..o...o...........o.........X",
+" ..o...............o.........X",
+" ..o......ooo...oooo..ooo....X",
+" ..o.....o...o.o...o.o...o...X",
+" ..o.....o...o.o...o.ooooo...X",
+" ..o.....o...o.o...o.o.......X",
+" ..o...o.o...o.o...o.o...o...X",
+" ...ooo...ooo...oooo..ooo....X",
+" ............................X",
+" ............................X",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"};

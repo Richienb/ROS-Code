@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9569baef38ebb61ab03fbcb21a7daecda6b8ad78e04a070487a9284b90912fa7
-size 114
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Etc/GMT+6) {
+    {-9223372036854775808 -21600 0 GMT+6}
+}

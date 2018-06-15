@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:74dd6fe03e3061ce301ff3e8e309cf1b10fc0216eec52839d48b210bcbd8cf63
-size 174
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(Pacific/Guam)]} {
+    LoadTimeZoneFile Pacific/Guam
+}
+set TZData(:Pacific/Saipan) $TZData(:Pacific/Guam)

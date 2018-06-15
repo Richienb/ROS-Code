@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:05d5c930a0aef6c3b657bb8c9d91548fd262123d489901623b2e6934ec9ae592
-size 99
+#define decr_width 7
+#define decr_height 4
+static char decr_bits[] = {
+   0x7f, 0x3e, 0x1c, 0x08};

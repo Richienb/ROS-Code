@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ffd5f8c9ff0fe1ff191c35a1910ee39ffd0bc0dcbe045d4651745e9ab175ebd5
-size 171
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Asia/Thimphu) {
+    {-9223372036854775808 21516 0 LMT}
+    {-706341516 19800 0 IST}
+    {560025000 21600 0 BTT}
+}

@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bfded2967c2ef89a4131436e7ebc1b96c30c1ead2cbcd8f79ad74aef8ee43612
-size 418
+/* XPM */
+static char * openfolder_xpm[] = {
+/* width height num_colors chars_per_pixel */
+"16 12 3 1",
+/* colors */
+" 	s None	c None",
+".	c black",
+"X	c #f0ff80",
+/* pixels */
+"   ....         ",
+"  .XXXX.        ",
+" .XXXXXX.       ",
+".............   ",
+".XXXXXXXXXXX.   ",
+".XXX............",
+".XX.XXXXXXXXXXX.",
+".XX.XXXXXXXXXX. ",
+".X.XXXXXXXXXXX. ",
+".X.XXXXXXXXXXX. ",
+"..XXXXXXXXXX..  ",
+".............   "};

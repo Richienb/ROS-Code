@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6448f5702a460efbb2d99b32d7a7bdca7ec3a4fc830d7dca2db200672d4e46b4
-size 385
+@echo off
+call "%~dp0env_for_icons.bat"
+cd/D "%WINPYWORKDIR%"
+if "%QT_API%"=="pyqt5" (
+    if exist "%WINPYDIR%\Lib\site-packages\pyqt5-tools\designer.exe" (
+        "%WINPYDIR%\Lib\site-packages\pyqt5-tools\designer.exe" %*
+    ) else (
+        "%WINPYDIR%\Lib\site-packages\PyQt5\designer.exe" %*
+    )
+) else (
+    "%WINPYDIR%\Lib\site-packages\PyQt4\designer.exe" %*
+)

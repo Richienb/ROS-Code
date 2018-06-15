@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e809f227e92542c6fb4bac82e6079661eef7700964079aa4d7e289b5b400ec49
-size 211
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:America/Creston) {
+    {-9223372036854775808 -27964 0 LMT}
+    {-2713882436 -25200 0 MST}
+    {-1680454800 -28800 0 PST}
+    {-1627833600 -25200 0 MST}
+}

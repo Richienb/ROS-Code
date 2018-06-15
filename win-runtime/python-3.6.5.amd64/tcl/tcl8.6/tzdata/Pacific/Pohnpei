@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7a09d415e802ba784a04995023ff191d1406598c66e8d49f1aa9653b6c66e8e6
-size 148
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Pacific/Pohnpei) {
+    {-9223372036854775808 37972 0 LMT}
+    {-2177490772 39600 0 PONT}
+}

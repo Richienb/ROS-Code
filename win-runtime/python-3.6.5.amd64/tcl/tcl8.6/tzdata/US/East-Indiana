@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1c46faedfaceb862b2e4d5bd6ac63e5182e1e2cfd2e1cdfa2661d698cc8b0072
-size 223
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(America/Indiana/Indianapolis)]} {
+    LoadTimeZoneFile America/Indiana/Indianapolis
+}
+set TZData(:US/East-Indiana) $TZData(:America/Indiana/Indianapolis)

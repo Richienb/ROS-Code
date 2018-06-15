@@ -1,3 +1,47 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f249dd1698ed1687e13654c04d08b829193027a2fecc24222ec854b59350466a
-size 986
+# created by tools/loadICU.tcl -- do not edit
+namespace eval ::tcl::clock {
+    ::msgcat::mcset fo DAYS_OF_WEEK_ABBREV [list \
+        "sun"\
+        "m\u00e1n"\
+        "t\u00fds"\
+        "mik"\
+        "h\u00f3s"\
+        "fr\u00ed"\
+        "ley"]
+    ::msgcat::mcset fo DAYS_OF_WEEK_FULL [list \
+        "sunnudagur"\
+        "m\u00e1nadagur"\
+        "t\u00fdsdagur"\
+        "mikudagur"\
+        "h\u00f3sdagur"\
+        "fr\u00edggjadagur"\
+        "leygardagur"]
+    ::msgcat::mcset fo MONTHS_ABBREV [list \
+        "jan"\
+        "feb"\
+        "mar"\
+        "apr"\
+        "mai"\
+        "jun"\
+        "jul"\
+        "aug"\
+        "sep"\
+        "okt"\
+        "nov"\
+        "des"\
+        ""]
+    ::msgcat::mcset fo MONTHS_FULL [list \
+        "januar"\
+        "februar"\
+        "mars"\
+        "apr\u00edl"\
+        "mai"\
+        "juni"\
+        "juli"\
+        "august"\
+        "september"\
+        "oktober"\
+        "november"\
+        "desember"\
+        ""]
+}

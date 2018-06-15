@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bb4a1da9bd1ad19b857d94840e1c8cf9445cfd32a218959275c137c2b4637f78
-size 178
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Pacific/Fakaofo) {
+    {-9223372036854775808 -41096 0 LMT}
+    {-2177411704 -39600 0 TKT}
+    {1325242800 46800 0 TKT}
+}

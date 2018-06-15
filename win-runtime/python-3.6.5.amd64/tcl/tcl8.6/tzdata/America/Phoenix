@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9e28f87c0d9ee6ad6791a220742c10c135448965e1f66a7eb04d6477d8fa11b0
-size 479
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:America/Phoenix) {
+    {-9223372036854775808 -26898 0 LMT}
+    {-2717643600 -25200 0 MST}
+    {-1633273200 -21600 1 MDT}
+    {-1615132800 -25200 0 MST}
+    {-1601823600 -21600 1 MDT}
+    {-1583683200 -25200 0 MST}
+    {-880210800 -21600 1 MWT}
+    {-820519140 -25200 0 MST}
+    {-796841940 -25200 0 MST}
+    {-94669200 -25200 0 MST}
+    {-84380400 -21600 1 MDT}
+    {-68659200 -25200 0 MST}
+    {-56221200 -25200 0 MST}
+}

@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d115718818e3e3367847ce35bb5ff0361d08993d9749d438c918f8eb87ad8814
-size 690
+# created by tools/loadICU.tcl -- do not edit
+namespace eval ::tcl::clock {
+    ::msgcat::mcset mt DAYS_OF_WEEK_ABBREV [list \
+        "\u0126ad"\
+        "Tne"\
+        "Tli"\
+        "Erb"\
+        "\u0126am"\
+        "\u0120im"]
+    ::msgcat::mcset mt MONTHS_ABBREV [list \
+        "Jan"\
+        "Fra"\
+        "Mar"\
+        "Apr"\
+        "Mej"\
+        "\u0120un"\
+        "Lul"\
+        "Awi"\
+        "Set"\
+        "Ott"\
+        "Nov"]
+    ::msgcat::mcset mt BCE "QK"
+    ::msgcat::mcset mt CE ""
+    ::msgcat::mcset mt DATE_FORMAT "%A, %e ta %B, %Y"
+    ::msgcat::mcset mt TIME_FORMAT_12 "%l:%M:%S %P"
+    ::msgcat::mcset mt DATE_TIME_FORMAT "%A, %e ta %B, %Y %l:%M:%S %P %z"
+}

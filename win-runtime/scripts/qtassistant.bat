@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9412845b57f343c0d48fd90c6cce4a1559d0465241a237de4223d9de18742a98
-size 389
+@echo off
+call "%~dp0env_for_icons.bat"
+cd/D "%WINPYWORKDIR%"
+if "%QT_API%"=="pyqt5" (
+    if exist "%WINPYDIR%\Lib\site-packages\pyqt5-tools\assistant.exe" (
+        "%WINPYDIR%\Lib\site-packages\pyqt5-tools\assistant.exe" %*
+    ) else (
+        "%WINPYDIR%\Lib\site-packages\PyQt5\assistant.exe" %*
+    )
+) else (
+    "%WINPYDIR%\Lib\site-packages\PyQt4\assistant.exe" %*
+)

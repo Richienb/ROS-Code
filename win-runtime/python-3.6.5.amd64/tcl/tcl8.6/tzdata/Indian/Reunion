@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a0e47e1c5d4eaeac532bd9828e74139fb85e7d6b86046bf475e33c2b84c3542f
-size 146
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Indian/Reunion) {
+    {-9223372036854775808 13312 0 LMT}
+    {-1848886912 14400 0 RET}
+}

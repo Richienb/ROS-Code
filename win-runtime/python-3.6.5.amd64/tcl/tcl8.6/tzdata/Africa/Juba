@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d5ba3c8c36e88e80efa603b5bceeadbfffddc87d47f47d2f15d62708e8346443
-size 180
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(Africa/Khartoum)]} {
+    LoadTimeZoneFile Africa/Khartoum
+}
+set TZData(:Africa/Juba) $TZData(:Africa/Khartoum)

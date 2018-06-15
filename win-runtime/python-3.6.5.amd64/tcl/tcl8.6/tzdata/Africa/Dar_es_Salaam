@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f39e4cabe33629365c2cef6037871d698b942f0672f753212d768e865480b822
-size 186
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(Africa/Nairobi)]} {
+    LoadTimeZoneFile Africa/Nairobi
+}
+set TZData(:Africa/Dar_es_Salaam) $TZData(:Africa/Nairobi)

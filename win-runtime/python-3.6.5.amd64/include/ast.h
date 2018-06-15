@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2872f8cdbc9145019412655a9f760d633a2475f34e9d16843829c26a657baa97
-size 499
+#ifndef Py_AST_H
+#define Py_AST_H
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+PyAPI_FUNC(int) PyAST_Validate(mod_ty);
+PyAPI_FUNC(mod_ty) PyAST_FromNode(
+    const node *n,
+    PyCompilerFlags *flags,
+    const char *filename,       /* decoded from the filesystem encoding */
+    PyArena *arena);
+PyAPI_FUNC(mod_ty) PyAST_FromNodeObject(
+    const node *n,
+    PyCompilerFlags *flags,
+    PyObject *filename,
+    PyArena *arena);
+
+#ifdef __cplusplus
+}
+#endif
+#endif /* !Py_AST_H */

@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:91d903b7752bd5e73f1d509245de9d9f3b38cf5cdffc10cd62aceb11aa4770c0
-size 146
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Pacific/Wallis) {
+    {-9223372036854775808 44120 0 LMT}
+    {-2177496920 43200 0 WFT}
+}

@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:acd976a3e87031b57e5ef28ed8b16faec601826652cc2257c7acf6e551416336
-size 294
+/* XPM */
+static char * srcfile_xpm[] = {
+"12 12 3 1",
+" 	s None	c None",
+".	c black",
+"X	c gray91",
+" ........   ",
+" .XXXXXX.   ",
+" .XXXXXX... ",
+" .XXXXXXXX. ",
+" .XX...XXX. ",
+" .X.XXX.XX. ",
+" .X.XXXXXX. ",
+" .X.XXXXXX. ",
+" .X.XXX.XX. ",
+" .XX...XXX. ",
+" .XXXXXXXX. ",
+" .......... "};

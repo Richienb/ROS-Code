@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0b53a41592382a6e06183953a2fe6c4ee3549bf268937aab73328fff7beb8211
-size 371
+if {[catch {package present Tcl 8.6.0}]} { return }
+if {($::tcl_platform(platform) eq "unix") && ([info exists ::env(DISPLAY)]
+	|| ([info exists ::argv] && ("-display" in $::argv)))} {
+    package ifneeded Tk 8.6.6 [list load [file join $dir .. .. bin libtk8.6.dll] Tk]
+} else {
+    package ifneeded Tk 8.6.6 [list load [file join $dir .. .. bin tk86tg.dll] Tk]
+}

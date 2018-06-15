@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9098d53c778400ade89b532489729f0ef2e5472e78372ce3b066f9dcbb8bbbc5
-size 239
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Pacific/Pago_Pago) {
+    {-9223372036854775808 45432 0 LMT}
+    {-2855738232 -40968 0 LMT}
+    {-1861879032 -39600 0 NST}
+    {-86878800 -39600 0 BST}
+    {439038000 -39600 0 SST}
+}

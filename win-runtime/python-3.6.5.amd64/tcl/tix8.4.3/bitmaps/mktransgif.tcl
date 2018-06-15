@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e32db60b06f6c696668e9922c3f4494e6ae5e5987e0f7bf54e43d7ddeef92dfb
-size 263
+#
+#	$Id: mktransgif.tcl,v 1.1.1.1 2000/05/17 11:08:46 idiscovery Exp $
+#
+#!/usr/local/bin/tclsh
+
+set dont(plusarm.gif)  1
+set dont(minusarm.gif) 1
+
+foreach file [glob *.gif] {
+    if ![info exists dont($file)] {
+	puts "giftool -1 -B $file"
+    }
+}
+

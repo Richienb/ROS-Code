@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e555cc9b46be027c94962108877205633112cf1e01972b9b277f412735d81006
-size 270
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:America/Caracas) {
+    {-9223372036854775808 -16064 0 LMT}
+    {-2524505536 -16060 0 CMT}
+    {-1826739140 -16200 0 VET}
+    {-157750200 -14400 0 VET}
+    {1197183600 -16200 0 VET}
+    {1462086000 -14400 0 VET}
+}

@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:21bc09ede63865aa8f119420e03cf93694c2c6b1bd6061c780d342492352d5d8
-size 148
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Indian/Christmas) {
+    {-9223372036854775808 25372 0 LMT}
+    {-2364102172 25200 0 CXT}
+}

@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ffe0e204d43000121944c57d2b2a846e792ddc73405c02fc5e8017136cd55bcb
-size 205
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(America/Port_of_Spain)]} {
+    LoadTimeZoneFile America/Port_of_Spain
+}
+set TZData(:America/Guadeloupe) $TZData(:America/Port_of_Spain)

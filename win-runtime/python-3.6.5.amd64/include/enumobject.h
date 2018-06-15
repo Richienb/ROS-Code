@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:469c8a7bbca8a67fd17bc728a1d6d4225c4c0566475774b5deb655462f058659
-size 270
+#ifndef Py_ENUMOBJECT_H
+#define Py_ENUMOBJECT_H
+
+/* Enumerate Object */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+PyAPI_DATA(PyTypeObject) PyEnum_Type;
+PyAPI_DATA(PyTypeObject) PyReversed_Type;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* !Py_ENUMOBJECT_H */

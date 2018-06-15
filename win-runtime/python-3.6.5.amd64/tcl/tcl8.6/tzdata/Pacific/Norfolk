@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ab519812e00b5951e8048218afaf6f3a79d816ef8fa0e42a1f0e53b27031df54
-size 262
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Pacific/Norfolk) {
+    {-9223372036854775808 40312 0 LMT}
+    {-2177493112 40320 0 NMT}
+    {-599656320 41400 0 NFT}
+    {152029800 45000 1 NFST}
+    {162912600 41400 0 NFT}
+    {1443882600 39600 0 NFT}
+}

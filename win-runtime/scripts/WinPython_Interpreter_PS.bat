@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c1b81efe962a995c20bc49e9c0b5418b22929e775aa598cac316ad150aee8cdd
-size 205
+@echo off
+rem no safe bet (for comparisons)
+Powershell.exe -Command "& {Start-Process PowerShell.exe -ArgumentList '-ExecutionPolicy RemoteSigned -noexit -File ""%~dp0WinPython_PS_Prompt.ps1""'}"
+exit

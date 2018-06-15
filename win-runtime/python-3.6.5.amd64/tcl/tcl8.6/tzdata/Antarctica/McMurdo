@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:487d4845885643700b4ff043ac5ea59e2355fd38357809be12679ecaffa93030
-size 190
+# created by tools/tclZIC.tcl - do not edit
+if {![info exists TZData(Pacific/Auckland)]} {
+    LoadTimeZoneFile Pacific/Auckland
+}
+set TZData(:Antarctica/McMurdo) $TZData(:Pacific/Auckland)

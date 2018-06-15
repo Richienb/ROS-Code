@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f048c281963b76744560cb1db5bc5ee9187b858c5280cd952b941e15824820b1
-size 173
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Indian/Chagos) {
+    {-9223372036854775808 17380 0 LMT}
+    {-1988167780 18000 0 IOT}
+    {820436400 21600 0 IOT}
+}

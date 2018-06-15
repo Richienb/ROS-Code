@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:91e8ab7592d71f5e3986a9ce8f9e1693ba19f51964befb7ec24fcc671ef4943f
-size 275
+@echo off
+call "%~dp0env_for_icons.bat"
+rem backward compatibility for non-IDLEX users
+if exist "%WINPYDIR%\scripts\idlex.pyw" (
+    "%WINPYDIR%\python.exe" "%WINPYDIR%\scripts\idlex.pyw" %*
+) else (
+    "%WINPYDIR%\python.exe" "%WINPYDIR%\Lib\idlelib\idle.pyw" %*
+)

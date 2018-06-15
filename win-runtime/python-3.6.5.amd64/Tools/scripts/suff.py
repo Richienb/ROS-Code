@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:59a678e381b61c4c74fae5424d8d482b43562da94b7dd1ce16ac769f8c0d6c52
-size 536
+#! /usr/bin/env python3
+
+# suff
+#
+# show different suffixes amongst arguments
+
+import sys
+
+
+def main():
+    files = sys.argv[1:]
+    suffixes = {}
+    for filename in files:
+        suff = getsuffix(filename)
+        suffixes.setdefault(suff, []).append(filename)
+    for suff, filenames in sorted(suffixes.items()):
+        print(repr(suff), len(filenames))
+
+
+def getsuffix(filename):
+    name, sep, suff = filename.rpartition('.')
+    return sep + suff if sep else ''
+
+
+if __name__ == '__main__':
+    main()

@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:879a508eb9756e78c1f1f6472b1de468e3623c813c53fdd51b227eff8fc54099
-size 318
+# created by tools/tclZIC.tcl - do not edit
+
+set TZData(:Antarctica/Davis) {
+    {-9223372036854775808 0 0 -00}
+    {-409190400 25200 0 DAVT}
+    {-163062000 0 0 -00}
+    {-28857600 25200 0 DAVT}
+    {1255806000 18000 0 DAVT}
+    {1268251200 25200 0 DAVT}
+    {1319742000 18000 0 DAVT}
+    {1329854400 25200 0 DAVT}
+}
