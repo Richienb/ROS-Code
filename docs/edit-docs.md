@@ -27,7 +27,7 @@ Now you can navigate to the URL shown in the terminal (usually [127.0.0.1:8000](
 
 ### Building
 
-!!! note "Automatic Building"
+!!! done "Automatic Building"
     The documentation will automatically be built via [Travis CI](https://travis-ci.org/Richienb/ROS-Code) if the build succeeds.
 
 Build the documentation to the `site` folder locally.
