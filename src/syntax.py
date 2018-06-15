@@ -78,6 +78,10 @@ def catwalk(text):
 def converttabs(text, spaces):
     return text.replace('\t', ' ' * spaces)
 
+def shortentext(text, minlength, placeholder="..."):
+    import textwrap
+    return textwrap.shorten(text, minlength, placeholder)
+
 # Wrap text around the screen when given the size
 def wraptext(text, maxlength):
     import textwrap
