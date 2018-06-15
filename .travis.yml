@@ -8,9 +8,6 @@ python:
 branches:
   - master
 
-install:
-  - pip install mkdocs mkdocs-material
-
 script:
   - cd src
   - python run-file.py "test.ros"
@@ -19,6 +16,7 @@ script:
 
 before_deploy:
   - mkdocs build --verbose --clean --strict
+  - pip install mkdocs mkdocs-material
 
 deploy:
   provider: pages
