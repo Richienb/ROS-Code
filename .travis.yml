@@ -21,12 +21,12 @@ script:
   - mkdocs build --verbose --clean --strict
 
 deploy:
- provider: pages
- skip_cleanup: true
- github_token: $GH_TOKEN
- local_dir: site
- on:
-   branch: master
+  provider: pages
+  skip_cleanup: true
+  github_token: $GH_TOKEN
+  local_dir: site
+  on:
+    branch: master
 
 notifications:
   email: false
