@@ -1,6 +1,4 @@
-env:
-  global:
-    - secure: "dA7XrAQGV8jO4cu1reoCrffN0mEjFtjaKezr104Nfes5LkZWmJ6Kh44lrdGIjtANJwESEiAgvLDCJz/K8bqcRz8kWqxf2bgXanGimGtjPpgS8k2qSyL5BUYhtSNEyyEnfa3oUiULQgX5HigBpTgwGcykC6q9WKEbfx+eizAgU/bfxejfzmGbiBoHmmKQ7G3QH5IDxVPHCcmVV7Jxn8fDUMx56QLYNGPeyX2x1etynV2jsXWpUr/h3dbbLqsQRwzH0nJ175aNbVzd3GAQskY58MwBV+Ndld7GBZHuBDTAqbnjxYvaFMyPUKebWhp+Gk4YWM8xznIM/204jYSNxVm5NmIclSpLtE/hV12pmuDLyHvKxRDm+rMG8Zvx7gtL/061/9BwJaBYNCbDNNQS2nMXasLCoxgDKHDAcUt3YXQKxCXydpqwqIVTepl6pwL0zLRk/kFhVN5oHhVEyIo1Z3QWyEJLZJC1NkVVn/XQd3eBWWcLTeslOxDABRxSQ2oThvDqRSpXziJguZtDxr1Up7S14RgeoBn+klI6nwzWBI1LNjOAkSlEDgpH43YWq5ANZxzn/azJtfvmh0nZdZccvyen8lzi+eN6WKo9xW1/+2SqnI1Qo8P0ZcxAJGbs1RxNU+/gqnGA8yk3SpbItW3lKEpF4C2tyUs7zU2yjU8JzqQbFts="
+sudo: false
 
 language: python
 
@@ -11,19 +9,21 @@ branches:
   - master
 
 install:
-- pip install mkdocs mkdocs-material
+  - pip install mkdocs mkdocs-material
 
 script:
   - cd src
   - python run-file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
   - cd ..
+
+before_deploy:
   - mkdocs build --verbose --clean --strict
 
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $GH_TOKEN
+  github_token: $github_token
   local_dir: site
   on:
     branch: master
