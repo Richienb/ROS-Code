@@ -15,8 +15,8 @@ script:
   - cd ..
 
 before_deploy:
-  - mkdocs build --verbose --clean --strict
   - pip install mkdocs mkdocs-material
+  - mkdocs build --verbose --clean --strict
 
 deploy:
   provider: pages
