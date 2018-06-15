@@ -78,6 +78,7 @@ def catwalk(text):
 def converttabs(text, spaces):
     return text.replace('\t', ' ' * spaces)
 
+# Shorten some text by replacing some of it with a placeholder
 def shortentext(text, minlength, placeholder="..."):
     import textwrap
     return textwrap.shorten(text, minlength, placeholder)
