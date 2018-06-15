@@ -1,6 +1,9 @@
 # Ensure Storage Variables Are Global
-global ros_output
-global ros_stored
+def ensureglobal():
+    global ros_output
+    global ros_stored
+
+ensureglobal()
 
 # Execute A Shell Command
 def shellcommand(command):
