@@ -70,6 +70,10 @@ def changecolour(colourcode, action, amount=100):
 		c.luminance = amount / 100
 		return c
 
+# Fix your code after a cat walked on it
+def catwalk(text):
+    return " ".join(text.split())
+
 # Check If A Number Is A Prime Number
 def isprime(number):
 	if number == 1:
