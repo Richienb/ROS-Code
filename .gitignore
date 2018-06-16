@@ -1,3 +1,6 @@
+# Remove win-runtime Path From Language Statistics
+win-runtime/* linguist-vendored
+
 # Python Gitignore
 
 # Byte-compiled / optimized / DLL files
