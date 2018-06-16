@@ -1,5 +1,8 @@
-# Remove win-runtime Path From Language Statistics
+# Remove win-runtime Path from language statistics
 win-runtime/* linguist-vendored
+
+# Inno install creator output
+install/Output
 
 # Python Gitignore
 
