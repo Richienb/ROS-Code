@@ -7,4 +7,4 @@ ___
 
 ___
 
-### [READ MORE](https://www.ros-code.ga)
+### [Read More On The Website](https://www.ros-code.ga)
