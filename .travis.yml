@@ -8,9 +8,6 @@ python:
 branches:
   - master
 
-before_install:
-  - sudo apt-get update
-
 script:
   - cd src
   - python run-file.py "test.ros"
