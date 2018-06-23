@@ -15,8 +15,6 @@ script:
   - cd ..
 
 before_deploy:
-  - pip install mkdocs mkdocs-material pymdown-extensions Pygments
-  - pip show mkdocs mkdocs-material pymdown-extensions Pygments
   - mkdocs build --verbose --clean --strict
 
 deploy:
