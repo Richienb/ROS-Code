@@ -81,7 +81,7 @@ def converttabs(text, spaces):
 # Shorten some text by replacing some of it with a placeholder
 def shortentext(text, minlength, placeholder="..."):
     import textwrap
-    return textwrap.shorten(text, minlength, placeholder)
+    return textwrap.shorten(text, minlength, placeholder=str(placeholder))
 
 # Wrap text around the screen when given the size
 def wraptext(text, maxlength):
