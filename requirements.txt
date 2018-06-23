@@ -1,2 +1,8 @@
+# Main modules
 clipboard
 colour
+# mkdocs modules
+mkdocs
+mkdocs-material
+pymdown-extensions
+Pygments
