@@ -35,7 +35,7 @@ pages:
       - Recommended Syntax: syntax.md
       - API Usage: api-usage.md
     - Contribution:
-      - Edit Documentation: edit-docs.md
+      - Edit The Documentation: edit-docs.md
       - Edit The Source Code: edit-code.md
       - Packages Used: packages.md
     - Version 1.0:
