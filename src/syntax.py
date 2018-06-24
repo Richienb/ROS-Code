@@ -20,12 +20,12 @@ def pipupdate():
     import pip
     from subprocess import call
     packages = [dist.project_name for dist in pip.get_installed_distributions()]
-    call("pip install --upgrade " + ' '.join(packages))
+    call('pip install --upgrade ' + ' '.join(packages))
 
 # Show a shell based input line and return command and parameters
 
 
-def shellinput(initialtext=">> ", splitpart=" "):
+def shellinput(initialtext='>> ', splitpart=' '):
     shelluserinput = input(str(initialtext))
     return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(shelluserinput.split(str(splitpart))):]]
 
@@ -35,25 +35,25 @@ def shellinput(initialtext=">> ", splitpart=" "):
 def colourcode(colourcode, destinationcode, longhex=False):
     from colour import Color
     c = Color(str(colourcode))
-    if destinationcode == "hex":
+    if destinationcode == 'hex':
         if longhex is True:
             return c.hex_l
         return c.hex
-    elif destinationcode == "hsl":
+    elif destinationcode == 'hsl':
         return c.hsl
-    elif destinationcode == "rgb":
+    elif destinationcode == 'rgb':
         return c.rgb
-    elif destinationcode == "red":
+    elif destinationcode == 'red':
         return c.red
-    elif destinationcode == "blue":
+    elif destinationcode == 'blue':
         return c.blue
-    elif destinationcode == "green":
+    elif destinationcode == 'green':
         return c.green
-    elif destinationcode == "hue":
+    elif destinationcode == 'hue':
         return c.hue
-    elif destinationcode == "sat":
+    elif destinationcode == 'sat':
         return c.saturation
-    elif destinationcode == "lum":
+    elif destinationcode == 'lum':
         return c.luminance
 
 # Modify a parameter of a colour code
@@ -62,22 +62,22 @@ def colourcode(colourcode, destinationcode, longhex=False):
 def changecolour(colourcode, action, amount=100):
     from colour import Color
     c = Color(colourcode)
-    if action == "red":
+    if action == 'red':
         c.red = amount / 100
         return c
-    elif action == "blue":
+    elif action == 'blue':
         c.blue = amount / 100
         return c
-    elif action == "green":
+    elif action == 'green':
         c.green = amount / 100
         return c
-    elif action == "hue":
+    elif action == 'hue':
         c.hue = amount / 100
         return c
-    elif action == "sat":
+    elif action == 'sat':
         c.saturation = amount / 100
         return c
-    elif action == "lum":
+    elif action == 'lum':
         c.luminance = amount / 100
         return c
 
@@ -85,7 +85,7 @@ def changecolour(colourcode, action, amount=100):
 
 
 def catwalk(text):
-    return " ".join(text.split())
+    return ' '.join(text.split())
 
 # Convert tabs to spaces
 
@@ -96,7 +96,7 @@ def converttabs(text, spaces):
 # Shorten some text by replacing some of it with a placeholder
 
 
-def shortentext(text, minlength, placeholder="..."):
+def shortentext(text, minlength, placeholder='...'):
     import textwrap
     return textwrap.shorten(text, minlength, placeholder=str(placeholder))
 
@@ -277,17 +277,17 @@ def exitexecution(arguments=None):
 def warnconfig(action='default'):
     import warnings
     if action == 'default':
-        warnings.filterwarnings("default")
+        warnings.filterwarnings('default')
     elif action == 'error':
-        warnings.filterwarnings("error")
+        warnings.filterwarnings('error')
     elif action == 'ignore':
-        warnings.filterwarnings("ignore")
+        warnings.filterwarnings('ignore')
     elif action == 'always':
-        warnings.filterwarnings("always")
+        warnings.filterwarnings('always')
     elif action == 'module':
-        warnings.filterwarnings("module")
+        warnings.filterwarnings('module')
     elif action == 'once':
-        warnings.filterwarnings("once")
+        warnings.filterwarnings('once')
 
 # Print Python Copyright Information
 
@@ -867,7 +867,7 @@ def cowsay(text='', align='centre'):
         for iii in range(len(text) + 2):
             spacing = spacing + ' '
     print(topbar)
-    print("( " + cowtext + " )")
+    print('( ' + cowtext + ' )')
     print(bottombar)
     print(spacing + 'o   ^__^ ')
     print(spacing + ' o  (oO)\_______')
@@ -1004,7 +1004,7 @@ def file(operation, path):
         return bool(os.path.isfile(path))
     elif operation == 'read':
         if file('exists', path):
-            F = open(path, "w")
+            F = open(path, 'w')
             return F
         else:
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
@@ -1016,7 +1016,7 @@ def file(operation, path):
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
     elif operation == 'create':
         if not file('exists', path):
-            f = open(path, "w+")
+            f = open(path, 'w+')
             f.close()
         else:
             raise RuntimeError(
@@ -1032,13 +1032,13 @@ def text(operation, path, argument):
     operation = operation.lower()
     if operation == 'write':
         if file('exists', path):
-            fh = open(path, "w")
+            fh = open(path, 'w')
             fh.write(argument)
         else:
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
     elif operation == 'append':
         if file('exists', path):
-            fh = open(path, "a")
+            fh = open(path, 'a')
             fh.write(argument)
         else:
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
@@ -1049,7 +1049,7 @@ def text(operation, path, argument):
 def about():
     print('You Are Using ROS Code')
     print('ROS Code Is Licenced Under The Apache License 2.0')
-    print('Type "ros.licence()" To Read The Licence')
+    print('Type 'ros.licence()' To Read The Licence')
 
 # Convert Text To Binary Form
 
