@@ -1657,7 +1657,7 @@ def userinput(prompttext):
 # License Information
 
 
-def license(raw=False):
+def roslicense(raw=False):
     if raw is False:
         print('ROS Code Is licensed Under The Apache License 2.0')
         print(u'\u2714' + ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
