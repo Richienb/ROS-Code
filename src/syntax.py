@@ -152,7 +152,7 @@ def splitstring(string, split_character=' ', part=None):
 def sort(listtosort, key=None, reversesort=False):
     return sorted(listtosort, key=key, reverse=reversesort)
 
-# Check If A Keyword Relates To Python
+# Check if a keyword is in the Python keyword dictionary
 
 
 def pykeyword(operation='list', keywordtotest=None):
@@ -161,6 +161,11 @@ def pykeyword(operation='list', keywordtotest=None):
         return str(keyword.kwlist)
     elif operation == 'check':
         return keyword.iskeyword(str(keywordtotest))
+
+# Pretty print a list
+def prettyprinter(listtoprint, stream=None, indent=1, width=80, depth=None):
+    from pprint import pprint
+    pprint(listtoprint, stream, indent, width, depth)
 
 # Check If A Number Is In The Fibonacci Sequence
 
