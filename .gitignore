@@ -115,4 +115,4 @@ venv.bak/
 # End Python Gitignore
 
 # jpython include lib
-!runtime/Lib/*
+!runtime/Lib
