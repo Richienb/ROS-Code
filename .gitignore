@@ -1,5 +1,5 @@
-# Remove win-runtime Path from language statistics
-runtime/win/* linguist-vendored
+# Remove runtimes Path from language statistics
+runtime/* linguist-vendored
 
 # Inno install creator output
 install/Output
