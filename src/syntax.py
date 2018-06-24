@@ -143,14 +143,14 @@ def absolutenum(number):
 
 def splitstring(string, split_character=' ', part=None):
     if part is None:
-        return (str(string).split(split_character))[0:]
+        return (str(string).split(split_character))
     return (str(string).split(split_character))[part]
 
-# Sort A List Into A Specific Order
+# Sort a list into a specific order
 
 
 def sort(listtosort, key=None, reversesort=False):
-    return sorted(listtosort, key, reversesort)
+    return sorted(listtosort, key=key, reverse=reversesort)
 
 # Check If A Keyword Relates To Python
 

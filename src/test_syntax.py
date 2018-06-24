@@ -30,5 +30,9 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.splitstring("hello-my-name", "-"), ["hello", "my", "name"])
         self.assertEqual(s.splitstring("hello-my-name", "-", 0), "hello")
 
+    def test_sort(self):
+        self.assertEqual(s.sort(["d", "a", "c", "b"]), ["a", "b", "c", "d"])
+        self.assertEqual(s.sort(["d", "a", "c", "b"], None, True), ["d", "c", "b", "a"])
+
 if __name__ == '__main__':
     ut.main()
