@@ -10,11 +10,11 @@ branches:
 
 before_script:
   - cd src
+  - python test_syntax.py
 
 script:
   - python run-file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
-  - python test_syntax.py
 
 before_deploy:
   - cd ..
