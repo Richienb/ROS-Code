@@ -12,6 +12,7 @@ script:
   - cd src
   - python run-file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
+  - python test_syntax.py
   - cd ..
 
 before_deploy:

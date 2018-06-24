@@ -25,27 +25,27 @@ def shellinput(initialtext=">> ", splitpart=" "):
 # Convert Colour Codes
 def colourcode(colourcode, destinationcode, longhex=False):
 	from colour import Color
-	c = Color(colourcode)
+	c = Color(str(colourcode))
 	if destinationcode == "hex":
 		if longhex is True:
-			return c.hex_l(colourcode)
-		return c.hex(colourcode)
+			return c.hex_l
+		return c.hex
 	elif destinationcode == "hsl":
-		return c.hsl(colourcode)
+		return c.hsl
 	elif destinationcode == "rgb":
-		return c.rgb(colourcode)
+		return c.rgb
 	elif destinationcode == "red":
-		return c.red(colourcode)
+		return c.red
 	elif destinationcode == "blue":
-		return c.blue(colourcode)
+		return c.blue
 	elif destinationcode == "green":
-		return c.green(colourcode)
+		return c.green
 	elif destinationcode == "hue":
-		return c.hue(colourcode)
+		return c.hue
 	elif destinationcode == "sat":
-		return c.saturation(colourcode)
+		return c.saturation
 	elif destinationcode == "lum":
-		return c.luminance(colourcode)
+		return c.luminance
 
 # Change The Colour
 def changecolour(colourcode, action, amount=100):
