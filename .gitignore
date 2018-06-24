@@ -4,6 +4,7 @@ runtime/plain_
 # Inno install creator output
 install/Output
 
+
 # Python Gitignore
 
 # Byte-compiled / optimized / DLL files
@@ -110,3 +111,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# End Python Gitignore
+
+# jpython include lib
+!runtime/Lib/*
