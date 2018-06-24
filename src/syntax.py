@@ -1047,8 +1047,8 @@ def text(operation, path, argument):
 
 def about():
     print('You Are Using ROS Code')
-    print('ROS Code Is Licenced Under The Apache License 2.0')
-    print('Type 'ros.licence()' To Read The Licence')
+    print('ROS Code Is licensed Under The Apache License 2.0')
+    print('Type "ros.license()" To Read The license')
 
 # Convert Text To Binary Form
 
@@ -1648,16 +1648,16 @@ def userinput(prompttext):
 # License Information
 
 
-def licence(raw=False):
+def license(raw=False):
     if raw is False:
-        print('ROS Code Is Licenced Under The Apache License 2.0')
+        print('ROS Code Is licensed Under The Apache License 2.0')
         print(u'\u2714' + ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
         print(u'\u274c' + ' Limitations: Trademark use, Liability And Warranty')
         print(u'\u2139' + ' Conditions: License and copyright notice And State changes')
-        print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
+        print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
     else:
-        print('ROS Code Is Licenced Under The Apache License 2.0')
+        print('ROS Code Is licensed Under The Apache License 2.0')
         print('Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
         print('Limitations: Trademark use, Liability And Warranty')
         print('Conditions: License and copyright notice And State changes')
-        print('To View The Full Licence, Go To: https://rosurl.ga/ROS-Code-Licence')
+        print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
