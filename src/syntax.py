@@ -138,17 +138,13 @@ def paraspace(paragraphspaces=1):
 def absolutenum(number):
     return abs(number)
 
-# Split A String
+# Split a string and/or get a specific part
 
 
-def splitstring(string, split_character=' '):
-    return str(string).split(split_character)
-
-# Split A String And Get A Specific Part
-
-
-def splitstringpart(string, split_character=' ', part=1):
-    return str(string).split(split_character)[int(part - 1)]
+def splitstring(string, split_character=' ', part=None):
+    if part is None:
+        return (str(string).split(split_character))[0:]
+    return (str(string).split(split_character))[part]
 
 # Sort A List Into A Specific Order
 
