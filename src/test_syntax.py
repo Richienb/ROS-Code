@@ -40,9 +40,17 @@ class TestCode(ut.TestCase):
         self.assertEqual('assert' in s.pykeyword('list'), True)
         self.assertEqual('blahblah' in s.pykeyword('list'), False)
         self.assertEqual(s.pykeyword('check', 'None'), True)
-        self.assertEqual(s.pykeyword('and', 'None'), True)
-        self.assertEqual(s.pykeyword('assert', 'None'), True)
-        self.assertEqual(s.pykeyword('blahblah', 'None'), False)
+        self.assertEqual(s.pykeyword('check', 'and'), True)
+        self.assertEqual(s.pykeyword('check', 'assert'), True)
+        self.assertEqual(s.pykeyword('check', 'blahblah'), False)
+
+    def test_isfib(self):
+        self.assertEqual(s.isfib(1), True)
+        self.assertEqual(s.isfib(2), True)
+        self.assertEqual(s.isfib(8), True)
+        self.assertEqual(s.isfib(13), True)
+        self.assertEqual(s.isfib(89), True)
+        self.assertEqual(s.isfib(385), False)
 
 if __name__ == '__main__':
     ut.main()
