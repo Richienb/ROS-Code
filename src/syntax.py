@@ -1050,6 +1050,9 @@ def about():
     print('ROS Code Is licensed Under The Apache License 2.0')
     print('Type "ros.license()" To Read The license')
 
+# Get the version of Python
+
+
 def pyversion(part=None):
     import sys
     if part == None:
