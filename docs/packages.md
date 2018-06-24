@@ -31,7 +31,7 @@ pip install PACKAGE_NAME --target dir_to_runtime
     - time
     - calendar
     
-???+ help "Installation may be required"
+??? help "Installation may be required"
     ??? summary "Pip"
         Refer to the [Pip Documentation](https://pip.pypa.io/en/stable/installing/)
 
