@@ -2,7 +2,7 @@
 runtime/* linguist-vendored
 
 # jython cache
-runtime/win/plain_
+runtime/plain_
 
 # Inno install creator output
 install/Output
