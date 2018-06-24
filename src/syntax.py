@@ -1050,6 +1050,12 @@ def about():
     print('ROS Code Is licensed Under The Apache License 2.0')
     print('Type "ros.license()" To Read The license')
 
+def pyversion(part=None):
+    import sys
+    if part == None:
+        return sys.version_info
+    return sys.version_info[part]
+
 # Convert Text To Binary Form
 
 
