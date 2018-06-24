@@ -1,3 +1,6 @@
+# Remove runtimes Path from language statistics
+runtime/* linguist-vendored
+
 # Python Gitattributes
 # Source files
 # ============
