@@ -19,5 +19,10 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.isprime(7), True)
         self.assertEqual(s.isprime(3), True)
 
+    def test_absolutenum(self):
+        self.assertEqual(s.absolutenum(-54.26), 54.26)
+        self.assertEqual(s.absolutenum(-94), 94)
+        self.assertEqual(s.absolutenum(3 - 4j), 5.0)
+
 if __name__ == '__main__':
     ut.main()
