@@ -1,4 +1,4 @@
-# Ensure Storage Variables Are Global
+# Ensure ROS Code storage variables are global
 def ensureglobal():
     global ros_output
     global ros_stored
@@ -6,14 +6,14 @@ def ensureglobal():
 
 ensureglobal()
 
-# Execute A Shell Command
+# Execute a command in the terminal/shell
 
 
 def shellcommand(command):
     from subprocess import call
     call(str(command))
 
-# Update All Packages Installed By Pip
+# Update all the Pip packages
 
 
 def pipupdate():
@@ -22,14 +22,14 @@ def pipupdate():
     packages = [dist.project_name for dist in pip.get_installed_distributions()]
     call("pip install --upgrade " + ' '.join(packages))
 
-# Get Shell Based Input And 2 Outputs As A List
+# Show a shell based input line and return command and parameters
 
 
 def shellinput(initialtext=">> ", splitpart=" "):
     shelluserinput = input(str(initialtext))
     return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(shelluserinput.split(str(splitpart))):]]
 
-# Convert Colour Codes
+# Convert colour codes to different formats
 
 
 def colourcode(colourcode, destinationcode, longhex=False):
@@ -56,7 +56,7 @@ def colourcode(colourcode, destinationcode, longhex=False):
     elif destinationcode == "lum":
         return c.luminance
 
-# Change The Colour
+# Modify a parameter of a colour code
 
 
 def changecolour(colourcode, action, amount=100):
@@ -114,7 +114,7 @@ def unindent(text):
     import textwrap
     textwrap.dedent(text)
 
-# Check If A Number Is A Prime Number
+# Check if a number is prime
 
 
 def isprime(number):
@@ -125,14 +125,14 @@ def isprime(number):
             return False
     return True
 
-# Make A Paragraph Space
+# Append a paragraph space
 
 
 def paraspace(paragraphspaces=1):
     for i in range(paragraphspaces):
         print('', end='\n')
 
-# Get The Absolute Value Of A Number
+# Get the absolute value of a number
 
 
 def absolutenum(number):
