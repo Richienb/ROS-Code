@@ -4,13 +4,13 @@ import syntax as s
 class TestCode(ut.TestCase):
 
     def test_colourcode(self):
-        self.assertEqual(s.colourcode("#212121", "hex", True), '#212121')
+        self.assertEqual(s.colourcode('#212121', 'hex', True), '#212121')
 
     def test_changecolour(self):
-        self.assertEqual(str(s.changecolour("#212121", "red", 10)), '#192121')
+        self.assertEqual(str(s.changecolour('#212121', 'red', 10)), '#192121')
 
     def test_catwalk(self):
-        self.assertEqual(s.catwalk("this     is    some    text"), "this is some text")
+        self.assertEqual(s.catwalk('this     is    some    text'), 'this is some text')
 
     def test_isprime(self):
         self.assertEqual(s.isprime(1), False)
@@ -25,14 +25,24 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.absolutenum(3 - 4j), 5.0)
 
     def test_splitstring(self):
-        self.assertEqual(s.splitstring("hello my name"), ["hello", "my", "name"])
-        self.assertEqual(s.splitstring("hello my name", "-"), ["hello my name"])
-        self.assertEqual(s.splitstring("hello-my-name", "-"), ["hello", "my", "name"])
-        self.assertEqual(s.splitstring("hello-my-name", "-", 0), "hello")
+        self.assertEqual(s.splitstring('hello my name'), ['hello', 'my', 'name'])
+        self.assertEqual(s.splitstring('hello my name', '-'), ['hello my name'])
+        self.assertEqual(s.splitstring('hello-my-name', '-'), ['hello', 'my', 'name'])
+        self.assertEqual(s.splitstring('hello-my-name', '-', 0), 'hello')
 
     def test_sort(self):
-        self.assertEqual(s.sort(["d", "a", "c", "b"]), ["a", "b", "c", "d"])
-        self.assertEqual(s.sort(["d", "a", "c", "b"], None, True), ["d", "c", "b", "a"])
+        self.assertEqual(s.sort(['d', 'a', 'c', 'b']), ['a', 'b', 'c', 'd'])
+        self.assertEqual(s.sort(['d', 'a', 'c', 'b'], None, True), ['d', 'c', 'b', 'a'])
+
+    def test_pykeyword(self):
+        self.assertEqual('None' in s.pykeyword('list'), True)
+        self.assertEqual('and' in s.pykeyword('list'), True)
+        self.assertEqual('assert' in s.pykeyword('list'), True)
+        self.assertEqual('blahblah' in s.pykeyword('list'), False)
+        self.assertEqual(s.pykeyword('check', 'None'), True)
+        self.assertEqual(s.pykeyword('and', 'None'), True)
+        self.assertEqual(s.pykeyword('assert', 'None'), True)
+        self.assertEqual(s.pykeyword('blahblah', 'None'), False)
 
 if __name__ == '__main__':
     ut.main()
