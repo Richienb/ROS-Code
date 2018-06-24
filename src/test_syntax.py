@@ -12,5 +12,12 @@ class TestCode(ut.TestCase):
     def test_catwalk(self):
         self.assertEqual(s.catwalk("this     is    some    text"), "this is some text")
 
+    def test_isprime(self):
+        self.assertEqual(s.isprime(1), False)
+        self.assertEqual(s.isprime(27), False)
+        self.assertEqual(s.isprime(52), False)
+        self.assertEqual(s.isprime(7), True)
+        self.assertEqual(s.isprime(3), True)
+
 if __name__ == '__main__':
     ut.main()
