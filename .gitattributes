@@ -2,6 +2,7 @@
 runtime/* linguist-vendored
 
 # Python Gitattributes
+
 # Source files
 # ============
 *.pxd		text diff=python
@@ -9,6 +10,7 @@ runtime/* linguist-vendored
 *.py3 		text diff=python
 *.pyw 		text diff=python
 *.pyx  		text diff=python
+
 # Binary files
 # ============
 *.db		binary
