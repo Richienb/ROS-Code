@@ -24,5 +24,8 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.absolutenum(-94), 94)
         self.assertEqual(s.absolutenum(3 - 4j), 5.0)
 
+    def test_splitstring(self):
+        self.assertEqual(s.splitstring("hello my name"), ["hello", "my", "name"])
+
 if __name__ == '__main__':
     ut.main()
