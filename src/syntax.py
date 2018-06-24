@@ -1,4 +1,47 @@
+# System modules
+from subprocess import call
+import os
+import sys
+import secrets
+
+# Python modules
+import pip
+import warnings
+import keyword
+import importlib
+
+# String modues
+import string
+from string import printable as charlist
+from string import whitespace as unwanted
+import clipboard
+from colour import Color
+import textwrap
+from pprint import pprint
+
+# Math modules
+import math
+import operator
+from math import pi
+import statistics
+from math import sqrt
+
+# Web modules
+import webbrowser
+import urllib
+
+# Time modules
+from random import randint as randomnum
+from random import choice as randomitem
+import datetime
+from datetime import datetime
+from time import time
+from time import sleep as delay
+import calendar
+
 # Ensure ROS Code storage variables are global
+
+
 def ensureglobal():
     global ros_output
     global ros_stored
@@ -10,15 +53,12 @@ ensureglobal()
 
 
 def shellcommand(command):
-    from subprocess import call
     call(str(command))
 
 # Update all the Pip packages
 
 
 def pipupdate():
-    import pip
-    from subprocess import call
     packages = [dist.project_name for dist in pip.get_installed_distributions()]
     call('pip install --upgrade ' + ' '.join(packages))
 
@@ -33,7 +73,6 @@ def shellinput(initialtext='>> ', splitpart=' '):
 
 
 def colourcode(colourcode, destinationcode, longhex=False):
-    from colour import Color
     c = Color(str(colourcode))
     if destinationcode == 'hex':
         if longhex is True:
@@ -60,7 +99,6 @@ def colourcode(colourcode, destinationcode, longhex=False):
 
 
 def changecolour(colourcode, action, amount=100):
-    from colour import Color
     c = Color(colourcode)
     if action == 'red':
         c.red = amount / 100
@@ -97,21 +135,18 @@ def converttabs(text, spaces):
 
 
 def shortentext(text, minlength, placeholder='...'):
-    import textwrap
     return textwrap.shorten(text, minlength, placeholder=str(placeholder))
 
 # Wrap text around the screen when given the size
 
 
 def wraptext(text, maxlength):
-    import textwrap
     return textwrap.wrap(text, maxlength)
 
 # Unindent some text
 
 
 def unindent(text):
-    import textwrap
     textwrap.dedent(text)
 
 # Check if a number is prime
@@ -156,7 +191,6 @@ def sort(listtosort, key=None, reversesort=False):
 
 
 def pykeyword(operation='list', keywordtotest=None):
-    import keyword
     if operation == 'list':
         return str(keyword.kwlist)
     elif operation == 'check':
@@ -166,7 +200,6 @@ def pykeyword(operation='list', keywordtotest=None):
 
 
 def prettyprinter(listtoprint, stream=None, indent=1, width=80, depth=None):
-    from pprint import pprint
     pprint(listtoprint, stream, indent, width, depth)
 
 # Check if a number is in the Fibonacci sequence
@@ -189,7 +222,6 @@ def isfib(number):
 
 
 def psr(choice):
-    from random import randint as randomnum
     choice = choice.lower()
     choices = {'paper': 1, 'papers': 1, 'scissor': 2,
                'scissors': 2, 'rock': 3, 'rocks': 3}
@@ -205,8 +237,6 @@ def psr(choice):
 
 
 def captcha():
-    from random import randint as randomnum
-    from random import choice as randomitem
     tryanswer = ''
     numbervalues = {'one': 1, 'two': 2, 'three': 3, 'four': 4,
                     'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10}
@@ -236,7 +266,6 @@ def captcha():
 
 
 def clipboard(action='get', text=None):
-    import clipboard
     if action == 'get':
         return clipboard.paste()
     elif action == 'set':
@@ -260,21 +289,18 @@ def bintobool(integer):
 
 
 def modulereload(modulename):
-    import importlib
     importlib.reload(modulename)
 
 # Exit The Execution
 
 
 def exitexecution(arguments=None):
-    import sys
     sys.exit(arguments)
 
 # Configure Warnings
 
 
 def warnconfig(action='default'):
-    import warnings
     if action == 'default':
         warnings.filterwarnings('default')
     elif action == 'error':
@@ -292,7 +318,6 @@ def warnconfig(action='default'):
 
 
 def pycopyright():
-    import sys
     return sys.copyright
 
 # Print A Message
@@ -325,7 +350,6 @@ def equation(operation, firstnum, secondnum):
 
 
 def scientific(number, operation, logbase=10):
-    import math
     if operation == 'log':
         return math.log(number, logbase)
     elif operation == 'acos':
@@ -384,8 +408,6 @@ def factors(number):
 
 
 def randpassword(length):
-    import string
-    from random import randint as randomnum
     charstouse = string.ascii_letters + string.digits + string.punctuation
     newpass = ''
     for i in range(length):
@@ -396,9 +418,6 @@ def randpassword(length):
 
 
 def randchar():
-    from string import printable as charlist
-    from string import whitespace as unwanted
-    from random import randint as randomnum
     while True:
         trychar = charlist[randomnum(1, len(charlist))]
         if len(trychar) == 1 and not(trychar in unwanted):
@@ -408,7 +427,6 @@ def randchar():
 
 
 def compare(value1, value2, comparision):
-    import operator
     if comparision == 'is':
         return operator.is_(value1, value2)
     elif comparision == 'or':
@@ -501,7 +519,6 @@ def flipcoords(xcoord, ycoord, axis):
 
 # Get The Day Of The Week For A Specific Day
 def dayofweek(day, month, year, formatresult=True):
-    import calendar
     if formatresult is False:
         return calendar.weekday(year, month, day) + 1
     else:
@@ -524,7 +541,6 @@ def dayofweek(day, month, year, formatresult=True):
 
 
 def leapyear(year, querytype='is'):
-    import calendar
     querytype = querytype.lower()
     if querytype == 'is':
         return calendar.isleap(year)
@@ -535,7 +551,6 @@ def leapyear(year, querytype='is'):
 
 
 def tokhex(length=10, urlsafe=False):
-    import secrets
     if urlsafe is True:
         return secrets.token_urlsafe(length)
     return secrets.token_hex(length)
@@ -573,7 +588,6 @@ def fracsimplify(numerator, denominator):
 
 
 def circleconvert(amount, currentformat, newformat):
-    from math import pi
     currentformat = currentformat.lower()
     newformat = newformat.lower()
     if currentformat == newformat:
@@ -608,7 +622,6 @@ def amountdiv(number, minnum, maxnum):
 
 
 def constant(constanttype):
-    import math
     constanttype = constanttype.lower()
     if constanttype == 'pi':
         return math.pi
@@ -625,21 +638,18 @@ def constant(constanttype):
 
 
 def power(number, power):
-    import math
     return math.pow(number, power)
 
 # Find The Square Root Of A number
 
 
 def squareroot(number):
-    import math
     return math.sqrt(number)
 
 # Do An Average Command
 
 
 def average(numbers, averagetype='mean'):
-    import statistics
     averagetype = averagetype.lower()
     try:
         statistics.mean(numbers)
@@ -684,8 +694,7 @@ def getstored():
 
 
 def delay(seconds):
-    from time import sleep as delay_function
-    delay_function(seconds)
+    delay(seconds)
 
 # Waits For The User To Press Enter
 
@@ -753,7 +762,6 @@ def isnumber(value):
 
 
 def happybirthday(person):
-    from time import sleep as delay
     print('Happy Birthday To You')
     delay(2)
     print('Happy Birthday To You')
@@ -778,11 +786,9 @@ def case(variable, argument='uppercase'):
 
 def numprop(value, propertyexpected):
     if propertyexpected == 'triangular':
-        import math
         x = (math.sqrt(8 * value + 1) - 1) / 2
         return bool(x - int(x) > 0)
     elif propertyexpected == 'square':
-        from math import sqrt
         return sqrt(value).is_integer()
     elif propertyexpected == 'cube':
         x = value**(1 / 3)
@@ -832,7 +838,6 @@ def isempty(variable):
 
 
 def isinfinite(variable):
-    import math
     return bool(math.isfinite(variable))
 
 # Find The Length Of A Value
@@ -917,28 +922,24 @@ def onlist(listtocheck, item):
 
 
 def charlimit():
-    import sys
     return sys.maxsize
 
 # Get The Highest Unicode Value
 
 
 def unilimit():
-    import sys
     return sys.maxunicode
 
 # Get The Current Platform
 
 
 def platform():
-    import sys
     return sys.platform
 
 # Get The Largest Integer Less Than Or Equal To
 
 
 def less_or_equal(number):
-    import math
     try:
         return math.floor(number)
     except:
@@ -955,7 +956,6 @@ def jointext(firststring, secondstring):
 
 def dirtool(operation, directory):
     operation = operation.lower()
-    import os
     if operation == 'exists':
         return bool(os.path.exists(directory))
     elif operation == 'create':
@@ -978,7 +978,6 @@ def dirtool(operation, directory):
 
 
 def filedownload(source, destination):
-    import urllib
     if not isempty(source):
         if not isempty(destination):
             try:
@@ -999,7 +998,6 @@ def filedownload(source, destination):
 def file(operation, path):
     operation = operation.lower()
     if operation == 'exists':
-        import os.path
         return bool(os.path.isfile(path))
     elif operation == 'read':
         if file('exists', path):
@@ -1008,7 +1006,6 @@ def file(operation, path):
         else:
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
     elif operation == 'delete':
-        import os
         if file('exists', path):
             os.remove(path)
         else:
@@ -1054,7 +1051,6 @@ def about():
 
 
 def pyversion(part=None):
-    import sys
     if part == None:
         return sys.version_info
     return sys.version_info[part]
@@ -1317,7 +1313,6 @@ def replacetext(string, texttofind, texttoreplace):
 
 
 def convertbase(number, base=10):
-    import string
     integer = number
     if not integer:
         return '0'
@@ -1372,7 +1367,6 @@ def gettype(value):
 
 
 def availchar(charactertype):
-    import string
     if charactertype == 'letters':
         return string.ascii_letters
     elif charactertype == 'lowercase':
@@ -1434,7 +1428,6 @@ def letternum(letter):
 
 
 def yearlimit(limittype):
-    import datetime
     if limittype == 'min':
         return datetime.MINYEAR
     elif limittype == 'max':
@@ -1447,7 +1440,6 @@ def yearlimit(limittype):
 
 
 def timezone():
-    import time
     return time.timezone
 
 # Get A Random Number
@@ -1456,7 +1448,6 @@ def timezone():
 def randomnum(minimum, maximum):
     if isnumber(minimum):
         if isnumber(maximum):
-            from random import randint as randomnumber
             return randomnumber(minimum, maximum)
         else:
             raise RuntimeError('Invalid Value (0016)')
@@ -1467,7 +1458,6 @@ def randomnum(minimum, maximum):
 
 
 def mailto(to, cc, bcc, subject, body, autorun=True):
-    import webbrowser
     mailurl = 'mailto:' + str(to)
     if cc is None and bcc is None and subject is None and body is None:
         if autorun is True:
@@ -1502,7 +1492,6 @@ def mailto(to, cc, bcc, subject, body, autorun=True):
 
 
 def openurl(url):
-    import webbrowser
     try:
         webbrowser.open(url)
     except webbrowser.Error:
@@ -1512,7 +1501,6 @@ def openurl(url):
 
 
 def newwindow(url):
-    import webbrowser
     try:
         webbrowser.open_new(url)
     except webbrowser.Error:
@@ -1522,7 +1510,6 @@ def newwindow(url):
 
 
 def newtab(url):
-    import webbrowser
     try:
         webbrowser.open_new_tab(url)
     except webbrowser.Error:
@@ -1532,7 +1519,6 @@ def newtab(url):
 
 
 def getbrowser():
-    import webbrowser
     try:
         webbrowser.get(using=None)
     except:
@@ -1542,7 +1528,6 @@ def getbrowser():
 
 
 def randomstr(valuelist):
-    from random import choice
     try:
         return choice(valuelist)
     except IndexError:
@@ -1599,8 +1584,7 @@ def textalign(text, maxlength, align='left'):
 
 
 def timesince():
-    from time import time as time_now
-    return time_now()
+    return time()
 
 # Fix The Formatting Of Decimals And Integers
 
@@ -1614,7 +1598,6 @@ def decintfix(decorint=0):
 
 
 def getdatetime(timedateformat='complete'):
-    from datetime import datetime
     timedateformat = timedateformat.lower()
     if timedateformat == 'day':
         return ((str(datetime.now())).split(' ')[0]).split('-')[2]
