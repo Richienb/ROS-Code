@@ -1,8 +1,8 @@
 # Packages Used By ROS Code
 
-The following list outlines all the packages used by ROS Code - Useful if building from source.
+The following list outlines all the packages used by ROS Code - useful if building from source.
 
-Ensure you already have Python 3.x installed on your system along with Pip as the runtime does not have Pip.
+Ensure you already have Python 3.x installed on your system along with Pip as the runtime doesn't have pip installer by default.
 
 ```bat
 :: Install A Package
@@ -10,8 +10,33 @@ Ensure you already have Python 3.x installed on your system along with Pip as th
 pip install PACKAGE_NAME --target dir_to_runtime
 ```
 
-??? summary "Clipboard"
-    `pip install clipboard`
+??? done "Preinstalled with Python"
+    subprocess
+    os
+    sys
+    secrets
+    warnings
+    keyword
+    importlib
+    string
+    textwrap
+    pprint
+    math
+    operator
+    statistics
+    webbrowser
+    urllib
+    random
+    datetime
+    time
+    calendar
+    
+???+ help "Installation may be required"
+    pip
 
-??? summary "Colour"
-    `pip install colour`
+???+ warning "Installation required"
+    ??? summary "Clipboard"
+        `pip install clipboard'
+
+    ??? summary "Colour"
+        `pip install colour`
