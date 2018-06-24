@@ -11,25 +11,25 @@ pip install PACKAGE_NAME --target dir_to_runtime
 ```
 
 ??? done "Preinstalled with Python"
-    subprocess
-    os
-    sys
-    secrets
-    warnings
-    keyword
-    importlib
-    string
-    textwrap
-    pprint
-    math
-    operator
-    statistics
-    webbrowser
-    urllib
-    random
-    datetime
-    time
-    calendar
+    - subprocess
+    - os
+    - sys
+    - secrets
+    - warnings
+    - keyword
+    - importlib
+    - string
+    - textwrap
+    - pprint
+    - math
+    - operator
+    - statistics
+    - webbrowser
+    - urllib
+    - random
+    - datetime
+    - time
+    - calendar
     
 ??? help "Installation may be required"
     ??? summary "Pip"
