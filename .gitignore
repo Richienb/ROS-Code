@@ -1,4 +1,4 @@
-# jython cache
+# jython exclude cache
 runtime/plain_
 
 # Inno install creator output
@@ -21,7 +21,7 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-.eggs/
+.eggs/ffffffff
 lib/
 lib64/
 parts/
