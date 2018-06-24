@@ -163,6 +163,8 @@ def pykeyword(operation='list', keywordtotest=None):
         return keyword.iskeyword(str(keywordtotest))
 
 # Pretty print a list
+
+
 def prettyprinter(listtoprint, stream=None, indent=1, width=80, depth=None):
     from pprint import pprint
     pprint(listtoprint, stream, indent, width, depth)
