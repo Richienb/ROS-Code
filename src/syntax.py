@@ -149,10 +149,8 @@ def splitstring(string, split_character=' ', part=None):
 # Sort A List Into A Specific Order
 
 
-def sort(listtosort, key=None):
-    if key is None:
-        return sorted(listtosort)
-    return sorted(listtosort, key)
+def sort(listtosort, key=None, reversesort=False):
+    return sorted(listtosort, key, reversesort)
 
 # Check If A Keyword Relates To Python
 
