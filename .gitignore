@@ -1,6 +1,9 @@
 # Remove runtimes Path from language statistics
 runtime/* linguist-vendored
 
+# jython cache
+runtime/win/plain_
+
 # Inno install creator output
 install/Output
 
