@@ -9,11 +9,11 @@
 
 - The `run-file.py` file is for reading and executing code from a file passed as a runtime variable.
 
-Example:
 
-```bat
-python run-file.py test.ros
-```
+!!! example "Example"
+    ```bat
+    python run-file.py test.ros
+    ```
 
 - The `run-line.py` file is for executing a single line of code, passed as a runtime variable.
 
@@ -25,12 +25,11 @@ python run-line.py print_message.Hello World
 
 - The `syntax.py` file is for storing all the commands.
 
-Example:
-
-```python
-def print_message(contents=''):
-    print(contents)
-```
+??? example "Example"
+    ```python
+    def print_message(contents=''):
+        print(contents)
+    ```
 
 The code above enables functionality for the `print_message.Hello World` command
 
