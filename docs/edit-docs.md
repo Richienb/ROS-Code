@@ -5,13 +5,11 @@
 In order to edit the documentation, you will need:
 
 - An installation of Python 3.
-- Pip to install `mkdocs` and `mkdocs-material`.
+- Pip to install the required packages.
 
 ```bat
-:: Install mkdocs using pip
-pip install mkdocs
-:: Install mkdocs-material using pip
-pip install mkdocs-material
+:: Install required packages using Pip
+pip install mkdocs mkdocs-material pymdown-extensions Pygments
 ```
 
 After installing mkdocs, start a local server in order to view your changes live.
@@ -28,7 +26,7 @@ Now you can navigate to the URL shown in the terminal (usually [127.0.0.1:8000](
 ### Building
 
 !!! done "Automatic Building"
-    The documentation will automatically be built via [Travis CI](https://travis-ci.org/Richienb/ROS-Code) if the build succeeds.
+    The documentation will automatically be built via [Travis CI](https://travis-ci.org/Richienb/ROS-Code) if the build succeeds so manually deploying to Github Pages is not needed.
 
 Build the documentation to the `site` folder locally.
 
@@ -44,6 +42,5 @@ Deploy the documentation to the `gh-pages` branch in the repository.
 mkdocs gh-deploy
 ```
 
-### Notes
-
-Read the [mkdocs documentation](https://www.mkdocs.org) for more information.
+!!! note "Notes"
+    Read the [mkdocs documentation](https://www.mkdocs.org) for more information.
