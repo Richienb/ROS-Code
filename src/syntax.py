@@ -327,7 +327,7 @@ def bintobool(integer):
         elif integer == 1:
             return True
 
-# Reload A Module
+# Reload a module
 
 
 def modulereload(modulename):
