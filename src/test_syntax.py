@@ -89,6 +89,9 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.truthorliegame() in results, True)
         self.assertEqual(s.truthorliegame() in results, True)
 
+    def test_bintobool(self):
+        self.assertEqual(s.bintobool(0), False)
+        self.assertEqual(s.bintobool(1), True)
 
 if __name__ == '__main__':
     ut.main()

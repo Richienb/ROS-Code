@@ -317,7 +317,7 @@ def clipboard(action='get', text=None):
     elif action == 'preceed':
         clipboard.copy(str(text) + str(clipboard.paste))
 
-# Convert 0 Or 1 To False Or True
+# Convert 0 or 1 to False or True
 
 
 def bintobool(integer):
