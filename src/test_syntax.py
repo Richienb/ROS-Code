@@ -71,6 +71,7 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.diceroll(1, 10) in resultsext, True)
         self.assertEqual(s.diceroll(1, 10) in resultsext, True)
         self.assertEqual(s.diceroll(1, 10) in resultsext, True)
+        self.assertEqual(isinstance(s.diceroll(5), list), True)
 
     def test_yesnogame(self):
         results = ["Yes", "No"]
