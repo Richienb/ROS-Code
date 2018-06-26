@@ -360,7 +360,7 @@ def warnconfig(action='default'):
 
 
 def message_print(text, amount=1):
-    for i in range(times):
+    for i in range(amount):
         print(text)
 
 # Automatically solve a simple maths problem
