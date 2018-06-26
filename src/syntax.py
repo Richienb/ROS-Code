@@ -378,6 +378,28 @@ def autosolve(equation):
     elif equation.split(" ")[1] == "%":
         return int(equation.split(" ")[0]) % int(equation.split(" ")[2])
 
+
+# Automatically solve a hard maths problem
+
+
+def autohard(equation):
+    if equation.split(" ")[0] == "log":
+        return math.log(int(equation.split(" ")[1]))
+    elif equation.split(" ")[0] == "acos":
+        return math.acos(int(equation.split(" ")[1]))
+    elif equation.split(" ")[0] == "asin":
+        return math.asin(int(equation.split(" ")[1]))
+    elif equation.split(" ")[0] == "atan":
+        return math.atan(int(equation.split(" ")[1]))
+    elif equation.split(" ")[0] == "cos":
+        return math.cos(int(equation.split(" ")[1]))
+    elif equation.split(" ")[0] == "hypot":
+        return math.hypot(int(equation.split(" ")[1]))
+    elif equation.split(" ")[0] == "sin":
+        return math.sin(int(equation.split(" ")[1]))
+    elif equation.split(" ")[0] == "tab":
+        return math.tan(int(equation.split(" ")[1]))
+
 # Solve A Maths Equation
 
 
