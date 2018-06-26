@@ -339,7 +339,7 @@ def modulereload(modulename):
 def exitexecution(arguments=None):
     sys.exit(arguments)
 
-# Configure Warnings
+# Configure the Python warnings
 
 
 def warnconfig(action='default'):
