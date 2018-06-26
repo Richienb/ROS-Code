@@ -272,33 +272,6 @@ def truthorliegame():
         return 'Maybe'
     return 'Lie'
 
-# Play A Chance Game
-
-
-def chancegame(gamename='dice'):
-    gamename = gamename.lower()
-    if gamename == 'dice':
-        return genrandomnum(1, 6)
-    elif gamename == 'die':
-        return genrandomnum(1, 6)
-    elif gamename == 'coin':
-        if genrandomnum(1, 2) == 1:
-            return 'Heads'
-        return 'Tails'
-    elif gamename == 'truth':
-        truthnum = genrandomnum(1, 4)
-        if truthnum == 1:
-            return 'Truth'
-        elif truthnum == 2:
-            return 'Maybe'
-        elif truthnum == 3:
-            return 'Maybe'
-        return 'Lie'
-    elif gamename == 'yes':
-        if genrandomnum(1, 2) == 1:
-            return 'Yes'
-        return 'No'
-
 # Check If The User Is A Person
 
 
