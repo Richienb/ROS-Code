@@ -72,6 +72,16 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.diceroll(1, 10) in resultsext, True)
         self.assertEqual(s.diceroll(1, 10) in resultsext, True)
 
+    def test_yesnogame(self):
+        results = ["Yes", "No"]
+        resultsext = ["Yes", "No", "Maybe"]
+        self.assertEqual(s.yesnogame() in results, True)
+        self.assertEqual(s.yesnogame() in results, True)
+        self.assertEqual(s.yesnogame() in results, True)
+        self.assertEqual(s.yesnogame(True) in resultsext, True)
+        self.assertEqual(s.yesnogame(True) in resultsext, True)
+        self.assertEqual(s.yesnogame(True) in resultsext, True)
+
 
 if __name__ == '__main__':
     ut.main()
