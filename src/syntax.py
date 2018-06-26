@@ -400,7 +400,7 @@ def autohard(equation):
     elif equation.split(" ")[0] == "tab":
         return math.tan(int(equation.split(" ")[1]))
 
-# Solve A Maths Equation
+# Solve a simple maths equation manually (May be deprecated)
 
 
 def equation(operation, firstnum, secondnum):
@@ -419,7 +419,7 @@ def equation(operation, firstnum, secondnum):
         raise RuntimeError(
             'An Error Has Occured: You Entered An Invalid Operation (0003)')
 
-# Preform Scientific Operations
+# Solve scientific operations manually (May be deprecated)
 
 
 def scientific(number, operation, logbase=10):
