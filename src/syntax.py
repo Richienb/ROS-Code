@@ -260,6 +260,18 @@ def yesnogame(includemaybe=False):
     elif afternum == 3:
         return "Maybe"
 
+# Play the truth or lie game
+
+def truthorliegame():
+    truthnum = genrandomnum(1, 4)
+    if truthnum == 1:
+        return 'Truth'
+    elif truthnum == 2:
+        return 'Maybe'
+    elif truthnum == 3:
+        return 'Maybe'
+    return 'Lie'
+
 # Play A Chance Game
 
 
