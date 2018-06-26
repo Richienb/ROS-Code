@@ -356,7 +356,7 @@ def warnconfig(action='default'):
     elif action == 'once':
         warnings.filterwarnings('once')
 
-# Print A Message
+# Print a console message
 
 
 def message_print(text, amount=1):
