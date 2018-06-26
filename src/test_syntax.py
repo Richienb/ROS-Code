@@ -93,5 +93,16 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.bintobool(0), False)
         self.assertEqual(s.bintobool(1), True)
 
+    def test_equation(self):
+        self.assertEqual(equation("plus", 2, 5), 7)
+        self.assertEqual(equation("plus", 365, 164), 520)
+        self.assertEqual(equation("minus", 5, 2), 3)
+        self.assertEqual(equation("minus", 976, 245), 731)
+        self.assertEqual(equation("multiply", 2, 5), 10)
+        self.assertEqual(equation("multiply", 5, 2), 10)
+        self.assertEqual(equation("multiply", 56, 15), 840)
+        self.assertEqual(equation("divide", 5, 2), 2.5)
+        self.assertEqual(equation("divide", 125, 5), 25)
+
 if __name__ == '__main__':
     ut.main()
