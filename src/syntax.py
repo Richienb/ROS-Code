@@ -218,10 +218,10 @@ def isfib(number):
         else:
             return False
 
-# Do Paper Scissors Rock
+# Play paper scissors rock
 
 
-def psr(choice):
+def psrgame(choice):
     choice = choice.lower()
     choices = {'paper': 1, 'papers': 1, 'scissor': 2,
                'scissors': 2, 'rock': 3, 'rocks': 3}
@@ -232,6 +232,44 @@ def psr(choice):
         return 'Win'
     elif pcchoice > choices[choice]:
         return 'Loose'
+
+# Roll a dice
+
+def diceroll(dicecount=1, alwayslist=False):
+    dicecount = int(dicecount)
+    if dicecount == 1 and alwayslist == False:
+        return genrandomnum(1, 6)
+    else:
+        resultlist = []
+        for i in range(dicecount):
+            resultlist.append(genrandomnum(1, 6))
+
+# Play A Chance Game
+
+
+def chancegame(gamename='dice'):
+    gamename = gamename.lower()
+    if gamename == 'dice':
+        return gengenrandomnum(1, 6)
+    elif gamename == 'die':
+        return gengenrandomnum(1, 6)
+    elif gamename == 'coin':
+        if genrandomnum(1, 2) == 1:
+            return 'Heads'
+        return 'Tails'
+    elif gamename == 'truth':
+        truthnum = genrandomnum(1, 4)
+        if truthnum == 1:
+            return 'Truth'
+        elif truthnum == 2:
+            return 'Maybe'
+        elif truthnum == 3:
+            return 'Maybe'
+        return 'Lie'
+    elif gamename == 'yes':
+        if genrandomnum(1, 2) == 1:
+            return 'Yes'
+        return 'No'
 
 # Check If The User Is A Person
 
@@ -884,33 +922,6 @@ def cowsay(text='', align='centre'):
 
 def getletter(variable, letternumber):
     return str(variable)[letternumber - 1]
-
-# Play A Chance Game
-
-
-def chancegame(gamename='dice'):
-    gamename = gamename.lower()
-    if gamename == 'dice':
-        return gengenrandomnum(1, 6)
-    elif gamename == 'die':
-        return gengenrandomnum(1, 6)
-    elif gamename == 'coin':
-        if genrandomnum(1, 2) == 1:
-            return 'Heads'
-        return 'Tails'
-    elif gamename == 'truth':
-        truthnum = genrandomnum(1, 4)
-        if truthnum == 1:
-            return 'Truth'
-        elif truthnum == 2:
-            return 'Maybe'
-        elif truthnum == 3:
-            return 'Maybe'
-        return 'Lie'
-    elif gamename == 'yes':
-        if genrandomnum(1, 2) == 1:
-            return 'Yes'
-        return 'No'
 
 # Check If Something Is On The List
 

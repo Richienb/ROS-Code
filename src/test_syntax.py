@@ -53,14 +53,16 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.isfib(89), True)
         self.assertEqual(s.isfib(385), False)
 
-    def test_psr(self):
+    def test_psrgame(self):
         results =  ["Tie", "Win", "Loose"]
-        self.assertEqual(s.psr("paper") in results, True)
-        self.assertEqual(s.psr("scissor") in results, True)
-        self.assertEqual(s.psr("rock") in results, True)
-        self.assertEqual(s.psr("papers") in results, True)
-        self.assertEqual(s.psr("scissors") in results, True)
-        self.assertEqual(s.psr("rocks") in results, True)
+        self.assertEqual(s.psrgame("paper") in results, True)
+        self.assertEqual(s.psrgame("scissor") in results, True)
+        self.assertEqual(s.psrgame("rock") in results, True)
+        self.assertEqual(s.psrgame("papers") in results, True)
+        self.assertEqual(s.psrgame("scissors") in results, True)
+        self.assertEqual(s.psrgame("rocks") in results, True)
+
+
 
 if __name__ == '__main__':
     ut.main()
