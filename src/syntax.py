@@ -235,6 +235,7 @@ def psrgame(choice):
 
 # Roll a dice
 
+
 def diceroll(dicecount=1, dicesize=6, alwayslist=False):
     dicecount = int(dicecount)
     if dicecount == 1 and alwayslist == False:
@@ -246,6 +247,7 @@ def diceroll(dicecount=1, dicesize=6, alwayslist=False):
         return resultlist
 
 # Play the yes-no game
+
 
 def yesnogame(includemaybe=False):
     if includemaybe == True:
@@ -262,6 +264,7 @@ def yesnogame(includemaybe=False):
 
 # Play the truth or lie game
 
+
 def truthorliegame():
     truthnum = genrandomnum(1, 4)
     if truthnum == 1:
@@ -272,7 +275,7 @@ def truthorliegame():
         return 'Maybe'
     return 'Lie'
 
-# Check If The User Is A Person
+# Check if the user is a person by asking a simple maths question
 
 
 def captcha():
