@@ -356,12 +356,6 @@ def warnconfig(action='default'):
     elif action == 'once':
         warnings.filterwarnings('once')
 
-# Print Python Copyright Information
-
-
-def pycopyright():
-    return sys.copyright
-
 # Print A Message
 
 
@@ -1069,6 +1063,12 @@ def pyversion(part=None):
     if part == None:
         return sys.version_info
     return sys.version_info[part]
+
+# Print Python copyright information
+
+
+def pycopyright():
+    return sys.copyright
 
 # Convert Text To Binary Form
 
