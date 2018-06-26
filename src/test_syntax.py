@@ -35,10 +35,11 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.sort(['d', 'a', 'c', 'b'], None, True), ['d', 'c', 'b', 'a'])
 
     def test_pykeyword(self):
-        self.assertEqual('None' in s.pykeyword('list'), True)
-        self.assertEqual('and' in s.pykeyword('list'), True)
-        self.assertEqual('assert' in s.pykeyword('list'), True)
-        self.assertEqual('blahblah' in s.pykeyword('list'), False)
+        import keyword
+        self.assertEqual('None' in keyword.kwlist, True)
+        self.assertEqual('and' in keyword.kwlist, True)
+        self.assertEqual('assert' in keyword.kwlist, True)
+        self.assertEqual('blahblah' in keyword.kwlist, False)
         self.assertEqual(s.pykeyword('check', 'None'), True)
         self.assertEqual(s.pykeyword('check', 'and'), True)
         self.assertEqual(s.pykeyword('check', 'assert'), True)
@@ -51,6 +52,15 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.isfib(13), True)
         self.assertEqual(s.isfib(89), True)
         self.assertEqual(s.isfib(385), False)
+
+    def test_psr(self):
+        results =  ["Tie", "Win", "Loose"]
+        self.assertEqual(s.psr("paper") in results, True)
+        self.assertEqual(s.psr("scissor") in results, True)
+        self.assertEqual(s.psr("rock") in results, True)
+        self.assertEqual(s.psr("papers") in results, True)
+        self.assertEqual(s.psr("scissors") in results, True)
+        self.assertEqual(s.psr("rocks") in results, True)
 
 if __name__ == '__main__':
     ut.main()

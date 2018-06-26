@@ -25,14 +25,14 @@ import operator
 from math import pi
 import statistics
 from math import sqrt
+from random import randint as gengenrandomnum
+from random import choice as randomitem
 
 # Web modules
 import webbrowser
 import urllib
 
 # Time modules
-from random import randint as randomnum
-from random import choice as randomitem
 import datetime
 from datetime import datetime
 from time import time
@@ -225,7 +225,7 @@ def psr(choice):
     choice = choice.lower()
     choices = {'paper': 1, 'papers': 1, 'scissor': 2,
                'scissors': 2, 'rock': 3, 'rocks': 3}
-    pcchoice = randomnum(0, 3)
+    pcchoice = gengenrandomnum(0, 3)
     if pcchoice == choices[choice]:
         return 'Tie'
     elif pcchoice < choices[choice]:
@@ -242,14 +242,14 @@ def captcha():
                     'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10}
     numbertext = ['one', 'two', 'three', 'four',
                   'five', 'six', 'seven', 'eight', 'nine', 'ten']
-    if randomnum(1, 2) == 2:
+    if gengenrandomnum(1, 2) == 2:
         parta = randomitem(numbertext)
     else:
-        parta = randomnum(1, 10)
-    if randomnum(1, 2) == 2:
+        parta = gengenrandomnum(1, 10)
+    if gengenrandomnum(1, 2) == 2:
         partb = randomitem(numbertext)
     else:
-        partb = randomnum(1, 10)
+        partb = gengenrandomnum(1, 10)
     tryanswer = input('CAPTCHA: What\'s ' + str(parta) +
                       ' + ' + str(partb) + '? Your Answer (In Digits): ')
     if not bool(isinstance(parta, int)):
@@ -411,7 +411,7 @@ def randpassword(length):
     charstouse = string.ascii_letters + string.digits + string.punctuation
     newpass = ''
     for i in range(length):
-        newpass += str(charstouse[randomnum(1, len(charstouse))])
+        newpass += str(charstouse[gengenrandomnum(1, len(charstouse))])
     return newpass
 
 # Generate A Random Character
@@ -419,7 +419,7 @@ def randpassword(length):
 
 def randchar():
     while True:
-        trychar = charlist[randomnum(1, len(charlist))]
+        trychar = charlist[gengenrandomnum(1, len(charlist))]
         if len(trychar) == 1 and not(trychar in unwanted):
             return trychar
 
@@ -891,15 +891,15 @@ def getletter(variable, letternumber):
 def chancegame(gamename='dice'):
     gamename = gamename.lower()
     if gamename == 'dice':
-        return randomnum(1, 6)
+        return gengenrandomnum(1, 6)
     elif gamename == 'die':
-        return randomnum(1, 6)
+        return gengenrandomnum(1, 6)
     elif gamename == 'coin':
-        if randomnum(1, 2) == 1:
+        if genrandomnum(1, 2) == 1:
             return 'Heads'
         return 'Tails'
     elif gamename == 'truth':
-        truthnum = randomnum(1, 4)
+        truthnum = genrandomnum(1, 4)
         if truthnum == 1:
             return 'Truth'
         elif truthnum == 2:
@@ -908,7 +908,7 @@ def chancegame(gamename='dice'):
             return 'Maybe'
         return 'Lie'
     elif gamename == 'yes':
-        if randomnum(1, 2) == 1:
+        if genrandomnum(1, 2) == 1:
             return 'Yes'
         return 'No'
 
@@ -1448,7 +1448,7 @@ def timezone():
 def randomnum(minimum, maximum):
     if isnumber(minimum):
         if isnumber(maximum):
-            return randomnumber(minimum, maximum)
+            return genrandomnum(minimum, maximum)
         else:
             raise RuntimeError('Invalid Value (0016)')
     else:
