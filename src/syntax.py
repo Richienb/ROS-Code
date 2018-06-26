@@ -414,7 +414,8 @@ def equation(operation, firstnum, secondnum):
     elif operation == 'multiply':
         return (firstnum * secondnum)
     elif operation == 'divide':
-        return (firstnum / secondnum)
+        if not secondnum == 0:
+            return (firstnum / secondnum)
     else:
         raise RuntimeError(
             'An Error Has Occured: You Entered An Invalid Operation (0003)')
