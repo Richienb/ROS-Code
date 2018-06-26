@@ -243,6 +243,7 @@ def diceroll(dicecount=1, dicesize=6, alwayslist=False):
         resultlist = []
         for i in range(dicecount):
             resultlist.append(genrandomnum(1, dicesize))
+        return resultlist
 
 # Play the yes-no game
 
