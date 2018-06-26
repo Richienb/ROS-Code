@@ -83,6 +83,12 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.yesnogame(True) in resultsext, True)
         self.assertEqual(s.yesnogame(True) in resultsext, True)
 
+    def test_truthorliegame(self):
+        results = ["Truth", "Maybe", "Lie"]
+        self.assertEqual(s.truthorliegame() in results, True)
+        self.assertEqual(s.truthorliegame() in results, True)
+        self.assertEqual(s.truthorliegame() in results, True)
+
 
 if __name__ == '__main__':
     ut.main()
