@@ -363,6 +363,21 @@ def message_print(text, amount=1):
     for i in range(times):
         print(text)
 
+# Automatically solve a simple maths problem
+
+
+def autosolve(equation):
+    if equation.split(" ")[1] == "+":
+        return int(equation.split(" ")[0]) + int(equation.split(" ")[2])
+    elif equation.split(" ")[1] == "-":
+        return int(equation.split(" ")[0]) - int(equation.split(" ")[2])
+    elif equation.split(" ")[1] == "*":
+        return int(equation.split(" ")[0]) * int(equation.split(" ")[2])
+    elif equation.split(" ")[1] == "/":
+        return int(equation.split(" ")[0]) / int(equation.split(" ")[2])
+    elif equation.split(" ")[1] == "%":
+        return int(equation.split(" ")[0]) % int(equation.split(" ")[2])
+
 # Solve A Maths Equation
 
 
