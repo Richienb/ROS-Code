@@ -26,7 +26,8 @@ with open(args[1]) as f:
                 exec(str("syntax." + lastprinttext))
             except Exception as e:
                 template = "ERROR: An error of type {0} occured while running line {1} because {2}"
-                message = template.format(type(e).__name__, str(value[0] + 1), str(e.args[0]))
+                message = template.format(
+                    type(e).__name__, str(value[0] + 1), str(e.args[0]))
                 print(message)
                 quit(1)
         elif value[1].startswith('!!!'):
