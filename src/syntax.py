@@ -333,7 +333,7 @@ def bintobool(integer):
 def modulereload(modulename):
     importlib.reload(modulename)
 
-# Exit The Execution
+# Exit the current execution
 
 
 def exitexecution(arguments=None):
