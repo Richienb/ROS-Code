@@ -1,5 +1,5 @@
 from sys import argv as args
-from sys import exit as exit
+from sys import exit
 import syntax
 
 try:
