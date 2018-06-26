@@ -244,6 +244,21 @@ def diceroll(dicecount=1, dicesize=6, alwayslist=False):
         for i in range(dicecount):
             resultlist.append(genrandomnum(1, dicesize))
 
+# Play the yes-no game
+
+def yesnogame(includemaybe=False):
+    if includemaybe == True:
+        maxnum = 3
+    else:
+        maxnum = 2
+    afternum = genrandomnum(1, maxnum)
+    if afternum == 1:
+        return "Yes"
+    elif afternum == 2:
+        return "No"
+    elif afternum == 3:
+        return "Maybe"
+
 # Play A Chance Game
 
 
