@@ -304,7 +304,7 @@ def captcha():
         return False
     return parta + partb == tryanswer
 
-# Set Or Get The Content In The Clipboard
+# Gets, sets, appends or preceeds the clipboard contents
 
 
 def clipboard(action='get', text=None):
