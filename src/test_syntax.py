@@ -62,6 +62,15 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.psrgame("scissors") in results, True)
         self.assertEqual(s.psrgame("rocks") in results, True)
 
+    def test_diceroll(self):
+        results = [1, 2, 3, 4, 5, 6]
+        resultsext = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        self.assertEqual(s.diceroll() in results, True)
+        self.assertEqual(s.diceroll() in results, True)
+        self.assertEqual(s.diceroll() in results, True)
+        self.assertEqual(s.diceroll(1, 10) in resultsext, True)
+        self.assertEqual(s.diceroll(1, 10) in resultsext, True)
+        self.assertEqual(s.diceroll(1, 10) in resultsext, True)
 
 
 if __name__ == '__main__':

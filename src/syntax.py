@@ -25,7 +25,7 @@ import operator
 from math import pi
 import statistics
 from math import sqrt
-from random import randint as gengenrandomnum
+from random import randint as genrandomnum
 from random import choice as randomitem
 
 # Web modules
@@ -225,7 +225,7 @@ def psrgame(choice):
     choice = choice.lower()
     choices = {'paper': 1, 'papers': 1, 'scissor': 2,
                'scissors': 2, 'rock': 3, 'rocks': 3}
-    pcchoice = gengenrandomnum(0, 3)
+    pcchoice = genrandomnum(0, 3)
     if pcchoice == choices[choice]:
         return 'Tie'
     elif pcchoice < choices[choice]:
@@ -235,14 +235,14 @@ def psrgame(choice):
 
 # Roll a dice
 
-def diceroll(dicecount=1, alwayslist=False):
+def diceroll(dicecount=1, dicesize=6, alwayslist=False):
     dicecount = int(dicecount)
     if dicecount == 1 and alwayslist == False:
-        return genrandomnum(1, 6)
+        return genrandomnum(1, dicesize)
     else:
         resultlist = []
         for i in range(dicecount):
-            resultlist.append(genrandomnum(1, 6))
+            resultlist.append(genrandomnum(1, dicesize))
 
 # Play A Chance Game
 
@@ -250,9 +250,9 @@ def diceroll(dicecount=1, alwayslist=False):
 def chancegame(gamename='dice'):
     gamename = gamename.lower()
     if gamename == 'dice':
-        return gengenrandomnum(1, 6)
+        return genrandomnum(1, 6)
     elif gamename == 'die':
-        return gengenrandomnum(1, 6)
+        return genrandomnum(1, 6)
     elif gamename == 'coin':
         if genrandomnum(1, 2) == 1:
             return 'Heads'
@@ -280,14 +280,14 @@ def captcha():
                     'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10}
     numbertext = ['one', 'two', 'three', 'four',
                   'five', 'six', 'seven', 'eight', 'nine', 'ten']
-    if gengenrandomnum(1, 2) == 2:
+    if genrandomnum(1, 2) == 2:
         parta = randomitem(numbertext)
     else:
-        parta = gengenrandomnum(1, 10)
-    if gengenrandomnum(1, 2) == 2:
+        parta = genrandomnum(1, 10)
+    if genrandomnum(1, 2) == 2:
         partb = randomitem(numbertext)
     else:
-        partb = gengenrandomnum(1, 10)
+        partb = genrandomnum(1, 10)
     tryanswer = input('CAPTCHA: What\'s ' + str(parta) +
                       ' + ' + str(partb) + '? Your Answer (In Digits): ')
     if not bool(isinstance(parta, int)):
@@ -449,7 +449,7 @@ def randpassword(length):
     charstouse = string.ascii_letters + string.digits + string.punctuation
     newpass = ''
     for i in range(length):
-        newpass += str(charstouse[gengenrandomnum(1, len(charstouse))])
+        newpass += str(charstouse[genrandomnum(1, len(charstouse))])
     return newpass
 
 # Generate A Random Character
@@ -457,7 +457,7 @@ def randpassword(length):
 
 def randchar():
     while True:
-        trychar = charlist[gengenrandomnum(1, len(charlist))]
+        trychar = charlist[genrandomnum(1, len(charlist))]
         if len(trychar) == 1 and not(trychar in unwanted):
             return trychar
 
