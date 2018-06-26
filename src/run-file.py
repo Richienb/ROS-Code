@@ -11,7 +11,6 @@ except IndexError:
 with open(args[1]) as f:
     ignoreline = False
     content = f.readlines()
-    #content = [x.split(" ; ") for x in content if x.strip()]
     content = [x.strip() for x in content if x.strip()]
     for value in enumerate(content):
         if not(value[1].startswith('!')) and ignoreline == False:
