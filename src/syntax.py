@@ -359,7 +359,7 @@ def warnconfig(action='default'):
 # Print A Message
 
 
-def message_print(text, times=1):
+def message_print(text, amount=1):
     for i in range(times):
         print(text)
 
