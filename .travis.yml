@@ -28,5 +28,13 @@ deploy:
   on:
     branch:        master
 
+after_deploy:
+  - |
+    curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
+     -H "X-Auth-Email: ${email}" \
+     -H "X-Auth-Key: ${cf_api_key}" \
+     -H "Content-Type: application/json" \
+     --data '{"purge_everything":true}'
+
 notifications:
   email:           false
