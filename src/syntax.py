@@ -398,7 +398,7 @@ def autohard(equation):
     if equation.split(" ")[0] == "log":
         return math.log(num1)
     elif equation.split(" ")[0] == "acos":
-        return math.acos(num1
+        return math.acos(num1)
     elif equation.split(" ")[0] == "asin":
         return math.asin(num1)
     elif equation.split(" ")[0] == "atan":
