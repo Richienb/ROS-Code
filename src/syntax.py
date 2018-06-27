@@ -397,7 +397,7 @@ def autohard(equation):
         return math.hypot(int(equation.split(" ")[1]))
     elif equation.split(" ")[0] == "sin":
         return math.sin(int(equation.split(" ")[1]))
-    elif equation.split(" ")[0] == "tab":
+    elif equation.split(" ")[0] == "tan":
         return math.tan(int(equation.split(" ")[1]))
 
 # Solve a simple maths equation manually (May be deprecated)
