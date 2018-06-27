@@ -391,22 +391,30 @@ def autosolve(equation):
 
 
 def autohard(equation):
+    try:
+        num1 = int(equation.split(" ")[1])
+    except ValueError:
+        num1 = float(equation.split(" ")[1])
     if equation.split(" ")[0] == "log":
-        return math.log(int(equation.split(" ")[1]))
+        return math.log(num1)
     elif equation.split(" ")[0] == "acos":
-        return math.acos(int(equation.split(" ")[1]))
+        return math.acos(num1
     elif equation.split(" ")[0] == "asin":
-        return math.asin(int(equation.split(" ")[1]))
+        return math.asin(num1)
     elif equation.split(" ")[0] == "atan":
-        return math.atan(int(equation.split(" ")[1]))
+        return math.atan(num1)
     elif equation.split(" ")[0] == "cos":
-        return math.cos(int(equation.split(" ")[1]))
+        return math.cos(num1)
     elif equation.split(" ")[0] == "hypot":
-        return math.hypot(int(equation.split(" ")[1]))
+        try:
+            num2 = int(equation.split(" ")[2])
+        except ValueError:
+            num2 = float(equation.split(" ")[2])
+        return math.hypot(num1, num2)
     elif equation.split(" ")[0] == "sin":
-        return math.sin(int(equation.split(" ")[1]))
+        return math.sin(num1)
     elif equation.split(" ")[0] == "tan":
-        return math.tan(int(equation.split(" ")[1]))
+        return math.tan(num1)
 
 # Solve a simple maths equation manually (May be deprecated)
 
