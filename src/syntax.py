@@ -367,15 +367,15 @@ def message_print(text, amount=1):
 
 
 def autosolve(equation):
-    if equation.split(" ")[1] == "+":
+    if equation.split(" ")[1] in ["+", "plus", "add"]:
         return int(equation.split(" ")[0]) + int(equation.split(" ")[2])
-    elif equation.split(" ")[1] == "-":
+    elif equation.split(" ")[1] in ["-", "minus", "subtract"]:
         return int(equation.split(" ")[0]) - int(equation.split(" ")[2])
-    elif equation.split(" ")[1] == "*":
+    elif equation.split(" ")[1] in ["*", "times", "multiply"]:
         return int(equation.split(" ")[0]) * int(equation.split(" ")[2])
-    elif equation.split(" ")[1] == "/":
+    elif equation.split(" ")[1] in ["/", "divide", "quotient"]:
         return int(equation.split(" ")[0]) / int(equation.split(" ")[2])
-    elif equation.split(" ")[1] == "%":
+    elif equation.split(" ")[1] in ["%", "remainder", "rem"]:
         return int(equation.split(" ")[0]) % int(equation.split(" ")[2])
 
 
