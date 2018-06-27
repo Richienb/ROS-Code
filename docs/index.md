@@ -28,7 +28,7 @@ ___
     $ git clone https://github.com/Richienb/ROS-Code.git
     $ mv $PWD/ROS-Code/src/syntax.py $PWD/ROS-Code/src/ros.py
     $ cp -r $PWD/ROS-Code/src/ros.py .
-    $ rmdir ROS-Code
+    $ rmdir $PWD/ROS-Code
     ```
 
 !!! example "Insert ROS Code as a Python 3.x module in Terminal"
