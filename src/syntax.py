@@ -423,7 +423,7 @@ def equation(operation, firstnum, secondnum):
 # Solve scientific operations manually (May be deprecated)
 
 
-def scientific(number, operation, logbase=10):
+def scientific(number, operation, number2=None, logbase=10):
     if operation == 'log':
         return math.log(number, logbase)
     elif operation == 'acos':
@@ -435,7 +435,7 @@ def scientific(number, operation, logbase=10):
     elif operation == 'cos':
         return math.cos(number)
     elif operation == 'hypot':
-        return math.hypot(number)
+        return math.hypot(number, number2)
     elif operation == 'sin':
         return math.sin(number)
     elif operation == 'tan':
