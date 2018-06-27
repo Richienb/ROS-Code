@@ -367,16 +367,24 @@ def message_print(text, amount=1):
 
 
 def autosolve(equation):
+    try:
+        num1 = int(equation.split(" ")[0])
+    except ValueError:
+        num1 = float(equation.split(" ")[0])
+    try:
+        num2 = int(equation.split(" ")[2])
+    except ValueError:
+        num2 = float(equation.split(" ")[2])
     if equation.split(" ")[1] in ["+", "plus", "add"]:
-        return int(equation.split(" ")[0]) + int(equation.split(" ")[2])
+        return num1 + num2
     elif equation.split(" ")[1] in ["-", "minus", "subtract"]:
-        return int(equation.split(" ")[0]) - int(equation.split(" ")[2])
+        return num1 - num2
     elif equation.split(" ")[1] in ["*", "times", "multiply"]:
-        return int(equation.split(" ")[0]) * int(equation.split(" ")[2])
+        return num1 * num2
     elif equation.split(" ")[1] in ["/", "divide", "quotient"]:
-        return int(equation.split(" ")[0]) / int(equation.split(" ")[2])
+        return num1 / num2
     elif equation.split(" ")[1] in ["%", "remainder", "rem"]:
-        return int(equation.split(" ")[0]) % int(equation.split(" ")[2])
+        return num1 % num2
 
 
 # Automatically solve a hard maths problem
