@@ -1,6 +1,6 @@
 # Welcome To The ROS Code Documentation
 
-ROS Code is a revolutionary, modern and pleasing programming language to code in featuring a streamlined and speedy installation, a  very straightforward and simplistic syntax and is provided as a Python 3 library. 
+ROS Code is a revolutionary, modern and pleasing programming language to code in featuring a streamlined and speedy installation, a  very straightforward and simplistic syntax and is provided as a Python 3 library.
 
 For more information, click [here](https://www.ros-code.ga)
 
@@ -24,11 +24,12 @@ ___
 ___
 
 !!! example "Insert ROS Code as a Python 3.x module in Travis CI"
-    ```sh
-    $ git clone https://github.com/Richienb/ROS-Code.git
-    $ mv $PWD/ROS-Code/src/syntax.py $PWD/ROS-Code/src/ros.py
-    $ cp -r $PWD/ROS-Code/src/ros.py .
-    $ rmdir $PWD/ROS-Code
+    ```yml
+    install:
+      - git clone https://github.com/Richienb/ROS-Code.git
+      - mv $PWD/ROS-Code/src/syntax.py $PWD/ROS-Code/src/ros.py
+      - cp -r $PWD/ROS-Code/src/ros.py .
+      - rmdir $PWD/ROS-Code
     ```
 
 !!! example "Insert ROS Code as a Python 3.x module in Terminal"
@@ -39,7 +40,7 @@ ___
     $ rmdir ROS-Code
     ```
 
-!!! example "Insert ROS Code as a Python 3.x module in Windows CMD"
+!!! example "Insert ROS Code as a Python 3.x module in Windows Cmd"
     ```bat
     git clone https://github.com/Richienb/ROS-Code.git
     rename ROS-Code/src/syntax.py ros.py
