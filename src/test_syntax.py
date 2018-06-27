@@ -110,6 +110,15 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.equation("divide", 5, 2), 2.5)
         self.assertEqual(s.equation("divide", 125, 5), 25)
 
+    def test_scientific(self):
+        self.assertAlmostEqual(s.scientific(5, "log"), 0.69897000433)
+        self.assertAlmostEqual(s.scientific(0.5, "acos"), 1.0471975511965979)
+        self.assertAlmostEqual(s.scientific(0.5, "asin"), 0.5235987755982989)
+        self.assertAlmostEqual(s.scientific(0.5, "atan"), 0.4636476090008061)
+        self.assertAlmostEqual(s.scientific(5, "cos"), 0.28366218546)
+        self.assertEqual(s.scientific(5, "hypot", 12), 13)
+        self.assertAlmostEqual(s.scientific(5, "sin"), -0.95892427466)
+        self.assertAlmostEqual(s.scientific(5, "tan"), -3.38051500625)
 
 if __name__ == '__main__':
     ut.main()
