@@ -1,5 +1,5 @@
 from sys import argv as args
-from sys import exit as quit
+from sys import exit
 import syntax
 
 try:
@@ -13,7 +13,7 @@ with open(args[1]) as f:
     content = f.readlines()
     content = [x.strip() for x in content if x.strip()]
     for value in enumerate(content):
-        if not(value[1].startswith('!')) and ignoreline == False:
+        if not(value[1].startswith('!')) and ignoreline is False:
             firstpart = value[1].split(".")[0]
             lenoffirstpart = len(value[1].split(".")[0])
             afterpart = str(value[1][lenoffirstpart + 1:])
@@ -28,8 +28,8 @@ with open(args[1]) as f:
                 message = template.format(
                     type(e).__name__, str(value[0] + 1), str(e.args[0]))
                 print(message)
-                quit(1)
+                exit(1)
         elif value[1].startswith('!!!'):
             ignoreline = not(ignoreline)
 
-quit(0)
+exit(0)

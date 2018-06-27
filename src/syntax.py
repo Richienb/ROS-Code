@@ -36,7 +36,7 @@ import urllib
 import datetime
 from datetime import datetime
 from time import time
-from time import sleep as delay
+from time import sleep as delayfunc
 import calendar
 
 # Ensure ROS Code storage variables are global
@@ -768,7 +768,7 @@ def getstored():
 
 
 def delay(seconds):
-    delay(seconds)
+    delayfunc(seconds)
 
 # Waits For The User To Press Enter
 
@@ -837,11 +837,11 @@ def isnumber(value):
 
 def happybirthday(person):
     print('Happy Birthday To You')
-    delay(2)
+    delayfunc(2)
     print('Happy Birthday To You')
-    delay(2)
+    delayfunc(2)
     print('Happy Birthday Dear ' + str(case(person, argument='sentence')))
-    delay(2)
+    delayfunc(2)
     print('Happy Birthday To You')
 
 # Change The Casing Of Text
