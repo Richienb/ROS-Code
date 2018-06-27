@@ -99,6 +99,23 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.bintobool(0), False)
         self.assertEqual(s.bintobool(1), True)
 
+    def test_autosolve(self):
+        self.assertEqual(s.autosolve("1 + 1"), 2)
+        self.assertEqual(s.autosolve("1 plus 1"), 2)
+        self.assertEqual(s.autosolve("1 add 1"), 2)
+        self.assertEqual(s.autosolve("1 - 1"), 0)
+        self.assertEqual(s.autosolve("1 minus 1"), 0)
+        self.assertEqual(s.autosolve("1 subtract 1"), 0)
+        self.assertEqual(s.autosolve("1 * 1"), 1)
+        self.assertEqual(s.autosolve("1 times 1"), 1)
+        self.assertEqual(s.autosolve("1 multiply 1"), 1)
+        self.assertEqual(s.autosolve("1 / 1"), 1)
+        self.assertEqual(s.autosolve("1 divide 1"), 1)
+        self.assertEqual(s.autosolve("1 quotient 1"), 1)
+        self.assertEqual(s.autosolve("1 % 1"), 0)
+        self.assertEqual(s.autosolve("1 remainder 1"), 0)
+        self.assertEqual(s.autosolve("1 rem 1"), 0)
+
     def test_equation(self):
         self.assertEqual(s.equation("plus", 2, 5), 7)
         self.assertEqual(s.equation("plus", 365, 164), 529)
