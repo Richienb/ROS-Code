@@ -2,7 +2,6 @@
 
 ### Integrations
 [![Build Status](https://img.shields.io/travis/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://travis-ci.org/Richienb/ROS-Code) [![CodeFactor](https://www.codefactor.io/repository/github/richienb/ros-code/badge?longCache=true&style=for-the-badge)](https://www.codefactor.io/repository/github/richienb/ros-code)
-[![Coverity Scan](https://img.shields.io/coverity/scan/16099.svg?style=for-the-badge)](https://scan.coverity.com/projects/richienb-ros-code)
 
 ### Contributer Activity
 [![GitHub issues](https://img.shields.io/github/issues/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/pulls) [![GitHub forks](https://img.shields.io/github/forks/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/network) [![GitHub stars](https://img.shields.io/github/stars/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/stargazers)
