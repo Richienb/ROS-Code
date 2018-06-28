@@ -90,7 +90,7 @@ git clone https://github.com/Richienb/ROS-Code.git & cd ROS-Code & pip install -
 
 !!! example "Install ROS Code"
     ```sh
-    make install
+    make prepare
     ```
 
 !!! example "Uninstall ROS Code"
