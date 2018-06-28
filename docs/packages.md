@@ -11,33 +11,33 @@ pip install PACKAGE_NAME --target dir_to_runtime
 ```
 
 ??? done "Preinstalled with Python"
-    - subprocess
-    - os
-    - sys
-    - secrets
-    - warnings
-    - keyword
-    - importlib
-    - string
-    - textwrap
-    - pprint
-    - math
-    - operator
-    - statistics
-    - webbrowser
-    - urllib
-    - random
-    - datetime
-    - time
-    - calendar
-    
+    \- subprocess
+    \- os
+    \- sys
+    \- secrets
+    \- warnings
+    \- keyword
+    \- importlib
+    \- string
+    \- textwrap
+    \- pprint
+    \- math
+    \- operator
+    \- statistics
+    \- webbrowser
+    \- urllib
+    \- random
+    \- datetime
+    \- time
+    \- calendar
+
 ??? help "Installation may be required"
     ??? summary "Pip"
         Refer to the [Pip Documentation](https://pip.pypa.io/en/stable/installing/)
 
 !!! example "Helpful notice"
     All of the packages listed below can be install via the requirements.txt file and Pip
-    
+
     ```bat
     :: Navigate to the ROS Code directory
     cd C:\ROS-Code
@@ -60,17 +60,15 @@ pip install PACKAGE_NAME --target dir_to_runtime
 
     ???+ example "One Line Install"
         One line install: `mkdocs mkdocs-material pymdown-extensions Pygments`
-    
+
     ??? summary "Mkdocs"
         `pip install mkdocs`
-        
+
     ??? summary "Mkdocs Material"
         `pip install mkdocs-material`
-        
+
     ??? summary "Pymdown Extensions"
         `pip install pymdown-extensions`
-        
+
     ??? summary "Pygments"
         `pip install pygments`
-    
-    
