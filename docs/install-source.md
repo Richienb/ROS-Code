@@ -40,25 +40,33 @@
     ```
 
 !!! example "Remove the unneeded folder"
+    Shell/Terminal
     ```sh
-    rmdir ROS-Code
+    rm -f -r -d ROS-Code
     ```
+
+    Batch/Cmd/Powershell
+    ```bat
+    rmdir /s /q ROS-Code
+    ```
+
+
 
 ### As a one-liner
 
 Shell/Terminal
 ```sh
-git clone https://github.com/Richienb/ROS-Code.git ; cd ROS-Code ; pip install -r requirements.txt ; cd .. ; cp ROS-Code/src/syntax.py . ; cp ROS-Code/src/run-file.py . ; rmdir ROS-Code
+git clone https://github.com/Richienb/ROS-Code.git ; cd ROS-Code ; pip install -r requirements.txt ; cd .. ; cp ROS-Code/src/syntax.py . ; cp ROS-Code/src/run-file.py . ; rm -f -r -d ROS-Code
 ```
 
 Powershell
 ```bat
-git clone https://github.com/Richienb/ROS-Code.git ; cd ROS-Code ; pip install -r requirements.txt ; cd .. ; copy ROS-Code/src/syntax.py . ; copy ROS-Code/src/run-file.py . ; rmdir ROS-Code
+git clone https://github.com/Richienb/ROS-Code.git ; cd ROS-Code ; pip install -r requirements.txt ; cd .. ; copy ROS-Code/src/syntax.py . ; copy ROS-Code/src/run-file.py . ; rmdir /s /q ROS-Code
 ```
 
 Batch/Cmd
 ```bat
-git clone https://github.com/Richienb/ROS-Code.git & cd ROS-Code & pip install -r requirements.txt & cd .. & copy ROS-Code/src/syntax.py . & copy ROS-Code/src/run-file.py . & rmdir ROS-Code
+git clone https://github.com/Richienb/ROS-Code.git & cd ROS-Code & pip install -r requirements.txt & cd .. & copy ROS-Code/src/syntax.py . & copy ROS-Code/src/run-file.py . & rmdir /s /q ROS-Code
 ```
 
 ### Using make
