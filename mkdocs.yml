@@ -29,8 +29,11 @@ pages:
     - Home: index.md
     - Main:
       - Information Badges: badges.md
-      - Installation: installation.md
       - Commands: commands.md
+    - Installation:
+      - Install As Module: install-module.md
+      - Install From Source: install-source.md
+      - Install Version 1.0: install-old.md
     - Other:
       - Recommended Syntax: syntax.md
       - API Usage: api-usage.md
@@ -38,6 +41,7 @@ pages:
       - Edit The Documentation: edit-docs.md
       - Edit The Source Code: edit-code.md
       - Packages Used: packages.md
+      - Unit Testing: unittesting.md
     - Version 1.0:
       - Home: versionone.md
       - Build Status: versionone-buildstatus.md
