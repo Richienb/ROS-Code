@@ -3,6 +3,7 @@
 !!! warning "Compatibility"
     Make is only preinstalled in Linux. On other operating systems, `make` needs to be manually installed.
     For Windows, I recommend using [Chocolatey](https://chocolatey.org) and running the following command:
+
     ```bat
     choco install make
     ```
