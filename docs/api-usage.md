@@ -1,5 +1,8 @@
 # Using the ROS Code API
 
+!!! bug "API Under Development"
+    The ROS Code 2.0 API is currently under development.
+
 ## Usage In The Commandline
 
 ```bat
