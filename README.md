@@ -6,10 +6,11 @@ For more information, click [here](https://www.ros-code.ga)
 
 To watch the overview video, click [here](https://www.youtube.com/watch?v=lPCTNKA8otA) (you should really watch it).
 
-___
+* * *
 
 [![Build Status](https://img.shields.io/travis/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://travis-ci.org/Richienb/ROS-Code) [![CodeFactor](https://www.codefactor.io/repository/github/richienb/ros-code/badge?longCache=true&style=for-the-badge)](https://www.codefactor.io/repository/github/richienb/ros-code)
+[![Gitter](https://img.shields.io/gitter/room/Richienb/ROS-Code.svg?style=for-the-badge)](https://gitter.im/ROS-Code)
 
-___
+* * *
 
 ### [Read More On The Website](https://www.ros-code.ga)

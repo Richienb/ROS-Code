@@ -3,6 +3,7 @@
 ### Integrations
 
 [![Build Status](https://img.shields.io/travis/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://travis-ci.org/Richienb/ROS-Code) [![CodeFactor](https://www.codefactor.io/repository/github/richienb/ros-code/badge?longCache=true&style=for-the-badge)](https://www.codefactor.io/repository/github/richienb/ros-code)
+[![Gitter](https://img.shields.io/gitter/room/Richienb/ROS-Code.svg?style=for-the-badge)](https://gitter.im/ROS-Code)
 
 ### Contributer Activity
 
