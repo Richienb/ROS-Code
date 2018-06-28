@@ -4,6 +4,9 @@ runtime/plain_
 # stackdump files
 *.stackdump
 
+# ignore Make file git cloning
+ROS-Code/
+
 # Python Gitignore
 
 # Byte-compiled / optimized / DLL files

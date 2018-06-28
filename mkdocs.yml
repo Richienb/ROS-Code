@@ -36,6 +36,7 @@ pages:
       - Install Version 1.0: install-old.md
     - Other:
       - Recommended Syntax: syntax.md
+      - Makefile Commands: makefile-commands.md
       - API Usage: api-usage.md
     - Contribution:
       - Edit The Documentation: edit-docs.md
