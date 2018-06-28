@@ -118,5 +118,14 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\invalid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\offline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\valid.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
