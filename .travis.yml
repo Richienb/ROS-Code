@@ -1,11 +1,11 @@
-dist: trusty
-sudo: false
+dist:                    trusty
+sudo:                    false
 
 matrix:
   include:
-    - language:        python
-      python:          3.6.5
-      branches:        master
+    - language:          python
+      python:            3.6.5
+      branches:          master
       before_script:
         - cd src
         - python test_syntax.py
@@ -16,12 +16,12 @@ matrix:
         - cd ..
         - mkdocs build --verbose --clean --strict
       deploy:
-        provider:      pages
-        skip_cleanup:  true
-        github_token:  $github_token
-        local_dir:     site
+        provider:        pages
+        skip_cleanup:    true
+        github_token:    $github_token
+        local_dir:       site
         on:
-          branch:      master
+          branch:        master
       after_deploy:
         - |
         curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
@@ -30,7 +30,7 @@ matrix:
          -H "Content-Type: application/json" \
          --data '{"purge_everything":true}'
 
-    - language: generic
+    - language:          generic
         addons:
           apt:
             packages:
@@ -56,4 +56,4 @@ env:
       - "PATH=$PATH:$TRAVIS_MSBUILD_BIN"
 
 notifications:
-  email:               false
+  email:                 false
