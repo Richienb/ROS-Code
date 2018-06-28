@@ -25,6 +25,16 @@
     pip install -r requirements.txt
     cd ..
     ```
+!!! example "Rename syntax.py to ros.py"
+    Shell/Terminal
+    ```sh
+    mv $PWD/ROS-Code/src/syntax.py $PWD/ROS-Code/src/ros.py
+    ```
+
+    Batch/Cmd/Powershell
+    ```bat
+    rename /ROS-Code/src/syntax.py ros.py
+    ```
 
 !!! example "Fetch the required files"
     Shell/Terminal
@@ -56,17 +66,17 @@
 
 Shell/Terminal
 ```sh
-git clone https://github.com/Richienb/ROS-Code.git ; cd ROS-Code ; pip install -r requirements.txt ; cd .. ; cp ROS-Code/src/syntax.py . ; cp ROS-Code/src/run-file.py . ; rm -f -r -d ROS-Code
+git clone https://github.com/Richienb/ROS-Code.git ; cd ROS-Code ; pip install -r requirements.txt ; cd .. ; mv $PWD/ROS-Code/src/syntax.py $PWD/ROS-Code/src/ros.py ; cp ROS-Code/src/syntax.py . ; cp ROS-Code/src/run-file.py . ; rm -f -r -d ROS-Code
 ```
 
 Powershell
 ```bat
-git clone https://github.com/Richienb/ROS-Code.git ; cd ROS-Code ; pip install -r requirements.txt ; cd .. ; copy ROS-Code/src/syntax.py . ; copy ROS-Code/src/run-file.py . ; rmdir /s /q ROS-Code
+git clone https://github.com/Richienb/ROS-Code.git ; cd ROS-Code ; pip install -r requirements.txt ; cd .. ; rename /ROS-Code/src/syntax.py ros.py ; copy ROS-Code/src/syntax.py . ; copy ROS-Code/src/run-file.py . ; rmdir /s /q ROS-Code
 ```
 
 Batch/Cmd
 ```bat
-git clone https://github.com/Richienb/ROS-Code.git & cd ROS-Code & pip install -r requirements.txt & cd .. & copy ROS-Code/src/syntax.py . & copy ROS-Code/src/run-file.py . & rmdir /s /q ROS-Code
+git clone https://github.com/Richienb/ROS-Code.git & cd ROS-Code & pip install -r requirements.txt & cd .. & rename /ROS-Code/src/syntax.py ros.py & copy ROS-Code/src/syntax.py . & copy ROS-Code/src/run-file.py . & rmdir /s /q ROS-Code
 ```
 
 ### Using make
