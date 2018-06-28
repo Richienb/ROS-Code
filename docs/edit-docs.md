@@ -4,8 +4,8 @@
 
 In order to edit the documentation, you will need:
 
-- An installation of Python 3.
-- Pip to install the required packages.
+-   An installation of Python 3.
+-   Pip to install the required packages.
 
 ```bat
 :: Install required packages using Pip
