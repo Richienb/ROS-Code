@@ -2,7 +2,7 @@ details {
   display: block;
 }
 
-details[open] > summary::before {
+details[open]>summary::before {
   content: "\25BC";
 }
 
@@ -27,7 +27,8 @@ details summary::-webkit-details-marker {
 /* Attach the "no-details" class to details tags
    in browsers that do not support them to get
    open/show functionality. */
-details.no-details:not([open]) > * {
+
+details.no-details:not([open])>* {
   display: none;
 }
 
