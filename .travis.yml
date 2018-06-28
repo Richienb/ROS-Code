@@ -1,40 +1,59 @@
-sudo:              false
+dist: trusty
+sudo: false
 
-language:          python
+matrix:
+  include:
+    - language:        python
+      python:          3.6.5
+      branches:        master
+      before_script:
+        - cd src
+        - python test_syntax.py
+      script:
+        - python run-file.py "test.ros"
+        - #python run-line.py "print_message.Hello World"
+      before_deploy:
+        - cd ..
+        - mkdocs build --verbose --clean --strict
+      deploy:
+        provider:      pages
+        skip_cleanup:  true
+        github_token:  $github_token
+        local_dir:     site
+        on:
+          branch:      master
+      after_deploy:
+        - |
+        curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
+         -H "X-Auth-Email: ${email}" \
+         -H "X-Auth-Key: ${cf_api_key}" \
+         -H "Content-Type: application/json" \
+         --data '{"purge_everything":true}'
 
-python:
-  - 3.6.5
+    - language: generic
+        addons:
+          apt:
+            packages:
+              - libunwind8
+        before_install:
+          - cd install
+          - chmod a+x "$TRAVIS_MSBUILD_BIN"/msbuild-prepare
+          - msbuild-prepare
+        install:
+          - mkdir deps
+          - git clone https://github.com/0x0ade/travis-msbuild.git $PWD/install/deps
+        before_script:
+          - nuget restore "install/ROS Code 2.0 Installer/ROS Code 2.0 Installer.sln"
+        script:
+          - msbuild "install\ROS Code 2.0 Installer\ROS Code 2.0 Installer\ROS Code 2.0 Installer.vbproj"
 
-branches:
-  - master
-
-before_script:
-  - cd src
-  - python test_syntax.py
-
-script:
-  - python run-file.py "test.ros"
-  - #python run-line.py "print_message.Hello World"
-
-before_deploy:
-  - cd ..
-  - mkdocs build --verbose --clean --strict
-
-deploy:
-  provider:        pages
-  skip_cleanup:    true
-  github_token:    $github_token
-  local_dir:       site
-  on:
-    branch:        master
-
-after_deploy:
-  - |
-    curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
-     -H "X-Auth-Email: ${email}" \
-     -H "X-Auth-Key: ${cf_api_key}" \
-     -H "Content-Type: application/json" \
-     --data '{"purge_everything":true}'
+env:
+    global:
+      - "TRAVIS_MSBUILD_MODE=framework"
+      - "TRAVIS_MSBUILD=$PWD/install/deps/travis-msbuild"
+      - "TRAVIS_MSBUILD_BIN=$TRAVIS_MSBUILD/bin"
+      - "TRAVIS_MSBUILD_FRAMEWORK=$TRAVIS_MSBUILD/lib-dotnet"
+      - "PATH=$PATH:$TRAVIS_MSBUILD_BIN"
 
 notifications:
-  email:           false
+  email:               false
