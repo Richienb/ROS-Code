@@ -1,6 +1,9 @@
 # jython exclude cache
 runtime/plain_
 
+# stackdump files
+*.stackdump
+
 # Python Gitignore
 
 # Byte-compiled / optimized / DLL files
