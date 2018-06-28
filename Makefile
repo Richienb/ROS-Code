@@ -1,6 +1,7 @@
 # If code is run with no parameters
+# Prepare ROS Code
 prepare:
-	echo The current directory is $PWD
+	#echo The current directory is $PWD
 	rm -f -r -d ROS-Code
 	rm -f ros.py
 	rm -f run-file.py
