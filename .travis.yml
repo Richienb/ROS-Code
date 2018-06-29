@@ -8,6 +8,14 @@ python:
 branches:
   - master
 
+before_install:
+  - git config --global user.email "richiebendall@gmail.com"
+  - git config --global user.name "Richienb"
+  
+install:
+  - pip install -r requirements.txt
+  - git clone https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git ./repo
+
 before_script:
   - cd src
   - python test_syntax.py
@@ -15,10 +23,6 @@ before_script:
 script:
   - python run-file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
-  - pasteurize -w syntax.py
-  - mv $PWD/syntax.py $PWD/syntax2.py
-  - pasteurize -w run-file.py
-  - mv $PWD/run-file.py $PWD/run-file2.py
 
 before_deploy:
   - cd ..
@@ -39,18 +43,16 @@ after_deploy:
      -H "X-Auth-Key: ${cf_api_key}" \
      -H "Content-Type: application/json" \
      --data '{"purge_everything":true}'
+  - cd repo
+  - pasteurize -w syntax.py
+  - mv $PWD/syntax.py $PWD/syntax2.py
+  - pasteurize -w run-file.py
+  - mv $PWD/run-file.py $PWD/run-file2.py
 
 after_success:
-  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
-  - git clone git://${gh_repo}
-  - mv -f ${files} ${repo}
-  - cd ${repo}
-  - git remote
-  - git config user.email ${email}
-  - git config user.name ${user}
-  - git add ${files}
-  - git commit -m "${MESSAGE}"
-  - git push "https://${github_token}@${gh_repo}" master > /dev/null 2>&1
+  - git add syntax2.py run-file2.py
+  - git commit -m "Actions done. [skip ci]"
+  - git push
 
 notifications:
   email:          false
