@@ -25,7 +25,7 @@ script:
   - #python run-line.py "print_message.Hello World"
 
 before_deploy:
-  - cd ..
+  - cd $TRAVIS_BUILD_DIR
   - mkdocs build --verbose --clean --strict
 
 deploy:
@@ -45,7 +45,7 @@ after_deploy:
      --data '{"purge_everything":true}'
 
 after_success:
-  - cd repo
+  - cd $TRAVIS_BUILD_DIR/repo/src
   - pasteurize -w syntax.py
   - mv $PWD/syntax.py $PWD/syntax2.py
   - pasteurize -w run-file.py
