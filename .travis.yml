@@ -15,6 +15,10 @@ before_script:
 script:
   - python run-file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
+  - pasteurize -w syntax.py
+  - mv $PWD/src/syntax.py $PWD/src/syntax2.py
+  - pasteurize -w run-file.py
+  - mv $PWD/src/run-file.py $PWD/src/run-file2.py
 
 before_deploy:
   - cd ..
@@ -35,6 +39,18 @@ after_deploy:
      -H "X-Auth-Key: ${cf_api_key}" \
      -H "Content-Type: application/json" \
      --data '{"purge_everything":true}'
+
+after_success:
+  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
+  - git clone git://${gh_repo}
+  - mv -f ${files} ${repo}
+  - cd ${repo}
+  - git remote
+  - git config user.email ${email}
+  - git config user.name ${user}
+  - git add ${files}
+  - git commit -m ${MESSAGE}
+  - git push "https://${github_token}@${gh_repo}" master > /dev/null 2>&1
 
 notifications:
   email:          false
