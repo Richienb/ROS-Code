@@ -457,7 +457,7 @@ def scientific(number, operation, number2=None, logbase=10):
     elif operation == 'tan':
         return math.tan(number)
 
-# Get The Lowest Common Multiple In Two Numbers
+# Find the lowest common multiple of 2 numbers
 
 
 def lcm(num1, num2):
