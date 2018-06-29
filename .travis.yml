@@ -43,13 +43,13 @@ after_deploy:
      -H "X-Auth-Key: ${cf_api_key}" \
      -H "Content-Type: application/json" \
      --data '{"purge_everything":true}'
+
+after_success:
   - cd repo
   - pasteurize -w syntax.py
   - mv $PWD/syntax.py $PWD/syntax2.py
   - pasteurize -w run-file.py
   - mv $PWD/run-file.py $PWD/run-file2.py
-
-after_success:
   - git add syntax2.py run-file2.py
   - git commit -m "Actions done. [skip ci]"
   - git push
