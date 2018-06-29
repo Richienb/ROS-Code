@@ -49,7 +49,7 @@ after_success:
   - git config user.email ${email}
   - git config user.name ${user}
   - git add ${files}
-  - git commit -m ${MESSAGE}
+  - git commit -m "${MESSAGE}"
   - git push "https://${github_token}@${gh_repo}" master > /dev/null 2>&1
 
 notifications:
