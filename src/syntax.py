@@ -1124,6 +1124,13 @@ def pyversion(part=None):
 def pycopyright():
     return sys.copyright
 
+# Get the value of __name__
+
+def pyname(ifmain=False):
+    if ifmain == True:
+        return __name__ == "__main__"
+    return __name__
+
 # Convert Text To Binary Form
 
 
