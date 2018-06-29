@@ -137,5 +137,12 @@ class TestCode(ut.TestCase):
         self.assertAlmostEqual(s.scientific(5, "sin"), -0.95892427466)
         self.assertAlmostEqual(s.scientific(5, "tan"), -3.38051500625)
 
+    def test_lcm(self):
+        self.assertEqual(s.lcm(7, 9), 63)
+        self.assertEqual(s.lcm(10, 9), 90)
+        self.assertEqual(s.lcm(9, 8), 72)
+        self.assertEqual(s.lcm(6, 5), 30)
+        self.assertEqual(s.lcm(5, 4), 20)
+
 if __name__ == '__main__':
     ut.main()
