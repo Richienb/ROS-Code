@@ -16,9 +16,9 @@ script:
   - python run-file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
   - pasteurize -w syntax.py
-  - mv $PWD/src/syntax.py $PWD/src/syntax2.py
+  - mv $PWD/syntax.py $PWD/syntax2.py
   - pasteurize -w run-file.py
-  - mv $PWD/src/run-file.py $PWD/src/run-file2.py
+  - mv $PWD/run-file.py $PWD/run-file2.py
 
 before_deploy:
   - cd ..
