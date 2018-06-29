@@ -51,7 +51,7 @@ after_success:
   - pasteurize -w run-file.py
   - mv $PWD/run-file.py $PWD/run-file2.py
   - git add syntax2.py run-file2.py
-  - git commit -m "Actions done. [skip ci]"
+  - git commit -m "Added Python 2 Backwards Compatible Files [skip ci]"
   - git push
 
 notifications:
