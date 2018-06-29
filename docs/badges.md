@@ -5,6 +5,10 @@
 [![Build Status](https://img.shields.io/travis/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://travis-ci.org/Richienb/ROS-Code) [![CodeFactor](https://www.codefactor.io/repository/github/richienb/ros-code/badge?longCache=true&style=for-the-badge)](https://www.codefactor.io/repository/github/richienb/ros-code)
 [![Gitter](https://img.shields.io/gitter/room/Richienb/ROS-Code.svg?style=for-the-badge)](https://gitter.im/ROS-Code)
 
+### Chat
+
+[![Gitter](https://img.shields.io/gitter/room/Richienb/ROS-Code.svg?style=for-the-badge)](https://gitter.im/ROS-Code) [![Discord](https://img.shields.io/discord/461977906156142601.svg?style=for-the-badge)](https://discordapp.com/invite/KevXkP7)
+
 ### Contributer Activity
 
 [![GitHub issues](https://img.shields.io/github/issues/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/pulls) [![GitHub forks](https://img.shields.io/github/forks/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/network) [![GitHub stars](https://img.shields.io/github/stars/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/stargazers)
