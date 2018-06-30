@@ -14,9 +14,6 @@
 ???+ summary "Uninstall ROS Code"
     `make uninstall`
 
-???+ summary "Install Main Pip Packages"
-    `make pipmain`
-
 ???+ summary "Install Main mkdocs Packages"
     `make pipmkdocs`
 
