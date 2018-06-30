@@ -17,9 +17,6 @@ prepare:
 uninstall:
 	rm syntax.py
 	rm run-file.py
-# Install main Pip packages
-pipmain: mainmodules.txt
-	pip install -r mainmodules.txt
 # Install main mkdocs packages
 pipmkdocs:
 	pip install mkdocs mkdocs-material pymdown-extensions Pygments
