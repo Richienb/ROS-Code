@@ -6,8 +6,6 @@ mkdocs
 mkdocs-material
 pymdown-extensions
 Pygments
-# Python 3 to 2 converter
-future
 # Unit testing
 flake8
 pylint
