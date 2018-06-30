@@ -151,5 +151,12 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.hcf(70, 20), 10)
         self.assertEqual(s.hcf(40, 24), 8)
 
+    def test_factors(self):
+        self.assertEqual(s.factors(1), [1])
+        self.assertEqual(s.factors(2), [1, 2])
+        self.assertEqual(s.factors(4), [1, 2, 4])
+        self.assertEqual(s.factors(18), [1, 2, 3, 6, 9, 18])
+        self.assertEqual(s.factors(42), [1, 2, 3, 6, 7, 14, 21, 42])
+
 if __name__ == '__main__':
     ut.main()
