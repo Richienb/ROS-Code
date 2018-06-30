@@ -1606,7 +1606,7 @@ def getbrowser():
 
 def randomstr(valuelist):
     try:
-        return choice(valuelist)
+        return randomitem(valuelist)
     except IndexError:
         raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 
