@@ -484,7 +484,7 @@ def lcm(num1, num2):
         else:
             bigger += 1
 
-# Get The Highest Common Factor In Two Numbers
+# Find the lowest common multiple of 2 numbers
 
 
 def hcf(num1, num2):
@@ -492,26 +492,29 @@ def hcf(num1, num2):
         smaller = num2
     else:
         smaller = num1
-    for i in range(2, smaller + 1):
-        if num1 % i == 0 and num2 % i == 0:
-            return i
+    for i in range(1, smaller + 1):
+        if((num1 % i == 0) and (num2 % i == 0)):
+            hcf = i
+    return hcf
 
-# Get The Factors Of A Number
+# Find all the factors of a number
 
 
 def factors(number):
-    factors = ''
+    factors = []
     for i in range(1, number + 1):
         if number % i == 0:
-            factors += (str(i) + ', ')
-    factors = factors.split(str(number))[0] + str(number)
+            factors.append(i)
     return factors
 
 # Generate A Completely Random Password
 
 
 def randpassword(length):
-    charstouse = string.ascii_letters + string.digits + string.punctuation
+    charstouse = []
+    charstouse.append(string.ascii_letters)
+    charstouse.append(string.digits)
+    charstouse.append(string.punctuation)
     newpass = ''
     for i in range(length):
         newpass += str(charstouse[genrandomnum(1, len(charstouse))])
@@ -1138,6 +1141,7 @@ def pycopyright():
     return sys.copyright
 
 # Get the value of __name__
+
 
 def pyname(ifmain=False):
     if ifmain == True:
