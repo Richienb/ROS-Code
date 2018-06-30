@@ -160,7 +160,7 @@ class TestCode(ut.TestCase):
 
     def test_randstring(self):
         self.assertEqual(len(s.randstring(5)), 5)
-        self.assertEqual((type(s.randstring(5)), "string")
+        self.assertEqual(type(s.randstring(5)), "string")
 
 if __name__ == '__main__':
     ut.main()
