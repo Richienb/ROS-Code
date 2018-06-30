@@ -484,15 +484,14 @@ def hcf(num1, num2):
             hcf = i
     return hcf
 
-# Get The Factors Of A Number
+# Find all the factors of a number
 
 
 def factors(number):
-    factors = ''
+    factors = []
     for i in range(1, number + 1):
         if number % i == 0:
-            factors += (str(i) + ', ')
-    factors = factors.split(str(number))[0] + str(number)
+            factors.append(i)
     return factors
 
 # Generate A Completely Random Password
