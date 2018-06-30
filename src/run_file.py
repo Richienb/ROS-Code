@@ -6,9 +6,9 @@ from builtins import ( bytes, dict, int, list, object, range, str, ascii, chr, h
                       input, next, oct, open, pow, round, super, filter, map, zip )
 
 # Main Modules
+import syntax
 from sys import argv as args
 from sys import exit
-import syntax
 
 try:
     args[1]
