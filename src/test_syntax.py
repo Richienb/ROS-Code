@@ -158,5 +158,9 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.factors(18), [1, 2, 3, 6, 9, 18])
         self.assertEqual(s.factors(42), [1, 2, 3, 6, 7, 14, 21, 42])
 
+    #def test_randpassword(self):
+    #    self.assertEqual(len(s.randpassword(5)), 5)
+    #    self.assertEqual((isinstance(s.randpassword(5))), "string")
+
 if __name__ == '__main__':
     ut.main()

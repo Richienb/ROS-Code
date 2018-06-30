@@ -498,7 +498,10 @@ def factors(number):
 
 
 def randpassword(length):
-    charstouse = string.ascii_letters + string.digits + string.punctuation
+    charstouse = []
+    charstouse.append(string.ascii_letters)
+    charstouse.append(string.digits)
+    charstouse.append(string.punctuation)
     newpass = ''
     for i in range(length):
         newpass += str(charstouse[genrandomnum(1, len(charstouse))])
