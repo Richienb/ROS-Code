@@ -238,7 +238,7 @@ def psrgame(choice):
 
 def diceroll(dicecount=1, dicesize=6, alwayslist=False):
     dicecount = int(dicecount)
-    if dicecount == 1 and alwayslist == False:
+    if dicecount == 1 and alwayslist is False:
         return genrandomnum(1, dicesize)
     else:
         resultlist = []
