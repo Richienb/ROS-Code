@@ -25,7 +25,7 @@ before_script:
   - cd src
   - autopep8 -i -r $PWD
   - python test_syntax.py
-  - pylint --output-format=text -j 0 syntax.py run-file.py
+  - pylint --output-format=text -j 0 $PWD
 
 script:
   - python run-file.py "test.ros"
