@@ -18,9 +18,9 @@ except IndexError:
 
 with open(args[1]) as f:
     IGNORELINE = False
-    content = f.readlines()
-    content = [x.strip() for x in content if x.strip()]
-    for value in enumerate(content):
+    CONTENT = f.readlines()
+    CONTENT = [x.strip() for x in CONTENT if x.strip()]
+    for value in enumerate(CONTENT):
         if not(value[1].startswith('!')) and IGNORELINE is False:
             firstpart = value[1].split(".")[0]
             lenoffirstpart = len(value[1].split(".")[0])
