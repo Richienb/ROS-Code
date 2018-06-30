@@ -307,7 +307,7 @@ def captcha():
 # Gets, sets, appends or preceeds the clipboard contents
 
 
-def clipboard(action='get', text=None):
+def clipaction(action='get', text=None):
     if action == 'get':
         return clipboard.paste()
     elif action == 'set':
