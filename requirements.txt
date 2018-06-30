@@ -11,4 +11,3 @@ future
 # Unit testing modules
 flake8
 pylint
-pychecker
