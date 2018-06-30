@@ -17,11 +17,11 @@ except IndexError:
     print("Ensure the execution code looks something like this: python run-file.py test.ros")
 
 with open(args[1]) as f:
-    ignoreline = False
+    IGNORELINE = False
     content = f.readlines()
     content = [x.strip() for x in content if x.strip()]
     for value in enumerate(content):
-        if not(value[1].startswith('!')) and ignoreline is False:
+        if not(value[1].startswith('!')) and IGNORELINE is False:
             firstpart = value[1].split(".")[0]
             lenoffirstpart = len(value[1].split(".")[0])
             afterpart = str(value[1][lenoffirstpart + 1:])
@@ -38,6 +38,6 @@ with open(args[1]) as f:
                 print(message)
                 exit(1)
         elif value[1].startswith('!!!'):
-            ignoreline = not ignoreline
+            IGNORELINE = not IGNORELINE
 
 exit(0)
