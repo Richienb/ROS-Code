@@ -1,13 +1,15 @@
-# Main modules
+# Main
 clipboard
 colour
-# mkdocs modules
+# mkdocs
 mkdocs
 mkdocs-material
 pymdown-extensions
 Pygments
-# Python 3 to 2 converter module
+# Python 3 to 2 converter
 future
-# Unit testing modules
+# Unit testing
 flake8
 pylint
+# Auto PEP8
+autopep8
