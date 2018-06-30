@@ -250,7 +250,7 @@ def diceroll(dicecount=1, dicesize=6, alwayslist=False):
 
 
 def yesnogame(includemaybe=False):
-    if includemaybe == True:
+    if includemaybe is True:
         maxnum = 3
     else:
         maxnum = 2
@@ -1128,7 +1128,7 @@ def pycopyright():
 
 
 def pyname(ifmain=False):
-    if ifmain == True:
+    if ifmain is True:
         return __name__ == "__main__"
     return __name__
 
