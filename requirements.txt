@@ -8,3 +8,7 @@ pymdown-extensions
 Pygments
 # Python 3 to 2 converter module
 future
+# Unit testing modules
+flake8
+pylint
+pychecker
