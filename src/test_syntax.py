@@ -144,5 +144,12 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.lcm(6, 5), 30)
         self.assertEqual(s.lcm(5, 4), 20)
 
+    def test_hcf(self):
+        self.assertEqual(s.hcf(30, 10), 10)
+        self.assertEqual(s.hcf(78, 26), 26)
+        self.assertEqual(s.hcf(60, 68), 4)
+        self.assertEqual(s.hcf(70, 20), 10)
+        self.assertEqual(s.hcf(40, 24), 8)
+
 if __name__ == '__main__':
     ut.main()
