@@ -52,12 +52,8 @@ after_deploy:
 
 after_success:
   - cd $TRAVIS_BUILD_DIR/repo/src
-  - pasteurize -w syntax.py
-  - mv $PWD/syntax.py $PWD/syntax2.py
-  - pasteurize -w run-file.py
-  - mv $PWD/run-file.py $PWD/run-file2.py
-  - git add syntax2.py run-file2.py
-  - git commit -m "Added Python 2 Backwards Compatible Files [skip ci]"
+  - autopep8 -i -r $PWD
+  - git add *
   - git push
 
 notifications:
