@@ -533,7 +533,7 @@ def eulercalc(faces, edges, verticies):
 # Get The Sides Of A Shape
 
 
-def shapesides(inputtocheck):
+def shapesides(inputtocheck, inputtype='shape'):
     inputtocheck = inputtocheck.lower()
     shapestosides = {'triangle': 3, 'square': 4, 'pentagon': 5, 'hexagon': 6, 'heptagon': 7, 'octagon': 8, 'nonagon': 9, 'decagon': 10,
                      'hendecagon': 11, 'dodecagon': 12, 'triskaidecagon': 13, 'tetrakaidecagon': 14, 'pentadecagon': 15, 'hexakaidecagon': 16, 'heptadecagon': 17, 'octakaidecagon': 18, 'enneadecagon': 19, 'Icosagon': 20,
