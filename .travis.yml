@@ -24,7 +24,7 @@ install:
 before_script:
   - cd src
   - python test_syntax.py
-  - pylint --output-format=text syntax.py run-file.py
+  - pylint --output-format=text -j 0 syntax.py run-file.py
 
 script:
   - python run-file.py "test.ros"
