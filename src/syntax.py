@@ -1114,7 +1114,7 @@ def about():
 
 
 def pyversion(part=None):
-    if part == None:
+    if part is None:
         return sys.version_info
     return sys.version_info[part]
 
