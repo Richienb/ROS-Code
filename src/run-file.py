@@ -38,6 +38,6 @@ with open(args[1]) as f:
                 print(message)
                 exit(1)
         elif value[1].startswith('!!!'):
-            ignoreline = not(ignoreline)
+            ignoreline = not ignoreline
 
 exit(0)
