@@ -18,10 +18,10 @@ install:
 
 before_script:
   - cd src
-  - autopep8 -i -r $PWD
+  - autopep8 -v -i -r $PWD
   - python test_syntax.py
   - pylint --output-format=text -j 0 $PWD
-  - flake8 $PWD
+  - flake8 --verbose $PWD
 
 script:
   - python run-file.py "test.ros"
