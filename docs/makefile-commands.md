@@ -19,3 +19,6 @@
 
 ???+ summary "Install All Required Pip Packages"
     `make pipall`
+
+??+ summary "Run Unit Tests"
+    `make utest`
