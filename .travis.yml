@@ -49,7 +49,7 @@ after_deploy:
 
 after_success:
   - cd $TRAVIS_BUILD_DIR/repo/src
-  - autopep8 -i -r $PWD
+  - autopep8 -v -i -r $PWD
   - git add *
   - git commit -m "Normalised files to follow the PEP8 specification [skip ci]
   - git push
