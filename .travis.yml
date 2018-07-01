@@ -1,5 +1,9 @@
 sudo:             false
 
+cache:
+  directories:
+  - $TRAVIS_BUILD_DIR/runtime
+
 language:         python
 
 python:
