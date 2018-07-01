@@ -1,3 +1,6 @@
+# DS store folder
+.DS_Store
+
 # jython exclude cache
 runtime/plain_
 
