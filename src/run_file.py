@@ -8,7 +8,7 @@ from builtins import (bytes, dict, int, list, object, range, str, ascii, chr, he
 # Main Modules
 import syntax
 from sys import argv as args
-from sys import exit
+from sys import exit as exitexc
 
 try:
     args[1]
@@ -36,8 +36,8 @@ with open(args[1]) as f:
                 message = template.format(
                     type(e).__name__, str(value[0] + 1), str(e.args[0]))
                 print(message)
-                exit(1)
+                exitexc(1)
         elif value[1].startswith('!!!'):
             IGNORELINE = not IGNORELINE
 
-exit(0)
+exitexc(0)
