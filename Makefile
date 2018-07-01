@@ -1,7 +1,6 @@
 # If code is run with no parameters
 # Prepare ROS Code
 prepare:
-	#echo The current directory is $PWD
 	rm -f -r -d ROS-Code
 	rm -f ros.py
 	rm -f run-file.py
@@ -9,7 +8,7 @@ prepare:
 	cd ROS-Code
 	pip install -r requirements.txt
 	cd ..
-	#mv $PWD/ROS-Code/src/syntax.py $PWD/ROS-Code/src/ros.py
+	mv $PWD/ROS-Code/src/syntax.py $PWD/ROS-Code/src/ros.py
 	cp ROS-Code/src/syntax.py .
 	cp ROS-Code/src/run-file.py .
 	rm -f -r -d ROS-Code
@@ -23,3 +22,10 @@ pipmkdocs:
 # Install all required Pip packages
 pipall: requirements.txt
 	pip install -r requirements.txt
+# Run unit tests
+utest:
+	cd src
+	autopep8 -i -r $PWD
+	python test_syntax.py
+	pylint --output-format=text -j 0 $PWD
+	flake8 $PWD
