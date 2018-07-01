@@ -503,10 +503,10 @@ def factors(number):
             factors.append(i)
     return factors
 
-# Generate A Completely Random Password
+# Generate a completely random string
 
 
-def randstring(length):
+def randstring(length=1):
     charstouse = string.ascii_letters + string.digits + string.punctuation
     newpass = ''
     for i in range(length):
