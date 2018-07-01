@@ -19,11 +19,11 @@ install:
 before_script:
   - cd src
   - autopep8 -v -i -r $PWD
+
+script:
   - python test_syntax.py
   - pylint $PWD
   - flake8 --verbose $PWD
-
-script:
   - python run-file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
 
