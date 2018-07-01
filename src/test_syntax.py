@@ -161,6 +161,8 @@ class TestCode(ut.TestCase):
     def test_randstring(self):
         self.assertEqual(len(s.randstring(5)), 5)
         self.assertEqual(type(s.randstring(5)), str)
+        self.assertEqual(len(s.randstring()), 1)
+        self.assertEqual(type(s.randstring()), str)
 
 if __name__ == '__main__':
     ut.main()
