@@ -135,9 +135,9 @@ disable=print-statement,
         xreadlines-attribute,
         deprecated-sys-function,
         exception-escape,
-        comprehension-escape
-        exec-used
-        eval-used
+        comprehension-escape,
+        exec-used,
+        eval-used,
         missing-docstring
 
 # Enable the message, report, category or checker with the given id(s). You can
