@@ -1,3 +1,6 @@
+"""
+Encodes and runs a ROS Code file
+"""
 # Backwards Compatibility
 from __future__ import absolute_import, division, print_function, unicode_literals
 from future import standard_library
