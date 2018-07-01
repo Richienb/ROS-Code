@@ -5,7 +5,7 @@ Main file containing all tne commands
 from __future__ import absolute_import, division, print_function, unicode_literals
 from future import standard_library
 standard_library.install_aliases()
-from builtins import ( bytes, dict, int, list, object, range, str, ascii, chr, hex, 
+from builtins import ( bytes, dict, int, list, object, range, str, ascii, chr, hex,
                       input, next, oct, open, pow, round, super, filter, map, zip )
 
 # System modules
@@ -512,15 +512,6 @@ def randstring(length):
     for i in range(length):
         newpass += str(charstouse[genrandomnum(0, len(charstouse) - 1)])
     return newpass
-
-# Generate A Random Character
-
-
-def randchar():
-    while True:
-        trychar = charlist[genrandomnum(1, len(charlist))]
-        if len(trychar) == 1 and not(trychar in unwanted):
-            return trychar
 
 # Compare 2 Values
 
