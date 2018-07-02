@@ -7,19 +7,16 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import (bytes, dict, int, list, object, range, str, ascii, chr, hex,
                       input, next, oct, open, pow, round, super, filter, map, zip)
-
 # System modules
 from subprocess import call
 import os
 import sys
 import secrets
-
 # Python modules
 import pip
 import warnings
 import keyword
 import importlib
-
 # String modues
 import string
 from string import printable as charlist
@@ -28,7 +25,6 @@ import clipboard
 from colour import Color
 import textwrap
 from pprint import pprint
-
 # Math modules
 import math
 import operator
@@ -37,11 +33,9 @@ import statistics
 from math import sqrt
 from random import randint as genrandomnum
 from random import choice as randomitem
-
 # Web modules
 import webbrowser
 import urllib
-
 # Time modules
 import datetime
 from datetime import datetime
