@@ -1144,14 +1144,14 @@ def convertbinary(value, argument):
 # Make The Text Forwards Or Backwards
 
 
-def reversetext(text, ignoretype=False):
+def reversetext(texttoreverse, ignoretype=False):
     if ignoretype is False:
-        if isinteger(text):
-            return int(str(text)[::-1])
-        elif isdecimal(text):
-            return float(str(text)[::-1])
-        return str(text)[::-1]
-    return str(text)[::-1]
+        if isinteger(texttoreverse):
+            return int(str(texttoreverse)[::-1])
+        elif isdecimal(texttoreverse):
+            return float(str(texttoreverse)[::-1])
+        return str(texttoreverse)[::-1]
+    return str(texttoreverse)[::-1]
 
 # Convert A Time Period To Another One
 
