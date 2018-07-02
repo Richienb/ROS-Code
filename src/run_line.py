@@ -24,19 +24,19 @@ with open(args[1]) as f:
     IGNORELINE = False
     CONTENT = args[1]
     if not(value[1].startswith('!')) and IGNORELINE is False:
-        firstpart = value[1].split(".")[0]
-        lenoffirstpart = len(value[1].split(".")[0])
-        afterpart = str(value[1][lenoffirstpart + 1:])
-        apwithcomma = afterpart.replace(".", "', '")
-        preprint = str(firstpart + "(" + apwithcomma + ")")
-        printtext = preprint.replace("(", "('")
-        lastprinttext = printtext.replace(")", "')")
+        FIRSTPART = value[1].split(".")[0]
+        LENOFFIRSTPART = len(value[1].split(".")[0])
+        AFTERPART = str(value[1][LENOFFIRSTPART + 1:])
+        APWITHCOMMA = AFTERPART.replace(".", "', '")
+        PREPRINT = str(FIRSTPART + "(" + APWITHCOMMA + ")")
+        PRINTTEXT = PREPRINT.replace("(", "('")
+        LASTPRINTTEXT = PRINTTEXT.replace(")", "')")
         try:
-            exec(str("syntax." + lastprinttext))
-        except Exception as e:
+            exec(str("syntax." + LASTPRINTTEXT))
+        except Exception as E:
             template = "ERROR: An error of type {0} occured while running line {1} because {2}"
             message = template.format(
-                type(e).__name__, str(value[0] + 1), str(e.args[0]))
+                type(e).__name__, str(value[0] + 1), str(E.args[0]))
             print(message)
             exitexc(1)
     elif value[1].startswith('!!!'):
