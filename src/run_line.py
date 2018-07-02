@@ -17,7 +17,8 @@ try:
     args[1]
 except IndexError:
     print("ERROR: No ROS Code file provided in execution arguments")
-    print('Ensure the execution code looks something like this: python run-file.py message_print("Hello World")')
+    print('Ensure the execution code looks something like this: \
+    python run-file.py message_print("Hello World")')
 
 with open(args[1]) as f:
     ignoreline = False
