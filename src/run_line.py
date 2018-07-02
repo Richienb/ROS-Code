@@ -21,9 +21,9 @@ except IndexError:
     python run-file.py message_print("Hello World")')
 
 with open(args[1]) as f:
-    ignoreline = False
-    content = args[1]
-    if not(value[1].startswith('!')) and ignoreline == False:
+    IGNORELINE = False
+    CONTENT = args[1]
+    if not(value[1].startswith('!')) and IGNORELINE == False:
         firstpart = value[1].split(".")[0]
         lenoffirstpart = len(value[1].split(".")[0])
         afterpart = str(value[1][lenoffirstpart + 1:])
@@ -40,6 +40,6 @@ with open(args[1]) as f:
             print(message)
             exitexc(1)
     elif value[1].startswith('!!!'):
-        ignoreline = not(ignoreline)
+        IGNORELINE = not IGNORELINE
 
 exitexc(0)
