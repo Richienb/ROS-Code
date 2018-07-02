@@ -10,7 +10,7 @@ from builtins import (bytes, dict, int, list, object, range, str, ascii, chr, he
 
 #
 from sys import argv as args
-from sys import exit as quit
+from sys import exit as exitexc
 import syntax
 
 try:
@@ -38,8 +38,8 @@ with open(args[1]) as f:
             message = template.format(
                 type(e).__name__, str(value[0] + 1), str(e.args[0]))
             print(message)
-            quit(1)
+            exitexc(1)
     elif value[1].startswith('!!!'):
         ignoreline = not(ignoreline)
 
-quit(0)
+exitexc(0)
