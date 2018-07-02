@@ -28,7 +28,7 @@ script:
   - python test_syntax.py
   - pylint $PWD
   - flake8 --verbose $PWD
-  - python run-file.py "test.ros"
+  - python run_file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
 
 before_deploy:
