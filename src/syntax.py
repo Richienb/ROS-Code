@@ -887,7 +887,7 @@ def numprop(value, propertyexpected):
     elif propertyexpected == 'even':
         return value % 2 == 0
     elif propertyexpected == 'odd':
-        return not(value % 2 == 0)
+        return not value % 2 == 0
     elif propertyexpected == 'positive':
         return bool(value > 0)
     elif propertyexpected == 'negative':
