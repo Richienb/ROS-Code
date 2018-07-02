@@ -2,16 +2,16 @@
 Encodes and runs a line of ROS Code
 """
 # Backwards Compatibility
-from __future__ import absolute_import, division, print_function, unicode_literals
-from future import standard_library
-standard_library.install_aliases()
 from builtins import (bytes, dict, int, list, object, range, str, ascii, chr, hex,
                       input, next, oct, open, pow, round, super, filter, map, zip)
-
-#
+from __future__ import absolute_import, division, print_function, unicode_literals
+# Main Modules
 from sys import argv as args
 from sys import exit as exitexc
 import syntax
+# Initialise Backwards Compatibility
+from future import standard_library
+standard_library.install_aliases()
 
 try:
     args[1]
