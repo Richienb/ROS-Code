@@ -7,7 +7,6 @@ from builtins import (bytes, dict, int, list, object, range, str, ascii, chr, he
 from __future__ import absolute_import, division, print_function, unicode_literals
 from future import standard_library
 standard_library.install_aliases()
-
 # Main Modules
 import syntax
 from sys import argv as args
