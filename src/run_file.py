@@ -2,11 +2,11 @@
 Encodes and runs a ROS Code file
 """
 # Backwards Compatibility
+from builtins import (bytes, dict, int, list, object, range, str, ascii, chr, hex,
+                      input, next, oct, open, pow, round, super, filter, map, zip)
 from __future__ import absolute_import, division, print_function, unicode_literals
 from future import standard_library
 standard_library.install_aliases()
-from builtins import (bytes, dict, int, list, object, range, str, ascii, chr, hex,
-                      input, next, oct, open, pow, round, super, filter, map, zip)
 
 # Main Modules
 import syntax
