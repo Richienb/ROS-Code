@@ -2,9 +2,9 @@
 Encodes and runs a ROS Code file
 """
 # Backwards Compatibility
+from __future__ import absolute_import, division, print_function, unicode_literals
 from builtins import (bytes, dict, int, list, object, range, str, ascii, chr, hex,
                       input, next, oct, open, pow, round, super, filter, map, zip)
-from __future__ import absolute_import, division, print_function, unicode_literals
 # Main Modules
 import syntax
 from sys import argv as args
