@@ -25,7 +25,7 @@ pipall: requirements.txt
 # Run unit tests
 utest:
 	cd src
-	autopep8 -i -r -a -a -a $PWD
+	autopep8 -v -i -r -a -a -a $PWD
 	python test_syntax.py
 	pylint $PWD
 	flake8 --verbose $PWD
