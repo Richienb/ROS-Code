@@ -1,11 +1,14 @@
 # PR#192, dir(func) and dir(method) returning []
 
+
 def test1():
     'Test function 1'
     pass
 
+
 def test2(a, b=2, c=3):
     pass
+
 
 attrs = dir(test1)[:]
 for attr in ['__doc__', '__name__', 'func_code', 'func_defaults',
@@ -36,15 +39,19 @@ assert co.co_filename
 assert co.co_firstlineno
 assert (co.co_flags & flags) == 0
 
+
 def test3(a, *args, **kw):
     pass
 
+
 assert (test3.func_code.co_flags & flags) == flags
+
 
 class Foo:
     def method(self):
         """This is a method"""
         pass
+
 
 attrs = dir(Foo.method)[:]
 for attr in ['im_self', 'im_func', 'im_class', '__doc__', '__name__']:
@@ -65,8 +72,10 @@ assert m.im_func == Foo.method.im_func
 assert m.__name__ == Foo.method.__name__
 assert m.__doc__ == Foo.method.__doc__
 
+
 class Baz:
     pass
+
 
 try:
     m.im_class = Baz

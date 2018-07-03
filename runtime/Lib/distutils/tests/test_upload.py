@@ -39,6 +39,7 @@ index-servers =
 username:me
 """
 
+
 class FakeOpen(object):
 
     def __init__(self, url):
@@ -116,7 +117,8 @@ class uploadTestCase(PyPIRCCommandTestCase):
         self.assertIn('dédé', self.last_open.req.data)
         headers = dict(self.last_open.req.headers)
         self.assertEqual(headers['Content-length'], '2085')
-        self.assertTrue(headers['Content-type'].startswith('multipart/form-data'))
+        self.assertTrue(
+            headers['Content-type'].startswith('multipart/form-data'))
         self.assertEqual(self.last_open.req.get_method(), 'POST')
         self.assertEqual(self.last_open.req.get_full_url(),
                          'http://pypi.python.org/pypi')
@@ -124,8 +126,10 @@ class uploadTestCase(PyPIRCCommandTestCase):
         auth = self.last_open.req.headers['Authorization']
         self.assertFalse('\n' in auth)
 
+
 def test_suite():
     return unittest.makeSuite(uploadTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

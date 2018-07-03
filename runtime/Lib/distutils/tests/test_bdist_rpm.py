@@ -24,6 +24,7 @@ setup(name='foo', version='0.1', py_modules=['foo'],
 
 """
 
+
 class BuildRpmTestCase(support.TempdirManager,
                        support.LoggingSilencer,
                        unittest.TestCase):
@@ -48,7 +49,7 @@ class BuildRpmTestCase(support.TempdirManager,
 
         # this test will run only if the rpm commands are found
         if (find_executable('rpm') is None or
-            find_executable('rpmbuild') is None):
+                find_executable('rpmbuild') is None):
             return
 
         # let's create a package
@@ -80,8 +81,16 @@ class BuildRpmTestCase(support.TempdirManager,
         self.assertTrue('foo-0.1-1.noarch.rpm' in dist_created)
 
         # bug #2945: upload ignores bdist_rpm files
-        self.assertIn(('bdist_rpm', 'any', 'dist/foo-0.1-1.src.rpm'), dist.dist_files)
-        self.assertIn(('bdist_rpm', 'any', 'dist/foo-0.1-1.noarch.rpm'), dist.dist_files)
+        self.assertIn(
+            ('bdist_rpm',
+             'any',
+             'dist/foo-0.1-1.src.rpm'),
+            dist.dist_files)
+        self.assertIn(
+            ('bdist_rpm',
+             'any',
+             'dist/foo-0.1-1.noarch.rpm'),
+            dist.dist_files)
 
     def test_no_optimize_flag(self):
 
@@ -93,7 +102,7 @@ class BuildRpmTestCase(support.TempdirManager,
         # http://bugs.python.org/issue1533164
         # this test will run only if the rpm command is found
         if (find_executable('rpm') is None or
-            find_executable('rpmbuild') is None):
+                find_executable('rpmbuild') is None):
             return
 
         # let's create a package that brakes bdist_rpm
@@ -124,13 +133,23 @@ class BuildRpmTestCase(support.TempdirManager,
         self.assertTrue('foo-0.1-1.noarch.rpm' in dist_created)
 
         # bug #2945: upload ignores bdist_rpm files
-        self.assertIn(('bdist_rpm', 'any', 'dist/foo-0.1-1.src.rpm'), dist.dist_files)
-        self.assertIn(('bdist_rpm', 'any', 'dist/foo-0.1-1.noarch.rpm'), dist.dist_files)
+        self.assertIn(
+            ('bdist_rpm',
+             'any',
+             'dist/foo-0.1-1.src.rpm'),
+            dist.dist_files)
+        self.assertIn(
+            ('bdist_rpm',
+             'any',
+             'dist/foo-0.1-1.noarch.rpm'),
+            dist.dist_files)
 
         os.remove(os.path.join(pkg_dir, 'dist', 'foo-0.1-1.noarch.rpm'))
 
+
 def test_suite():
     return unittest.makeSuite(BuildRpmTestCase)
+
 
 if __name__ == '__main__':
     run_unittest(test_suite())

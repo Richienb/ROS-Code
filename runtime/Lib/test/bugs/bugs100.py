@@ -9,9 +9,9 @@ print 'Bug Fixes'
 print 'From 1.0.0 to 1.0.1'
 print 'Recursive assignment to list slices handled incorrectly #1'
 
-x = [1,2,3,4,5]
+x = [1, 2, 3, 4, 5]
 x[1:] = x
-assert x == [1,1,2,3,4,5]
+assert x == [1, 1, 2, 3, 4, 5]
 
 print 'sys.platform should be javax.y.z not jdkx.y.z #4'
 
@@ -45,7 +45,7 @@ vec.addElement(100)
 
 sum = 0
 for x in vec:
-    sum = sum+x
+    sum = sum + x
 assert sum == 111
 
 print 'Exception tuple contains nulls #8'
@@ -66,7 +66,7 @@ print 'sys.exit can only be called with an integer argument #13'
 import sys
 try:
     sys.exit("goodbye")
-except SystemExit, exc:
+except SystemExit as exc:
     # exc is an instance now
     assert str(exc) == "goodbye"
 
@@ -81,7 +81,10 @@ assert "a"[10:] == ""
 
 print 'Java exception thrown for non-keyword argument following keyword #20'
 
-def foo(x,y=10): pass
+
+def foo(x, y=10):
+    pass
+
 
 try:
     exec("foo(y=20, 30)")
@@ -125,11 +128,13 @@ print 'A threading test'
 
 from java.lang import Thread
 
+
 class TestThread(Thread):
     def run(self):
         for i in range(100):
             exec("x=2+2")
         print '       finished'
+
 
 testers = []
 for i in range(10):

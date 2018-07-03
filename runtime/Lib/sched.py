@@ -35,6 +35,7 @@ __all__ = ["scheduler"]
 
 Event = namedtuple('Event', 'time, priority, action, argument')
 
+
 class scheduler:
     def __init__(self, timefunc, delayfunc):
         """Initialize a new instance, passing the time and delay
@@ -52,7 +53,7 @@ class scheduler:
         """
         event = Event(time, priority, action, argument)
         heapq.heappush(self._queue, event)
-        return event # The ID
+        return event  # The ID
 
     def enter(self, delay, priority, action, argument):
         """A variant that specifies the time as a relative time.
@@ -131,4 +132,4 @@ class scheduler:
         # With heapq, two events scheduled at the same time will show in
         # the actual order they would be retrieved.
         events = self._queue[:]
-        return map(heapq.heappop, [events]*len(events))
+        return map(heapq.heappop, [events] * len(events))

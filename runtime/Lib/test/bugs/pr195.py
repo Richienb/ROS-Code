@@ -7,5 +7,6 @@ from javax.swing import AbstractListModel, ComboBoxModel
 # (Object)ListModel.getElementAt(int) twice in the proxy class, which is
 # illegal.
 
+
 class Model(AbstractListModel, ComboBoxModel):
     pass

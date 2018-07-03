@@ -54,6 +54,7 @@ somecode%(sep)sdoc.dat
 somecode%(sep)sdoc.txt
 """
 
+
 class SDistTestCase(PyPIRCCommandTestCase):
 
     def setUp(self):
@@ -137,7 +138,7 @@ class SDistTestCase(PyPIRCCommandTestCase):
 
         # check if tar and gzip are installed
         if (find_executable('tar') is None or
-            find_executable('gzip') is None):
+                find_executable('gzip') is None):
             return
 
         # now building a sdist
@@ -150,8 +151,7 @@ class SDistTestCase(PyPIRCCommandTestCase):
 
         # making sure we have two files
         dist_folder = join(self.tmp_dir, 'dist')
-        result = os.listdir(dist_folder)
-        result.sort()
+        result = sorted(os.listdir(dist_folder))
         self.assertEqual(result, ['fake-1.0.tar', 'fake-1.0.tar.gz'])
 
         os.remove(join(dist_folder, 'fake-1.0.tar'))
@@ -329,7 +329,7 @@ class SDistTestCase(PyPIRCCommandTestCase):
 
         # check if tar and gzip are installed
         if (find_executable('tar') is None or
-            find_executable('gzip') is None):
+                find_executable('gzip') is None):
             return
 
         # now building a sdist
@@ -483,7 +483,7 @@ class SDistTestCase(PyPIRCCommandTestCase):
         cmd.ensure_finalized()
         self.write_file((self.tmp_dir, cmd.manifest), 'README.manual')
         self.write_file((self.tmp_dir, 'README.manual'),
-                         'This project maintains its MANIFEST file itself.')
+                        'This project maintains its MANIFEST file itself.')
         cmd.run()
         self.assertEqual(cmd.filelist.files, ['README.manual'])
 
@@ -505,8 +505,10 @@ class SDistTestCase(PyPIRCCommandTestCase):
         self.assertEqual(sorted(filenames), ['fake-1.0', 'fake-1.0/PKG-INFO',
                                              'fake-1.0/README.manual'])
 
+
 def test_suite():
     return unittest.makeSuite(SDistTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

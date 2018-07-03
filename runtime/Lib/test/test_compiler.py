@@ -1,18 +1,24 @@
 import test.test_support
 compiler = test.test_support.import_module('compiler', deprecated=True)
 from compiler.ast import flatten
-import os, sys, time, unittest
+import os
+import sys
+import time
+import unittest
 from random import random
 from StringIO import StringIO
 
 # How much time in seconds can pass before we print a 'Still working' message.
 _PRINT_WORKING_MSG_INTERVAL = 5 * 60
 
+
 class TrivialContext(object):
     def __enter__(self):
         return self
+
     def __exit__(self, *exc_info):
         pass
+
 
 class CompilerTest(unittest.TestCase):
 
@@ -29,12 +35,13 @@ class CompilerTest(unittest.TestCase):
         testdir = os.path.dirname(test.test_support.__file__)
 
         for dir in [testdir]:
-            for basename in "test_os.py",:
-                # Print still working message since this test can be really slow
+            for basename in "test_os.py", :
+                # Print still working message since this test can be really
+                # slow
                 if next_time <= time.time():
                     next_time = time.time() + _PRINT_WORKING_MSG_INTERVAL
                     print >>sys.__stdout__, \
-                       '  testCompileLibrary still working, be patient...'
+                        '  testCompileLibrary still working, be patient...'
                     sys.__stdout__.flush()
 
                 if not basename.endswith(".py"):
@@ -53,7 +60,7 @@ class CompilerTest(unittest.TestCase):
                 else:
                     try:
                         compiler.compile(buf, basename, "exec")
-                    except Exception, e:
+                    except Exception as e:
                         args = list(e.args)
                         args.append("in file %s]" % basename)
                         #args[0] += "[in file %s]" % basename
@@ -61,14 +68,14 @@ class CompilerTest(unittest.TestCase):
                         raise
 
     def testNewClassSyntax(self):
-        compiler.compile("class foo():pass\n\n","<string>","exec")
+        compiler.compile("class foo():pass\n\n", "<string>", "exec")
 
     def testYieldExpr(self):
         compiler.compile("def g(): yield\n\n", "<string>", "exec")
 
     def testKeywordAfterStarargs(self):
         def f(*args, **kwargs):
-            self.assertEqual((args, kwargs), ((2,3), {'x': 1, 'y': 4}))
+            self.assertEqual((args, kwargs), ((2, 3), {'x': 1, 'y': 4}))
         c = compiler.compile('f(x=1, *(2, 3), y=4)', '<string>', 'exec')
         exec c in {'f': f}
 
@@ -111,11 +118,12 @@ class CompilerTest(unittest.TestCase):
             raise
 
     def _check_lineno(self, node):
-        if not node.__class__ in NOLINENO:
-            self.assertIsInstance(node.lineno, int,
-                "lineno=%s on %s" % (node.lineno, node.__class__))
+        if node.__class__ not in NOLINENO:
+            self.assertIsInstance(
+                node.lineno, int, "lineno=%s on %s" %
+                (node.lineno, node.__class__))
             self.assertTrue(node.lineno > 0,
-                "lineno=%s on %s" % (node.lineno, node.__class__))
+                            "lineno=%s on %s" % (node.lineno, node.__class__))
         for child in node.getChildNodes():
             self.check_lineno(child)
 
@@ -144,15 +152,15 @@ class CompilerTest(unittest.TestCase):
 
     def testSetLiteral(self):
         c = compiler.compile('{1, 2, 3}', '<string>', 'eval')
-        self.assertEqual(eval(c), {1,2,3})
+        self.assertEqual(eval(c), {1, 2, 3})
         c = compiler.compile('{1, 2, 3,}', '<string>', 'eval')
-        self.assertEqual(eval(c), {1,2,3})
+        self.assertEqual(eval(c), {1, 2, 3})
 
     def testDictLiteral(self):
         c = compiler.compile('{1:2, 2:3, 3:4}', '<string>', 'eval')
-        self.assertEqual(eval(c), {1:2, 2:3, 3:4})
+        self.assertEqual(eval(c), {1: 2, 2: 3, 3: 4})
         c = compiler.compile('{1:2, 2:3, 3:4,}', '<string>', 'eval')
-        self.assertEqual(eval(c), {1:2, 2:3, 3:4})
+        self.assertEqual(eval(c), {1: 2, 2: 3, 3: 4})
 
     def testSetComp(self):
         c = compiler.compile('{x for x in range(1, 4)}', '<string>', 'eval')
@@ -164,8 +172,11 @@ class CompilerTest(unittest.TestCase):
         self.assertEqual(eval(c), {1, 2, 3, 4, 6})
 
     def testDictComp(self):
-        c = compiler.compile('{x:x+1 for x in range(1, 4)}', '<string>', 'eval')
-        self.assertEqual(eval(c), {1:2, 2:3, 3:4})
+        c = compiler.compile(
+            '{x:x+1 for x in range(1, 4)}',
+            '<string>',
+            'eval')
+        self.assertEqual(eval(c), {1: 2, 2: 3, 3: 4})
         c = compiler.compile('{(x, y) : y for x in range(2) if x != 0'
                              '            for y in range(3) if y != 0}',
                              '<string>',
@@ -180,7 +191,7 @@ class CompilerTest(unittest.TestCase):
                              '        return 1\n'
                              'result = f()',
                              '<string>',
-                             'exec' )
+                             'exec')
         dct = {'TrivialContext': TrivialContext}
         exec c in dct
         self.assertEqual(dct.get('result'), 1)
@@ -192,18 +203,21 @@ class CompilerTest(unittest.TestCase):
                              '        return 1\n'
                              'result = f()',
                              '<string>',
-                             'exec' )
+                             'exec')
         dct = {'TrivialContext': TrivialContext}
         exec c in dct
         self.assertEqual(dct.get('result'), 1)
 
     def testWithMult(self):
         events = []
+
         class Ctx:
             def __init__(self, n):
                 self.n = n
+
             def __enter__(self):
                 events.append(self.n)
+
             def __exit__(self, *args):
                 pass
         c = compiler.compile('from __future__ import with_statement\n'
@@ -212,7 +226,7 @@ class CompilerTest(unittest.TestCase):
                              '        return 1\n'
                              'result = f()',
                              '<string>',
-                             'exec' )
+                             'exec')
         dct = {'Ctx': Ctx}
         exec c in dct
         self.assertEqual(dct.get('result'), 1)
@@ -229,9 +243,9 @@ class CompilerTest(unittest.TestCase):
     def testPrintFunction(self):
         c = compiler.compile('from __future__ import print_function\n'
                              'print("a", "b", sep="**", end="++", '
-                                    'file=output)',
+                             'file=output)',
                              '<string>',
-                             'exec' )
+                             'exec')
         dct = {'output': StringIO()}
         exec c in dct
         self.assertEqual(dct['output'].getvalue(), 'a**b++')
@@ -239,7 +253,7 @@ class CompilerTest(unittest.TestCase):
     def _testErrEnc(self, src, text, offset):
         try:
             compile(src, "", "exec")
-        except SyntaxError, e:
+        except SyntaxError as e:
             self.assertEqual(e.offset, offset)
             self.assertEqual(e.text, text)
 
@@ -253,10 +267,10 @@ class CompilerTest(unittest.TestCase):
         self._testErrEnc(ascii, ascii, 19)
 
         # ascii source with encdef
-        self._testErrEnc(encdef+ascii, ascii, 19)
+        self._testErrEnc(encdef + ascii, ascii, 19)
 
         # non-ascii source with encdef
-        self._testErrEnc(encdef+sjis, sjis, 19)
+        self._testErrEnc(encdef + sjis, sjis, 19)
 
         # ShiftJIS source without encdef
         self._testErrEnc(sjis, sjis, 19)
@@ -269,18 +283,20 @@ NOLINENO = (compiler.ast.Module, compiler.ast.Stmt, compiler.ast.Discard)
 # testLineNo
 ###############################################################################
 
+
 class Toto:
     """docstring"""
     pass
 
+
 a, b = 2, 3
 [c, d] = 5, 6
-l = [(x, y) for x, y in zip(range(5), range(5,10))]
+l = [(x, y) for x, y in zip(range(5), range(5, 10))]
 l[0]
 l[3:4]
 d = {'a': 2}
 d = {}
-d = {x: y for x, y in zip(range(5), range(5,10))}
+d = {x: y for x, y in zip(range(5), range(5, 10))}
 s = {x for x in range(10)}
 s = {1}
 t = ()
@@ -294,7 +310,7 @@ else:
 
 try:
     print yo
-except:
+except BaseException:
     yo = 3
 else:
     yo += 3
@@ -308,10 +324,12 @@ from math import *
 
 ###############################################################################
 
+
 def test_main():
     global TEST_ALL
     TEST_ALL = test.test_support.is_resource_enabled("cpu")
     test.test_support.run_unittest(CompilerTest)
+
 
 if __name__ == "__main__":
     test_main()

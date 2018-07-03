@@ -92,15 +92,15 @@ class TestPlistlib(unittest.TestCase):
     def tearDown(self):
         try:
             os.unlink(test_support.TESTFN)
-        except:
+        except BaseException:
             pass
 
     def _create(self):
         pl = dict(
             aString="Doodah",
             aList=["A", "B", 12, 32.5, [1, 2, 3]],
-            aFloat = 0.5,
-            anInt = 728,
+            aFloat=0.5,
+            anInt=728,
             aDict=dict(
                 anotherString="<hello & 'hi' there!>",
                 aUnicodeValue=u'M\xe4ssig, Ma\xdf',
@@ -108,10 +108,10 @@ class TestPlistlib(unittest.TestCase):
                 aFalseValue=False,
                 deeperDict=dict(a=17, b=32.5, c=[1, 2, "text"]),
             ),
-            someData = plistlib.Data("<binary gunk>"),
-            someMoreData = plistlib.Data("<lots of binary gunk>\0\1\2\3" * 10),
-            nestedData = [plistlib.Data("<lots of binary gunk>\0\1\2\3" * 10)],
-            aDate = datetime.datetime(2004, 10, 26, 10, 33, 33),
+            someData=plistlib.Data("<binary gunk>"),
+            someMoreData=plistlib.Data("<lots of binary gunk>\0\1\2\3" * 10),
+            nestedData=[plistlib.Data("<lots of binary gunk>\0\1\2\3" * 10)],
+            aDate=datetime.datetime(2004, 10, 26, 10, 33, 33),
         )
         pl[u'\xc5benraa'] = "That was a unicode key."
         return pl
@@ -178,8 +178,10 @@ class TestPlistlib(unittest.TestCase):
     def test_nondictroot(self):
         test1 = "abc"
         test2 = [1, 2, 3, "abc"]
-        result1 = plistlib.readPlistFromString(plistlib.writePlistToString(test1))
-        result2 = plistlib.readPlistFromString(plistlib.writePlistToString(test2))
+        result1 = plistlib.readPlistFromString(
+            plistlib.writePlistToString(test1))
+        result2 = plistlib.readPlistFromString(
+            plistlib.writePlistToString(test2))
         self.assertEqual(test1, result1)
         self.assertEqual(test2, result2)
 

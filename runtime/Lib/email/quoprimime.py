@@ -41,7 +41,7 @@ __all__ = [
     'header_quopri_len',
     'quote',
     'unquote',
-    ]
+]
 
 import re
 
@@ -58,7 +58,6 @@ hqre = re.compile(r'[^-a-zA-Z0-9!*+/ ]')
 bqre = re.compile(r'[^ !-<>-~\t]')
 
 
-
 # Helpers
 def header_quopri_check(c):
     """Return True if the character should be escaped with header quopri."""
@@ -110,7 +109,6 @@ def quote(c):
     return "=%02X" % ord(c)
 
 
-
 def header_encode(header, charset="iso-8859-1", keep_eols=False,
                   maxlinelen=76, eol=NL):
     """Encode a single header line with quoted-printable (like) encoding.
@@ -174,7 +172,6 @@ def header_encode(header, charset="iso-8859-1", keep_eols=False,
     return joiner.join(['=?%s?q?%s?=' % (charset, line) for line in quoted])
 
 
-
 def encode(body, binary=False, maxlinelen=76, eol=NL):
     """Encode with quoted-printable, wrapping at maxlinelen characters.
 
@@ -223,7 +220,7 @@ def encode(body, binary=False, maxlinelen=76, eol=NL):
             prev = c
             if bqre.match(c):
                 c = quote(c)
-            elif j+1 == linelen:
+            elif j + 1 == linelen:
                 # Check for whitespace at end of line; special case
                 if c not in ' \t':
                     encoded_line += c
@@ -262,7 +259,6 @@ body_encode = encode
 encodestring = encode
 
 
-
 # BAW: I'm not sure if the intent was for the signature of this function to be
 # the same as base64MIME.decode() or not...
 def decode(encoded, eol=NL):
@@ -292,12 +288,12 @@ def decode(encoded, eol=NL):
                 i += 1
             # Otherwise, c == "=".  Are we at the end of the line?  If so, add
             # a soft line break.
-            elif i+1 == n:
+            elif i + 1 == n:
                 i += 1
                 continue
             # Decode if in form =AB
-            elif i+2 < n and line[i+1] in hexdigits and line[i+2] in hexdigits:
-                decoded += unquote(line[i:i+3])
+            elif i + 2 < n and line[i + 1] in hexdigits and line[i + 2] in hexdigits:
+                decoded += unquote(line[i:i + 3])
                 i += 3
             # Otherwise, not in form =AB, pass literally
             else:
@@ -317,7 +313,6 @@ body_decode = decode
 decodestring = decode
 
 
-
 def _unquote_match(match):
     """Turn a match in the form =AB to the ASCII character with value 0xab"""
     s = match.group(0)

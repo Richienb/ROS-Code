@@ -184,7 +184,9 @@ class DumbXMLWriter:
 # Contents should conform to a subset of ISO 8601
 # (in particular, YYYY '-' MM '-' DD 'T' HH ':' MM ':' SS 'Z'.  Smaller units may be omitted with
 #  a loss of precision)
-_dateParser = re.compile(r"(?P<year>\d\d\d\d)(?:-(?P<month>\d\d)(?:-(?P<day>\d\d)(?:T(?P<hour>\d\d)(?::(?P<minute>\d\d)(?::(?P<second>\d\d))?)?)?)?)?Z")
+_dateParser = re.compile(
+    r"(?P<year>\d\d\d\d)(?:-(?P<month>\d\d)(?:-(?P<day>\d\d)(?:T(?P<hour>\d\d)(?::(?P<minute>\d\d)(?::(?P<second>\d\d))?)?)?)?)?Z")
+
 
 def _dateFromString(s):
     order = ('year', 'month', 'day', 'hour', 'minute', 'second')
@@ -197,6 +199,7 @@ def _dateFromString(s):
         lst.append(int(val))
     return datetime.datetime(*lst)
 
+
 def _dateToString(d):
     return '%04d-%02d-%02dT%02d:%02d:%02dZ' % (
         d.year, d.month, d.day,
@@ -208,6 +211,7 @@ def _dateToString(d):
 _controlCharPat = re.compile(
     r"[\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\x0e\x0f"
     r"\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f]")
+
 
 def _escapeAndEncode(text):
     m = _controlCharPat.search(text)
@@ -226,6 +230,7 @@ PLISTHEADER = """\
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 """
+
 
 class PlistWriter(DumbXMLWriter):
 
@@ -272,8 +277,7 @@ class PlistWriter(DumbXMLWriter):
 
     def writeDict(self, d):
         self.beginElement("dict")
-        items = d.items()
-        items.sort()
+        items = sorted(d.items())
         for key, value in items:
             if not isinstance(key, (str, unicode)):
                 raise TypeError("keys must be strings")
@@ -298,7 +302,7 @@ class _InternalDict(dict):
         try:
             value = self[attr]
         except KeyError:
-            raise AttributeError, attr
+            raise AttributeError(attr)
         from warnings import warn
         warn("Attribute access from plist dicts is deprecated, use d[key] "
              "notation instead", PendingDeprecationWarning, 2)
@@ -314,10 +318,11 @@ class _InternalDict(dict):
         try:
             del self[attr]
         except KeyError:
-            raise AttributeError, attr
+            raise AttributeError(attr)
         from warnings import warn
         warn("Attribute access from plist dicts is deprecated, use d[key] "
              "notation instead", PendingDeprecationWarning, 2)
+
 
 class Dict(_InternalDict):
 
@@ -355,12 +360,13 @@ class Plist(_InternalDict):
 
 def _encodeBase64(s, maxlinelength=76):
     # copied from base64.encodestring(), with added maxlinelength argument
-    maxbinsize = (maxlinelength//4)*3
+    maxbinsize = (maxlinelength // 4) * 3
     pieces = []
     for i in range(0, len(s), maxbinsize):
-        chunk = s[i : i + maxbinsize]
+        chunk = s[i: i + maxbinsize]
         pieces.append(binascii.b2a_base64(chunk))
     return "".join(pieces)
+
 
 class Data:
 
@@ -445,6 +451,7 @@ class PlistParser:
         d = _InternalDict()
         self.addObject(d)
         self.stack.append(d)
+
     def end_dict(self):
         self.stack.pop()
 
@@ -455,20 +462,27 @@ class PlistParser:
         a = []
         self.addObject(a)
         self.stack.append(a)
+
     def end_array(self):
         self.stack.pop()
 
     def end_true(self):
         self.addObject(True)
+
     def end_false(self):
         self.addObject(False)
+
     def end_integer(self):
         self.addObject(int(self.getData()))
+
     def end_real(self):
         self.addObject(float(self.getData()))
+
     def end_string(self):
         self.addObject(self.getData())
+
     def end_data(self):
         self.addObject(Data.fromBase64(self.getData()))
+
     def end_date(self):
         self.addObject(_dateFromString(self.getData()))

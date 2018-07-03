@@ -7,12 +7,14 @@ import weakref
 from test import test_support
 from test_weakref import extra_collect
 
+
 class ReferencesTestCase(unittest.TestCase):
 
     def test___eq__(self):
         class Foo(object):
             def __eq__(self, other):
                 return True
+
             def __hash__(self):
                 return hash('foo')
         foo1, foo2 = Foo(), Foo()
@@ -22,6 +24,7 @@ class ReferencesTestCase(unittest.TestCase):
 
     def test___hash__call(self):
         hash_called = []
+
         class Bar(object):
             def __hash__(self):
                 hash = object.__hash__(self)
@@ -56,7 +59,7 @@ class ArgsTestCase(unittest.TestCase):
 
         self.assert_(not sentinel)
 
-        thunk1 = lambda: None
+        def thunk1(): return None
         watch(thunk1)
         self.assert_(not sentinel)
 
@@ -66,14 +69,13 @@ class ArgsTestCase(unittest.TestCase):
 
         del sentinel[:]
 
-        thunk2 = lambda: None
+        def thunk2(): return None
         watch(thunk2, kwarg=True)  # <--- only difference: called with a kwarg
         self.assert_(not sentinel)
 
         del thunk2
         extra_collect()
         self.assert_(sentinel)
-
 
 
 def test_main():

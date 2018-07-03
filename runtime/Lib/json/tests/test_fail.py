@@ -77,6 +77,7 @@ SKIPS = {
     18: "spec doesn't specify any nesting limitations",
 }
 
+
 class TestFail(object):
     def test_failures(self):
         for idx, doc in enumerate(JSONDOCS):
@@ -89,17 +90,23 @@ class TestFail(object):
             except ValueError:
                 pass
             else:
-                self.fail("Expected failure for fail{0}.json: {1!r}".format(idx, doc))
+                self.fail(
+                    "Expected failure for fail{0}.json: {1!r}".format(
+                        idx, doc))
 
     def test_non_string_keys_dict(self):
-        data = {'a' : 1, (1, 2) : 2}
+        data = {'a': 1, (1, 2): 2}
 
-        #This is for c encoder
+        # This is for c encoder
         self.assertRaises(TypeError, self.dumps, data)
 
-        #This is for python encoder
+        # This is for python encoder
         self.assertRaises(TypeError, self.dumps, data, indent=True)
 
 
-class TestPyFail(TestFail, PyTest): pass
-class TestCFail(TestFail, CTest): pass
+class TestPyFail(TestFail, PyTest):
+    pass
+
+
+class TestCFail(TestFail, CTest):
+    pass

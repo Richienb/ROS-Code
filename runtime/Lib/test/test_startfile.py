@@ -38,8 +38,10 @@ class TestCase(unittest.TestCase):
         startfile(unicode(empty, "mbcs"), "open")
         sleep(0.1)
 
+
 def test_main():
     test_support.run_unittest(TestCase)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     test_main()

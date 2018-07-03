@@ -5,6 +5,7 @@ from test import test_support
 
 grp = test_support.import_module('grp')
 
+
 class GroupDatabaseTestCase(unittest.TestCase):
 
     def check_value(self, value):
@@ -54,7 +55,7 @@ class GroupDatabaseTestCase(unittest.TestCase):
         bygids = {}
         for (n, p, g, mem) in grp.getgrall():
             if not n or n == '+':
-                continue # skip NIS entries etc.
+                continue  # skip NIS entries etc.
             bynames[n] = g
             bygids[g] = n
 
@@ -90,8 +91,10 @@ class GroupDatabaseTestCase(unittest.TestCase):
 
         self.assertRaises(KeyError, grp.getgrgid, fakegid)
 
+
 def test_main():
     test_support.run_unittest(GroupDatabaseTestCase)
+
 
 if __name__ == "__main__":
     test_main()

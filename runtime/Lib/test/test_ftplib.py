@@ -87,7 +87,7 @@ class DummyFTPHandler(asynchat.async_chat):
             method = getattr(self, 'cmd_' + cmd)
             method(arg)
         else:
-            self.push('550 command "%s" not understood.' %cmd)
+            self.push('550 command "%s" not understood.' % cmd)
 
     def handle_error(self):
         raise
@@ -97,7 +97,7 @@ class DummyFTPHandler(asynchat.async_chat):
 
     def cmd_port(self, arg):
         addr = map(int, arg.split(','))
-        ip = '%d.%d.%d.%d' %tuple(addr[:4])
+        ip = '%d.%d.%d.%d' % tuple(addr[:4])
         port = (addr[4] * 256) + addr[5]
         s = socket.create_connection((ip, port), timeout=10)
         self.dtp = self.dtp_handler(s, baseclass=self)
@@ -111,7 +111,7 @@ class DummyFTPHandler(asynchat.async_chat):
         ip, port = sock.getsockname()[:2]
         ip = ip.replace('.', ',')
         p1, p2 = divmod(port, 256)
-        self.push('227 entering passive mode (%s,%d,%d)' %(ip, p1, p2))
+        self.push('227 entering passive mode (%s,%d,%d)' % (ip, p1, p2))
         conn, addr = sock.accept()
         self.dtp = self.dtp_handler(conn, baseclass=self)
 
@@ -128,7 +128,7 @@ class DummyFTPHandler(asynchat.async_chat):
         sock.listen(5)
         sock.settimeout(10)
         port = sock.getsockname()[1]
-        self.push('229 entering extended passive mode (|||%d|)' %port)
+        self.push('229 entering extended passive mode (|||%d|)' % port)
         conn, addr = sock.accept()
         self.dtp = self.dtp_handler(conn, baseclass=self)
 
@@ -161,7 +161,7 @@ class DummyFTPHandler(asynchat.async_chat):
         self.push('250 1000')
 
     def cmd_mkd(self, arg):
-        self.push('257 "%s"' %arg)
+        self.push('257 "%s"' % arg)
 
     def cmd_rmd(self, arg):
         self.push('250 rmd ok')
@@ -265,23 +265,26 @@ if ssl is not None:
         _ssl_closing = False
 
         def secure_connection(self):
-            self.socket = ssl.wrap_socket(self.socket, suppress_ragged_eofs=False,
-                                          certfile=CERTFILE, server_side=True,
-                                          do_handshake_on_connect=False,
-                                          ssl_version=ssl.PROTOCOL_SSLv23)
+            self.socket = ssl.wrap_socket(
+                self.socket,
+                suppress_ragged_eofs=False,
+                certfile=CERTFILE,
+                server_side=True,
+                do_handshake_on_connect=False,
+                ssl_version=ssl.PROTOCOL_SSLv23)
             self._ssl_accepting = True
 
         def _do_ssl_handshake(self):
             try:
                 self.socket.do_handshake()
-            except ssl.SSLError, err:
+            except ssl.SSLError as err:
                 if err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return
                 elif err.args[0] == ssl.SSL_ERROR_EOF:
                     return self.handle_close()
                 raise
-            except socket.error, err:
+            except socket.error as err:
                 if err.args[0] == errno.ECONNABORTED:
                     return self.handle_close()
             else:
@@ -291,11 +294,11 @@ if ssl is not None:
             self._ssl_closing = True
             try:
                 self.socket = self.socket.unwrap()
-            except ssl.SSLError, err:
+            except ssl.SSLError as err:
                 if err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return
-            except socket.error, err:
+            except socket.error as err:
                 # Any "socket error" corresponds to a SSL_ERROR_SYSCALL return
                 # from OpenSSL's SSL_shutdown(), corresponding to a
                 # closed socket condition. See also:
@@ -323,21 +326,25 @@ if ssl is not None:
         def send(self, data):
             try:
                 return super(SSLConnection, self).send(data)
-            except ssl.SSLError, err:
-                if err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN,
-                                   ssl.SSL_ERROR_WANT_READ,
-                                   ssl.SSL_ERROR_WANT_WRITE):
+            except ssl.SSLError as err:
+                if err.args[0] in (
+                        ssl.SSL_ERROR_EOF,
+                        ssl.SSL_ERROR_ZERO_RETURN,
+                        ssl.SSL_ERROR_WANT_READ,
+                        ssl.SSL_ERROR_WANT_WRITE):
                     return 0
                 raise
 
         def recv(self, buffer_size):
             try:
                 return super(SSLConnection, self).recv(buffer_size)
-            except ssl.SSLError, err:
+            except ssl.SSLError as err:
                 if err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return ''
-                if err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN):
+                if err.args[0] in (
+                        ssl.SSL_ERROR_EOF,
+                        ssl.SSL_ERROR_ZERO_RETURN):
                     self.handle_close()
                     return ''
                 raise
@@ -347,9 +354,8 @@ if ssl is not None:
 
         def close(self):
             if (isinstance(self.socket, ssl.SSLSocket) and
-                self.socket._sslobj is not None):
+                    self.socket._sslobj is not None):
                 self._do_ssl_shutdown()
-
 
     class DummyTLS_DTPHandler(SSLConnection, DummyDTPHandler):
         """A DummyDTPHandler subclass supporting TLS/SSL."""
@@ -358,7 +364,6 @@ if ssl is not None:
             DummyDTPHandler.__init__(self, conn, baseclass)
             if self.baseclass.secure_data_channel:
                 self.secure_connection()
-
 
     class DummyTLS_FTPHandler(SSLConnection, DummyFTPHandler):
         """A DummyFTPHandler subclass supporting TLS/SSL."""
@@ -393,7 +398,6 @@ if ssl is not None:
             else:
                 self.push("502 Unrecognized PROT type (use C or P).")
 
-
     class DummyTLS_FTPServer(DummyFTPServer):
         handler = DummyTLS_FTPHandler
 
@@ -415,8 +419,12 @@ class TestFTPClass(TestCase):
 
     def test_sanitize(self):
         self.assertEqual(self.client.sanitize('foo'), repr('foo'))
-        self.assertEqual(self.client.sanitize('pass 12345'), repr('pass *****'))
-        self.assertEqual(self.client.sanitize('PASS 12345'), repr('PASS *****'))
+        self.assertEqual(
+            self.client.sanitize('pass 12345'),
+            repr('pass *****'))
+        self.assertEqual(
+            self.client.sanitize('PASS 12345'),
+            repr('PASS *****'))
 
     def test_exceptions(self):
         self.assertRaises(ftplib.error_temp, self.client.sendcmd, 'echo 400')
@@ -492,7 +500,8 @@ class TestFTPClass(TestCase):
         for rest in (0, 10, 20):
             received = []
             self.client.retrbinary('retr', received.append, rest=rest)
-            self.assertEqual(''.join(received), RETR_DATA[rest:],
+            self.assertEqual(''.join(received),
+                             RETR_DATA[rest:],
                              msg='rest test case %d %d %d' % (rest,
                                                               len(''.join(received)),
                                                               len(RETR_DATA[rest:])))
@@ -526,7 +535,8 @@ class TestFTPClass(TestCase):
         # test new callback arg
         flag = []
         f.seek(0)
-        self.client.storlines('stor foo', f, callback=lambda x: flag.append(None))
+        self.client.storlines(
+            'stor foo', f, callback=lambda x: flag.append(None))
         self.assertTrue(flag)
 
     def test_nlst(self):
@@ -669,7 +679,9 @@ class TestTimeouts(TestCase):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.settimeout(10)
         self.port = test_support.bind_port(self.sock)
-        threading.Thread(target=self.server, args=(self.evt,self.sock)).start()
+        threading.Thread(
+            target=self.server, args=(
+                self.evt, self.sock)).start()
         # Wait for the server to be ready.
         self.evt.wait()
         self.evt.clear()

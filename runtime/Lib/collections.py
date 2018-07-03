@@ -19,9 +19,9 @@ except ImportError:
     from dummy_thread import get_ident as _get_ident
 
 
-################################################################################
-### OrderedDict
-################################################################################
+##########################################################################
+# OrderedDict
+##########################################################################
 
 class OrderedDict(dict):
     'Dictionary that remembers insertion order'
@@ -67,14 +67,17 @@ class OrderedDict(dict):
         # removed by updating the links in the predecessor and successor nodes.
         dict_delitem(self, key)
         link_prev, link_next, key = self.__map.pop(key)
-        link_prev[1] = link_next                        # update link_prev[NEXT]
-        link_next[0] = link_prev                        # update link_next[PREV]
+        # update link_prev[NEXT]
+        link_prev[1] = link_next
+        # update link_next[PREV]
+        link_next[0] = link_prev
 
     def __iter__(self):
         'od.__iter__() <==> iter(od)'
         # Traverse the linked list in order.
         root = self.__root
-        curr = root[1]                                  # start at the first node
+        # start at the first node
+        curr = root[1]
         while curr is not root:
             yield curr[2]                               # yield the curr[KEY]
             curr = curr[1]                              # move to next node
@@ -83,7 +86,8 @@ class OrderedDict(dict):
         'od.__reversed__() <==> reversed(od)'
         # Traverse the linked list in reverse order.
         root = self.__root
-        curr = root[0]                                  # start at the last node
+        # start at the last node
+        curr = root[0]
         while curr is not root:
             yield curr[2]                               # yield the curr[KEY]
             curr = curr[0]                              # move to previous node
@@ -125,7 +129,7 @@ class OrderedDict(dict):
 
     update = MutableMapping.update
 
-    __update = update # let subclasses override update without breaking __init__
+    __update = update  # let subclasses override update without breaking __init__
 
     __marker = object()
 
@@ -227,9 +231,9 @@ class OrderedDict(dict):
         return ItemsView(self)
 
 
-################################################################################
-### namedtuple
-################################################################################
+##########################################################################
+# namedtuple
+##########################################################################
 
 _class_template = '''\
 class {typename}(tuple):
@@ -281,6 +285,7 @@ _field_template = '''\
     {name} = _property(_itemgetter({index:d}), doc='Alias for field number {index:d}')
 '''
 
+
 def namedtuple(typename, field_names, verbose=False, rename=False):
     """Returns a new subclass of tuple with named fields.
 
@@ -313,18 +318,20 @@ def namedtuple(typename, field_names, verbose=False, rename=False):
     if rename:
         seen = set()
         for index, name in enumerate(field_names):
-            if (not all(c.isalnum() or c=='_' for c in name)
-                or _iskeyword(name)
-                or not name
-                or name[0].isdigit()
-                or name.startswith('_')
-                or name in seen):
+            if (not all(c.isalnum() or c == '_' for c in name) or
+                _iskeyword(name) or
+                not name or
+                name[0].isdigit() or
+                name.startswith('_') or
+                    name in seen):
                 field_names[index] = '_%d' % index
             seen.add(name)
     for name in [typename] + field_names:
-        if not all(c.isalnum() or c=='_' for c in name):
-            raise ValueError('Type names and field names can only contain '
-                             'alphanumeric characters and underscores: %r' % name)
+        if not all(c.isalnum() or c == '_' for c in name):
+            raise ValueError(
+                'Type names and field names can only contain '
+                'alphanumeric characters and underscores: %r' %
+                name)
         if _iskeyword(name):
             raise ValueError('Type names and field names cannot be a '
                              'keyword: %r' % name)
@@ -342,22 +349,27 @@ def namedtuple(typename, field_names, verbose=False, rename=False):
 
     # Fill-in the class template
     class_definition = _class_template.format(
-        typename = typename,
-        field_names = tuple(field_names),
-        num_fields = len(field_names),
-        arg_list = repr(tuple(field_names)).replace("'", "")[1:-1],
-        repr_fmt = ', '.join(_repr_template.format(name=name)
-                             for name in field_names),
-        field_defs = '\n'.join(_field_template.format(index=index, name=name)
-                               for index, name in enumerate(field_names))
+        typename=typename,
+        field_names=tuple(field_names),
+        num_fields=len(field_names),
+        arg_list=repr(tuple(field_names)).replace("'", "")[1:-1],
+        repr_fmt=', '.join(_repr_template.format(name=name)
+                           for name in field_names),
+        field_defs='\n'.join(_field_template.format(index=index, name=name)
+                             for index, name in enumerate(field_names))
     )
     if verbose:
         print class_definition
 
     # Execute the template string in a temporary namespace and support
     # tracing utilities by setting a value for frame.f_globals['__name__']
-    namespace = dict(_itemgetter=_itemgetter, __name__='namedtuple_%s' % typename,
-                     OrderedDict=OrderedDict, _property=property, _tuple=tuple)
+    namespace = dict(
+        _itemgetter=_itemgetter,
+        __name__='namedtuple_%s' %
+        typename,
+        OrderedDict=OrderedDict,
+        _property=property,
+        _tuple=tuple)
     try:
         exec class_definition in namespace
     except SyntaxError as e:
@@ -369,7 +381,8 @@ def namedtuple(typename, field_names, verbose=False, rename=False):
     # sys._getframe is not defined (Jython for example) or sys._getframe is not
     # defined for arguments greater than 0 (IronPython).
     try:
-        result.__module__ = _sys._getframe(1).f_globals.get('__name__', '__main__')
+        result.__module__ = _sys._getframe(
+            1).f_globals.get('__name__', '__main__')
     except (AttributeError, ValueError):
         pass
 
@@ -377,7 +390,7 @@ def namedtuple(typename, field_names, verbose=False, rename=False):
 
 
 ########################################################################
-###  Counter
+# Counter
 ########################################################################
 
 class Counter(dict):
@@ -521,7 +534,8 @@ class Counter(dict):
                     for elem, count in iterable.iteritems():
                         self[elem] = self_get(elem, 0) + count
                 else:
-                    super(Counter, self).update(iterable) # fast path when counter is empty
+                    # fast path when counter is empty
+                    super(Counter, self).update(iterable)
             else:
                 self_get = self.get
                 for elem in iterable:
@@ -669,19 +683,23 @@ if __name__ == '__main__':
     # test and demonstrate ability to override methods
     class Point(namedtuple('Point', 'x y')):
         __slots__ = ()
+
         @property
         def hypot(self):
             return (self.x ** 2 + self.y ** 2) ** 0.5
-        def __str__(self):
-            return 'Point: x=%6.3f  y=%6.3f  hypot=%6.3f' % (self.x, self.y, self.hypot)
 
-    for p in Point(3, 4), Point(14, 5/7.):
+        def __str__(self):
+            return 'Point: x=%6.3f  y=%6.3f  hypot=%6.3f' % (
+                self.x, self.y, self.hypot)
+
+    for p in Point(3, 4), Point(14, 5 / 7.):
         print p
 
     class Point(namedtuple('Point', 'x y')):
         'Point class with optimized _make() and _replace() without error-checking'
         __slots__ = ()
         _make = classmethod(tuple.__new__)
+
         def _replace(self, _map=map, **kwds):
             return self._make(_map(kwds.get, ('x', 'y'), self))
 

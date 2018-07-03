@@ -11,31 +11,37 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 """
 import codecs
 
-### Codec APIs
+# Codec APIs
+
 
 class Codec(codecs.Codec):
 
-    def encode(self,input,errors='strict'):
+    def encode(self, input, errors='strict'):
         raise UnicodeError("undefined encoding")
 
-    def decode(self,input,errors='strict'):
+    def decode(self, input, errors='strict'):
         raise UnicodeError("undefined encoding")
+
 
 class IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         raise UnicodeError("undefined encoding")
 
+
 class IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=False):
         raise UnicodeError("undefined encoding")
 
-class StreamWriter(Codec,codecs.StreamWriter):
+
+class StreamWriter(Codec, codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+
+class StreamReader(Codec, codecs.StreamReader):
     pass
 
-### encodings module API
+# encodings module API
+
 
 def getregentry():
     return codecs.CodecInfo(

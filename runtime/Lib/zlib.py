@@ -46,19 +46,22 @@ Z_DEFAULT_STRATEGY = 0
 Z_FINISH = 4
 _valid_flush_modes = (Z_FINISH,)
 
+
 def adler32(s, value=1):
     if value != 1:
-        raise ValueError, "adler32 only support start value of 1"
+        raise ValueError("adler32 only support start value of 1")
     checksum = Adler32()
     checksum.update(String.getBytes(s, 'iso-8859-1'))
     return Long(checksum.getValue()).intValue()
 
+
 def crc32(string, value=0):
     return binascii.crc32(string, value)
 
+
 def compress(string, level=6):
     if level < Z_BEST_SPEED or level > Z_BEST_COMPRESSION:
-        raise error, "Bad compression level"
+        raise error("Bad compression level")
     deflater = Deflater(level, 0)
     try:
         string = _to_input(string)
@@ -67,6 +70,7 @@ def compress(string, level=6):
         return _get_deflate_data(deflater)
     finally:
         deflater.end()
+
 
 def decompress(string, wbits=0, bufsize=16384):
     inflater = Inflater(wbits < 0)
@@ -78,11 +82,12 @@ def decompress(string, wbits=0, bufsize=16384):
 
 
 class compressobj(object):
-    # all jython uses wbits for is deciding whether to skip the header if it's negative
+    # all jython uses wbits for is deciding whether to skip the header if it's
+    # negative
     def __init__(self, level=6, method=DEFLATED, wbits=MAX_WBITS,
-                       memLevel=0, strategy=0):
+                 memLevel=0, strategy=0):
         if abs(wbits) > MAX_WBITS or abs(wbits) < 8:
-            raise ValueError, "Invalid initialization option"
+            raise ValueError("Invalid initialization option")
         self.deflater = Deflater(level, wbits < 0)
         self.deflater.setStrategy(strategy)
         if wbits < 0:
@@ -100,7 +105,7 @@ class compressobj(object):
         if self._ended:
             raise error("compressobj may not be used after flush(Z_FINISH)")
         if mode not in _valid_flush_modes:
-            raise ValueError, "Invalid flush option"
+            raise ValueError("Invalid flush option")
         self.deflater.finish()
         last = _get_deflate_data(self.deflater)
         if mode == Z_FINISH:
@@ -118,8 +123,9 @@ class decompressobj(object):
         # param checking
 
         if abs(wbits) < 8:
-            raise ValueError, "Invalid initialization option"
-        if abs(wbits) > 16:  # NOTE apparently this also implies being negative in CPython/zlib
+            raise ValueError("Invalid initialization option")
+        if abs(
+                wbits) > 16:  # NOTE apparently this also implies being negative in CPython/zlib
             wbits = -1
 
         self.inflater = Inflater(wbits < 0)
@@ -175,8 +181,10 @@ class decompressobj(object):
         self.inflater.end()
         return last
 
+
 def _to_input(string):
     return string.tostring() if isinstance(string, array.array) else string
+
 
 def _get_deflate_data(deflater):
     buf = jarray.zeros(1024, 'b')
@@ -190,6 +198,7 @@ def _get_deflate_data(deflater):
     s.seek(0)
     return s.read()
 
+
 def _get_inflate_data(inflater, max_length=0):
     buf = jarray.zeros(1024, 'b')
     s = StringIO()
@@ -200,7 +209,7 @@ def _get_inflate_data(inflater, max_length=0):
                 l = inflater.inflate(buf, 0, min(1024, max_length - total))
             else:
                 l = inflater.inflate(buf)
-        except DataFormatException, e:
+        except DataFormatException as e:
             raise error(str(e))
 
         if l == 0:
@@ -214,16 +223,16 @@ def _get_inflate_data(inflater, max_length=0):
     return s.read()
 
 
-
 FTEXT = 1
 FHCRC = 2
 FEXTRA = 4
 FNAME = 8
 FCOMMENT = 16
 
+
 def _skip_gzip_header(string):
     # per format specified in http://tools.ietf.org/html/rfc1952
-    
+
     # could we use bytearray instead?
     s = array.array("B", string)
 
@@ -249,15 +258,12 @@ def _skip_gzip_header(string):
         s = s[2 + xlen:]
     if flg & FNAME:
         # skip filename
-        s = s[s.find("\x00")+1:]
+        s = s[s.find("\x00") + 1:]
     if flg & FCOMMENT:
         # skip comment
-        s = s[s.find("\x00")+1:]
+        s = s[s.find("\x00") + 1:]
     if flg & FHCRC:
         # skip CRC16 for the header - might be nice to check of course
         s = s[2:]
-    
+
     return s.tostring()
-
-
-

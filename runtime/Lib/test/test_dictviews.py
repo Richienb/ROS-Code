@@ -1,6 +1,7 @@
 import unittest
 from test import test_support
 
+
 class DictSetTest(unittest.TestCase):
 
     def test_constructors_not_callable(self):
@@ -145,10 +146,9 @@ class DictSetTest(unittest.TestCase):
                          {('a', 1), ('b', 2), ('d', 4), ('e', 5)})
 
 
-
-
 def test_main():
     test_support.run_unittest(DictSetTest)
+
 
 if __name__ == "__main__":
     test_main()

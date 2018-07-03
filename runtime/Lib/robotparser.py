@@ -124,7 +124,6 @@ class RobotFileParser:
         if state == 2:
             self._add_entry(entry)
 
-
     def can_fetch(self, useragent, url):
         """using the parsed robots.txt decide if useragent can fetch url"""
         if self.disallow_all:
@@ -134,8 +133,13 @@ class RobotFileParser:
         # search for given user agent matches
         # the first match counts
         parsed_url = urlparse.urlparse(urllib.unquote(url))
-        url = urlparse.urlunparse(('', '', parsed_url.path,
-            parsed_url.params, parsed_url.query, parsed_url.fragment))
+        url = urlparse.urlunparse(
+            ('',
+             '',
+             parsed_url.path,
+             parsed_url.params,
+             parsed_url.query,
+             parsed_url.fragment))
         url = urllib.quote(url)
         if not url:
             url = "/"
@@ -148,7 +152,6 @@ class RobotFileParser:
         # agent not found ==> access granted
         return True
 
-
     def __str__(self):
         return ''.join([str(entry) + "\n" for entry in self.entries])
 
@@ -156,6 +159,7 @@ class RobotFileParser:
 class RuleLine:
     """A rule line is a single "Allow:" (allowance==True) or "Disallow:"
        (allowance==False) followed by a path."""
+
     def __init__(self, path, allowance):
         if path == '' and not allowance:
             # an empty value means allow all
@@ -172,6 +176,7 @@ class RuleLine:
 
 class Entry:
     """An entry has one or more user-agents and zero or more rulelines"""
+
     def __init__(self):
         self.useragents = []
         self.rulelines = []
@@ -206,14 +211,15 @@ class Entry:
                 return line.allowance
         return True
 
+
 class URLopener(urllib.FancyURLopener):
     def __init__(self, *args):
         urllib.FancyURLopener.__init__(self, *args)
         self.errcode = 200
 
     def prompt_user_passwd(self, host, realm):
-        ## If robots.txt file is accessible only with a password,
-        ## we act as if the file wasn't there.
+        # If robots.txt file is accessible only with a password,
+        # we act as if the file wasn't there.
         return None, None
 
     def http_error_default(self, url, fp, errcode, errmsg, headers):

@@ -18,6 +18,7 @@ if hasattr(os, 'extsep'):
 else:
     PYTHON_SOURCE_EXTENSION = ".py"
 
+
 class install_lib(Command):
 
     description = "install all Python modules (extensions and pure Python)"
@@ -39,7 +40,7 @@ class install_lib(Command):
 
     user_options = [
         ('install-dir=', 'd', "directory to install to"),
-        ('build-dir=','b', "build directory (where to install from)"),
+        ('build-dir=', 'b', "build directory (where to install from)"),
         ('force', 'f', "force installation (overwrite existing files)"),
         ('compile', 'c', "compile .py to .pyc [default]"),
         ('no-compile', None, "don't compile .py files"),
@@ -47,10 +48,10 @@ class install_lib(Command):
          "also compile with optimization: -O1 for \"python -O\", "
          "-O2 for \"python -OO\", and -O0 to disable [default: -O0]"),
         ('skip-build', None, "skip the build steps"),
-        ]
+    ]
 
     boolean_options = ['force', 'compile', 'skip-build']
-    negative_opt = {'no-compile' : 'compile'}
+    negative_opt = {'no-compile': 'compile'}
 
     def initialize_options(self):
         # let the 'install' command dictate our installation directory
@@ -72,7 +73,7 @@ class install_lib(Command):
                                    ('compile', 'compile'),
                                    ('optimize', 'optimize'),
                                    ('skip_build', 'skip_build'),
-                                  )
+                                   )
 
         if self.compile is None:
             self.compile = 1
@@ -85,7 +86,7 @@ class install_lib(Command):
                 if self.optimize not in (0, 1, 2):
                     raise AssertionError
             except (ValueError, AssertionError):
-                raise DistutilsOptionError, "optimize must be 0, 1, or 2"
+                raise DistutilsOptionError("optimize must be 0, 1, or 2")
 
     def run(self):
         # Make sure we have built everything we need first
@@ -141,7 +142,6 @@ class install_lib(Command):
                          force=self.force, prefix=install_root,
                          verbose=self.verbose, dry_run=self.dry_run)
 
-
     # -- Utility methods -----------------------------------------------
 
     def _mutate_outputs(self, has_any, build_cmd, cmd_option, output_dir):
@@ -174,7 +174,6 @@ class install_lib(Command):
                 bytecode_files.append(py_file + "o")
 
         return bytecode_files
-
 
     # -- External interface --------------------------------------------
     # (called by outsiders)

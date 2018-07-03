@@ -6,7 +6,8 @@ Nick Mathewson
 import unittest
 from test.test_support import verbose, TESTFN, run_unittest
 from test.test_support import unlink as safe_unlink
-import sys, re
+import sys
+import re
 from StringIO import StringIO
 from fileinput import FileInput, hook_encoded
 
@@ -17,6 +18,8 @@ from fileinput import FileInput, hook_encoded
 
 # Write lines (a list of lines) to temp file number i, and return the
 # temp file's name.
+
+
 def writeTmp(i, lines, mode='w'):  # opening in text mode is the default
     name = TESTFN + str(i)
     f = open(name, mode)
@@ -24,19 +27,25 @@ def writeTmp(i, lines, mode='w'):  # opening in text mode is the default
     f.close()
     return name
 
+
 def remove_tempfiles(*names):
     for name in names:
         safe_unlink(name)
+
 
 class BufferSizesTests(unittest.TestCase):
     def test_buffer_sizes(self):
         # First, run the tests with default and teeny buffer size.
         for round, bs in (0, 0), (1, 30):
             try:
-                t1 = writeTmp(1, ["Line %s of file 1\n" % (i+1) for i in range(15)])
-                t2 = writeTmp(2, ["Line %s of file 2\n" % (i+1) for i in range(10)])
-                t3 = writeTmp(3, ["Line %s of file 3\n" % (i+1) for i in range(5)])
-                t4 = writeTmp(4, ["Line %s of file 4\n" % (i+1) for i in range(1)])
+                t1 = writeTmp(1, ["Line %s of file 1\n" %
+                                  (i + 1) for i in range(15)])
+                t2 = writeTmp(2, ["Line %s of file 2\n" %
+                                  (i + 1) for i in range(10)])
+                t3 = writeTmp(3, ["Line %s of file 3\n" %
+                                  (i + 1) for i in range(5)])
+                t4 = writeTmp(4, ["Line %s of file 4\n" %
+                                  (i + 1) for i in range(1)])
                 self.buffer_size_test(t1, t2, t3, t4, bs, round)
             finally:
                 remove_tempfiles(t1, t2, t3, t4)
@@ -44,9 +53,9 @@ class BufferSizesTests(unittest.TestCase):
     def buffer_size_test(self, t1, t2, t3, t4, bs=0, round=0):
         pat = re.compile(r'LINE (\d+) OF FILE (\d+)')
 
-        start = 1 + round*6
+        start = 1 + round * 6
         if verbose:
-            print '%s. Simple iteration (bs=%s)' % (start+0, bs)
+            print '%s. Simple iteration (bs=%s)' % (start + 0, bs)
         fi = FileInput(files=(t1, t2, t3, t4), bufsize=bs)
         lines = list(fi)
         fi.close()
@@ -57,7 +66,7 @@ class BufferSizesTests(unittest.TestCase):
         self.assertEqual(fi.filename(), t4)
 
         if verbose:
-            print '%s. Status variables (bs=%s)' % (start+1, bs)
+            print '%s. Status variables (bs=%s)' % (start + 1, bs)
         fi = FileInput(files=(t1, t2, t3, t4), bufsize=bs)
         s = "x"
         while s and s != 'Line 6 of file 2\n':
@@ -69,14 +78,14 @@ class BufferSizesTests(unittest.TestCase):
         self.assertFalse(fi.isstdin())
 
         if verbose:
-            print '%s. Nextfile (bs=%s)' % (start+2, bs)
+            print '%s. Nextfile (bs=%s)' % (start + 2, bs)
         fi.nextfile()
         self.assertEqual(fi.readline(), 'Line 1 of file 3\n')
         self.assertEqual(fi.lineno(), 22)
         fi.close()
 
         if verbose:
-            print '%s. Stdin (bs=%s)' % (start+3, bs)
+            print '%s. Stdin (bs=%s)' % (start + 3, bs)
         fi = FileInput(files=(t1, t2, t3, t4, '-'), bufsize=bs)
         savestdin = sys.stdin
         try:
@@ -90,7 +99,7 @@ class BufferSizesTests(unittest.TestCase):
             sys.stdin = savestdin
 
         if verbose:
-            print '%s. Boundary conditions (bs=%s)' % (start+4, bs)
+            print '%s. Boundary conditions (bs=%s)' % (start + 4, bs)
         fi = FileInput(files=(t1, t2, t3, t4), bufsize=bs)
         self.assertEqual(fi.lineno(), 0)
         self.assertEqual(fi.filename(), None)
@@ -99,7 +108,7 @@ class BufferSizesTests(unittest.TestCase):
         self.assertEqual(fi.filename(), None)
 
         if verbose:
-            print '%s. Inplace (bs=%s)' % (start+5, bs)
+            print '%s. Inplace (bs=%s)' % (start + 5, bs)
         savestdout = sys.stdout
         try:
             fi = FileInput(files=(t1, t2, t3, t4), inplace=1, bufsize=bs)
@@ -117,6 +126,7 @@ class BufferSizesTests(unittest.TestCase):
             self.assertNotEqual(m, None)
             self.assertEqual(int(m.group(1)), fi.filelineno())
         fi.close()
+
 
 class FileInputTests(unittest.TestCase):
     def test_zero_byte_files(self):
@@ -200,9 +210,9 @@ class FileInputTests(unittest.TestCase):
     def test_file_opening_hook(self):
         try:
             # cannot use openhook and inplace mode
-            fi = FileInput(inplace=1, openhook=lambda f,m: None)
+            fi = FileInput(inplace=1, openhook=lambda f, m: None)
             self.fail("FileInput should raise if both inplace "
-                             "and openhook arguments are given")
+                      "and openhook arguments are given")
         except ValueError:
             pass
         try:
@@ -218,8 +228,10 @@ class FileInputTests(unittest.TestCase):
         finally:
             remove_tempfiles(t1)
 
+
 def test_main():
     run_unittest(BufferSizesTests, FileInputTests)
+
 
 if __name__ == "__main__":
     test_main()

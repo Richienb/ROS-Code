@@ -137,12 +137,15 @@ class HTMLParser(sgmllib.SGMLParser):
     # --------- Top level elememts
 
     def start_html(self, attrs): pass
+
     def end_html(self): pass
 
     def start_head(self, attrs): pass
+
     def end_head(self): pass
 
     def start_body(self, attrs): pass
+
     def end_body(self): pass
 
     # ------ Head elements
@@ -167,7 +170,7 @@ class HTMLParser(sgmllib.SGMLParser):
     def do_meta(self, attrs):
         pass
 
-    def do_nextid(self, attrs): # Deprecated
+    def do_nextid(self, attrs):  # Deprecated
         pass
 
     # ------ Body elements
@@ -239,14 +242,14 @@ class HTMLParser(sgmllib.SGMLParser):
 
     def start_xmp(self, attrs):
         self.start_pre(attrs)
-        self.setliteral('xmp') # Tell SGML parser
+        self.setliteral('xmp')  # Tell SGML parser
 
     def end_xmp(self):
         self.end_pre()
 
     def start_listing(self, attrs):
         self.start_pre(attrs)
-        self.setliteral('listing') # Tell SGML parser
+        self.setliteral('listing')  # Tell SGML parser
 
     def end_listing(self):
         self.end_pre()
@@ -275,7 +278,8 @@ class HTMLParser(sgmllib.SGMLParser):
         self.list_stack.append(['ul', '*', 0])
 
     def end_ul(self):
-        if self.list_stack: del self.list_stack[-1]
+        if self.list_stack:
+            del self.list_stack[-1]
         self.formatter.end_paragraph(not self.list_stack)
         self.formatter.pop_margin()
 
@@ -283,7 +287,7 @@ class HTMLParser(sgmllib.SGMLParser):
         self.formatter.end_paragraph(0)
         if self.list_stack:
             [dummy, label, counter] = top = self.list_stack[-1]
-            top[2] = counter = counter+1
+            top[2] = counter = counter + 1
         else:
             label, counter = '*', 0
         self.formatter.add_label_data(label, counter)
@@ -294,12 +298,14 @@ class HTMLParser(sgmllib.SGMLParser):
         label = '1.'
         for a, v in attrs:
             if a == 'type':
-                if len(v) == 1: v = v + '.'
+                if len(v) == 1:
+                    v = v + '.'
                 label = v
         self.list_stack.append(['ol', label, 0])
 
     def end_ol(self):
-        if self.list_stack: del self.list_stack[-1]
+        if self.list_stack:
+            del self.list_stack[-1]
         self.formatter.end_paragraph(not self.list_stack)
         self.formatter.pop_margin()
 
@@ -321,7 +327,8 @@ class HTMLParser(sgmllib.SGMLParser):
 
     def end_dl(self):
         self.ddpop(1)
-        if self.list_stack: del self.list_stack[-1]
+        if self.list_stack:
+            del self.list_stack[-1]
 
     def do_dt(self, attrs):
         self.ddpop()
@@ -343,40 +350,50 @@ class HTMLParser(sgmllib.SGMLParser):
     # Idiomatic Elements
 
     def start_cite(self, attrs): self.start_i(attrs)
+
     def end_cite(self): self.end_i()
 
     def start_code(self, attrs): self.start_tt(attrs)
+
     def end_code(self): self.end_tt()
 
     def start_em(self, attrs): self.start_i(attrs)
+
     def end_em(self): self.end_i()
 
     def start_kbd(self, attrs): self.start_tt(attrs)
+
     def end_kbd(self): self.end_tt()
 
     def start_samp(self, attrs): self.start_tt(attrs)
+
     def end_samp(self): self.end_tt()
 
     def start_strong(self, attrs): self.start_b(attrs)
+
     def end_strong(self): self.end_b()
 
     def start_var(self, attrs): self.start_i(attrs)
+
     def end_var(self): self.end_i()
 
     # Typographic Elements
 
     def start_i(self, attrs):
         self.formatter.push_font((AS_IS, 1, AS_IS, AS_IS))
+
     def end_i(self):
         self.formatter.pop_font()
 
     def start_b(self, attrs):
         self.formatter.push_font((AS_IS, AS_IS, 1, AS_IS))
+
     def end_b(self):
         self.formatter.pop_font()
 
     def start_tt(self, attrs):
         self.formatter.push_font((AS_IS, AS_IS, AS_IS, 1))
+
     def end_tt(self):
         self.formatter.pop_font()
 
@@ -426,18 +443,22 @@ class HTMLParser(sgmllib.SGMLParser):
             if attrname == 'src':
                 src = value
             if attrname == 'width':
-                try: width = int(value)
-                except ValueError: pass
+                try:
+                    width = int(value)
+                except ValueError:
+                    pass
             if attrname == 'height':
-                try: height = int(value)
-                except ValueError: pass
+                try:
+                    height = int(value)
+                except ValueError:
+                    pass
         self.handle_image(src, alt, ismap, align, width, height)
 
     # --- Really Old Unofficial Deprecated Stuff
 
     def do_plaintext(self, attrs):
         self.start_pre(attrs)
-        self.setnomoretags() # Tell SGML parser
+        self.setnomoretags()  # Tell SGML parser
 
     # --- Unhandled tags
 
@@ -448,8 +469,9 @@ class HTMLParser(sgmllib.SGMLParser):
         pass
 
 
-def test(args = None):
-    import sys, formatter
+def test(args=None):
+    import sys
+    import formatter
 
     if not args:
         args = sys.argv[1:]
@@ -468,7 +490,7 @@ def test(args = None):
     else:
         try:
             f = open(file, 'r')
-        except IOError, msg:
+        except IOError as msg:
             print file, ":", msg
             sys.exit(1)
 

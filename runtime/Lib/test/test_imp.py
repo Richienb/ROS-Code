@@ -9,7 +9,8 @@ class LockTests(unittest.TestCase):
 
     def verify_lock_state(self, expected):
         self.assertEqual(imp.lock_held(), expected,
-                             "expected imp.lock_held() to be %r" % expected)
+                         "expected imp.lock_held() to be %r" % expected)
+
     def testLock(self):
         LOOPS = 50
 
@@ -35,7 +36,8 @@ class LockTests(unittest.TestCase):
                 pass
             else:
                 self.fail("release_lock() without lock should raise "
-                            "RuntimeError")
+                          "RuntimeError")
+
 
 class ReloadTests(unittest.TestCase):
 
@@ -76,6 +78,7 @@ def test_main():
     else:
         tests.append(LockTests)
     test_support.run_unittest(*tests)
+
 
 if __name__ == "__main__":
     test_main()

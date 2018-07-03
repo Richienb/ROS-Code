@@ -14,11 +14,11 @@ from distutils.errors import *
 from distutils.util import get_platform
 
 
-def show_formats ():
+def show_formats():
     """Print list of available formats (arguments to "--format" option).
     """
     from distutils.fancy_getopt import FancyGetopt
-    formats=[]
+    formats = []
     for format in bdist.format_commands:
         formats.append(("formats=" + format, None,
                         bdist.format_command[format][1]))
@@ -42,14 +42,14 @@ class bdist (Command):
                      "[default: dist]"),
                     ('skip-build', None,
                      "skip rebuilding everything (for testing/debugging)"),
-                   ]
+                    ]
 
     boolean_options = ['skip-build']
 
     help_options = [
         ('help-formats', None,
          "lists available distribution formats", show_formats),
-        ]
+    ]
 
     # The following commands do not take a format option from bdist
     no_format_option = ('bdist_rpm',
@@ -58,10 +58,10 @@ class bdist (Command):
 
     # This won't do in reality: will need to distinguish RPM-ish Linux,
     # Debian-ish Linux, Solaris, FreeBSD, ..., Windows, Mac OS.
-    default_format = { 'posix': 'gztar',
-                       'java': 'gztar',
-                       'nt': 'zip',
-                       'os2': 'zip', }
+    default_format = {'posix': 'gztar',
+                      'java': 'gztar',
+                      'nt': 'zip',
+                      'os2': 'zip', }
 
     # Establish the preferred order (for the --help-formats option).
     format_commands = ['rpm', 'gztar', 'bztar', 'ztar', 'tar',
@@ -70,22 +70,21 @@ class bdist (Command):
                        ]
 
     # And the real information.
-    format_command = { 'rpm':   ('bdist_rpm',  "RPM distribution"),
-                       'zip':   ('bdist_dumb', "ZIP file"),
-                       'gztar': ('bdist_dumb', "gzip'ed tar file"),
-                       'bztar': ('bdist_dumb', "bzip2'ed tar file"),
-                       'ztar':  ('bdist_dumb', "compressed tar file"),
-                       'tar':   ('bdist_dumb', "tar file"),
-                       'wininst': ('bdist_wininst',
-                                   "Windows executable installer"),
-                       'zip':   ('bdist_dumb', "ZIP file"),
-                       #'pkgtool': ('bdist_pkgtool',
-                       #            "Solaris pkgtool distribution"),
-                       #'sdux':  ('bdist_sdux', "HP-UX swinstall depot"),
+    format_command = {'rpm': ('bdist_rpm', "RPM distribution"),
+                      'zip': ('bdist_dumb', "ZIP file"),
+                      'gztar': ('bdist_dumb', "gzip'ed tar file"),
+                      'bztar': ('bdist_dumb', "bzip2'ed tar file"),
+                      'ztar': ('bdist_dumb', "compressed tar file"),
+                      'tar': ('bdist_dumb', "tar file"),
+                      'wininst': ('bdist_wininst',
+                                  "Windows executable installer"),
+                      'zip': ('bdist_dumb', "ZIP file"),
+                      # 'pkgtool': ('bdist_pkgtool',
+                      #            "Solaris pkgtool distribution"),
+                      # 'sdux':  ('bdist_sdux', "HP-UX swinstall depot"),
                       }
 
-
-    def initialize_options (self):
+    def initialize_options(self):
         self.bdist_base = None
         self.plat_name = None
         self.formats = None
@@ -94,8 +93,7 @@ class bdist (Command):
 
     # initialize_options()
 
-
-    def finalize_options (self):
+    def finalize_options(self):
         # have to finalize 'plat_name' before 'bdist_base'
         if self.plat_name is None:
             if self.skip_build:
@@ -116,16 +114,17 @@ class bdist (Command):
             try:
                 self.formats = [self.default_format[os.name]]
             except KeyError:
-                raise DistutilsPlatformError, \
-                      "don't know how to create built distributions " + \
-                      "on platform %s" % os.name
+                raise DistutilsPlatformError(
+                    "don't know how to create built distributions " +
+                    "on platform %s" %
+                    os.name)
 
         if self.dist_dir is None:
             self.dist_dir = "dist"
 
     # finalize_options()
 
-    def run (self):
+    def run(self):
 
         # Figure out which sub-commands we need to run.
         commands = []
@@ -133,7 +132,7 @@ class bdist (Command):
             try:
                 commands.append(self.format_command[format][0])
             except KeyError:
-                raise DistutilsOptionError, "invalid format '%s'" % format
+                raise DistutilsOptionError("invalid format '%s'" % format)
 
         # Reinitialize and run each command.
         for i in range(len(self.formats)):
@@ -144,7 +143,7 @@ class bdist (Command):
 
             # If we're going to need to run this command again, tell it to
             # keep its temporary files around so subsequent runs go faster.
-            if cmd_name in commands[i+1:]:
+            if cmd_name in commands[i + 1:]:
                 sub_cmd.keep_temp = 1
             self.run_command(cmd_name)
 

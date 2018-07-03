@@ -4,11 +4,14 @@ from test import test_support
 from test_userdict import TestMappingProtocol
 from org.python.core import PyStringMap
 
+
 class SimpleClass:
     pass
 
+
 class StringMapTest(TestMappingProtocol):
     _tested_class = None
+
 
 class ClassDictTests(StringMapTest):
     """Check that class dicts conform to the mapping protocol"""
@@ -18,9 +21,11 @@ class ClassDictTests(StringMapTest):
             SimpleClass.__dict__.pop(key)
         return SimpleClass.__dict__
 
+
 class InstanceDictTests(StringMapTest):
     def _empty_mapping(self):
         return SimpleClass().__dict__
+
 
 class PyStringMapTest(StringMapTest):
     _tested_class = PyStringMap
@@ -60,7 +65,7 @@ class PyStringMapTest(StringMapTest):
 
         # Test has_key and "in".
         for i in r.keys():
-            self.assert_(d.has_key(i))
+            self.assert_(i in d)
             self.assert_(i in d)
 
         # Test unhashability
@@ -79,6 +84,7 @@ def test_main():
         InstanceDictTests,
         PyStringMapTest
     )
+
 
 if __name__ == "__main__":
     test_main()

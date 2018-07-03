@@ -9,7 +9,7 @@
 #
 #    ./python Lib/token.py
 
-#--start constants--
+# --start constants--
 ENDMARKER = 0
 NAME = 1
 NUMBER = 2
@@ -65,11 +65,11 @@ OP = 51
 ERRORTOKEN = 52
 N_TOKENS = 53
 NT_OFFSET = 256
-#--end constants--
+# --end constants--
 
 tok_name = {}
 for _name, _value in globals().items():
-    if type(_value) is type(0):
+    if isinstance(_value, type(0)):
         tok_name[_value] = _name
 del _name, _value
 
@@ -77,8 +77,10 @@ del _name, _value
 def ISTERMINAL(x):
     return x < NT_OFFSET
 
+
 def ISNONTERMINAL(x):
     return x >= NT_OFFSET
+
 
 def ISEOF(x):
     return x == ENDMARKER
@@ -94,7 +96,7 @@ def main():
         outFileName = args[1]
     try:
         fp = open(inFileName)
-    except IOError, err:
+    except IOError as err:
         sys.stdout.write("I/O error: %s\n" % str(err))
         sys.exit(1)
     lines = fp.read().split("\n")
@@ -109,12 +111,11 @@ def main():
             name, val = match.group(1, 2)
             val = int(val)
             tokens[val] = name          # reverse so we can sort them...
-    keys = tokens.keys()
-    keys.sort()
+    keys = sorted(tokens.keys())
     # load the output skeleton from the target:
     try:
         fp = open(outFileName)
-    except IOError, err:
+    except IOError as err:
         sys.stderr.write("I/O error: %s\n" % str(err))
         sys.exit(2)
     format = fp.read().split("\n")
@@ -131,7 +132,7 @@ def main():
     format[start:end] = lines
     try:
         fp = open(outFileName, 'w')
-    except IOError, err:
+    except IOError as err:
         sys.stderr.write("I/O error: %s\n" % str(err))
         sys.exit(4)
     fp.write("\n".join(format))

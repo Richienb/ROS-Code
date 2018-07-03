@@ -22,7 +22,7 @@ class InstallScriptsTestCase(support.TempdirManager,
             install_scripts="/splat/funk",
             force=1,
             skip_build=1,
-            )
+        )
         cmd = install_scripts(dist)
         self.assertTrue(not cmd.force)
         self.assertTrue(not cmd.skip_build)
@@ -65,7 +65,7 @@ class InstallScriptsTestCase(support.TempdirManager,
             install_scripts=target,
             force=1,
             skip_build=1,
-            )
+        )
         cmd = install_scripts(dist)
         cmd.finalize_options()
         cmd.run()
@@ -77,6 +77,7 @@ class InstallScriptsTestCase(support.TempdirManager,
 
 def test_suite():
     return unittest.makeSuite(InstallScriptsTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

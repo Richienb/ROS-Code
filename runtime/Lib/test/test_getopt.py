@@ -8,6 +8,7 @@ import getopt
 
 sentinel = object()
 
+
 class GetoptTests(unittest.TestCase):
     def setUp(self):
         self.env = EnvironmentVarGuard()
@@ -41,7 +42,7 @@ class GetoptTests(unittest.TestCase):
 
         self.assertError(getopt.long_has_args, 'abc', ['def'])
         self.assertError(getopt.long_has_args, 'abc', [])
-        self.assertError(getopt.long_has_args, 'abc', ['abcd','abcde'])
+        self.assertError(getopt.long_has_args, 'abc', ['abcd', 'abcde'])
 
     def test_do_shorts(self):
         opts, args = getopt.do_shorts([], 'a', 'a', [])
@@ -87,7 +88,7 @@ class GetoptTests(unittest.TestCase):
         # Much like the preceding, except with a non-alpha character ("-") in
         # option name that precedes "="; failed in
         # http://python.org/sf/126863
-        opts, args = getopt.do_longs([], 'foo=42', ['foo-bar', 'foo=',], [])
+        opts, args = getopt.do_longs([], 'foo=42', ['foo-bar', 'foo=', ], [])
         self.assertEqual(opts, [('--foo', '42')])
         self.assertEqual(args, [])
 
@@ -178,10 +179,17 @@ class GetoptTests(unittest.TestCase):
         self.assertEqual(longopts, [('--help', '')])
         longopts, shortopts = getopt.getopt(['--help=x'], '', ['help='])
         self.assertEqual(longopts, [('--help', 'x')])
-        self.assertRaises(getopt.GetoptError, getopt.getopt, ['--help='], '', ['help'])
+        self.assertRaises(
+            getopt.GetoptError,
+            getopt.getopt,
+            ['--help='],
+            '',
+            ['help'])
+
 
 def test_main():
     run_unittest(GetoptTests)
+
 
 if __name__ == "__main__":
     test_main()

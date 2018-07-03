@@ -22,7 +22,7 @@ def gcd(a, b):
     b is divided by it, the result comes out positive).
     """
     while b:
-        a, b = b, a%b
+        a, b = b, a % b
     return a
 
 
@@ -149,11 +149,11 @@ class Fraction(Rational):
                                 "or a Rational instance")
 
         elif (isinstance(numerator, Rational) and
-            isinstance(denominator, Rational)):
+              isinstance(denominator, Rational)):
             numerator, denominator = (
                 numerator.numerator * denominator.denominator,
                 denominator.numerator * numerator.denominator
-                )
+            )
         else:
             raise TypeError("both arguments should be "
                             "Rational instances")
@@ -243,17 +243,17 @@ class Fraction(Rational):
         p0, q0, p1, q1 = 0, 1, 1, 0
         n, d = self._numerator, self._denominator
         while True:
-            a = n//d
-            q2 = q0+a*q1
+            a = n // d
+            q2 = q0 + a * q1
             if q2 > max_denominator:
                 break
-            p0, q0, p1, q1 = p1, q1, p0+a*p1, q2
-            n, d = d, n-a*d
+            p0, q0, p1, q1 = p1, q1, p0 + a * p1, q2
+            n, d = d, n - a * d
 
-        k = (max_denominator-q0)//q1
-        bound1 = Fraction(p0+k*p1, q0+k*q1)
+        k = (max_denominator - q0) // q1
+        bound1 = Fraction(p0 + k * p1, q0 + k * q1)
         bound2 = Fraction(p1, q1)
-        if abs(bound2 - self) <= abs(bound1-self):
+        if abs(bound2 - self) <= abs(bound1 - self):
             return bound2
         else:
             return bound1
@@ -402,7 +402,11 @@ class Fraction(Rational):
 
     def _mul(a, b):
         """a * b"""
-        return Fraction(a.numerator * b.numerator, a.denominator * b.denominator)
+        return Fraction(
+            a.numerator *
+            b.numerator,
+            a.denominator *
+            b.denominator)
 
     __mul__, __rmul__ = _operator_fallbacks(_mul, operator.mul)
 
@@ -558,9 +562,11 @@ class Fraction(Rational):
             return op(self._numerator * other.denominator,
                       self._denominator * other.numerator)
         # comparisons with complex should raise a TypeError, for consistency
-        # with int<->complex, float<->complex, and complex<->complex comparisons.
+        # with int<->complex, float<->complex, and complex<->complex
+        # comparisons.
         if isinstance(other, complex):
-            raise TypeError("no ordering relation is defined for complex numbers")
+            raise TypeError(
+                "no ordering relation is defined for complex numbers")
         if isinstance(other, float):
             if math.isnan(other) or math.isinf(other):
                 return op(0.0, other)
@@ -595,11 +601,11 @@ class Fraction(Rational):
         return (self.__class__, (str(self),))
 
     def __copy__(self):
-        if type(self) == Fraction:
+        if isinstance(self, Fraction):
             return self     # I'm immutable; therefore I am my own clone
         return self.__class__(self._numerator, self._denominator)
 
     def __deepcopy__(self, memo):
-        if type(self) == Fraction:
+        if isinstance(self, Fraction):
             return self     # My components are also immutable
         return self.__class__(self._numerator, self._denominator)

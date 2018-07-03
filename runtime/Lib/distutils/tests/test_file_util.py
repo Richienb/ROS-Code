@@ -8,6 +8,7 @@ from distutils import log
 from distutils.tests import support
 from test.test_support import run_unittest
 
+
 class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
 
     def _log(self, msg, *args):
@@ -74,8 +75,10 @@ class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
         copy_file(foo, dst_dir)
         self.assertTrue(os.path.exists(os.path.join(dst_dir, 'foo')))
 
+
 def test_suite():
     return unittest.makeSuite(FileUtilTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

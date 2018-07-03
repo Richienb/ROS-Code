@@ -14,10 +14,13 @@ class SetTestCase(unittest.TestCase):
 
     def test_binops(self):
         class Foo(object):
-            __rsub__ = lambda self, other: 'rsub'
-            __ror__ = lambda self, other: 'ror'
-            __rand__ = lambda self, other: 'rand'
-            __rxor__ = lambda self, other: 'rxor'
+            def __rsub__(self, other): return 'rsub'
+
+            def __ror__(self, other): return 'ror'
+
+            def __rand__(self, other): return 'rand'
+
+            def __rxor__(self, other): return 'rxor'
         foo = Foo()
         s = set()
         self.assertEqual(s - foo, 'rsub')
@@ -32,14 +35,16 @@ class SetTestCase(unittest.TestCase):
         for i in xrange(4):
             s = set(range(200))
             threads = [threading.Thread(target=s.pop) for i in range(nthreads)]
-            for t in threads: t.start()
-            for t in threads: t.join()
+            for t in threads:
+                t.start()
+            for t in threads:
+                t.join()
             self.assertEqual(len(s), 0)
 
     def test_big_set(self):
         """Verify that fairly large collection literals of primitives can be constructed."""
         # use \n to separate to avoid parser problems
-        s = eval("{" + ",\n".join((str(x) for x in xrange(64000))) +"}")
+        s = eval("{" + ",\n".join((str(x) for x in xrange(64000))) + "}")
         self.assertEqual(len(s), 64000)
         self.assertEqual(sum(s), 2047968000)
 
@@ -105,6 +110,7 @@ class TestJavaSet(test_set.TestSet):
 
 class TestJavaHashSet(TestJavaSet):
     thetype = HashSet
+
 
 class TestJavaLinkedHashSet(TestJavaSet):
     thetype = LinkedHashSet

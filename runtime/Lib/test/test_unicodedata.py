@@ -15,11 +15,11 @@ import test.test_support
 encoding = 'utf-8'
 
 
-### Run tests
+# Run tests
 
 
 def all_codepoints():
-    for i in xrange(sys.maxunicode+1):
+    for i in xrange(sys.maxunicode + 1):
         if i >= 0xD800 and i <= 0xDFFF:
             continue
         yield i
@@ -30,7 +30,8 @@ class UnicodeMethodsTest(unittest.TestCase):
     # update this, if the database changes
     expectedchecksum = '4504dffd035baea02c5b9de82bebc3d65e0e0baf'
 
-    @unittest.skipIf(test.test_support.is_jython, "Jython uses ICU4J, so checksum tests are not meaningful")
+    @unittest.skipIf(test.test_support.is_jython,
+                     "Jython uses ICU4J, so checksum tests are not meaningful")
     def test_method_checksum(self):
         h = hashlib.sha1()
         for i in all_codepoints():
@@ -69,10 +70,11 @@ class UnicodeMethodsTest(unittest.TestCase):
                 (char + u'abc').title(),
                 (char + u'ABC').title(),
 
-                ]
+            ]
             h.update(u''.join(data).encode(encoding))
         result = h.hexdigest()
         self.assertEqual(result, self.expectedchecksum)
+
 
 class UnicodeDatabaseTest(unittest.TestCase):
 
@@ -85,12 +87,14 @@ class UnicodeDatabaseTest(unittest.TestCase):
     def tearDown(self):
         del self.db
 
+
 class UnicodeFunctionsTest(UnicodeDatabaseTest):
 
     # update this, if the database changes
     expectedchecksum = '6ccf1b1a36460d2694f9b0b0f0324942fe70ede6'
 
-    @unittest.skipIf(test.test_support.is_jython, "Jython uses ICU4J, so checksum tests are not meaningful")
+    @unittest.skipIf(test.test_support.is_jython,
+                     "Jython uses ICU4J, so checksum tests are not meaningful")
     def test_function_checksum(self):
         data = []
         h = hashlib.sha1()
@@ -116,7 +120,8 @@ class UnicodeFunctionsTest(UnicodeDatabaseTest):
         self.assertEqual(self.db.digit(u'A', None), None)
         self.assertEqual(self.db.digit(u'9'), 9)
         self.assertEqual(self.db.digit(u'\u215b', None), None)
-        self.assertEqual(self.db.digit(u'\u2468', None), None)  # CIRCLED DIGIT NINE is not a digit
+        # CIRCLED DIGIT NINE is not a digit
+        self.assertEqual(self.db.digit(u'\u2468', None), None)
         self.assertEqual(self.db.digit(u'\U00020000', None), None)
 
         self.assertRaises(TypeError, self.db.digit)
@@ -124,7 +129,7 @@ class UnicodeFunctionsTest(UnicodeDatabaseTest):
         self.assertRaises(ValueError, self.db.digit, u'x')
 
     def test_numeric(self):
-        self.assertEqual(self.db.numeric(u'A',None), None)
+        self.assertEqual(self.db.numeric(u'A', None), None)
         self.assertEqual(self.db.numeric(u'9'), 9)
         self.assertEqual(self.db.numeric(u'\u215b'), 0.125)
         self.assertEqual(self.db.numeric(u'\u2468'), 9.0)
@@ -136,10 +141,11 @@ class UnicodeFunctionsTest(UnicodeDatabaseTest):
         self.assertRaises(ValueError, self.db.numeric, u'x')
 
     def test_decimal(self):
-        self.assertEqual(self.db.decimal(u'A',None), None)
+        self.assertEqual(self.db.decimal(u'A', None), None)
         self.assertEqual(self.db.decimal(u'9'), 9)
         self.assertEqual(self.db.decimal(u'\u215b', None), None)
-        self.assertEqual(self.db.decimal(u'\u2468'), 9)  # CIRCLED DIGIT NINE is a decimal
+        # CIRCLED DIGIT NINE is a decimal
+        self.assertEqual(self.db.decimal(u'\u2468'), 9)
         self.assertEqual(self.db.decimal(u'\U00020000', None), None)
 
         self.assertRaises(TypeError, self.db.decimal)
@@ -156,7 +162,9 @@ class UnicodeFunctionsTest(UnicodeDatabaseTest):
         self.assertRaises(TypeError, self.db.category, u'xx')
 
     def test_bidirectional(self):
-        self.assertEqual(self.db.bidirectional(u'\uFFFE'), 'BN')  # CORRECTED according to ICU4J
+        self.assertEqual(
+            self.db.bidirectional(u'\uFFFE'),
+            'BN')  # CORRECTED according to ICU4J
         self.assertEqual(self.db.bidirectional(u' '), 'WS')
         self.assertEqual(self.db.bidirectional(u'A'), 'L')
         self.assertEqual(self.db.bidirectional(u'\U00020000'), 'L')
@@ -166,7 +174,9 @@ class UnicodeFunctionsTest(UnicodeDatabaseTest):
 
     def test_decomposition(self):
         # self.assertEqual(self.db.decomposition(u'\uFFFE'),'')
-        self.assertEqual(self.db.decomposition(u'\u00bc'), '<fraction> 0031 2044 0034')
+        self.assertEqual(
+            self.db.decomposition(u'\u00bc'),
+            '<fraction> 0031 2044 0034')
 
         self.assertRaises(TypeError, self.db.decomposition)
         self.assertRaises(TypeError, self.db.decomposition, u'xx')
@@ -201,17 +211,17 @@ class UnicodeFunctionsTest(UnicodeDatabaseTest):
         # See issues #1054943 and #10254.
         composed = (u"\u0b47\u0300\u0b3e", u"\u1100\u0300\u1161",
                     u'Li\u030dt-s\u1e73\u0301',
-                    u'\u092e\u093e\u0930\u094d\u0915 \u091c\u093c'
-                    + u'\u0941\u0915\u0947\u0930\u092c\u0930\u094d\u0917',
-                    u'\u0915\u093f\u0930\u094d\u0917\u093f\u091c\u093c'
-                    + 'u\u0938\u094d\u0924\u093e\u0928')
+                    u'\u092e\u093e\u0930\u094d\u0915 \u091c\u093c' +
+                    u'\u0941\u0915\u0947\u0930\u092c\u0930\u094d\u0917',
+                    u'\u0915\u093f\u0930\u094d\u0917\u093f\u091c\u093c' +
+                    'u\u0938\u094d\u0924\u093e\u0928')
         for text in composed:
             self.assertEqual(self.db.normalize('NFC', text), text)
 
     def test_issue10254(self):
         # Crash reported in #10254
-        a = u'C\u0338' * 20  + u'C\u0327'
-        b = u'C\u0338' * 20  + u'\xC7'
+        a = u'C\u0338' * 20 + u'C\u0327'
+        b = u'C\u0338' * 20 + u'\xC7'
         self.assertEqual(self.db.normalize('NFC', a), b)
 
     def test_east_asian_width(self):
@@ -227,9 +237,12 @@ class UnicodeFunctionsTest(UnicodeDatabaseTest):
         self.assertEqual(eaw(u'\u2010'), 'A')
         self.assertEqual(eaw(u'\U00020000'), 'W')
 
+
 class UnicodeMiscTest(UnicodeDatabaseTest):
 
-    @unittest.skipIf(test.test_support.is_jython, "Jython uses a different codepath and will not segfault anyway")
+    @unittest.skipIf(
+        test.test_support.is_jython,
+        "Jython uses a different codepath and will not segfault anyway")
     def test_failed_import_during_compiling(self):
         # Issue 4367
         # Decoding \N escapes requires the unicodedata module. If it can't be
@@ -260,7 +273,8 @@ class UnicodeMiscTest(UnicodeDatabaseTest):
             if dec != -1:
                 self.assertEqual(dec, self.db.numeric(c))
                 count += 1
-        self.assertTrue(count >= 10) # should have tested at least the ASCII digits
+        # should have tested at least the ASCII digits
+        self.assertTrue(count >= 10)
 
     def test_digit_numeric_consistent(self):
         # Test that digit and numeric are consistent,
@@ -273,7 +287,8 @@ class UnicodeMiscTest(UnicodeDatabaseTest):
             if dec != -1:
                 self.assertEqual(dec, self.db.numeric(c))
                 count += 1
-        self.assertTrue(count >= 10) # should have tested at least the ASCII digits
+        # should have tested at least the ASCII digits
+        self.assertTrue(count >= 10)
 
     def test_bug_1704793(self):
         self.assertEqual(self.db.lookup("GOTHIC LETTER FAIHU"), u'\U00010346')
@@ -286,22 +301,15 @@ class UnicodeMiscTest(UnicodeDatabaseTest):
         self.assertTrue(not unicodedata.ucd_3_2_0.mirrored(u"\u0f3a"))
         # Also, we now have two ways of representing
         # the upper-case mapping: as delta, or as absolute value
-        self.assertTrue(u"a".upper()==u'A')
-        self.assertTrue(u"\u1d79".upper()==u'\ua77d')
-        self.assertTrue(u".".upper()==u".")
-
-
+        self.assertTrue(u"a".upper() == u'A')
+        self.assertTrue(u"\u1d79".upper() == u'\ua77d')
+        self.assertTrue(u".".upper() == u".")
 
     def test_bug_5828(self):
         self.assertEqual(u"\u1d79".lower(), u"\u1d79")
         # Only U+0000 should have U+0000 as its upper/lower/titlecase variant
-        self.assertEqual(
-            [
-                c for c in all_codepoints()
-                if u"\x00" in unichr(c).lower()+unichr(c).upper()+unichr(c).title()
-            ],
-            [0]
-        )
+        self.assertEqual([c for c in all_codepoints() if u"\x00" in unichr(
+            c).lower() + unichr(c).upper() + unichr(c).title()], [0])
 
     def test_bug_4971(self):
         # LETTER DZ WITH CARON: DZ, Dz, dz
@@ -331,12 +339,14 @@ class UnicodeMiscTest(UnicodeDatabaseTest):
                 self.assertEqual(len(lines), 1,
                                  r"\u%.4x should not be a linebreak" % i)
 
+
 def test_main():
     test.test_support.run_unittest(
         UnicodeMiscTest,
         UnicodeMethodsTest,
         UnicodeFunctionsTest
     )
+
 
 if __name__ == "__main__":
     test_main()

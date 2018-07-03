@@ -19,10 +19,12 @@ import email
 from email import __file__ as testfile
 from email.iterators import _structure
 
+
 def openfile(filename):
     from os.path import join, dirname, abspath
     path = abspath(join(dirname(testfile), os.pardir, 'moredata', filename))
     return open(path, 'r')
+
 
 # Prevent this test from running in the Python distro
 try:
@@ -31,7 +33,6 @@ except IOError:
     raise TestSkipped
 
 
-
 class TortureBase(TestEmailBase):
     def _msgobj(self, filename):
         fp = openfile(filename)
@@ -42,7 +43,6 @@ class TortureBase(TestEmailBase):
         return msg
 
 
-
 class TestCrispinTorture(TortureBase):
     # Mark Crispin's torture test from the SquirrelMail project
     def test_mondo_message(self):
@@ -131,6 +131,5 @@ def test_main():
         run_unittest(testclass)
 
 
-
 if __name__ == '__main__':
     unittest.main(defaultTest='suite')

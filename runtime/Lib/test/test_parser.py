@@ -10,6 +10,7 @@ from test import test_support as support
 #  of the parser module.
 #
 
+
 class RoundtripLegalSyntaxTestCase(unittest.TestCase):
 
     def roundtrip(self, f, s):
@@ -17,7 +18,7 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         t = st1.totuple()
         try:
             st2 = parser.sequence2st(t)
-        except parser.ParserError, why:
+        except parser.ParserError as why:
             self.fail("could not roundtrip %r: %s" % (s, why))
 
         self.assertEqual(t, st2.totuple(),
@@ -76,20 +77,26 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_expr("[x**3 for x in range(20)]")
         self.check_expr("[x**3 for x in range(20) if x % 3]")
         self.check_expr("[x**3 for x in range(20) if x % 2 if x % 3]")
-        self.check_expr("[x+y for x in range(30) for y in range(20) if x % 2 if y % 3]")
+        self.check_expr(
+            "[x+y for x in range(30) for y in range(20) if x % 2 if y % 3]")
         #self.check_expr("[x for x in lambda: True, lambda: False if x()]")
         self.check_expr("list(x**3 for x in range(20))")
         self.check_expr("list(x**3 for x in range(20) if x % 3)")
         self.check_expr("list(x**3 for x in range(20) if x % 2 if x % 3)")
-        self.check_expr("list(x+y for x in range(30) for y in range(20) if x % 2 if y % 3)")
+        self.check_expr(
+            "list(x+y for x in range(30) for y in range(20) if x % 2 if y % 3)")
         self.check_expr("{x**3 for x in range(30)}")
         self.check_expr("{x**3 for x in range(30) if x % 3}")
         self.check_expr("{x**3 for x in range(30) if x % 2 if x % 3}")
-        self.check_expr("{x+y for x in range(30) for y in range(20) if x % 2 if y % 3}")
+        self.check_expr(
+            "{x+y for x in range(30) for y in range(20) if x % 2 if y % 3}")
         self.check_expr("{x**3: y**2 for x, y in zip(range(30), range(30))}")
-        self.check_expr("{x**3: y**2 for x, y in zip(range(30), range(30)) if x % 3}")
-        self.check_expr("{x**3: y**2 for x, y in zip(range(30), range(30)) if x % 3 if y % 3}")
-        self.check_expr("{x:y for x in range(30) for y in range(20) if x % 2 if y % 3}")
+        self.check_expr(
+            "{x**3: y**2 for x, y in zip(range(30), range(30)) if x % 3}")
+        self.check_expr(
+            "{x**3: y**2 for x, y in zip(range(30), range(30)) if x % 3 if y % 3}")
+        self.check_expr(
+            "{x:y for x in range(30) for y in range(20) if x % 2 if y % 3}")
         self.check_expr("foo(*args)")
         self.check_expr("foo(*args, **kw)")
         self.check_expr("foo(**kw)")
@@ -188,7 +195,6 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("@decorator1\n"
                          "@decorator2\n"
                          "class foo():pass")
-
 
     def test_import_from_statement(self):
         self.check_suite("from sys.path import *")
@@ -291,7 +297,7 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
             (6, '', 2, -1),
             (4, '', 2, -1),
             (0, '', 2, -1)],
-                         terminals)
+            terminals)
 
 
 #
@@ -316,207 +322,207 @@ class IllegalSyntaxTestCase(unittest.TestCase):
     def test_illegal_yield_1(self):
         # Illegal yield statement: def f(): return 1; yield 1
         tree = \
-        (257,
-         (264,
-          (285,
-           (259,
-            (1, 'def'),
-            (1, 'f'),
-            (260, (7, '('), (8, ')')),
-            (11, ':'),
-            (291,
-             (4, ''),
-             (5, ''),
+            (257,
              (264,
-              (265,
-               (266,
-                (272,
-                 (275,
-                  (1, 'return'),
-                  (313,
-                   (292,
-                    (293,
-                     (294,
-                      (295,
-                       (297,
-                        (298,
-                         (299,
-                          (300,
-                           (301,
-                            (302, (303, (304, (305, (2, '1')))))))))))))))))),
-               (264,
-                (265,
-                 (266,
-                  (272,
-                   (276,
-                    (1, 'yield'),
-                    (313,
-                     (292,
-                      (293,
-                       (294,
-                        (295,
-                         (297,
-                          (298,
-                           (299,
-                            (300,
-                             (301,
-                              (302,
-                               (303, (304, (305, (2, '1')))))))))))))))))),
-                 (4, ''))),
-               (6, ''))))),
-           (4, ''),
-           (0, ''))))
+              (285,
+               (259,
+                (1, 'def'),
+                   (1, 'f'),
+                   (260, (7, '('), (8, ')')),
+                   (11, ':'),
+                   (291,
+                    (4, ''),
+                    (5, ''),
+                    (264,
+                     (265,
+                      (266,
+                       (272,
+                        (275,
+                         (1, 'return'),
+                            (313,
+                             (292,
+                              (293,
+                               (294,
+                                (295,
+                                 (297,
+                                  (298,
+                                   (299,
+                                    (300,
+                                     (301,
+                                      (302, (303, (304, (305, (2, '1')))))))))))))))))),
+                         (264,
+                          (265,
+                           (266,
+                            (272,
+                             (276,
+                              (1, 'yield'),
+                                 (313,
+                                  (292,
+                                   (293,
+                                    (294,
+                                     (295,
+                                      (297,
+                                       (298,
+                                        (299,
+                                         (300,
+                                          (301,
+                                           (302,
+                                            (303, (304, (305, (2, '1')))))))))))))))))),
+                              (4, ''))),
+                         (6, ''))))),
+                  (4, ''),
+                  (0, ''))))
         self.check_bad_tree(tree, "def f():\n  return 1\n  yield 1")
 
     def test_illegal_yield_2(self):
         # Illegal return in generator: def f(): return 1; yield 1
         tree = \
-        (257,
-         (264,
-          (265,
-           (266,
-            (278,
-             (1, 'from'),
-             (281, (1, '__future__')),
-             (1, 'import'),
-             (279, (1, 'generators')))),
-           (4, ''))),
-         (264,
-          (285,
-           (259,
-            (1, 'def'),
-            (1, 'f'),
-            (260, (7, '('), (8, ')')),
-            (11, ':'),
-            (291,
-             (4, ''),
-             (5, ''),
+            (257,
              (264,
               (265,
                (266,
-                (272,
-                 (275,
-                  (1, 'return'),
-                  (313,
-                   (292,
-                    (293,
-                     (294,
-                      (295,
-                       (297,
-                        (298,
-                         (299,
-                          (300,
-                           (301,
-                            (302, (303, (304, (305, (2, '1')))))))))))))))))),
-               (264,
-                (265,
-                 (266,
-                  (272,
-                   (276,
-                    (1, 'yield'),
-                    (313,
-                     (292,
-                      (293,
-                       (294,
-                        (295,
-                         (297,
-                          (298,
-                           (299,
-                            (300,
-                             (301,
-                              (302,
-                               (303, (304, (305, (2, '1')))))))))))))))))),
-                 (4, ''))),
-               (6, ''))))),
-           (4, ''),
-           (0, ''))))
+                (278,
+                 (1, 'from'),
+                    (281, (1, '__future__')),
+                    (1, 'import'),
+                    (279, (1, 'generators')))),
+                  (4, ''))),
+                (264,
+                 (285,
+                  (259,
+                   (1, 'def'),
+                      (1, 'f'),
+                      (260, (7, '('), (8, ')')),
+                      (11, ':'),
+                      (291,
+                       (4, ''),
+                       (5, ''),
+                       (264,
+                        (265,
+                         (266,
+                          (272,
+                           (275,
+                            (1, 'return'),
+                               (313,
+                                (292,
+                                 (293,
+                                  (294,
+                                   (295,
+                                    (297,
+                                     (298,
+                                      (299,
+                                       (300,
+                                        (301,
+                                         (302, (303, (304, (305, (2, '1')))))))))))))))))),
+                            (264,
+                             (265,
+                              (266,
+                               (272,
+                                (276,
+                                 (1, 'yield'),
+                                    (313,
+                                     (292,
+                                      (293,
+                                       (294,
+                                        (295,
+                                         (297,
+                                          (298,
+                                           (299,
+                                            (300,
+                                             (301,
+                                              (302,
+                                               (303, (304, (305, (2, '1')))))))))))))))))),
+                                 (4, ''))),
+                            (6, ''))))),
+                     (4, ''),
+                     (0, ''))))
         self.check_bad_tree(tree, "def f():\n  return 1\n  yield 1")
 
     def test_print_chevron_comma(self):
         # Illegal input: print >>fp,
         tree = \
-        (257,
-         (264,
-          (265,
-           (266,
-            (268,
-             (1, 'print'),
-             (35, '>>'),
-             (290,
-              (291,
-               (292,
-                (293,
-                 (295,
-                  (296,
-                   (297,
-                    (298, (299, (300, (301, (302, (303, (1, 'fp')))))))))))))),
-             (12, ','))),
-           (4, ''))),
-         (0, ''))
+            (257,
+             (264,
+              (265,
+               (266,
+                (268,
+                 (1, 'print'),
+                    (35, '>>'),
+                    (290,
+                     (291,
+                      (292,
+                       (293,
+                        (295,
+                         (296,
+                          (297,
+                           (298, (299, (300, (301, (302, (303, (1, 'fp')))))))))))))),
+                    (12, ','))),
+                  (4, ''))),
+                (0, ''))
         self.check_bad_tree(tree, "print >>fp,")
 
     def test_a_comma_comma_c(self):
         # Illegal input: a,,c
         tree = \
-        (258,
-         (311,
-          (290,
-           (291,
-            (292,
-             (293,
-              (295,
-               (296,
-                (297,
-                 (298, (299, (300, (301, (302, (303, (1, 'a')))))))))))))),
-          (12, ','),
-          (12, ','),
-          (290,
-           (291,
-            (292,
-             (293,
-              (295,
-               (296,
-                (297,
-                 (298, (299, (300, (301, (302, (303, (1, 'c'))))))))))))))),
-         (4, ''),
-         (0, ''))
+            (258,
+             (311,
+              (290,
+               (291,
+                (292,
+                 (293,
+                  (295,
+                   (296,
+                    (297,
+                     (298, (299, (300, (301, (302, (303, (1, 'a')))))))))))))),
+                 (12, ','),
+                 (12, ','),
+                 (290,
+                  (291,
+                   (292,
+                    (293,
+                     (295,
+                      (296,
+                       (297,
+                        (298, (299, (300, (301, (302, (303, (1, 'c'))))))))))))))),
+                (4, ''),
+                (0, ''))
         self.check_bad_tree(tree, "a,,c")
 
     def test_illegal_operator(self):
         # Illegal input: a $= b
         tree = \
-        (257,
-         (264,
-          (265,
-           (266,
-            (267,
-             (312,
-              (291,
-               (292,
-                (293,
-                 (294,
-                  (296,
-                   (297,
-                    (298,
-                     (299,
-                      (300, (301, (302, (303, (304, (1, 'a'))))))))))))))),
-             (268, (37, '$=')),
-             (312,
-              (291,
-               (292,
-                (293,
-                 (294,
-                  (296,
-                   (297,
-                    (298,
-                     (299,
-                      (300, (301, (302, (303, (304, (1, 'b'))))))))))))))))),
-           (4, ''))),
-         (0, ''))
+            (257,
+             (264,
+              (265,
+               (266,
+                (267,
+                 (312,
+                  (291,
+                   (292,
+                    (293,
+                     (294,
+                      (296,
+                       (297,
+                        (298,
+                         (299,
+                          (300, (301, (302, (303, (304, (1, 'a'))))))))))))))),
+                    (268, (37, '$=')),
+                    (312,
+                     (291,
+                      (292,
+                       (293,
+                        (294,
+                         (296,
+                          (297,
+                           (298,
+                            (299,
+                             (300, (301, (302, (303, (304, (1, 'b'))))))))))))))))),
+                  (4, ''))),
+                (0, ''))
         self.check_bad_tree(tree, "a $= b")
 
     def test_malformed_global(self):
-        #doesn't have global keyword in ast
+        # doesn't have global keyword in ast
         tree = (257,
                 (264,
                  (265,
@@ -582,8 +588,9 @@ class ParserStackLimitTestCase(unittest.TestCase):
     """try to push the parser to/over it's limits.
     see http://bugs.python.org/issue1881 for a discussion
     """
+
     def _nested_expression(self, level):
-        return "["*level+"]"*level
+        return "[" * level + "]" * level
 
     def test_deeply_nested_list(self):
         e = self._nested_expression(99)
@@ -594,6 +601,7 @@ class ParserStackLimitTestCase(unittest.TestCase):
         e = self._nested_expression(100)
         print >>sys.stderr, "Expecting 's_push: parser stack overflow' in next line"
         self.assertRaises(MemoryError, parser.expr, e)
+
 
 class STObjectTestCase(unittest.TestCase):
     """Test operations on ST objects themselves"""
@@ -611,6 +619,7 @@ class STObjectTestCase(unittest.TestCase):
 
         basesize = support.calcobjsize('Pii')
         nodesize = struct.calcsize('hP3iP0h')
+
         def sizeofchildren(node):
             if node is None:
                 return 0
@@ -627,7 +636,7 @@ class STObjectTestCase(unittest.TestCase):
 
         def check_st_sizeof(st):
             self.check_sizeof(st, basesize + nodesize +
-                                  sizeofchildren(st.totuple()))
+                              sizeofchildren(st.totuple()))
 
         check_st_sizeof(parser.expr('2 + 3'))
         check_st_sizeof(parser.expr('2 + 3 + 4'))
@@ -636,8 +645,8 @@ class STObjectTestCase(unittest.TestCase):
         check_st_sizeof(parser.suite('# -*- coding: utf-8 -*-'))
         check_st_sizeof(parser.expr('[' + '2,' * 1000 + ']'))
 
-
     # XXX tests for pickling and unpickling of ST objects should go here
+
 
 def test_main():
     support.run_unittest(

@@ -11,8 +11,9 @@ import doctest
 #       zipimport in the test_zipimport_support test module.
 
 ######################################################################
-## Sample Objects (used by test cases)
+# Sample Objects (used by test cases)
 ######################################################################
+
 
 def sample_func(v):
     """
@@ -23,7 +24,8 @@ def sample_func(v):
 
     Yee ha!
     """
-    return v+v
+    return v + v
+
 
 class SampleClass:
     """
@@ -41,6 +43,7 @@ class SampleClass:
     ...     print sc.get(),
     6 12 24 48 96 192 384 768 1536 3072
     """
+
     def __init__(self, val):
         """
         >>> print SampleClass(12).get()
@@ -67,7 +70,7 @@ class SampleClass:
         >>> print SampleClass.a_staticmethod(10)
         11
         """
-        return v+1
+        return v + 1
     a_staticmethod = staticmethod(a_staticmethod)
 
     def a_classmethod(cls, v):
@@ -77,7 +80,7 @@ class SampleClass:
         >>> print SampleClass(0).a_classmethod(10)
         12
         """
-        return v+2
+        return v + 2
     a_classmethod = classmethod(a_classmethod)
 
     a_property = property(get, doc="""
@@ -92,16 +95,20 @@ class SampleClass:
         >>> print y.get()
         25
         """
+
         def __init__(self, val=0):
             """
             >>> print SampleClass.NestedClass().get()
             0
             """
             self.val = val
+
         def square(self):
-            return SampleClass.NestedClass(self.val*self.val)
+            return SampleClass.NestedClass(self.val * self.val)
+
         def get(self):
             return self.val
+
 
 class SampleNewStyleClass(object):
     r"""
@@ -110,6 +117,7 @@ class SampleNewStyleClass(object):
     2
     3
     """
+
     def __init__(self, val):
         """
         >>> print SampleNewStyleClass(12).get()
@@ -132,8 +140,9 @@ class SampleNewStyleClass(object):
         return self.val
 
 ######################################################################
-## Fake stdin (for testing interactive debugging)
+# Fake stdin (for testing interactive debugging)
 ######################################################################
+
 
 class _FakeInput:
     """
@@ -142,19 +151,22 @@ class _FakeInput:
     return it.  The set of lines to return is specified in the
     constructor; they should not have trailing newlines.
     """
+
     def __init__(self, lines):
         self.lines = lines
 
     def readline(self):
         line = self.lines.pop(0)
         print line
-        return line+'\n'
+        return line + '\n'
 
 ######################################################################
-## Test Cases
+# Test Cases
 ######################################################################
 
-def test_Example(): r"""
+
+def test_Example():
+    r"""
 Unit tests for the `Example` class.
 
 Example is a simple container class that holds:
@@ -275,7 +287,9 @@ Compare `Example`:
     True
 """
 
-def test_DocTest(): r"""
+
+def test_DocTest():
+    r"""
 Unit tests for the `DocTest` class.
 
 DocTest is a collection of examples, extracted from a docstring, along
@@ -408,7 +422,9 @@ Compare `DocTestCase`:
 
 """
 
-def test_DocTestFinder(): r"""
+
+def test_DocTestFinder():
+    r"""
 Unit tests for the `DocTestFinder` class.
 
 DocTestFinder is used to extract DocTests from an object's docstring
@@ -645,7 +661,9 @@ DocTestFinder finds the line number of each example:
     [1, 9, 12]
 """
 
-def test_DocTestParser(): r"""
+
+def test_DocTestParser():
+    r"""
 Unit tests for the `DocTestParser` class.
 
 DocTestParser is used to parse docstrings containing doctest examples.
@@ -699,6 +717,7 @@ given arguments:
     ('if 1:\n    print x\n    print y\n', '2\n3\n', 2)
     ('x+y\n', '5\n', 9)
 """
+
 
 class test_DocTestRunner:
     def basics(): r"""
@@ -762,6 +781,7 @@ the failure and proceeds to the next example:
     ok
     TestResults(failed=1, attempted=3)
 """
+
     def verbose_flag(): r"""
 The `verbose` flag makes the test runner generate more detailed
 output:
@@ -829,6 +849,7 @@ iff `-v` appears in sys.argv:
 In the remaining examples, the test runner's verbosity will be
 explicitly set, to ensure that the test behavior is consistent.
     """
+
     def exceptions(): r"""
 Tests of `DocTestRunner`'s exception handling.
 
@@ -1040,6 +1061,7 @@ unexpected exception:
         ZeroDivisionError: integer division or modulo by zero
     TestResults(failed=1, attempted=1)
 """
+
     def displayhook(): r"""
 Test that changing sys.displayhook doesn't matter for doctest.
 
@@ -1069,6 +1091,7 @@ Test that changing sys.displayhook doesn't matter for doctest.
     >>> post_displayhook is my_displayhook
     True
 """
+
     def optionflags(): r"""
 Tests of `DocTestRunner`'s option flag handling.
 
@@ -1697,7 +1720,8 @@ And then return a string with non-ascii characters:
     """
 
 
-def test_testsource(): r"""
+def test_testsource():
+    r"""
 Unit tests for `testsource()`.
 
 The testsource() function takes a module and a name, finds the (first)
@@ -1737,7 +1761,9 @@ words and expected output are converted to comments:
     <BLANKLINE>
 """
 
-def test_debug(): r"""
+
+def test_debug():
+    r"""
 
 Create a docstring that we want to debug:
 
@@ -1767,6 +1793,7 @@ Run the debugger on the docstring, and then restore sys.stdin.
     (Pdb) continue
 
 """
+
 
 def test_pdb_set_trace():
     """Using pdb.set_trace from a doctest.
@@ -1903,6 +1930,7 @@ def test_pdb_set_trace():
       TestResults(failed=1, attempted=3)
       """
 
+
 def test_pdb_set_trace_nested():
     """This illustrates more-demanding use of set_trace with nested functions.
 
@@ -1987,6 +2015,7 @@ def test_pdb_set_trace_nested():
     (Pdb) continue
     TestResults(failed=0, attempted=2)
 """
+
 
 def test_DocTestSuite():
     """DocTestSuite creates a unittest test suite from a doctest.
@@ -2101,6 +2130,7 @@ def test_DocTestSuite():
        sample_doctest module dictionary.  The test globals are
        automatically cleared for us after a test.
        """
+
 
 def test_DocFileSuite():
     """We can test tests found in text files using a DocFileSuite.
@@ -2268,6 +2298,7 @@ def test_DocFileSuite():
 
        """
 
+
 def test_trailing_space_in_test():
     """
     Trailing spaces in expected output are significant:
@@ -2353,7 +2384,9 @@ def test_unittest_reportflags():
 
     """
 
-def test_testfile(): r"""
+
+def test_testfile():
+    r"""
 Tests for the `testfile()` function.  This function runs all the
 doctest examples in a given file.  In its simple invokation, it is
 called with the name of a file, which is taken to be relative to the
@@ -2546,7 +2579,9 @@ bothering with the current sys.stdout encoding.
 # that these use the deprecated doctest.Tester, so should go away (or
 # be rewritten) someday.
 
-def old_test1(): r"""
+
+def old_test1():
+    r"""
 >>> from doctest import Tester
 >>> t = Tester(globs={'x': 42}, verbose=0)
 >>> t.runstring(r'''
@@ -2583,7 +2618,9 @@ TestResults(failed=1, attempted=4)
 TestResults(failed=1, attempted=4)
 """
 
-def old_test2(): r"""
+
+def old_test2():
+    r"""
         >>> from doctest import Tester
         >>> t = Tester(globs={}, verbose=1)
         >>> test = r'''
@@ -2607,7 +2644,9 @@ def old_test2(): r"""
         TestResults(failed=0, attempted=2)
 """
 
-def old_test3(): r"""
+
+def old_test3():
+    r"""
         >>> from doctest import Tester
         >>> t = Tester(globs={}, verbose=0)
         >>> def _f():
@@ -2620,7 +2659,9 @@ def old_test3(): r"""
         TestResults(failed=0, attempted=1)
 """
 
-def old_test4(): """
+
+def old_test4():
+    """
         >>> import types
         >>> m1 = types.ModuleType('_m1')
         >>> m2 = types.ModuleType('_m2')
@@ -2663,8 +2704,9 @@ def old_test4(): """
 """
 
 ######################################################################
-## Main
+# Main
 ######################################################################
+
 
 def test_main():
     # Check the doctest cases in doctest itself:
@@ -2683,16 +2725,20 @@ def test_main():
         # Check the doctest cases defined here:
         test_support.run_doctest(test_doctest, verbosity=True)
 
+
 import sys
+
+
 def test_coverage(coverdir):
     trace = test_support.import_module('trace')
-    tracer = trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix,],
+    tracer = trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix, ],
                          trace=0, count=1)
     tracer.run('reload(doctest); test_main()')
     r = tracer.results()
     print 'Writing coverage results...'
     r.write_results(show_missing=True, summary=True,
                     coverdir=coverdir)
+
 
 if __name__ == '__main__':
     if '-c' in sys.argv:

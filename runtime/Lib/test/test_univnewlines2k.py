@@ -13,12 +13,12 @@ FATX = 'x' * (2**14)
 DATA_TEMPLATE = [
     "line1=1",
     "line2='this is a very long line designed to go past the magic " +
-        "hundred character limit that is inside fileobject.c and which " +
-        "is meant to speed up the common case, but we also want to test " +
-        "the uncommon case, naturally.'",
+    "hundred character limit that is inside fileobject.c and which " +
+    "is meant to speed up the common case, but we also want to test " +
+    "the uncommon case, naturally.'",
     "def line3():pass",
     "line4 = '%s'" % FATX,
-    ]
+]
 
 DATA_LF = "\n".join(DATA_TEMPLATE) + "\n"
 DATA_CR = "\r".join(DATA_TEMPLATE) + "\r"
@@ -29,6 +29,7 @@ DATA_CRLF = "\r\n".join(DATA_TEMPLATE) + "\r\n"
 DATA_MIXED = "\n".join(DATA_TEMPLATE) + "\r"
 DATA_SPLIT = [x + "\n" for x in DATA_TEMPLATE]
 del x
+
 
 class TestGenericUnivNewlines(unittest.TestCase):
     # use a class variable DATA to define the data to write to the file
@@ -43,7 +44,7 @@ class TestGenericUnivNewlines(unittest.TestCase):
     def tearDown(self):
         try:
             os.unlink(test_support.TESTFN)
-        except:
+        except BaseException:
             pass
 
     def test_read(self):
@@ -93,13 +94,16 @@ class TestNativeNewlines(TestGenericUnivNewlines):
     READMODE = 'r'
     WRITEMODE = 'w'
 
+
 class TestCRNewlines(TestGenericUnivNewlines):
     NEWLINE = '\r'
     DATA = DATA_CR
 
+
 class TestLFNewlines(TestGenericUnivNewlines):
     NEWLINE = '\n'
     DATA = DATA_LF
+
 
 class TestCRLFNewlines(TestGenericUnivNewlines):
     NEWLINE = '\r\n'
@@ -111,6 +115,7 @@ class TestCRLFNewlines(TestGenericUnivNewlines):
             data = fp.readline()
             pos = fp.tell()
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))
+
 
 class TestMixedNewlines(TestGenericUnivNewlines):
     NEWLINE = ('\r', '\n')
@@ -124,7 +129,8 @@ def test_main():
         TestLFNewlines,
         TestCRLFNewlines,
         TestMixedNewlines
-     )
+    )
+
 
 if __name__ == '__main__':
     test_main()

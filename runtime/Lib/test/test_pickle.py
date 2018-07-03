@@ -9,6 +9,7 @@ from test.pickletester import (AbstractPickleTests,
                                AbstractPicklerUnpicklerObjectTests,
                                BigmemPickleTests)
 
+
 class PickleTests(AbstractPickleTests, AbstractPickleModuleTests):
 
     def dumps(self, arg, proto=0, fast=0):
@@ -21,6 +22,7 @@ class PickleTests(AbstractPickleTests, AbstractPickleModuleTests):
 
     module = pickle
     error = KeyError
+
 
 class PicklerTests(AbstractPickleTests):
 
@@ -39,6 +41,7 @@ class PicklerTests(AbstractPickleTests):
         f = StringIO(buf)
         u = pickle.Unpickler(f)
         return u.load()
+
 
 class PersPicklerTests(AbstractPersistentPicklerTests):
 
@@ -62,10 +65,12 @@ class PersPicklerTests(AbstractPersistentPicklerTests):
         u = PersUnpickler(f)
         return u.load()
 
+
 class PicklerUnpicklerObjectTests(AbstractPicklerUnpicklerObjectTests):
 
     pickler_class = pickle.Pickler
     unpickler_class = pickle.Unpickler
+
 
 class PickleBigmemPickleTests(BigmemPickleTests):
 
@@ -87,6 +92,7 @@ def test_main():
         PickleBigmemPickleTests,
     )
     test_support.run_doctest(pickle)
+
 
 if __name__ == "__main__":
     test_main()

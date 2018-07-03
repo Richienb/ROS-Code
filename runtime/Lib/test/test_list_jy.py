@@ -9,10 +9,11 @@ if test_support.is_jython:
     from java.util import ArrayList
     from java.lang import String
 
+
 class ListTestCase(unittest.TestCase):
 
     def test_recursive_list_slices(self):
-        x = [1,2,3,4,5]
+        x = [1, 2, 3, 4, 5]
         x[1:] = x
         self.assertEquals(x, [1, 1, 2, 3, 4, 5],
                           "Recursive assignment to list slices failed")
@@ -51,14 +52,16 @@ class ListTestCase(unittest.TestCase):
         self.assertEquals(glmt.silly, "eggs")
 
     def test_tuple_equality(self):
-        self.assertEqual([(1,), [1]].count([1]), 1) # http://bugs.jython.org/issue1317
- 
+        # http://bugs.jython.org/issue1317
+        self.assertEqual([(1,), [1]].count([1]), 1)
+
     def test_big_list(self):
         """Verify that fairly large collection literals of primitives can be constructed."""
         # use \n to separate to avoid parser problems
-        lst = eval("[" + ",\n".join((str(x) for x in xrange(64000))) +"]")
+        lst = eval("[" + ",\n".join((str(x) for x in xrange(64000))) + "]")
         self.assertEqual(len(lst), 64000)
         self.assertEqual(sum(lst), 2047968000)
+
 
 class ThreadSafetyTestCase(unittest.TestCase):
 
@@ -68,7 +71,7 @@ class ThreadSafetyTestCase(unittest.TestCase):
             t = threading.Thread(target=f)
             t.start()
             threads.append(t)
-        timeout = 10. # be especially generous
+        timeout = 10.  # be especially generous
         for t in threads:
             t.join(timeout)
             timeout = 0.
@@ -78,6 +81,7 @@ class ThreadSafetyTestCase(unittest.TestCase):
     def test_append_remove(self):
         # derived from Itamar Shtull-Trauring's test for issue 521701
         lst = []
+
         def tester():
             ct = threading.currentThread()
             for i in range(1000):
@@ -89,6 +93,7 @@ class ThreadSafetyTestCase(unittest.TestCase):
 
     def test_sort(self):
         lst = []
+
         def tester():
             ct = threading.currentThread()
             for i in range(1000):
@@ -100,7 +105,8 @@ class ThreadSafetyTestCase(unittest.TestCase):
         self.assertEqual(lst, [])
 
     def test_count_reverse(self):
-        lst = [0,1,2,3,4,5,6,7,8,9,10,0]
+        lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0]
+
         def tester():
             ct = threading.currentThread()
             for i in range(1000):
@@ -109,8 +115,9 @@ class ThreadSafetyTestCase(unittest.TestCase):
                     time.sleep(0.0001)
                 lst.reverse()
                 self.assertEqual(lst.count(0), 2)
-                self.assert_(lst[1] in (1,10))
+                self.assert_(lst[1] in (1, 10))
         self.run_threads(tester)
+
 
 class ExtendedSliceTestCase(unittest.TestCase):
     '''Really thrash extended slice operations on list.'''
@@ -123,10 +130,10 @@ class ExtendedSliceTestCase(unittest.TestCase):
         # This contributed to the release of http://bugs.jython.org/issue1873 .
         # This is a supplementary test focused on correct stopping.
 
-        initial =                  [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13]
-        expected1 = self.type2test([ 0, 1, 2, 3, 4, 5,            10,11,12,13])
-        expected2 = self.type2test([ 0, 1, 2,    4,    6,    8,   10,   12,13])
-        expected4 = self.type2test([ 0, 1,    3, 4, 5,    7, 8, 9,   11,12,13])
+        initial = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        expected1 = self.type2test([0, 1, 2, 3, 4, 5, 10, 11, 12, 13])
+        expected2 = self.type2test([0, 1, 2, 4, 6, 8, 10, 12, 13])
+        expected4 = self.type2test([0, 1, 3, 4, 5, 7, 8, 9, 11, 12, 13])
 
         # Positive step
         a = self.type2test(initial)
@@ -168,11 +175,14 @@ class ExtendedSliceTestCase(unittest.TestCase):
         # This is a supplementary test focused on correct stopping.
 
         aa, bb, cc = 91, 92, 93
-        src = self.type2test([aa,bb,cc])
-        initial =                  [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13]
-        expected1 = self.type2test([ 0, 1, 2, 3, 4, 5,aa,bb,cc, 9,10,11,12,13])
-        expected2 = self.type2test([ 0, 1, 2,aa, 4,bb, 6,cc, 8, 9,10,11,12,13])
-        expected4 = self.type2test([ 0, 1,aa, 3, 4, 5,bb, 7, 8, 9,cc,11,12,13])
+        src = self.type2test([aa, bb, cc])
+        initial = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+        expected1 = self.type2test(
+            [0, 1, 2, 3, 4, 5, aa, bb, cc, 9, 10, 11, 12, 13])
+        expected2 = self.type2test(
+            [0, 1, 2, aa, 4, bb, 6, cc, 8, 9, 10, 11, 12, 13])
+        expected4 = self.type2test(
+            [0, 1, aa, 3, 4, 5, bb, 7, 8, 9, cc, 11, 12, 13])
 
         # Positive step
         a = self.type2test(initial)
@@ -227,13 +237,12 @@ class JavaListTestCase(test_list.ListTest):
         self.assertNotEqual(id(a), id(b))
         self.assertEqual(a, b)
 
-
     def test_extend_java_ArrayList(self):
         jl = ArrayList([])
-        jl.extend([1,2])
-        self.assertEqual(jl, ArrayList([1,2]))
-        jl.extend(ArrayList([3,4]))
-        self.assertEqual(jl, [1,2,3,4])
+        jl.extend([1, 2])
+        self.assertEqual(jl, ArrayList([1, 2]))
+        jl.extend(ArrayList([3, 4]))
+        self.assertEqual(jl, [1, 2, 3, 4])
 
 
 def test_main():
@@ -241,6 +250,7 @@ def test_main():
                               ThreadSafetyTestCase,
                               ExtendedSliceTestCase,
                               JavaListTestCase)
+
 
 if __name__ == "__main__":
     test_main()

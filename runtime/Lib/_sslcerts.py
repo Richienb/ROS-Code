@@ -9,7 +9,12 @@ from java.io import BufferedInputStream, BufferedReader, FileReader, InputStream
 from java.security import KeyStore, Security
 from java.security.cert import CertificateException, CertificateFactory
 from javax.net.ssl import (
-    X509KeyManager, X509TrustManager, KeyManagerFactory, SSLContext, TrustManager, TrustManagerFactory)
+    X509KeyManager,
+    X509TrustManager,
+    KeyManagerFactory,
+    SSLContext,
+    TrustManager,
+    TrustManagerFactory)
 
 try:
     # jarjar-ed version
@@ -33,7 +38,6 @@ log = logging.getLogger("_socket")
 Security.addProvider(BouncyCastleProvider())
 
 
-
 def _get_ca_certs_trust_manager(ca_certs):
     trust_store = KeyStore.getInstance(KeyStore.getDefaultType())
     trust_store.load(None, None)
@@ -43,14 +47,23 @@ def _get_ca_certs_trust_manager(ca_certs):
         for cert in cf.generateCertificates(BufferedInputStream(f)):
             trust_store.setCertificateEntry(str(uuid.uuid4()), cert)
             num_certs_installed += 1
-    tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+    tmf = TrustManagerFactory.getInstance(
+        TrustManagerFactory.getDefaultAlgorithm())
     tmf.init(trust_store)
-    log.debug("Installed %s certificates", num_certs_installed, extra={"sock": "*"})
+    log.debug(
+        "Installed %s certificates",
+        num_certs_installed,
+        extra={
+            "sock": "*"})
     return tmf
 
 
 def _stringio_as_reader(s):
-    return BufferedReader(InputStreamReader(ByteArrayInputStream(bytearray(s.getvalue()))))
+    return BufferedReader(
+        InputStreamReader(
+            ByteArrayInputStream(
+                bytearray(
+                    s.getvalue()))))
 
 
 def _extract_readers(cert_file):
@@ -71,7 +84,8 @@ def _get_openssl_key_manager(cert_file, key_file=None):
     paths = [key_file] if key_file else []
     paths.append(cert_file)
 
-    # Go from Bouncy Castle API to Java's; a bit heavyweight for the Python dev ;)
+    # Go from Bouncy Castle API to Java's; a bit heavyweight for the Python
+    # dev ;)
     key_converter = JcaPEMKeyConverter().setProvider("BC")
     cert_converter = JcaX509CertificateConverter().setProvider("BC")
 
@@ -96,7 +110,8 @@ def _get_openssl_key_manager(cert_file, key_file=None):
     key_store = KeyStore.getInstance(KeyStore.getDefaultType())
     key_store.load(None, None)
     key_store.setKeyEntry(str(uuid.uuid4()), private_key, [], certs)
-    kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
+    kmf = KeyManagerFactory.getInstance(
+        KeyManagerFactory.getDefaultAlgorithm())
     kmf.init(key_store, [])
     return kmf
 
@@ -106,15 +121,22 @@ def _get_ssl_context(keyfile, certfile, ca_certs):
         log.debug("Using default SSL context", extra={"sock": "*"})
         return SSLContext.getDefault()
     else:
-        log.debug("Setting up a specific SSL context for keyfile=%s, certfile=%s, ca_certs=%s",
-                  keyfile, certfile, ca_certs, extra={"sock": "*"})
+        log.debug(
+            "Setting up a specific SSL context for keyfile=%s, certfile=%s, ca_certs=%s",
+            keyfile,
+            certfile,
+            ca_certs,
+            extra={
+                "sock": "*"})
         if ca_certs:
             # should support composite usage below
-            trust_managers = _get_ca_certs_trust_manager(ca_certs).getTrustManagers()
+            trust_managers = _get_ca_certs_trust_manager(
+                ca_certs).getTrustManagers()
         else:
             trust_managers = None
         if certfile:
-            key_managers = _get_openssl_key_manager(certfile, keyfile).getKeyManagers()
+            key_managers = _get_openssl_key_manager(
+                certfile, keyfile).getKeyManagers()
         else:
             key_managers = None
 
@@ -132,10 +154,11 @@ def _get_ssl_context(keyfile, certfile, ca_certs):
 # for a good description of this composite approach.
 #
 # Ported to Python from http://codyaray.com/2013/04/java-ssl-with-multiple-keystores
-# which was inspired by http://stackoverflow.com/questions/1793979/registering-multiple-keystores-in-jvm
+# which was inspired by
+# http://stackoverflow.com/questions/1793979/registering-multiple-keystores-in-jvm
 
 class CompositeX509KeyManager(X509KeyManager):
-                                                   
+
     def __init__(self, key_managers):
         self.key_managers = key_managers
 
@@ -143,16 +166,16 @@ class CompositeX509KeyManager(X509KeyManager):
         for key_manager in self.key_managers:
             alias = key_manager.chooseClientAlias(key_type, issuers, socket)
             if alias:
-                return alias;
+                return alias
         return None
 
     def chooseServerAlias(self, key_type, issuers, socket):
         for key_manager in self.key_managers:
             alias = key_manager.chooseServerAlias(key_type, issuers, socket)
             if alias:
-                return alias;
+                return alias
         return None
-    
+
     def getPrivateKey(self, alias):
         for key_manager in self.key_managers:
             private_key = keyManager.getPrivateKey(alias)
@@ -194,20 +217,22 @@ class CompositeX509TrustManager(X509TrustManager):
     def checkClientTrusted(self, chain, auth_type):
         for trust_manager in self.trust_managers:
             try:
-                trustManager.checkClientTrusted(chain, auth_type);
+                trustManager.checkClientTrusted(chain, auth_type)
                 return
             except CertificateException:
                 pass
-        raise CertificateException("None of the TrustManagers trust this certificate chain")
+        raise CertificateException(
+            "None of the TrustManagers trust this certificate chain")
 
     def checkServerTrusted(self, chain, auth_type):
         for trust_manager in self.trust_managers:
             try:
-                trustManager.checkServerTrusted(chain, auth_type);
+                trustManager.checkServerTrusted(chain, auth_type)
                 return
             except CertificateException:
                 pass
-        raise CertificateException("None of the TrustManagers trust this certificate chain")
+        raise CertificateException(
+            "None of the TrustManagers trust this certificate chain")
 
     def getAcceptedIssuers(self):
         certs = []

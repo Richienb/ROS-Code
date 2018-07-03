@@ -10,6 +10,7 @@ from distutils.errors import DistutilsSetupError
 from distutils.tests import support
 from distutils.spawn import find_executable
 
+
 class BuildCLibTestCase(support.TempdirManager,
                         support.LoggingSilencer,
                         unittest.TestCase):
@@ -70,6 +71,7 @@ class BuildCLibTestCase(support.TempdirManager,
 
         pkg_dir, dist = self.create_dist()
         cmd = build_clib(dist)
+
         class FakeCompiler:
             def compile(*args, **kw):
                 pass
@@ -131,7 +133,7 @@ class BuildCLibTestCase(support.TempdirManager,
             if ccmd is None:
                 continue
             if find_executable(ccmd[0]) is None:
-                return # can't test
+                return  # can't test
 
         # this should work
         cmd.run()
@@ -139,8 +141,10 @@ class BuildCLibTestCase(support.TempdirManager,
         # let's check the result
         self.assertTrue('libfoo.a' in os.listdir(build_temp))
 
+
 def test_suite():
     return unittest.makeSuite(BuildCLibTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

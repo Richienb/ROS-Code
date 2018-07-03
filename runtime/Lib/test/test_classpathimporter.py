@@ -8,6 +8,7 @@ import zipfile
 from test import test_support
 from java.lang import Thread
 
+
 class ClasspathImporterTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -75,7 +76,9 @@ class PyclasspathImporterTestCase(unittest.TestCase):
         import jar_pkg
         self.assertEquals(prefix + '/jar_pkg/__init__.py', jar_pkg.__file__)
         from jar_pkg import prefer_compiled
-        self.assertEquals(prefix + '/jar_pkg/prefer_compiled$py.class', prefer_compiled.__file__)
+        self.assertEquals(
+            prefix + '/jar_pkg/prefer_compiled$py.class',
+            prefer_compiled.__file__)
         self.assert_(prefer_compiled.compiled)
         self.assertRaises(NameError, __import__, 'flat_bad')
         self.assertRaises(NameError, __import__, 'jar_pkg.bad')

@@ -5,7 +5,8 @@ Do not import directly; use urllib instead."""
 import urllib
 import os
 
-__all__ = ["url2pathname","pathname2url"]
+__all__ = ["url2pathname", "pathname2url"]
+
 
 def url2pathname(pathname):
     """OS-specific conversion from a relative URL of the 'file' scheme
@@ -15,12 +16,12 @@ def url2pathname(pathname):
     #
     tp = urllib.splittype(pathname)[0]
     if tp and tp != 'file':
-        raise RuntimeError, 'Cannot convert non-local URL to pathname'
+        raise RuntimeError('Cannot convert non-local URL to pathname')
     # Turn starting /// into /, an empty hostname means current host
     if pathname[:3] == '///':
         pathname = pathname[2:]
     elif pathname[:2] == '//':
-        raise RuntimeError, 'Cannot convert non-local URL to pathname'
+        raise RuntimeError('Cannot convert non-local URL to pathname')
     components = pathname.split('/')
     # Remove . and embedded ..
     i = 0
@@ -28,13 +29,13 @@ def url2pathname(pathname):
         if components[i] == '.':
             del components[i]
         elif components[i] == '..' and i > 0 and \
-                                  components[i-1] not in ('', '..'):
-            del components[i-1:i+1]
-            i = i-1
-        elif components[i] == '' and i > 0 and components[i-1] != '':
+                components[i - 1] not in ('', '..'):
+            del components[i - 1:i + 1]
+            i = i - 1
+        elif components[i] == '' and i > 0 and components[i - 1] != '':
             del components[i]
         else:
-            i = i+1
+            i = i + 1
     if not components[0]:
         # Absolute unix path, don't start with colon
         rv = ':'.join(components[1:])
@@ -49,11 +50,12 @@ def url2pathname(pathname):
     # and finally unquote slashes and other funny characters
     return urllib.unquote(rv)
 
+
 def pathname2url(pathname):
     """OS-specific conversion from a file system path to a relative URL
     of the 'file' scheme; not recommended for general use."""
     if '/' in pathname:
-        raise RuntimeError, "Cannot convert pathname containing slashes"
+        raise RuntimeError("Cannot convert pathname containing slashes")
     components = pathname.split(':')
     # Remove empty first and/or last component
     if components[0] == '':
@@ -72,9 +74,12 @@ def pathname2url(pathname):
     else:
         return '/'.join(components)
 
+
 def _pncomp2url(component):
-    component = urllib.quote(component[:31], safe='')  # We want to quote slashes
+    # We want to quote slashes
+    component = urllib.quote(component[:31], safe='')
     return component
+
 
 def test():
     for url in ["index.html",
@@ -92,6 +97,7 @@ def test():
                  ":dir:",
                  ":dir:file"]:
         print '%r -> %r' % (path, pathname2url(path))
+
 
 if __name__ == '__main__':
     test()

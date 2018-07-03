@@ -86,7 +86,7 @@ class CGIHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         """
         collapsed_path = _url_collapse_path(self.path)
         dir_sep = collapsed_path.find('/', 1)
-        head, tail = collapsed_path[:dir_sep], collapsed_path[dir_sep+1:]
+        head, tail = collapsed_path[:dir_sep], collapsed_path[dir_sep + 1:]
         if head in self.cgi_directories:
             self.cgi_info = head, tail
             return True
@@ -111,7 +111,7 @@ class CGIHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         i = path.find('/', len(dir) + 1)
         while i >= 0:
             nextdir = path[:i]
-            nextrest = path[i+1:]
+            nextrest = path[i + 1:]
 
             scriptdir = self.translate_path(nextdir)
             if os.path.isdir(scriptdir):
@@ -123,7 +123,7 @@ class CGIHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         # find an explicit query string, if present.
         i = rest.rfind('?')
         if i >= 0:
-            rest, query = rest[:i], rest[i+1:]
+            rest, query = rest[:i], rest[i + 1:]
         else:
             query = ''
 
@@ -178,7 +178,8 @@ class CGIHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         if authorization:
             authorization = authorization.split()
             if len(authorization) == 2:
-                import base64, binascii
+                import base64
+                import binascii
                 env['AUTH_TYPE'] = authorization[0]
                 if authorization[0].lower() == "basic":
                     try:
@@ -230,7 +231,7 @@ class CGIHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             if '=' not in decoded_query:
                 args.append(decoded_query)
             nobody = nobody_uid()
-            self.wfile.flush() # Always flush before forking
+            self.wfile.flush()  # Always flush before forking
             pid = os.fork()
             if pid != 0:
                 # Parent
@@ -251,7 +252,7 @@ class CGIHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 os.dup2(self.rfile.fileno(), 0)
                 os.dup2(self.wfile.fileno(), 1)
                 os.execve(scriptfile, args, env)
-            except:
+            except BaseException:
                 self.server.handle_error(self.request, self.client_address)
                 os._exit(127)
 
@@ -274,11 +275,11 @@ class CGIHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             except (TypeError, ValueError):
                 nbytes = 0
             p = subprocess.Popen(cmdline,
-                                 stdin = subprocess.PIPE,
-                                 stdout = subprocess.PIPE,
-                                 stderr = subprocess.PIPE,
-                                 env = env
-                                )
+                                 stdin=subprocess.PIPE,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE,
+                                 env=env
+                                 )
             if self.command.lower() == "post" and nbytes > 0:
                 data = self.rfile.read(nbytes)
             else:
@@ -322,9 +323,9 @@ def _url_collapse_path(path):
     head_parts = []
     for part in path_parts[:-1]:
         if part == '..':
-            head_parts.pop() # IndexError if more '..' than prior parts
+            head_parts.pop()  # IndexError if more '..' than prior parts
         elif part and part != '.':
-            head_parts.append( part )
+            head_parts.append(part)
     if path_parts:
         tail_part = path_parts.pop()
         if tail_part:
@@ -343,6 +344,7 @@ def _url_collapse_path(path):
 
 
 nobody = None
+
 
 def nobody_uid():
     """Internal routine to get nobody's uid"""
@@ -366,11 +368,11 @@ def executable(path):
         st = os.stat(path)
     except os.error:
         return False
-    return st.st_mode & 0111 != 0
+    return st.st_mode & 0o111 != 0
 
 
-def test(HandlerClass = CGIHTTPRequestHandler,
-         ServerClass = BaseHTTPServer.HTTPServer):
+def test(HandlerClass=CGIHTTPRequestHandler,
+         ServerClass=BaseHTTPServer.HTTPServer):
     SimpleHTTPServer.test(HandlerClass, ServerClass)
 
 

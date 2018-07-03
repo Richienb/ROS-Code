@@ -14,7 +14,9 @@ Status: progress has been made replacing these cases, but there is an
 infinite number of such cases.
 """
 
-import _json, weakref
+import _json
+import weakref
+
 
 class Ctx1(object):
     encoding = "utf8"
@@ -25,11 +27,14 @@ class Ctx1(object):
     parse_int = None
     parse_constant = None
 
+
 class Foo(unicode):
     pass
 
+
 def delete_me(*args):
     print scanner.encoding.__dict__
+
 
 class Ctx2(Ctx1):
     @property
@@ -39,6 +44,7 @@ class Ctx2(Ctx1):
         f.abc = globals()
         wref = weakref.ref(f, delete_me)
         return f
+
 
 scanner = _json.make_scanner(Ctx1())
 scanner.__init__(Ctx2())

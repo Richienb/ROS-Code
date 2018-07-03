@@ -19,33 +19,37 @@ NotDefined = object()
 #  arguments
 dispatch = {
     (False, False, False):
-     lambda args, sep, end, file: print(*args),
+    lambda args, sep, end, file: print(*args),
     (False, False, True):
-     lambda args, sep, end, file: print(file=file, *args),
-    (False, True,  False):
-     lambda args, sep, end, file: print(end=end, *args),
-    (False, True,  True):
-     lambda args, sep, end, file: print(end=end, file=file, *args),
-    (True,  False, False):
-     lambda args, sep, end, file: print(sep=sep, *args),
-    (True,  False, True):
-     lambda args, sep, end, file: print(sep=sep, file=file, *args),
-    (True,  True,  False):
-     lambda args, sep, end, file: print(sep=sep, end=end, *args),
-    (True,  True,  True):
-     lambda args, sep, end, file: print(sep=sep, end=end, file=file, *args),
-    }
+    lambda args, sep, end, file: print(file=file, *args),
+    (False, True, False):
+    lambda args, sep, end, file: print(end=end, *args),
+    (False, True, True):
+    lambda args, sep, end, file: print(end=end, file=file, *args),
+    (True, False, False):
+    lambda args, sep, end, file: print(sep=sep, *args),
+    (True, False, True):
+    lambda args, sep, end, file: print(sep=sep, file=file, *args),
+    (True, True, False):
+    lambda args, sep, end, file: print(sep=sep, end=end, *args),
+    (True, True, True):
+    lambda args, sep, end, file: print(sep=sep, end=end, file=file, *args),
+}
 
 # Class used to test __str__ and print
+
+
 class ClassWith__str__:
     def __init__(self, x):
         self.x = x
+
     def __str__(self):
         return self.x
 
+
 class TestPrint(unittest.TestCase):
     def check(self, expected, args,
-            sep=NotDefined, end=NotDefined, file=NotDefined):
+              sep=NotDefined, end=NotDefined, file=NotDefined):
         # Capture sys.stdout in a StringIO.  Call print with args,
         #  and with sep, end, and file, if they're defined.  Result
         #  must match expected.
@@ -136,6 +140,7 @@ class TestPrint(unittest.TestCase):
 
 def test_main():
     test_support.run_unittest(TestPrint)
+
 
 if __name__ == "__main__":
     test_main()

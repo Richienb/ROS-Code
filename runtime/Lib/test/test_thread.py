@@ -15,6 +15,7 @@ NUMTRIPS = 3
 
 _print_mutex = thread.allocate_lock()
 
+
 def verbose_print(arg):
     """Helper function for printing out debugging output."""
     if test_support.verbose:
@@ -47,7 +48,8 @@ class ThreadRunningTests(BasicThreadTest):
     def task(self, ident):
         with self.random_mutex:
             delay = random.random() / 10000.0
-        verbose_print("task %s will run for %sus" % (ident, round(delay*1e6)))
+        verbose_print("task %s will run for %sus" %
+                      (ident, round(delay * 1e6)))
         time.sleep(delay)
         verbose_print("task %s done" % ident)
         with self.running_mutex:
@@ -68,7 +70,10 @@ class ThreadRunningTests(BasicThreadTest):
         self.assertEqual(thread.stack_size(), 0, "initial stack size is not 0")
 
         thread.stack_size(0)
-        self.assertEqual(thread.stack_size(), 0, "stack_size not reset to default")
+        self.assertEqual(
+            thread.stack_size(),
+            0,
+            "stack_size not reset to default")
 
         if os.name not in ("nt", "os2", "posix"):
             return
@@ -78,11 +83,11 @@ class ThreadRunningTests(BasicThreadTest):
             thread.stack_size(4096)
         except ValueError:
             verbose_print("caught expected ValueError setting "
-                            "stack_size(4096)")
+                          "stack_size(4096)")
         except thread.error:
             tss_supported = False
             verbose_print("platform does not support changing thread stack "
-                            "size")
+                          "size")
 
         if tss_supported:
             fail_msg = "stack_size(%d) failed - should succeed"
@@ -112,6 +117,7 @@ class ThreadRunningTests(BasicThreadTest):
         mut = thread.allocate_lock()
         mut.acquire()
         started = []
+
         def task():
             started.append(None)
             mut.acquire()
@@ -137,7 +143,7 @@ class Barrier:
     def __init__(self, num_threads):
         self.num_threads = num_threads
         self.waiting = 0
-        self.checkin_mutex  = thread.allocate_lock()
+        self.checkin_mutex = thread.allocate_lock()
         self.checkout_mutex = thread.allocate_lock()
         self.checkout_mutex.acquire()
 
@@ -210,15 +216,15 @@ class TestForkInThread(unittest.TestCase):
     def test_forkinthread(self):
         def thread1():
             try:
-                pid = os.fork() # fork in a thread
+                pid = os.fork()  # fork in a thread
             except RuntimeError:
-                sys.exit(0) # exit the child
+                sys.exit(0)  # exit the child
 
-            if pid == 0: # child
+            if pid == 0:  # child
                 os.close(self.read_fd)
                 os.write(self.write_fd, "OK")
                 sys.exit(0)
-            else: # parent
+            else:  # parent
                 os.close(self.write_fd)
 
         thread.start_new_thread(thread1, ())
@@ -240,6 +246,7 @@ class TestForkInThread(unittest.TestCase):
 def test_main():
     test_support.run_unittest(ThreadRunningTests, BarrierTest, LockTests,
                               TestForkInThread)
+
 
 if __name__ == "__main__":
     test_main()

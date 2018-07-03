@@ -48,5 +48,6 @@ def test_main():
         warnings.filterwarnings("error", module="<test string>")
         run_unittest(GlobalTests)
 
+
 if __name__ == "__main__":
     test_main()

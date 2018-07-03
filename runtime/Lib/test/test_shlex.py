@@ -139,6 +139,7 @@ foo#bar\nbaz|foo|baz|
 αινσϊ|αινσϊ|
 """
 
+
 class ShlexTest(unittest.TestCase):
     def setUp(self):
         self.data = [x.split("|")[:-1]
@@ -178,14 +179,17 @@ class ShlexTest(unittest.TestCase):
                              "%s: %s != %s" %
                              (self.data[i][0], l, self.data[i][1:]))
 
+
 # Allow this test to be used with old shlex.py
 if not getattr(shlex, "split", None):
     for methname in dir(ShlexTest):
         if methname.startswith("test") and methname != "testCompat":
             delattr(ShlexTest, methname)
 
+
 def test_main():
     test_support.run_unittest(ShlexTest)
+
 
 if __name__ == "__main__":
     test_main()

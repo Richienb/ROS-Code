@@ -37,11 +37,12 @@ Attached Content.
 
 """
 
+
 def getMIMEMsg(mf):
     global boundaries, linecount
     msg = mimetools.Message(mf)
 
-    #print "TYPE: %s" % msg.gettype()
+    # print "TYPE: %s" % msg.gettype()
     if msg.getmaintype() == 'multipart':
         boundary = msg.getparam("boundary")
         boundaries += 1
@@ -54,6 +55,7 @@ def getMIMEMsg(mf):
         lines = mf.readlines()
         linecount += len(lines)
 
+
 def test_main():
     global boundaries, linecount
     boundaries = 0
@@ -62,6 +64,7 @@ def test_main():
     getMIMEMsg(multifile.MultiFile(f))
     assert boundaries == 2
     assert linecount == 9
+
 
 if __name__ == '__main__':
     test_main()

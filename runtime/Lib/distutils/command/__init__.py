@@ -25,9 +25,9 @@ __all__ = ['build',
            'upload',
            'check',
            # These two are reserved for future use:
-           #'bdist_sdux',
-           #'bdist_pkgtool',
+           # 'bdist_sdux',
+           # 'bdist_pkgtool',
            # Note:
            # bdist_packager is not included because it only provides
            # an abstract base class
-          ]
+           ]

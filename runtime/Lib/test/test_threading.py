@@ -16,15 +16,21 @@ import subprocess
 from test import lock_tests
 
 # A trivial mutable counter.
+
+
 class Counter(object):
     def __init__(self):
         self.value = 0
+
     def inc(self):
         self.value += 1
+
     def dec(self):
         self.value -= 1
+
     def get(self):
         return self.value
+
 
 class TestThread(threading.Thread):
     def __init__(self, name, testcase, sema, mutex, nrunning):
@@ -58,6 +64,7 @@ class TestThread(threading.Thread):
                     print '%s is finished. %d tasks are running' % (
                         self.name, self.nrunning.get())
 
+
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self._threads = test.test_support.threading_setup()
@@ -84,10 +91,14 @@ class ThreadTests(BaseTestCase):
         threads = []
 
         for i in range(NUMTASKS):
-            t = TestThread("<thread %d>"%i, self, sema, mutex, numrunning)
+            t = TestThread("<thread %d>" % i, self, sema, mutex, numrunning)
             threads.append(t)
-            self.assertIsNotNone(t.ident)  # NOTE Java immediately assigns idents, unlike CPython
-            self.assertTrue(re.match('<TestThread\(.*, initial \d+\)>', repr(t)))
+            # NOTE Java immediately assigns idents, unlike CPython
+            self.assertIsNotNone(t.ident)
+            self.assertTrue(
+                re.match(
+                    '<TestThread\(.*, initial \d+\)>',
+                    repr(t)))
             t.start()
 
         if verbose:
@@ -105,6 +116,7 @@ class ThreadTests(BaseTestCase):
     def test_ident_of_no_threading_threads(self):
         # The ident still must work for the main thread and dummy threads.
         self.assertFalse(threading.currentThread().ident is None)
+
         def f():
             ident.append(threading.currentThread().ident)
             done.set()
@@ -194,7 +206,7 @@ class ThreadTests(BaseTestCase):
             # to be smarter the above loop wouldn't be infinite.
             self.fail("AsyncExc not raised")
         try:
-            self.assertEqual(result, 1) # one thread state modified
+            self.assertEqual(result, 1)  # one thread state modified
         except UnboundLocalError:
             # The exception was raised too quickly for us to get the result.
             pass
@@ -220,7 +232,7 @@ class ThreadTests(BaseTestCase):
                     worker_saw_exception.set()
 
         t = Worker()
-        t.daemon = True # so if this fails, we don't hang Python at shutdown
+        t.daemon = True  # so if this fails, we don't hang Python at shutdown
         t.start()
         if verbose:
             print "    started worker thread"
@@ -242,7 +254,7 @@ class ThreadTests(BaseTestCase):
         if verbose:
             print "    attempting to raise asynch exception in worker"
         result = set_async_exc(ctypes.c_long(t.id), exception)
-        self.assertEqual(result, 1) # one thread state modified
+        self.assertEqual(result, 1)  # one thread state modified
         if verbose:
             print "    waiting for worker to say it caught the exception"
         worker_saw_exception.wait(timeout=10)
@@ -332,8 +344,8 @@ class ThreadTests(BaseTestCase):
 
             sys.settrace(func)
             """],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
         self.addCleanup(p.stdout.close)
         self.addCleanup(p.stderr.close)
         stdout, stderr = p.communicate()
@@ -358,8 +370,8 @@ class ThreadTests(BaseTestCase):
                 threading.Thread(target=child).start()
                 raise SystemExit
             """],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
         self.addCleanup(p.stdout.close)
         self.addCleanup(p.stderr.close)
         stdout, stderr = p.communicate()
@@ -383,8 +395,9 @@ class ThreadTests(BaseTestCase):
                 t.start()
                 t.join()
                 l = enum()
-                self.assertNotIn(t, l,
-                    "#1703448 triggered after %d trials: %s" % (i, l))
+                self.assertNotIn(
+                    t, l, "#1703448 triggered after %d trials: %s" %
+                    (i, l))
         finally:
             sys.setcheckinterval(old_interval)
 
@@ -397,7 +410,7 @@ class ThreadTests(BaseTestCase):
                 self.should_raise = should_raise
                 self.thread = threading.Thread(target=self._run,
                                                args=(self,),
-                                               kwargs={'yet_another':self})
+                                               kwargs={'yet_another': self})
                 self.thread.start()
 
             def _run(self, other_ref, yet_another):
@@ -441,7 +454,8 @@ class ThreadJoinOnShutdown(BaseTestCase):
                 print 'end of thread'
         \n""" + script
 
-        p = subprocess.Popen([sys.executable, "-c", script], stdout=subprocess.PIPE)
+        p = subprocess.Popen(
+            [sys.executable, "-c", script], stdout=subprocess.PIPE)
         rc = p.wait()
         data = p.stdout.read().replace('\r', '')
         p.stdout.close()
@@ -461,7 +475,6 @@ class ThreadJoinOnShutdown(BaseTestCase):
             print 'end of main'
             """
         self._run_and_join(script)
-
 
     @unittest.skipUnless(hasattr(os, 'fork'), "needs os.fork()")
     @unittest.skipIf(sys.platform in platforms_to_skip, "due to known OS bug")
@@ -484,7 +497,8 @@ class ThreadJoinOnShutdown(BaseTestCase):
     @unittest.skipIf(sys.platform in platforms_to_skip, "due to known OS bug")
     def test_3_join_in_forked_from_thread(self):
         # Like the test above, but fork() was called from a worker thread
-        # In the forked process, the main Thread object must be marked as stopped.
+        # In the forked process, the main Thread object must be marked as
+        # stopped.
         script = """if 1:
             main_thread = threading.current_thread()
             def worker():
@@ -678,7 +692,7 @@ class ThreadingExceptionTests(BaseTestCase):
 
     def test_joining_current_thread(self):
         current_thread = threading.current_thread()
-        self.assertRaises(RuntimeError, current_thread.join);
+        self.assertRaises(RuntimeError, current_thread.join)
 
     def test_joining_inactive_thread(self):
         thread = threading.Thread()
@@ -693,21 +707,27 @@ class ThreadingExceptionTests(BaseTestCase):
 class LockTests(lock_tests.LockTests):
     locktype = staticmethod(threading.Lock)
 
+
 class RLockTests(lock_tests.RLockTests):
     locktype = staticmethod(threading.RLock)
 
+
 class EventTests(lock_tests.EventTests):
     eventtype = staticmethod(threading.Event)
+
 
 class ConditionAsRLockTests(lock_tests.RLockTests):
     # An Condition uses an RLock by default and exports its API.
     locktype = staticmethod(threading.Condition)
 
+
 class ConditionTests(lock_tests.ConditionTests):
     condtype = staticmethod(threading.Condition)
 
+
 class SemaphoreTests(lock_tests.SemaphoreTests):
     semtype = staticmethod(threading.Semaphore)
+
 
 class BoundedSemaphoreTests(lock_tests.BoundedSemaphoreTests):
     semtype = staticmethod(threading.BoundedSemaphore)
@@ -744,6 +764,7 @@ class BoundedSemaphoreTests(lock_tests.BoundedSemaphoreTests):
         self.assertEqual(p.returncode, 0, "Unexpected error")
         self.assertEqual(data, expected_output)
 
+
 def test_main():
     test.test_support.run_unittest(LockTests, RLockTests, EventTests,
                                    ConditionAsRLockTests, ConditionTests,
@@ -752,6 +773,7 @@ def test_main():
                                    ThreadJoinOnShutdown,
                                    ThreadingExceptionTests,
                                    )
+
 
 if __name__ == "__main__":
     test_main()

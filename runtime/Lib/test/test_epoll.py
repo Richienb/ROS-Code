@@ -33,10 +33,11 @@ if not hasattr(select, "epoll"):
 
 try:
     select.epoll()
-except IOError, e:
+except IOError as e:
     if e.errno == errno.ENOSYS:
         raise unittest.SkipTest("kernel doesn't support epoll()")
     raise
+
 
 class TestEPoll(unittest.TestCase):
 
@@ -45,7 +46,6 @@ class TestEPoll(unittest.TestCase):
         self.serverSocket.bind(('127.0.0.1', 0))
         self.serverSocket.listen(1)
         self.connections = [self.serverSocket]
-
 
     def tearDown(self):
         for skt in self.connections:
@@ -56,7 +56,7 @@ class TestEPoll(unittest.TestCase):
         client.setblocking(False)
         try:
             client.connect(('127.0.0.1', self.serverSocket.getsockname()[1]))
-        except socket.error, e:
+        except socket.error as e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
         else:
             raise AssertionError("Connect should have raised EINPROGRESS")
@@ -68,7 +68,7 @@ class TestEPoll(unittest.TestCase):
     def test_create(self):
         try:
             ep = select.epoll(16)
-        except OSError, e:
+        except OSError as e:
             raise AssertionError(str(e))
         self.assertTrue(ep.fileno() > 0, ep.fileno())
         self.assertTrue(not ep.closed)
@@ -106,19 +106,19 @@ class TestEPoll(unittest.TestCase):
         try:
             # TypeError: argument must be an int, or have a fileno() method.
             self.assertRaises(TypeError, ep.register, object(),
-                select.EPOLLIN | select.EPOLLOUT)
+                              select.EPOLLIN | select.EPOLLOUT)
             self.assertRaises(TypeError, ep.register, None,
-                select.EPOLLIN | select.EPOLLOUT)
+                              select.EPOLLIN | select.EPOLLOUT)
             # ValueError: file descriptor cannot be a negative integer (-1)
             self.assertRaises(ValueError, ep.register, -1,
-                select.EPOLLIN | select.EPOLLOUT)
+                              select.EPOLLIN | select.EPOLLOUT)
             # IOError: [Errno 9] Bad file descriptor
             self.assertRaises(IOError, ep.register, 10000,
-                select.EPOLLIN | select.EPOLLOUT)
+                              select.EPOLLIN | select.EPOLLOUT)
             # registering twice also raises an exception
             ep.register(server, select.EPOLLIN | select.EPOLLOUT)
             self.assertRaises(IOError, ep.register, server,
-                select.EPOLLIN | select.EPOLLOUT)
+                              select.EPOLLIN | select.EPOLLOUT)
         finally:
             ep.close()
 
@@ -139,7 +139,7 @@ class TestEPoll(unittest.TestCase):
         ep.close()
         try:
             ep2.poll(1, 4)
-        except IOError, e:
+        except IOError as e:
             self.assertEqual(e.args[0], errno.EBADF, e)
         else:
             self.fail("epoll on closed fd didn't raise EBADF")
@@ -149,9 +149,9 @@ class TestEPoll(unittest.TestCase):
 
         ep = select.epoll(16)
         ep.register(server.fileno(),
-                   select.EPOLLIN | select.EPOLLOUT | select.EPOLLET)
+                    select.EPOLLIN | select.EPOLLOUT | select.EPOLLET)
         ep.register(client.fileno(),
-                   select.EPOLLIN | select.EPOLLOUT | select.EPOLLET)
+                    select.EPOLLIN | select.EPOLLOUT | select.EPOLLET)
 
         now = time.time()
         events = ep.poll(1, 4)
@@ -159,9 +159,8 @@ class TestEPoll(unittest.TestCase):
         self.assertFalse(then - now > 0.1, then - now)
 
         events.sort()
-        expected = [(client.fileno(), select.EPOLLOUT),
-                    (server.fileno(), select.EPOLLOUT)]
-        expected.sort()
+        expected = sorted([(client.fileno(), select.EPOLLOUT),
+                           (server.fileno(), select.EPOLLOUT)])
 
         self.assertEqual(events, expected)
         self.assertFalse(then - now > 0.01, then - now)
@@ -215,8 +214,10 @@ class TestEPoll(unittest.TestCase):
         server.close()
         ep.unregister(fd)
 
+
 def test_main():
     test_support.run_unittest(TestEPoll)
+
 
 if __name__ == "__main__":
     test_main()

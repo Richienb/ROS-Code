@@ -46,7 +46,12 @@ internationalized, to the local language and cultural habits.
 #   find this format documented anywhere.
 
 
-import locale, copy, os, re, struct, sys
+import locale
+import copy
+import os
+import re
+import struct
+import sys
 from errno import ENOENT
 
 
@@ -81,16 +86,17 @@ def c2py(plural):
         from cStringIO import StringIO
     except ImportError:
         from StringIO import StringIO
-    import token, tokenize
+    import token
+    import tokenize
     tokens = tokenize.generate_tokens(StringIO(plural).readline)
     try:
         danger = [x for x in tokens if x[0] == token.NAME and x[1] != 'n']
     except tokenize.TokenError:
-        raise ValueError, \
-              'plural forms expression error, maybe unbalanced parenthesis'
+        raise ValueError(
+            'plural forms expression error, maybe unbalanced parenthesis')
     else:
         if danger:
-            raise ValueError, 'plural forms expression could be dangerous'
+            raise ValueError('plural forms expression could be dangerous')
 
     # Replace some C operators by their Python equivalents
     plural = plural.replace('&&', ' and ')
@@ -102,6 +108,7 @@ def c2py(plural):
     # Regular expression and replacement function used to transform
     # "a?b:c" to "test(a,b,c)".
     expr = re.compile(r'(.*?)\?(.*?):(.*)')
+
     def repl(x):
         return "test(%s, %s, %s)" % (x.group(1), x.group(2),
                                      expr.sub(repl, x.group(3)))
@@ -116,7 +123,7 @@ def c2py(plural):
                 # Actually, we never reach this code, because unbalanced
                 # parentheses get caught in the security check at the
                 # beginning.
-                raise ValueError, 'unbalanced parenthesis in plural form'
+                raise ValueError('unbalanced parenthesis in plural form')
             s = expr.sub(repl, stack.pop())
             stack[-1] += '(%s)' % s
         else:
@@ -126,13 +133,12 @@ def c2py(plural):
     return eval('lambda n: int(%s)' % plural)
 
 
-
 def _expand_lang(locale):
     from locale import normalize
     locale = normalize(locale)
-    COMPONENT_CODESET   = 1 << 0
+    COMPONENT_CODESET = 1 << 0
     COMPONENT_TERRITORY = 1 << 1
-    COMPONENT_MODIFIER  = 1 << 2
+    COMPONENT_MODIFIER = 1 << 2
     # split up the locale into its base components
     mask = 0
     pos = locale.find('@')
@@ -158,16 +164,18 @@ def _expand_lang(locale):
         territory = ''
     language = locale
     ret = []
-    for i in range(mask+1):
+    for i in range(mask + 1):
         if not (i & ~mask):  # if all components for this combo exist ...
             val = language
-            if i & COMPONENT_TERRITORY: val += territory
-            if i & COMPONENT_CODESET:   val += codeset
-            if i & COMPONENT_MODIFIER:  val += modifier
+            if i & COMPONENT_TERRITORY:
+                val += territory
+            if i & COMPONENT_CODESET:
+                val += codeset
+            if i & COMPONENT_MODIFIER:
+                val += modifier
             ret.append(val)
     ret.reverse()
     return ret
-
 
 
 class NullTranslations:
@@ -246,8 +254,8 @@ class NullTranslations:
             if "gettext" in names:
                 __builtin__.__dict__['gettext'] = __builtin__.__dict__['_']
             if "ngettext" in names:
-                __builtin__.__dict__['ngettext'] = (unicode and self.ungettext
-                                                             or self.ngettext)
+                __builtin__.__dict__['ngettext'] = (
+                    unicode and self.ungettext or self.ngettext)
             if "lgettext" in names:
                 __builtin__.__dict__['lgettext'] = self.lgettext
             if "lngettext" in names:
@@ -256,8 +264,8 @@ class NullTranslations:
 
 class GNUTranslations(NullTranslations):
     # Magic number of .mo files
-    LE_MAGIC = 0x950412deL
-    BE_MAGIC = 0xde120495L
+    LE_MAGIC = 0x950412de
+    BE_MAGIC = 0xde120495
 
     def _parse(self, fp):
         """Override this method to support alternative .mo formats."""
@@ -266,7 +274,7 @@ class GNUTranslations(NullTranslations):
         # Parse the .mo file header, which consists of 5 little endian 32
         # bit words.
         self._catalog = catalog = {}
-        self.plural = lambda n: int(n != 1) # germanic plural by default
+        self.plural = lambda n: int(n != 1)  # germanic plural by default
         buf = fp.read()
         buflen = len(buf)
         # Are we big endian or little endian?
@@ -282,9 +290,9 @@ class GNUTranslations(NullTranslations):
         # Now put all messages from the .mo file buffer into the catalog
         # dictionary.
         for i in xrange(0, msgcount):
-            mlen, moff = unpack(ii, buf[masteridx:masteridx+8])
+            mlen, moff = unpack(ii, buf[masteridx:masteridx + 8])
             mend = moff + mlen
-            tlen, toff = unpack(ii, buf[transidx:transidx+8])
+            tlen, toff = unpack(ii, buf[transidx:transidx + 8])
             tend = toff + tlen
             if mend < buflen and tend < buflen:
                 msg = buf[moff:mend]
@@ -458,6 +466,7 @@ def find(domain, localedir=None, languages=None, all=0):
 # a mapping between absolute .mo file path and Translation object
 _translations = {}
 
+
 def translation(domain, localedir=None, languages=None,
                 class_=None, fallback=False, codeset=None):
     if class_ is None:
@@ -532,6 +541,7 @@ def dgettext(domain, message):
         return message
     return t.gettext(message)
 
+
 def ldgettext(domain, message):
     try:
         t = translation(domain, _localedirs.get(domain, None),
@@ -539,6 +549,7 @@ def ldgettext(domain, message):
     except IOError:
         return message
     return t.lgettext(message)
+
 
 def dngettext(domain, msgid1, msgid2, n):
     try:
@@ -551,6 +562,7 @@ def dngettext(domain, msgid1, msgid2, n):
             return msgid2
     return t.ngettext(msgid1, msgid2, n)
 
+
 def ldngettext(domain, msgid1, msgid2, n):
     try:
         t = translation(domain, _localedirs.get(domain, None),
@@ -562,14 +574,18 @@ def ldngettext(domain, msgid1, msgid2, n):
             return msgid2
     return t.lngettext(msgid1, msgid2, n)
 
+
 def gettext(message):
     return dgettext(_current_domain, message)
+
 
 def lgettext(message):
     return ldgettext(_current_domain, message)
 
+
 def ngettext(msgid1, msgid2, n):
     return dngettext(_current_domain, msgid1, msgid2, n)
+
 
 def lngettext(msgid1, msgid2, n):
     return ldngettext(_current_domain, msgid1, msgid2, n)
@@ -587,5 +603,6 @@ def lngettext(msgid1, msgid2, n):
 # The resulting catalog object currently don't support access through a
 # dictionary API, which was supported (but apparently unused) in GNOME
 # gettext.
+
 
 Catalog = translation

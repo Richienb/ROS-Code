@@ -15,6 +15,7 @@ ISPEED = 4
 OSPEED = 5
 CC = 6
 
+
 def setraw(fd, when=TCSAFLUSH):
     """Put terminal into a raw mode."""
     mode = tcgetattr(fd)
@@ -26,6 +27,7 @@ def setraw(fd, when=TCSAFLUSH):
     mode[CC][VMIN] = 1
     mode[CC][VTIME] = 0
     tcsetattr(fd, when, mode)
+
 
 def setcbreak(fd, when=TCSAFLUSH):
     """Put terminal into a cbreak mode."""

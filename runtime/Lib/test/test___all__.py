@@ -15,6 +15,7 @@ except unittest.SkipTest:
 class NoAll(RuntimeError):
     pass
 
+
 class FailedImport(RuntimeError):
     pass
 
@@ -27,7 +28,7 @@ class AllTest(unittest.TestCase):
                                      DeprecationWarning), quiet=True):
             try:
                 exec "import %s" % modname in names
-            except:
+            except BaseException:
                 # Silent fail here seems the best route since some modules
                 # may not be available or not initialize properly in all
                 # environments.
@@ -118,6 +119,7 @@ class AllTest(unittest.TestCase):
 
 def test_main():
     support.run_unittest(AllTest)
+
 
 if __name__ == "__main__":
     test_main()

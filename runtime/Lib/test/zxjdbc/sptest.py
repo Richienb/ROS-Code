@@ -4,6 +4,7 @@
 
 from zxtest import zxCoreTestCase
 
+
 class OracleSPTest(zxCoreTestCase):
 
     def setUp(self):
@@ -14,19 +15,26 @@ class OracleSPTest(zxCoreTestCase):
         try:
             try:
                 c.execute("drop table sptest")
-            except:
+            except BaseException:
                 self.db.rollback()
             try:
                 c.execute("create table sptest (x varchar2(20))")
-                c.execute("create or replace procedure procnone is begin insert into sptest values ('testing'); end;")
-                c.execute("create or replace procedure procin (y in varchar2) is begin insert into sptest values (y); end;")
-                c.execute("create or replace procedure procout (y out varchar2) is begin y := 'tested'; end;")
-                c.execute("create or replace procedure procinout (y out varchar2, z in varchar2) is begin insert into sptest values (z); y := 'tested'; end;")
-                c.execute("create or replace function funcnone return varchar2 is begin return 'tested'; end;")
-                c.execute("create or replace function funcin (y varchar2) return varchar2 is begin return y || y; end;")
-                c.execute("create or replace function funcout (y out varchar2) return varchar2 is begin y := 'tested'; return 'returned'; end;")
+                c.execute(
+                    "create or replace procedure procnone is begin insert into sptest values ('testing'); end;")
+                c.execute(
+                    "create or replace procedure procin (y in varchar2) is begin insert into sptest values (y); end;")
+                c.execute(
+                    "create or replace procedure procout (y out varchar2) is begin y := 'tested'; end;")
+                c.execute(
+                    "create or replace procedure procinout (y out varchar2, z in varchar2) is begin insert into sptest values (z); y := 'tested'; end;")
+                c.execute(
+                    "create or replace function funcnone return varchar2 is begin return 'tested'; end;")
+                c.execute(
+                    "create or replace function funcin (y varchar2) return varchar2 is begin return y || y; end;")
+                c.execute(
+                    "create or replace function funcout (y out varchar2) return varchar2 is begin y := 'tested'; return 'returned'; end;")
                 self.db.commit()
-            except:
+            except BaseException:
                 self.db.rollback()
                 self.fail("procedure creation failed")
 
@@ -42,11 +50,13 @@ class OracleSPTest(zxCoreTestCase):
     def proc_errors(self, name):
         c = self.cursor()
         try:
-            c.execute("select * from user_errors where name like '%s%%'" % (name.upper()))
+            c.execute(
+                "select * from user_errors where name like '%s%%'" %
+                (name.upper()))
             errors = c.fetchall()
             try:
                 assert not errors, "found errors"
-            except AssertionError, e:
+            except AssertionError as e:
                 print "printing errors:"
                 for a in errors:
                     print a
@@ -182,6 +192,7 @@ class OracleSPTest(zxCoreTestCase):
         finally:
             c.close()
 
+
 class SQLServerSPTest(zxCoreTestCase):
 
     def testProcWithResultSet(self):
@@ -190,7 +201,7 @@ class SQLServerSPTest(zxCoreTestCase):
             for a in (("table", "sptest"), ("procedure", "sp_proctest")):
                 try:
                     c.execute("drop %s %s" % (a))
-                except:
+                except BaseException:
                     pass
 
             c.execute("create table sptest (a int, b varchar(32))")
@@ -198,7 +209,8 @@ class SQLServerSPTest(zxCoreTestCase):
             c.execute("insert into sptest values (2, 'there')")
             c.execute("insert into sptest values (3, 'goodbye')")
 
-            c.execute(""" create procedure sp_proctest (@A int) as select a, b from sptest where a <= @A """)
+            c.execute(
+                """ create procedure sp_proctest (@A int) as select a, b from sptest where a <= @A """)
             self.db.commit()
 
             c.callproc("sp_proctest", (2,))

@@ -24,6 +24,7 @@ from commands import getstatus
 # is imperfect (as designed), testModule is called with a set of
 # members to ignore.
 
+
 class PyclbrTest(TestCase):
 
     def assertListEq(self, l1, l2, ignore):
@@ -35,15 +36,17 @@ class PyclbrTest(TestCase):
 
     def assertHasattr(self, obj, attr, ignore):
         ''' succeed iff hasattr(obj,attr) or attr in ignore. '''
-        if attr in ignore: return
-        if not hasattr(obj, attr): print "???", attr
+        if attr in ignore:
+            return
+        if not hasattr(obj, attr):
+            print "???", attr
         self.assertTrue(hasattr(obj, attr),
                         'expected hasattr(%r, %r)' % (obj, attr))
 
-
     def assertHaskey(self, obj, key, ignore):
         ''' succeed iff key in obj or key in ignore. '''
-        if key in ignore: return
+        if key in ignore:
+            return
         if key not in obj:
             print >>sys.stderr, "***", key
         self.assertIn(key, obj)
@@ -72,11 +75,11 @@ class PyclbrTest(TestCase):
                 if not isinstance(classdict[name], StaticMethodType):
                     return False
             else:
-                if not  isinstance(obj, MethodType):
+                if not isinstance(obj, MethodType):
                     return False
                 if obj.im_self is not None:
                     if (not isinstance(classdict[name], ClassMethodType) or
-                        obj.im_self is not oclass):
+                            obj.im_self is not oclass):
                         return False
                 else:
                     if not isinstance(classdict[name], FunctionType):
@@ -94,7 +97,8 @@ class PyclbrTest(TestCase):
             self.assertHasattr(module, name, ignore)
             py_item = getattr(module, name)
             if isinstance(value, pyclbr.Function):
-                self.assertIsInstance(py_item, (FunctionType, BuiltinFunctionType))
+                self.assertIsInstance(
+                    py_item, (FunctionType, BuiltinFunctionType))
                 if py_item.__module__ != moduleName:
                     continue   # skip functions that came from somewhere else
                 self.assertEqual(py_item.__module__, value.module)
@@ -104,12 +108,12 @@ class PyclbrTest(TestCase):
                     continue   # skip classes that came from somewhere else
 
                 real_bases = [base.__name__ for base in py_item.__bases__]
-                pyclbr_bases = [ getattr(base, 'name', base)
-                                 for base in value.super ]
+                pyclbr_bases = [getattr(base, 'name', base)
+                                for base in value.super]
 
                 try:
                     self.assertListEq(real_bases, pyclbr_bases, ignore)
-                except:
+                except BaseException:
                     print >>sys.stderr, "class=%s" % py_item
                     raise
 
@@ -120,7 +124,7 @@ class PyclbrTest(TestCase):
                 foundMethods = []
                 for m in value.methods.keys():
                     if m[:2] == '__' and m[-2:] != '__':
-                        foundMethods.append('_'+name+m)
+                        foundMethods.append('_' + name + m)
                     else:
                         foundMethods.append(m)
 
@@ -131,7 +135,7 @@ class PyclbrTest(TestCase):
                     self.assertEqualsOrIgnored(py_item.__name__, value.name,
                                                ignore)
                     # can't check file or lineno
-                except:
+                except BaseException:
                     print >>sys.stderr, "class=%s" % py_item
                     raise
 
@@ -144,7 +148,7 @@ class PyclbrTest(TestCase):
             return False
         for name in dir(module):
             item = getattr(module, name)
-            if isinstance(item,  (ClassType, FunctionType)):
+            if isinstance(item, (ClassType, FunctionType)):
                 if defined_in(item, module):
                     self.assertHaskey(dict, name, ignore)
 
@@ -166,21 +170,24 @@ class PyclbrTest(TestCase):
         cm = self.checkModule
 
         # These were once about the 10 longest modules
-        cm('random', ignore=('Random',))  # from _random import Random as CoreGenerator
+        # from _random import Random as CoreGenerator
+        cm('random', ignore=('Random',))
         cm('cgi', ignore=('log',))      # set with = in module
-        cm('urllib', ignore=('_CFNumberToInt32',
-                             '_CStringFromCFString',
-                             '_CFSetup',
-                             'getproxies_registry',
-                             'proxy_bypass_registry',
-                             'proxy_bypass_macosx_sysconf',
-                             'open_https',
-                             'getproxies_macosx_sysconf',
-                             'getproxies_internetconfig',)) # not on all platforms
+        cm('urllib',
+           ignore=('_CFNumberToInt32',
+                   '_CStringFromCFString',
+                   '_CFSetup',
+                   'getproxies_registry',
+                   'proxy_bypass_registry',
+                   'proxy_bypass_macosx_sysconf',
+                   'open_https',
+                   'getproxies_macosx_sysconf',
+                   'getproxies_internetconfig',
+                   ))  # not on all platforms
         cm('pickle')
         cm('aifc', ignore=('openfp',))  # set with = in module
         cm('Cookie')
-        cm('sre_parse', ignore=('dump',)) # from sre_constants import *
+        cm('sre_parse', ignore=('dump',))  # from sre_constants import *
         cm('pdb')
         cm('pydoc')
 

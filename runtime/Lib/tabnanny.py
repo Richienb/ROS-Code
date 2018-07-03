@@ -32,6 +32,7 @@ __all__ = ["check", "NannyNag", "process_tokens"]
 verbose = 0
 filename_only = 0
 
+
 def errprint(*args):
     sep = ""
     for arg in args:
@@ -39,11 +40,12 @@ def errprint(*args):
         sep = " "
     sys.stderr.write("\n")
 
+
 def main():
     global verbose, filename_only
     try:
         opts, args = getopt.getopt(sys.argv[1:], "qv")
-    except getopt.error, msg:
+    except getopt.error as msg:
         errprint(msg)
         return
     for o, a in opts:
@@ -57,19 +59,25 @@ def main():
     for arg in args:
         check(arg)
 
+
 class NannyNag(Exception):
     """
     Raised by tokeneater() if detecting an ambiguous indent.
     Captured and handled in check().
     """
+
     def __init__(self, lineno, msg, line):
         self.lineno, self.msg, self.line = lineno, msg, line
+
     def get_lineno(self):
         return self.lineno
+
     def get_msg(self):
         return self.msg
+
     def get_line(self):
         return self.line
+
 
 def check(file):
     """check(file_or_dir)
@@ -89,13 +97,13 @@ def check(file):
             fullname = os.path.join(file, name)
             if (os.path.isdir(fullname) and
                 not os.path.islink(fullname) or
-                os.path.normcase(name[-3:]) == ".py"):
+                    os.path.normcase(name[-3:]) == ".py"):
                 check(fullname)
         return
 
     try:
         f = open(file)
-    except IOError, msg:
+    except IOError as msg:
         errprint("%r: I/O Error: %s" % (file, msg))
         return
 
@@ -105,15 +113,15 @@ def check(file):
     try:
         process_tokens(tokenize.generate_tokens(f.readline))
 
-    except tokenize.TokenError, msg:
+    except tokenize.TokenError as msg:
         errprint("%r: Token Error: %s" % (file, msg))
         return
 
-    except IndentationError, msg:
+    except IndentationError as msg:
         errprint("%r: Indentation Error: %s" % (file, msg))
         return
 
-    except NannyNag, nag:
+    except NannyNag as nag:
         badline = nag.get_lineno()
         line = nag.get_line()
         if verbose:
@@ -121,13 +129,17 @@ def check(file):
             print "offending line: %r" % (line,)
             print nag.get_msg()
         else:
-            if ' ' in file: file = '"' + file + '"'
-            if filename_only: print file
-            else: print file, badline, repr(line)
+            if ' ' in file:
+                file = '"' + file + '"'
+            if filename_only:
+                print file
+            else:
+                print file, badline, repr(line)
         return
 
     if verbose:
         print "%r: Clean bill of health." % (file,)
+
 
 class Whitespace:
     # the characters used for space and tab
@@ -153,7 +165,7 @@ class Whitespace:
     #       true iff raw[:n] is of the form (T*)(S*)
 
     def __init__(self, ws):
-        self.raw  = ws
+        self.raw = ws
         S, T = Whitespace.S, Whitespace.T
         count = []
         b = n = nt = 0
@@ -170,8 +182,8 @@ class Whitespace:
                 b = 0
             else:
                 break
-        self.n    = n
-        self.nt   = nt
+        self.n = n
+        self.nt = nt
         self.norm = tuple(count), b
         self.is_simple = len(count) <= 1
 
@@ -179,7 +191,7 @@ class Whitespace:
     # preceding a tab)
     def longest_run_of_spaces(self):
         count, trailing = self.norm
-        return max(len(count)-1, trailing)
+        return max(len(count) - 1, trailing)
 
     def indent_level(self, tabsize):
         # count, il = self.norm
@@ -199,7 +211,7 @@ class Whitespace:
         count, trailing = self.norm
         il = 0
         for i in range(tabsize, len(count)):
-            il = il + i/tabsize * count[i]
+            il = il + i / tabsize * count[i]
         return trailing + tabsize * (il + self.nt)
 
     # return true iff self.indent_level(t) == other.indent_level(t)
@@ -215,11 +227,11 @@ class Whitespace:
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         a = []
-        for ts in range(1, n+1):
+        for ts in range(1, n + 1):
             if self.indent_level(ts) != other.indent_level(ts):
-                a.append( (ts,
-                           self.indent_level(ts),
-                           other.indent_level(ts)) )
+                a.append((ts,
+                          self.indent_level(ts),
+                          other.indent_level(ts)))
         return a
 
     # Return True iff self.indent_level(t) < other.indent_level(t)
@@ -243,7 +255,7 @@ class Whitespace:
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         # the self.n >= other.n test already did it for ts=1
-        for ts in range(2, n+1):
+        for ts in range(2, n + 1):
             if self.indent_level(ts) >= other.indent_level(ts):
                 return False
         return True
@@ -256,12 +268,13 @@ class Whitespace:
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         a = []
-        for ts in range(1, n+1):
+        for ts in range(1, n + 1):
             if self.indent_level(ts) >= other.indent_level(ts):
-                a.append( (ts,
-                           self.indent_level(ts),
-                           other.indent_level(ts)) )
+                a.append((ts,
+                          self.indent_level(ts),
+                          other.indent_level(ts)))
         return a
+
 
 def format_witnesses(w):
     firsts = map(lambda tup: str(tup[0]), w)
@@ -269,6 +282,7 @@ def format_witnesses(w):
     if len(w) > 1:
         prefix = prefix + "s"
     return prefix + " " + ', '.join(firsts)
+
 
 def process_tokens(tokens):
     INDENT = tokenize.INDENT
@@ -305,7 +319,8 @@ def process_tokens(tokens):
             # Ouch!  This assert triggers if the last line of the source
             # is indented *and* lacks a newline -- then DEDENTs pop out
             # of thin air.
-            # assert check_equal  # else no earlier NEWLINE, or an earlier INDENT
+            # assert check_equal  # else no earlier NEWLINE, or an earlier
+            # INDENT
             check_equal = 1
 
             del indents[-1]

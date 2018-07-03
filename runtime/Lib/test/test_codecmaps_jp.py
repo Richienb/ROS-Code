@@ -8,6 +8,7 @@ from test import test_support
 from test import test_multibytecodec_support
 import unittest
 
+
 class TestCP932Map(test_multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'cp932'
@@ -21,7 +22,7 @@ class TestCP932Map(test_multibytecodec_support.TestBase_Mapping,
         ('\xff', u'\uf8f3'),
     ]
     for i in range(0xa1, 0xe0):
-        supmaps.append((chr(i), unichr(i+0xfec0)))
+        supmaps.append((chr(i), unichr(i + 0xfec0)))
 
 
 class TestEUCJPCOMPATMap(test_multibytecodec_support.TestBase_Mapping,
@@ -46,6 +47,7 @@ class TestSJISCOMPATMap(test_multibytecodec_support.TestBase_Mapping,
         ('\x81_', u'\\'),
     ]
 
+
 class TestEUCJISX0213Map(test_multibytecodec_support.TestBase_Mapping,
                          unittest.TestCase):
     encoding = 'euc_jisx0213'
@@ -62,6 +64,7 @@ class TestSJISX0213Map(test_multibytecodec_support.TestBase_Mapping,
 
 def test_main():
     test_support.run_unittest(__name__)
+
 
 if __name__ == "__main__":
     test_main()

@@ -46,7 +46,7 @@ class CreationTestCase(unittest.TestCase):
     def testTypeCheck(self):
         # Test type checking by settimeout()
         self.sock.settimeout(0)
-        self.sock.settimeout(0L)
+        self.sock.settimeout(0)
         self.sock.settimeout(0.0)
         self.sock.settimeout(None)
         self.assertRaises(TypeError, self.sock.settimeout, "")
@@ -59,7 +59,7 @@ class CreationTestCase(unittest.TestCase):
     def testRangeCheck(self):
         # Test range checking by settimeout()
         self.assertRaises(ValueError, self.sock.settimeout, -1)
-        self.assertRaises(ValueError, self.sock.settimeout, -1L)
+        self.assertRaises(ValueError, self.sock.settimeout, -1)
         self.assertRaises(ValueError, self.sock.settimeout, -1.0)
 
     def testTimeoutThenBlocking(self):
@@ -123,9 +123,13 @@ class TimeoutTestCase(unittest.TestCase):
         _t2 = time.time()
 
         _delta = abs(_t1 - _t2)
-        self.assertTrue(_delta < _timeout + self.fuzz,
-                     "timeout (%g) is more than %g seconds more than expected (%g)"
-                     %(_delta, self.fuzz, _timeout))
+        self.assertTrue(
+            _delta < _timeout +
+            self.fuzz,
+            "timeout (%g) is more than %g seconds more than expected (%g)" %
+            (_delta,
+             self.fuzz,
+             _timeout))
 
     def testRecvTimeout(self):
         # Test recv() timeout
@@ -140,9 +144,13 @@ class TimeoutTestCase(unittest.TestCase):
             _t2 = time.time()
 
             _delta = abs(_t1 - _t2)
-            self.assertTrue(_delta < _timeout + self.fuzz,
-                         "timeout (%g) is %g seconds more than expected (%g)"
-                         %(_delta, self.fuzz, _timeout))
+            self.assertTrue(
+                _delta < _timeout +
+                self.fuzz,
+                "timeout (%g) is %g seconds more than expected (%g)" %
+                (_delta,
+                 self.fuzz,
+                 _timeout))
 
     def testAcceptTimeout(self):
         # Test accept() timeout
@@ -158,8 +166,8 @@ class TimeoutTestCase(unittest.TestCase):
 
         _delta = abs(_t1 - _t2)
         self.assertTrue(_delta < _timeout + self.fuzz,
-                     "timeout (%g) is %g seconds more than expected (%g)"
-                     %(_delta, self.fuzz, _timeout))
+                        "timeout (%g) is %g seconds more than expected (%g)"
+                        % (_delta, self.fuzz, _timeout))
 
     def testRecvfromTimeout(self):
         # Test recvfrom() timeout
@@ -175,8 +183,8 @@ class TimeoutTestCase(unittest.TestCase):
 
         _delta = abs(_t1 - _t2)
         self.assertTrue(_delta < _timeout + self.fuzz,
-                     "timeout (%g) is %g seconds more than expected (%g)"
-                     %(_delta, self.fuzz, _timeout))
+                        "timeout (%g) is %g seconds more than expected (%g)"
+                        % (_delta, self.fuzz, _timeout))
 
     def testSend(self):
         # Test send() timeout
@@ -197,6 +205,7 @@ class TimeoutTestCase(unittest.TestCase):
 def test_main():
     test_support.requires('network')
     test_support.run_unittest(CreationTestCase, TimeoutTestCase)
+
 
 if __name__ == "__main__":
     test_main()

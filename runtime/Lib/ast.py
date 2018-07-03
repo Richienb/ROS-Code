@@ -49,6 +49,7 @@ def literal_eval(node_or_string):
         node_or_string = parse(node_or_string, mode='eval')
     if isinstance(node_or_string, Expression):
         node_or_string = node_or_string.body
+
     def _convert(node):
         if isinstance(node, Str):
             return node.s
@@ -65,11 +66,11 @@ def literal_eval(node_or_string):
             if node.id in _safe_names:
                 return _safe_names[node.id]
         elif isinstance(node, BinOp) and \
-             isinstance(node.op, (Add, Sub)) and \
-             isinstance(node.right, Num) and \
-             isinstance(node.right.n, complex) and \
-             isinstance(node.left, Num) and \
-             isinstance(node.left.n, (int, long, float)):
+                isinstance(node.op, (Add, Sub)) and \
+                isinstance(node.right, Num) and \
+                isinstance(node.right.n, complex) and \
+                isinstance(node.left, Num) and \
+                isinstance(node.left.n, (int, long, float)):
             left = node.left.n
             right = node.right.n
             if isinstance(node.op, Add):

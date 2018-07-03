@@ -20,12 +20,12 @@ if test.test_support.HAVE_DOCSTRINGS:
     expected_data_docstrings = (
         'dictionary for instance variables (if defined)',
         'list of weak references to the object (if defined)',
-        )
+    )
 else:
     expected_data_docstrings = ('', '')
 
 expected_text_pattern = \
-"""
+    """
 NAME
     test.pydoc_mod - This is a test module for test_pydoc
 
@@ -85,7 +85,7 @@ expected_text_data_docstrings = tuple('\n     |      ' + s if s else ''
                                       for s in expected_data_docstrings)
 
 expected_html_pattern = \
-"""
+    """
 <table width="100%%" cellspacing=0 cellpadding=2 border=0 summary="heading">
 <tr bgcolor="#7799ee">
 <td valign=bottom>&nbsp;<br>
@@ -186,6 +186,7 @@ missing_pattern = "no Python documentation found for '%s'"
 # output pattern for module with bad imports
 badimport_pattern = "problem in %s - <type 'exceptions.ImportError'>: No module named %s"
 
+
 def run_pydoc(module_name, *args, **env):
     """
     Runs pydoc on the specified module. Returns the stripped
@@ -196,6 +197,7 @@ def run_pydoc(module_name, *args, **env):
     rc, out, err = assert_python_ok('-B', pydoc.__file__, *args, **env)
     return out.strip()
 
+
 def get_pydoc_html(module):
     "Returns pydoc generated output as html"
     doc = pydoc.HTMLDoc()
@@ -204,6 +206,7 @@ def get_pydoc_html(module):
     if loc:
         loc = "<br><a href=\"" + loc + "\">Module Docs</a>"
     return output.strip(), loc
+
 
 def get_pydoc_text(module):
     "Returns pydoc generated output as text"
@@ -218,6 +221,7 @@ def get_pydoc_text(module):
     patt = re.compile('\b.')
     output = patt.sub('', output)
     return output.strip(), loc
+
 
 def print_diffs(text1, text2):
     "Prints unified diffs for two texts"
@@ -241,8 +245,8 @@ class PyDocDocTest(unittest.TestCase):
         else:
             mod_url = mod_file
         expected_html = expected_html_pattern % (
-                        (mod_url, mod_file, doc_loc) +
-                        expected_html_data_docstrings)
+            (mod_url, mod_file, doc_loc) +
+            expected_html_data_docstrings)
         if result != expected_html:
             print_diffs(expected_html, result)
             self.fail("outputs are not equal, see diff above")
@@ -252,8 +256,8 @@ class PyDocDocTest(unittest.TestCase):
     def test_text_doc(self):
         result, doc_loc = get_pydoc_text(pydoc_mod)
         expected_text = expected_text_pattern % (
-                        (inspect.getabsfile(pydoc_mod), doc_loc) +
-                        expected_text_data_docstrings)
+            (inspect.getabsfile(pydoc_mod), doc_loc) +
+            expected_text_data_docstrings)
         if result != expected_text:
             print_diffs(expected_text, result)
             self.fail("outputs are not equal, see diff above")
@@ -261,13 +265,17 @@ class PyDocDocTest(unittest.TestCase):
     def test_issue8225(self):
         # Test issue8225 to ensure no doc link appears for xml.etree
         result, doc_loc = get_pydoc_text(xml.etree)
-        self.assertEqual(doc_loc, "", "MODULE DOCS incorrectly includes a link")
+        self.assertEqual(
+            doc_loc,
+            "",
+            "MODULE DOCS incorrectly includes a link")
 
     def test_non_str_name(self):
         # issue14638
         # Treat illegal (non-str) name like no name
         class A:
             __name__ = 42
+
         class B:
             pass
         adoc = pydoc.render_doc(A())
@@ -279,15 +287,15 @@ class PyDocDocTest(unittest.TestCase):
         result = run_pydoc(missing_module)
         expected = missing_pattern % missing_module
         self.assertEqual(expected, result,
-            "documentation for missing module found")
+                         "documentation for missing module found")
 
     def test_input_strip(self):
         missing_module = " test.i_am_not_here "
         result = run_pydoc(missing_module)
         expected = missing_pattern % missing_module.strip()
         self.assertEqual(expected, result,
-            "white space was not stripped from module name "
-            "or other error output mismatch")
+                         "white space was not stripped from module name "
+                         "or other error output mismatch")
 
     def test_stripid(self):
         # test with strings, other implementations might have different repr()
@@ -321,7 +329,7 @@ class PydocImportTest(unittest.TestCase):
             ('i_am_not_here.{}'.format(modname),
              'i_am_not_here.{}'.format(modname)),
             ('test.{}'.format(modname), modname),
-            )
+        )
 
         sourcefn = os.path.join(TESTFN, modname) + os.extsep + "py"
         for importstring, expectedinmsg in testpairs:
@@ -361,7 +369,8 @@ class TestDescriptions(unittest.TestCase):
         self.assertIn("pydocfodder", doc)
 
     def test_classic_class(self):
-        class C: "Classic class"
+        class C:
+            "Classic class"
         c = C()
         self.assertEqual(pydoc.describe(C), 'class C')
         self.assertEqual(pydoc.describe(c), 'instance of C')
@@ -369,7 +378,8 @@ class TestDescriptions(unittest.TestCase):
         self.assertIn(expected, pydoc.render_doc(c))
 
     def test_class(self):
-        class C(object): "New-style class"
+        class C(object):
+            "New-style class"
         c = C()
 
         self.assertEqual(pydoc.describe(C), 'class C')
@@ -418,6 +428,7 @@ def test_main():
                                        TestHelper)
     finally:
         reap_children()
+
 
 if __name__ == "__main__":
     test_main()

@@ -13,50 +13,54 @@ the python source tree after building the interpreter and run:
 __all__ = ["iskeyword", "kwlist"]
 
 kwlist = [
-#--start keywords--
-        'and',
-        'as',
-        'assert',
-        'break',
-        'class',
-        'continue',
-        'def',
-        'del',
-        'elif',
-        'else',
-        'except',
-        'exec',
-        'finally',
-        'for',
-        'from',
-        'global',
-        'if',
-        'import',
-        'in',
-        'is',
-        'lambda',
-        'not',
-        'or',
-        'pass',
-        'print',
-        'raise',
-        'return',
-        'try',
-        'while',
-        'with',
-        'yield',
-#--end keywords--
-        ]
+    # --start keywords--
+    'and',
+    'as',
+    'assert',
+    'break',
+    'class',
+    'continue',
+    'def',
+    'del',
+    'elif',
+    'else',
+    'except',
+    'exec',
+    'finally',
+    'for',
+    'from',
+    'global',
+    'if',
+    'import',
+    'in',
+    'is',
+    'lambda',
+    'not',
+    'or',
+    'pass',
+    'print',
+    'raise',
+    'return',
+    'try',
+    'while',
+    'with',
+    'yield',
+    # --end keywords--
+]
 
 iskeyword = frozenset(kwlist).__contains__
 
+
 def main():
-    import sys, re
+    import sys
+    import re
 
     args = sys.argv[1:]
     iptfile = args and args[0] or "Python/graminit.c"
-    if len(args) > 1: optfile = args[1]
-    else: optfile = "Lib/keyword.py"
+    if len(args) > 1:
+        optfile = args[1]
+    else:
+        optfile = "Lib/keyword.py"
 
     # scan the source file for keywords
     fp = open(iptfile)
@@ -88,6 +92,7 @@ def main():
     fp = open(optfile, 'w')
     fp.write(''.join(format))
     fp.close()
+
 
 if __name__ == "__main__":
     main()

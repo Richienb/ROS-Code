@@ -13,12 +13,43 @@ import warnings
 
 from genericpath import *
 
-__all__ = ["normcase","isabs","join","splitdrive","split","splitext",
-           "basename","dirname","commonprefix","getsize","getmtime",
-           "getatime","getctime", "islink","exists","lexists","isdir","isfile",
-           "ismount","walk","expanduser","expandvars","normpath","abspath",
-           "splitunc","curdir","pardir","sep","pathsep","defpath","altsep",
-           "extsep","devnull","realpath","supports_unicode_filenames","relpath"]
+__all__ = [
+    "normcase",
+    "isabs",
+    "join",
+    "splitdrive",
+    "split",
+    "splitext",
+    "basename",
+    "dirname",
+    "commonprefix",
+    "getsize",
+    "getmtime",
+    "getatime",
+    "getctime",
+    "islink",
+    "exists",
+    "lexists",
+    "isdir",
+    "isfile",
+    "ismount",
+    "walk",
+    "expanduser",
+    "expandvars",
+    "normpath",
+    "abspath",
+    "splitunc",
+    "curdir",
+    "pardir",
+    "sep",
+    "pathsep",
+    "defpath",
+    "altsep",
+    "extsep",
+    "devnull",
+    "realpath",
+    "supports_unicode_filenames",
+    "relpath"]
 
 # strings representing various path-related bits and pieces
 curdir = '.'
@@ -38,6 +69,7 @@ devnull = 'nul'
 # Normalize the case of a pathname and map slashes to backslashes.
 # Other normalizations (such as optimizing '../' away) are not done
 # (this is done by normpath).
+
 
 def normcase(s):
     """Normalize case of pathname.
@@ -137,7 +169,7 @@ def splitunc(p):
     Paths containing drive letters never have an UNC part.
     """
     if p[1:2] == ':':
-        return '', p # Drive letter present
+        return '', p  # Drive letter present
     firstTwo = p[0:2]
     if firstTwo == '//' or firstTwo == '\\\\':
         # is a UNC path:
@@ -147,7 +179,7 @@ def splitunc(p):
         normp = normcase(p)
         index = normp.find('\\', 2)
         if index == -1:
-            ##raise RuntimeError, 'illegal UNC path: "' + p + '"'
+            # raise RuntimeError, 'illegal UNC path: "' + p + '"'
             return ("", p)
         index = normp.find('\\', index + 1)
         if index == -1:
@@ -170,7 +202,7 @@ def split(p):
     d, p = splitdrive(p)
     # set i to index beyond p's last slash
     i = len(p)
-    while i and p[i-1] not in '/\\':
+    while i and p[i - 1] not in '/\\':
         i = i - 1
     head, tail = p[:i], p[i:]  # now tail has no slashes
     # remove trailing slashes from head, unless it's all slashes
@@ -188,6 +220,8 @@ def split(p):
 
 def splitext(p):
     return genericpath._splitext(p, sep, altsep, extsep)
+
+
 splitext.__doc__ = genericpath._splitext.__doc__
 
 
@@ -207,17 +241,20 @@ def dirname(p):
 # Is a path a symbolic link?
 # This will always return false on systems where posix.lstat doesn't exist.
 
+
 def islink(path):
     """Test for symbolic link.
     On WindowsNT/95 and OS/2 always returns false
     """
     return False
 
+
 # alias exists to lexists
 lexists = exists
 
 # Is a path a mount point?  Either a root (with or without drive letter)
 # or an UNC path with at most a / or \ after the mount point.
+
 
 def ismount(path):
     """Test whether a path is a mount point (defined as root of drive)"""
@@ -286,7 +323,7 @@ def expanduser(path):
         userhome = os.environ['HOME']
     elif 'USERPROFILE' in os.environ:
         userhome = os.environ['USERPROFILE']
-    elif not 'HOMEPATH' in os.environ:
+    elif 'HOMEPATH' not in os.environ:
         return path
     else:
         try:
@@ -295,7 +332,7 @@ def expanduser(path):
             drive = ''
         userhome = join(drive, os.environ['HOMEPATH'])
 
-    if i != 1: #~user
+    if i != 1:  # ~user
         userhome = join(dirname(userhome), path[1:i])
 
     return userhome + path[i:]
@@ -341,7 +378,7 @@ def expandvars(path):
                 res = res + c
                 index = index + 1
             else:
-                path = path[index+1:]
+                path = path[index + 1:]
                 pathlen = len(path)
                 try:
                     index = path.index('%')
@@ -359,7 +396,7 @@ def expandvars(path):
                 res = res + c
                 index = index + 1
             elif path[index + 1:index + 2] == '{':
-                path = path[index+2:]
+                path = path[index + 2:]
                 pathlen = len(path)
                 try:
                     index = path.index('}')
@@ -398,7 +435,10 @@ def expandvars(path):
 def normpath(path):
     """Normalize path, eliminating double slashes, etc."""
     # Preserve unicode (if path is unicode)
-    backslash, dot = (u'\\', u'.') if isinstance(path, unicode) else ('\\', '.')
+    backslash, dot = (
+        u'\\', u'.') if isinstance(
+        path, unicode) else (
+            '\\', '.')
     if path.startswith(('\\\\.\\', '\\\\?\\')):
         # in the case of paths with these prefixes:
         # \\.\ -> device names
@@ -432,8 +472,8 @@ def normpath(path):
         if comps[i] in ('.', ''):
             del comps[i]
         elif comps[i] == '..':
-            if i > 0 and comps[i-1] != '..':
-                del comps[i-1:i+1]
+            if i > 0 and comps[i - 1] != '..':
+                del comps[i - 1:i + 1]
                 i -= 1
             elif i == 0 and prefix.endswith("\\"):
                 del comps[i]
@@ -451,9 +491,9 @@ def normpath(path):
 try:
     from nt import _getfullpathname
 
-except ImportError: # no built-in nt module - maybe it's Jython ;)
+except ImportError:  # no built-in nt module - maybe it's Jython ;)
 
-    if os._name == 'nt' :
+    if os._name == 'nt':
         # on Windows so Java version of sys deals in NT paths
         def abspath(path):
             """Return the absolute version of a path."""
@@ -473,7 +513,7 @@ except ImportError: # no built-in nt module - maybe it's Jython ;)
                         # Empty path must return current working directory
                         path = os.getcwd()
             except EnvironmentError:
-                 pass # Bad path - return unchanged.
+                pass  # Bad path - return unchanged.
             return normpath(path)
 
     else:
@@ -496,18 +536,18 @@ except ImportError: # no built-in nt module - maybe it's Jython ;)
                         # Empty path must return current working directory
                         path = os.getcwd()
             except EnvironmentError:
-                 pass # Bad path - return unchanged.
+                pass  # Bad path - return unchanged.
             return normpath(path)
 
 else:  # use native Windows method on Windows
     def abspath(path):
         """Return the absolute version of a path."""
 
-        if path: # Empty path must return current working directory.
+        if path:  # Empty path must return current working directory.
             try:
                 path = _getfullpathname(path)
             except WindowsError:
-                pass # Bad path - return unchanged.
+                pass  # Bad path - return unchanged.
         elif isinstance(path, unicode):
             path = os.getcwdu()
         else:
@@ -520,6 +560,7 @@ realpath = abspath
 supports_unicode_filenames = (hasattr(sys, "getwindowsversion") and
                               sys.getwindowsversion()[3] >= 2)
 
+
 def _abspath_split(path):
     abs = abspath(normpath(path))
     prefix, rest = splitunc(abs)
@@ -527,6 +568,7 @@ def _abspath_split(path):
     if not is_unc:
         prefix, rest = splitdrive(abs)
     return is_unc, prefix, [x for x in rest.split(sep) if x]
+
 
 def relpath(path, start=curdir):
     """Return a relative version of a path"""
@@ -539,14 +581,14 @@ def relpath(path, start=curdir):
 
     if path_is_unc ^ start_is_unc:
         raise ValueError("Cannot mix UNC and non-UNC paths (%s and %s)"
-                                                            % (path, start))
+                         % (path, start))
     if path_prefix.lower() != start_prefix.lower():
         if path_is_unc:
             raise ValueError("path is on UNC root %s, start on UNC root %s"
-                                                % (path_prefix, start_prefix))
+                             % (path_prefix, start_prefix))
         else:
             raise ValueError("path is on drive %s, start on drive %s"
-                                                % (path_prefix, start_prefix))
+                             % (path_prefix, start_prefix))
     # Work out how much of the filepath is shared by start and path.
     i = 0
     for e1, e2 in zip(start_list, path_list):
@@ -554,7 +596,7 @@ def relpath(path, start=curdir):
             break
         i += 1
 
-    rel_list = [pardir] * (len(start_list)-i) + path_list[i:]
+    rel_list = [pardir] * (len(start_list) - i) + path_list[i:]
     if not rel_list:
         return curdir
     return join(*rel_list)

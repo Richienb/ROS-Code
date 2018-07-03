@@ -13,6 +13,7 @@ Usage::
 import sys
 import json
 
+
 def main():
     if len(sys.argv) == 1:
         infile = sys.stdin
@@ -28,7 +29,7 @@ def main():
     with infile:
         try:
             obj = json.load(infile)
-        except ValueError, e:
+        except ValueError as e:
             raise SystemExit(e)
     with outfile:
         json.dump(obj, outfile, sort_keys=True,

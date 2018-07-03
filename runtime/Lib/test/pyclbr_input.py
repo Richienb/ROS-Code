@@ -1,6 +1,9 @@
 """Test cases for test_pyclbr.py"""
 
-def f(): pass
+
+def f():
+    pass
+
 
 class Other(object):
     @classmethod
@@ -8,8 +11,10 @@ class Other(object):
 
     def om(self): pass
 
+
 class B (object):
     def bm(self): pass
+
 
 class C (B):
     foo = Other().foo

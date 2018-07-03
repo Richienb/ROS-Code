@@ -5,6 +5,7 @@ scriptsdir = os.path.normpath(os.path.join(dir, os.pardir, 'scripts'))
 sys.path.append(scriptsdir)
 from test_support import *
 
+
 def test931():
     '''exec and eval are not thread safe'''
 
@@ -22,9 +23,9 @@ def test931():
     for tester in testers:
         tester.start()
 
-
     for tester in testers:
         tester.join()
+
 
 code32 = """\
 def foo():
@@ -34,24 +35,25 @@ def foo():
         return 4
 """
 
+
 def test32():
     'return in finally clause causes java.lang.VerifyError at compile time'
     exec code32
 
+
 print 'Bug Fixes'
 print 'From 1.0.1 to 1.0.2'
 
-items = locals().items()
-items.sort()
+items = sorted(locals().items())
 
 errors = 0
 for name, value in items:
     if name[:4] == 'test':
-        print value.__doc__+' #'+name[4:]
+        print value.__doc__ + ' #' + name[4:]
         try:
             value()
-        except:
-            print 'Error!', sys.exc_type, sys.exc_value
-            errors = errors+1
+        except BaseException:
+            print 'Error!', sys.exc_info()[0], sys.exc_info()[1]
+            errors = errors + 1
 
 print errors, 'errors'

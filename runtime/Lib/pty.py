@@ -10,13 +10,14 @@ from select import select
 import os
 import tty
 
-__all__ = ["openpty","fork","spawn"]
+__all__ = ["openpty", "fork", "spawn"]
 
 STDIN_FILENO = 0
 STDOUT_FILENO = 1
 STDERR_FILENO = 2
 
 CHILD = 0
+
 
 def openpty():
     """openpty() -> (master_fd, slave_fd)
@@ -29,6 +30,7 @@ def openpty():
     master_fd, slave_name = _open_terminal()
     slave_fd = slave_open(slave_name)
     return master_fd, slave_fd
+
 
 def master_open():
     """master_open() -> (master_fd, slave_name)
@@ -46,6 +48,7 @@ def master_open():
 
     return _open_terminal()
 
+
 def _open_terminal():
     """Open pty master and return (master_fd, tty_name).
     SGI and generic BSD version, for when openpty() fails."""
@@ -55,8 +58,8 @@ def _open_terminal():
         pass
     else:
         try:
-            tty_name, master_fd = sgi._getpty(os.O_RDWR, 0666, 0)
-        except IOError, msg:
+            tty_name, master_fd = sgi._getpty(os.O_RDWR, 0o666, 0)
+        except IOError as msg:
             raise os.error, msg
         return master_fd, tty_name
     for x in 'pqrstuvwxyzPQRST':
@@ -68,6 +71,7 @@ def _open_terminal():
                 continue
             return (fd, '/dev/tty' + x + y)
     raise os.error, 'out of pty devices'
+
 
 def slave_open(tty_name):
     """slave_open(tty_name) -> slave_fd
@@ -86,6 +90,7 @@ def slave_open(tty_name):
     except IOError:
         pass
     return result
+
 
 def fork():
     """fork() -> (pid, master_fd)
@@ -116,7 +121,7 @@ def fork():
         os.dup2(slave_fd, STDOUT_FILENO)
         os.dup2(slave_fd, STDERR_FILENO)
         if (slave_fd > STDERR_FILENO):
-            os.close (slave_fd)
+            os.close(slave_fd)
 
         # Explicitly open the tty to make it become a controlling tty.
         tmp_fd = os.open(os.ttyname(STDOUT_FILENO), os.O_RDWR)
@@ -127,15 +132,18 @@ def fork():
     # Parent and child process.
     return pid, master_fd
 
+
 def _writen(fd, data):
     """Write all the data to a descriptor."""
     while data != '':
         n = os.write(fd, data)
         data = data[n:]
 
+
 def _read(fd):
     """Default read function."""
     return os.read(fd, 1024)
+
 
 def _copy(master_fd, master_read=_read, stdin_read=_read):
     """Parent copy loop.
@@ -158,9 +166,10 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
             else:
                 _writen(master_fd, data)
 
+
 def spawn(argv, master_read=_read, stdin_read=_read):
     """Create a spawned process."""
-    if type(argv) == type(''):
+    if isinstance(argv, type('')):
         argv = (argv,)
     pid, master_fd = fork()
     if pid == CHILD:

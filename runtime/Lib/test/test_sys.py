@@ -1,6 +1,9 @@
 # -*- coding: iso-8859-1 -*-
-import unittest, test.test_support
-import sys, cStringIO
+import unittest
+import test.test_support
+import sys
+import cStringIO
+
 
 class SysModuleTest(unittest.TestCase):
 
@@ -23,7 +26,6 @@ class SysModuleTest(unittest.TestCase):
         self.assertEqual(out.getvalue(), "42\n")
         self.assertEqual(__builtin__._, 42)
 
-
         if not test.test_support.is_jython:
             del sys.stdout
             self.assertRaises(RuntimeError, dh, 42)
@@ -39,6 +41,7 @@ class SysModuleTest(unittest.TestCase):
 
     def test_custom_displayhook(self):
         olddisplayhook = sys.displayhook
+
         def baddisplayhook(obj):
             raise ValueError
         sys.displayhook = baddisplayhook
@@ -56,7 +59,7 @@ class SysModuleTest(unittest.TestCase):
         self.assertRaises(TypeError, eh)
         try:
             raise ValueError(42)
-        except ValueError, exc:
+        except ValueError as exc:
             eh(*sys.exc_info())
 
         sys.stderr = savestderr
@@ -85,8 +88,8 @@ class SysModuleTest(unittest.TestCase):
 
         def clear():
             try:
-                raise ValueError, 42
-            except ValueError, exc:
+                raise ValueError(42)
+            except ValueError as exc:
                 clear_check(exc)
 
         # Raise an exception and check that it can be cleared
@@ -95,8 +98,8 @@ class SysModuleTest(unittest.TestCase):
         # Verify that a frame currently handling an exception is
         # unaffected by calling exc_clear in a nested frame.
         try:
-            raise ValueError, 13
-        except ValueError, exc:
+            raise ValueError(13)
+        except ValueError as exc:
             typ1, value1, traceback1 = sys.exc_info()
             clear()
             typ2, value2, traceback2 = sys.exc_info()
@@ -115,9 +118,9 @@ class SysModuleTest(unittest.TestCase):
         # call without argument
         try:
             sys.exit(0)
-        except SystemExit, exc:
+        except SystemExit as exc:
             self.assertEquals(exc.code, 0)
-        except:
+        except BaseException:
             self.fail("wrong exception")
         else:
             self.fail("no exception")
@@ -126,9 +129,9 @@ class SysModuleTest(unittest.TestCase):
         # entry will be unpacked
         try:
             sys.exit(42)
-        except SystemExit, exc:
+        except SystemExit as exc:
             self.assertEquals(exc.code, 42)
-        except:
+        except BaseException:
             self.fail("wrong exception")
         else:
             self.fail("no exception")
@@ -136,9 +139,9 @@ class SysModuleTest(unittest.TestCase):
         # call with integer argument
         try:
             sys.exit((42,))
-        except SystemExit, exc:
+        except SystemExit as exc:
             self.assertEquals(exc.code, 42)
-        except:
+        except BaseException:
             self.fail("wrong exception")
         else:
             self.fail("no exception")
@@ -146,9 +149,9 @@ class SysModuleTest(unittest.TestCase):
         # call with string argument
         try:
             sys.exit("exit")
-        except SystemExit, exc:
+        except SystemExit as exc:
             self.assertEquals(exc.code, "exit")
-        except:
+        except BaseException:
             self.fail("wrong exception")
         else:
             self.fail("no exception")
@@ -156,9 +159,9 @@ class SysModuleTest(unittest.TestCase):
         # call with tuple argument with two entries
         try:
             sys.exit((17, 23))
-        except SystemExit, exc:
+        except SystemExit as exc:
             self.assertEquals(exc.code, (17, 23))
-        except:
+        except BaseException:
             self.fail("wrong exception")
         else:
             self.fail("no exception")
@@ -175,7 +178,7 @@ class SysModuleTest(unittest.TestCase):
     def test_setcheckinterval(self):
         self.assertRaises(TypeError, sys.setcheckinterval)
         orig = sys.getcheckinterval()
-        for n in 0, 100, 120, orig: # orig last to restore starting state
+        for n in 0, 100, 120, orig:  # orig last to restore starting state
             sys.setcheckinterval(n)
             self.assertEquals(sys.getcheckinterval(), n)
 
@@ -205,15 +208,15 @@ class SysModuleTest(unittest.TestCase):
             self.assertRaises(TypeError, sys.getdlopenflags, 42)
             oldflags = sys.getdlopenflags()
             self.assertRaises(TypeError, sys.setdlopenflags)
-            sys.setdlopenflags(oldflags+1)
-            self.assertEqual(sys.getdlopenflags(), oldflags+1)
+            sys.setdlopenflags(oldflags + 1)
+            self.assertEqual(sys.getdlopenflags(), oldflags + 1)
             sys.setdlopenflags(oldflags)
 
     def test_refcount(self):
         self.assertRaises(TypeError, sys.getrefcount)
         c = sys.getrefcount(None)
         n = None
-        self.assertEqual(sys.getrefcount(None), c+1)
+        self.assertEqual(sys.getrefcount(None), c + 1)
         del n
         self.assertEqual(sys.getrefcount(None), c)
         if hasattr(sys, "gettotalrefcount"):
@@ -223,7 +226,7 @@ class SysModuleTest(unittest.TestCase):
         self.assertRaises(TypeError, sys._getframe, 42, 42)
         self.assertRaises(ValueError, sys._getframe, 2000000000)
         self.assert_(
-            SysModuleTest.test_getframe.im_func.func_code \
+            SysModuleTest.test_getframe.im_func.func_code
             is sys._getframe().f_code
         )
 
@@ -237,7 +240,7 @@ class SysModuleTest(unittest.TestCase):
         self.assert_(isinstance(sys.exec_prefix, basestring))
         self.assert_(isinstance(sys.executable, basestring))
         self.assert_(isinstance(sys.hexversion, int))
-        self.assert_(isinstance(sys.maxint, int))
+        self.assert_(isinstance(sys.maxsize, int))
         self.assert_(isinstance(sys.maxunicode, int))
         self.assert_(isinstance(sys.platform, basestring))
         self.assert_(isinstance(sys.prefix, basestring))
@@ -252,7 +255,8 @@ class SysModuleTest(unittest.TestCase):
         self.assert_(isinstance(vi[4], int))
 
     def test_ioencoding(self):  # from v2.7 test
-        import subprocess,os
+        import subprocess
+        import os
         env = dict(os.environ)
 
         # Test character: cent sign, encoded as 0x4A (ASCII J) in CP424,
@@ -260,13 +264,13 @@ class SysModuleTest(unittest.TestCase):
 
         env["PYTHONIOENCODING"] = "cp424"
         p = subprocess.Popen([sys.executable, "-c", 'print unichr(0xa2)'],
-                             stdout = subprocess.PIPE, env=env)
+                             stdout=subprocess.PIPE, env=env)
         out = p.stdout.read().strip()
         self.assertEqual(out, unichr(0xa2).encode("cp424"))
 
         env["PYTHONIOENCODING"] = "ascii:replace"
         p = subprocess.Popen([sys.executable, "-c", 'print unichr(0xa2)'],
-                             stdout = subprocess.PIPE, env=env)
+                             stdout=subprocess.PIPE, env=env)
         out = p.stdout.read().strip()
         self.assertEqual(out, '?')
 
@@ -277,6 +281,7 @@ def test_main():
         del SysModuleTest.test_refcount
         del SysModuleTest.test_setcheckinterval
     test.test_support.run_unittest(SysModuleTest)
+
 
 if __name__ == "__main__":
     test_main()

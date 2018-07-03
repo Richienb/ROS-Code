@@ -8,6 +8,7 @@ from distutils.command.config import dump_file, config
 from distutils.tests import support
 from distutils import log
 
+
 class ConfigTestCase(support.LoggingSilencer,
                      support.TempdirManager,
                      unittest.TestCase):
@@ -35,7 +36,7 @@ class ConfigTestCase(support.LoggingSilencer,
             f.close()
 
         dump_file(this_file, 'I am the header')
-        self.assertEqual(len(self._logs), numlines+1)
+        self.assertEqual(len(self._logs), numlines + 1)
 
     def test_search_cpp(self):
         if sys.platform == 'win32':
@@ -83,8 +84,10 @@ class ConfigTestCase(support.LoggingSilencer,
         for f in (f1, f2):
             self.assertTrue(not os.path.exists(f))
 
+
 def test_suite():
     return unittest.makeSuite(ConfigTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

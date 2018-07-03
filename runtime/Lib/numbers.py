@@ -10,6 +10,7 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 
 __all__ = ["Number", "Complex", "Real", "Rational", "Integral"]
 
+
 class Number(object):
     """All numbers inherit from this class.
 
@@ -23,13 +24,13 @@ class Number(object):
     __hash__ = None
 
 
-## Notes on Decimal
-## ----------------
-## Decimal has all of the methods specified by the Real abc, but it should
-## not be registered as a Real because decimals do not interoperate with
-## binary floats (i.e.  Decimal('3.14') + 2.71828 is undefined).  But,
-## abstract reals are expected to interoperate (i.e. R1 + R2 should be
-## expected to work if R1 and R2 are both Reals).
+# Notes on Decimal
+# ----------------
+# Decimal has all of the methods specified by the Real abc, but it should
+# not be registered as a Real because decimals do not interoperate with
+# binary floats (i.e.  Decimal('3.14') + 2.71828 is undefined).  But,
+# abstract reals are expected to interoperate (i.e. R1 + R2 should be
+# expected to work if R1 and R2 are both Reals).
 
 class Complex(Number):
     """Complex defines the operations that work on the builtin complex type.
@@ -163,6 +164,7 @@ class Complex(Number):
         # The default __ne__ doesn't negate __eq__ until 3.0.
         return not (self == other)
 
+
 Complex.register(complex)
 
 
@@ -263,6 +265,7 @@ class Real(Complex):
     def conjugate(self):
         """Conjugate is a no-op for Reals."""
         return +self
+
 
 Real.register(float)
 
@@ -386,6 +389,7 @@ class Integral(Rational):
     def denominator(self):
         """Integers have a denominator of 1."""
         return 1
+
 
 Integral.register(int)
 Integral.register(long)

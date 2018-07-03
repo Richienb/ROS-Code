@@ -3,13 +3,14 @@
 import unittest
 from test.test_support import run_unittest, have_unicode
 
+
 class UnaryOpTestCase(unittest.TestCase):
 
     def test_negative(self):
         self.assertTrue(-2 == 0 - 2)
         self.assertTrue(-0 == 0)
         self.assertTrue(--2 == 2)
-        self.assertTrue(-2L == 0 - 2L)
+        self.assertTrue(-2 == 0 - 2)
         self.assertTrue(-2.0 == 0 - 2.0)
         self.assertTrue(-2j == 0 - 2j)
 
@@ -17,7 +18,7 @@ class UnaryOpTestCase(unittest.TestCase):
         self.assertTrue(+2 == 2)
         self.assertTrue(+0 == 0)
         self.assertTrue(++2 == 2)
-        self.assertTrue(+2L == 2L)
+        self.assertTrue(+2 == 2)
         self.assertTrue(+2.0 == 2.0)
         self.assertTrue(+2j == 2j)
 
@@ -25,7 +26,7 @@ class UnaryOpTestCase(unittest.TestCase):
         self.assertTrue(-2 == 0 - 2)
         self.assertTrue(-0 == 0)
         self.assertTrue(--2 == 2)
-        self.assertTrue(-2L == 0 - 2L)
+        self.assertTrue(-2 == 0 - 2)
 
     def test_no_overflow(self):
         nines = "9" * 32

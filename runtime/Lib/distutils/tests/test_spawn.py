@@ -9,6 +9,7 @@ from distutils.spawn import spawn, find_executable
 from distutils.errors import DistutilsExecError
 from distutils.tests import support
 
+
 class SpawnTestCase(support.TempdirManager,
                     support.LoggingSilencer,
                     unittest.TestCase):
@@ -22,7 +23,6 @@ class SpawnTestCase(support.TempdirManager,
             res = _nt_quote_args(args)
             self.assertEqual(res, wanted)
 
-
     @unittest.skipUnless(os.name in ('nt', 'posix'),
                          'Runs only under posix or nt')
     def test_spawn(self):
@@ -33,28 +33,30 @@ class SpawnTestCase(support.TempdirManager,
         if os.name == 'posix':
             exe = os.path.join(tmpdir, 'foo.sh')
             self.write_file(exe, '#!/bin/sh\nexit 1')
-            os.chmod(exe, 0777)
+            os.chmod(exe, 0o777)
         else:
             exe = os.path.join(tmpdir, 'foo.bat')
             self.write_file(exe, 'exit 1')
 
-        os.chmod(exe, 0777)
+        os.chmod(exe, 0o777)
         self.assertRaises(DistutilsExecError, spawn, [exe])
 
         # now something that works
         if os.name == 'posix':
             exe = os.path.join(tmpdir, 'foo.sh')
             self.write_file(exe, '#!/bin/sh\nexit 0')
-            os.chmod(exe, 0777)
+            os.chmod(exe, 0o777)
         else:
             exe = os.path.join(tmpdir, 'foo.bat')
             self.write_file(exe, 'exit 0')
 
-        os.chmod(exe, 0777)
+        os.chmod(exe, 0o777)
         spawn([exe])  # should work without any error
+
 
 def test_suite():
     return unittest.makeSuite(SpawnTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

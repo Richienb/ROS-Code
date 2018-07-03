@@ -9,7 +9,9 @@
 # Only called, not tested: getmouse(), ungetmouse()
 #
 
-import sys, tempfile, os
+import sys
+import tempfile
+import os
 
 # Optionally test curses module.  This currently requires that the
 # 'curses' resource be given on the regrtest command line using the -u
@@ -25,20 +27,23 @@ curses.panel = import_module('curses.panel')
 # XXX: if newterm was supported we could use it instead of initscr and not exit
 term = os.environ.get('TERM')
 if not term or term == 'unknown':
-    raise unittest.SkipTest, "$TERM=%r, calling initscr() may cause exit" % term
+    raise unittest.SkipTest(
+        "$TERM=%r, calling initscr() may cause exit" %
+        term)
 
 if sys.platform == "cygwin":
     raise unittest.SkipTest("cygwin's curses mostly just hangs")
 
+
 def window_funcs(stdscr):
     "Test the methods of windows"
-    win = curses.newwin(10,10)
-    win = curses.newwin(5,5, 5,5)
-    win2 = curses.newwin(15,15, 5,5)
+    win = curses.newwin(10, 10)
+    win = curses.newwin(5, 5, 5, 5)
+    win2 = curses.newwin(15, 15, 5, 5)
 
     for meth in [stdscr.addch, stdscr.addstr]:
         for args in [('a'), ('a', curses.A_BOLD),
-                     (4,4, 'a'), (5,5, 'a', curses.A_BOLD)]:
+                     (4, 4, 'a'), (5, 5, 'a', curses.A_BOLD)]:
             meth(*args)
 
     for meth in [stdscr.box, stdscr.clear, stdscr.clrtobot,
@@ -54,8 +59,8 @@ def window_funcs(stdscr):
 
     stdscr.addnstr('1234', 3)
     stdscr.addnstr('1234', 3, curses.A_BOLD)
-    stdscr.addnstr(4,4, '1234', 3)
-    stdscr.addnstr(5,5, '1234', 3, curses.A_BOLD)
+    stdscr.addnstr(4, 4, '1234', 3)
+    stdscr.addnstr(5, 5, '1234', 3, curses.A_BOLD)
 
     stdscr.attron(curses.A_BOLD)
     stdscr.attroff(curses.A_BOLD)
@@ -75,20 +80,20 @@ def window_funcs(stdscr):
     except TypeError:
         pass
     else:
-        raise RuntimeError, "Expected win.border() to raise TypeError"
+        raise RuntimeError("Expected win.border() to raise TypeError")
 
     stdscr.clearok(1)
 
-    win4 = stdscr.derwin(2,2)
-    win4 = stdscr.derwin(1,1, 5,5)
-    win4.mvderwin(9,9)
+    win4 = stdscr.derwin(2, 2)
+    win4 = stdscr.derwin(1, 1, 5, 5)
+    win4.mvderwin(9, 9)
 
     stdscr.echochar('a')
     stdscr.echochar('a', curses.A_BOLD)
     stdscr.hline('-', 5)
     stdscr.hline('-', 5, curses.A_BOLD)
-    stdscr.hline(1,1,'-', 5)
-    stdscr.hline(1,1,'-', 5, curses.A_BOLD)
+    stdscr.hline(1, 1, '-', 5)
+    stdscr.hline(1, 1, '-', 5, curses.A_BOLD)
 
     stdscr.idcok(1)
     stdscr.idlok(1)
@@ -107,15 +112,15 @@ def window_funcs(stdscr):
     stdscr.is_linetouched(0)
     stdscr.keypad(1)
     stdscr.leaveok(1)
-    stdscr.move(3,3)
-    win.mvwin(2,2)
+    stdscr.move(3, 3)
+    win.mvwin(2, 2)
     stdscr.nodelay(1)
     stdscr.notimeout(1)
     win2.overlay(win)
     win2.overwrite(win)
     win2.overlay(win, 1, 2, 3, 3, 2, 1)
     win2.overwrite(win, 1, 2, 3, 3, 2, 1)
-    stdscr.redrawln(1,2)
+    stdscr.redrawln(1, 2)
 
     stdscr.scrollok(1)
     stdscr.scroll()
@@ -123,13 +128,13 @@ def window_funcs(stdscr):
     stdscr.scroll(-3)
 
     stdscr.move(12, 2)
-    stdscr.setscrreg(10,15)
-    win3 = stdscr.subwin(10,10)
-    win3 = stdscr.subwin(10,10, 5,5)
+    stdscr.setscrreg(10, 15)
+    win3 = stdscr.subwin(10, 10)
+    win3 = stdscr.subwin(10, 10, 5, 5)
     stdscr.syncok(1)
     stdscr.timeout(5)
-    stdscr.touchline(5,5)
-    stdscr.touchline(5,5,0)
+    stdscr.touchline(5, 5)
+    stdscr.touchline(5, 5, 0)
     stdscr.vline('a', 3)
     stdscr.vline('a', 3, curses.A_STANDOUT)
     stdscr.chgat(5, 2, 3, curses.A_BLINK)
@@ -138,8 +143,8 @@ def window_funcs(stdscr):
     stdscr.chgat(curses.A_BLINK)
     stdscr.refresh()
 
-    stdscr.vline(1,1, 'a', 3)
-    stdscr.vline(1,1, 'a', 3, curses.A_STANDOUT)
+    stdscr.vline(1, 1, 'a', 3)
+    stdscr.vline(1, 1, 'a', 3, curses.A_STANDOUT)
 
     if hasattr(curses, 'resize'):
         stdscr.resize()
@@ -165,7 +170,8 @@ def module_funcs(stdscr):
     if curses.tigetstr("cnorm"):
         curses.curs_set(1)
     curses.delay_output(1)
-    curses.echo() ; curses.echo(1)
+    curses.echo()
+    curses.echo(1)
 
     f = tempfile.TemporaryFile()
     stdscr.putwin(f)
@@ -177,14 +183,16 @@ def module_funcs(stdscr):
     curses.intrflush(1)
     curses.meta(1)
     curses.napms(100)
-    curses.newpad(50,50)
-    win = curses.newwin(5,5)
-    win = curses.newwin(5,5, 1,1)
-    curses.nl() ; curses.nl(1)
+    curses.newpad(50, 50)
+    win = curses.newwin(5, 5)
+    win = curses.newwin(5, 5, 1, 1)
+    curses.nl()
+    curses.nl(1)
     curses.putp('abc')
     curses.qiflush()
-    curses.raw() ; curses.raw(1)
-    curses.setsyx(5,5)
+    curses.raw()
+    curses.raw(1)
+    curses.setsyx(5, 5)
     curses.tigetflag('hc')
     curses.tigetnum('co')
     curses.tigetstr('cr')
@@ -197,7 +205,7 @@ def module_funcs(stdscr):
     # Functions only available on a few platforms
     if curses.has_colors():
         curses.start_color()
-        curses.init_pair(2, 1,1)
+        curses.init_pair(2, 1, 1)
         curses.color_content(1)
         curses.color_pair(2)
         curses.pair_content(curses.COLOR_PAIRS - 1)
@@ -210,7 +218,7 @@ def module_funcs(stdscr):
         curses.keyname(13)
 
     if hasattr(curses, 'has_key'):
-        curses.has_key(13)
+        13 in curses
 
     if hasattr(curses, 'getmouse'):
         (availmask, oldmask) = curses.mousemask(curses.BUTTON1_PRESSED)
@@ -227,6 +235,7 @@ def module_funcs(stdscr):
         curses.resizeterm(*stdscr.getmaxyx())
     if hasattr(curses, 'resize_term'):
         curses.resize_term(*stdscr.getmaxyx())
+
 
 def unit_tests():
     from curses import ascii
@@ -246,9 +255,10 @@ def test_userptr_without_set(stdscr):
     # try to access userptr() before calling set_userptr() -- segfaults
     try:
         p.userptr()
-        raise RuntimeError, 'userptr should fail since not set'
+        raise RuntimeError('userptr should fail since not set')
     except curses.panel.error:
         pass
+
 
 def test_resize_term(stdscr):
     if hasattr(curses, 'resizeterm'):
@@ -256,11 +266,13 @@ def test_resize_term(stdscr):
         curses.resizeterm(lines - 1, cols + 1)
 
         if curses.LINES != lines - 1 or curses.COLS != cols + 1:
-            raise RuntimeError, "Expected resizeterm to update LINES and COLS"
+            raise RuntimeError("Expected resizeterm to update LINES and COLS")
+
 
 def test_issue6243(stdscr):
     curses.ungetch(1025)
     stdscr.getkey()
+
 
 def main(stdscr):
     curses.savetty()
@@ -272,6 +284,7 @@ def main(stdscr):
         test_issue6243(stdscr)
     finally:
         curses.resetty()
+
 
 if __name__ == '__main__':
     curses.wrapper(main)

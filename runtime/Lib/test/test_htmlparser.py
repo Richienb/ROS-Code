@@ -99,10 +99,10 @@ class HTMLParserTestCase(TestCaseBase):
     def test_processing_instruction_only(self):
         self._run_check("<?processing instruction>", [
             ("pi", "processing instruction"),
-            ])
+        ])
         self._run_check("<?processing instruction ?>", [
             ("pi", "processing instruction ?"),
-            ])
+        ])
 
     def test_simple_html(self):
         self._run_check("""
@@ -117,30 +117,30 @@ text
 <!--comment2a-- --comment2b-->
 </Html>
 """, [
-    ("data", "\n"),
-    ("decl", "DOCTYPE html PUBLIC 'foo'"),
-    ("data", "\n"),
-    ("starttag", "html", []),
-    ("entityref", "entity"),
-    ("charref", "32"),
-    ("data", "\n"),
-    ("comment", "comment1a\n-></foo><bar>&lt;<?pi?></foo<bar\ncomment1b"),
-    ("data", "\n"),
-    ("starttag", "img", [("src", "Bar"), ("ismap", None)]),
-    ("data", "sample\ntext\n"),
-    ("charref", "x201C"),
-    ("data", "\n"),
-    ("comment", "comment2a-- --comment2b"),
-    ("data", "\n"),
-    ("endtag", "html"),
-    ("data", "\n"),
-    ])
+            ("data", "\n"),
+            ("decl", "DOCTYPE html PUBLIC 'foo'"),
+            ("data", "\n"),
+            ("starttag", "html", []),
+            ("entityref", "entity"),
+            ("charref", "32"),
+            ("data", "\n"),
+            ("comment", "comment1a\n-></foo><bar>&lt;<?pi?></foo<bar\ncomment1b"),
+            ("data", "\n"),
+            ("starttag", "img", [("src", "Bar"), ("ismap", None)]),
+            ("data", "sample\ntext\n"),
+            ("charref", "x201C"),
+            ("data", "\n"),
+            ("comment", "comment2a-- --comment2b"),
+            ("data", "\n"),
+            ("endtag", "html"),
+            ("data", "\n"),
+        ])
 
     def test_unclosed_entityref(self):
         self._run_check("&entityref foo", [
             ("entityref", "entityref"),
             ("data", " foo"),
-            ])
+        ])
 
     def test_bad_nesting(self):
         # Strangely, this *is* supposed to test that overlapping
@@ -151,17 +151,17 @@ text
             ("starttag", "b", []),
             ("endtag", "a"),
             ("endtag", "b"),
-            ])
+        ])
 
     def test_bare_ampersands(self):
         self._run_check("this text & contains & ampersands &", [
             ("data", "this text & contains & ampersands &"),
-            ])
+        ])
 
     def test_bare_pointy_brackets(self):
         self._run_check("this < text > contains < bare>pointy< brackets", [
             ("data", "this < text > contains < bare>pointy< brackets"),
-            ])
+        ])
 
     def test_illegal_declarations(self):
         self._run_check('<!spacer type="block" height="25">',
@@ -241,7 +241,8 @@ text
                             [('decl', 'DOCTYPE ' + dtd)])
 
     def test_slashes_in_starttag(self):
-        self._run_check('<a foo="var"/>', [('startendtag', 'a', [('foo', 'var')])])
+        self._run_check('<a foo="var"/>',
+                        [('startendtag', 'a', [('foo', 'var')])])
         html = ('<img width=902 height=250px '
                 'src="/sites/default/files/images/homepage/foo.jpg" '
                 '/*what am I doing here*/ />')
@@ -260,7 +261,7 @@ text
             ('starttag', 'a', [('foo', None), ('=', None), ('bar', None)])
         ]
         self._run_check(html, expected)
-        #see issue #14538
+        # see issue #14538
         html = ('<meta><meta / ><meta // ><meta / / >'
                 '<meta/><meta /><meta //><meta//>')
         expected = [
@@ -277,16 +278,16 @@ text
     def test_startendtag(self):
         self._run_check("<p/>", [
             ("startendtag", "p", []),
-            ])
+        ])
         self._run_check("<p></p>", [
             ("starttag", "p", []),
             ("endtag", "p"),
-            ])
+        ])
         self._run_check("<p><img src='foo' /></p>", [
             ("starttag", "p", []),
             ("startendtag", "img", [("src", "foo")]),
             ("endtag", "p"),
-            ])
+        ])
 
     def test_invalid_end_tags(self):
         # A collection of broken end tags. <br> is used as separator.
@@ -393,17 +394,16 @@ text
 
     def test_unescape_function(self):
         parser = HTMLParser.HTMLParser()
-        self.assertEqual(parser.unescape('&#bad;'),'&#bad;')
-        self.assertEqual(parser.unescape('&#0038;'),'&')
-
+        self.assertEqual(parser.unescape('&#bad;'), '&#bad;')
+        self.assertEqual(parser.unescape('&#0038;'), '&')
 
 
 class AttributesTestCase(TestCaseBase):
 
     def test_attr_syntax(self):
         output = [
-          ("starttag", "a", [("b", "v"), ("c", "v"), ("d", "v"), ("e", None)])
-        ]
+            ("starttag", "a", [
+                ("b", "v"), ("c", "v"), ("d", "v"), ("e", None)])]
         self._run_check("""<a b='v' c="v" d=v e>""", output)
         self._run_check("""<a  b = 'v' c = "v" d = v e>""", output)
         self._run_check("""<a\nb\n=\n'v'\nc\n=\n"v"\nd\n=\nv\ne>""", output)
@@ -504,11 +504,11 @@ class AttributesTestCase(TestCaseBase):
     def test_adjacent_attributes(self):
         self._run_check('<a width="100%"cellspacing=0>',
                         [("starttag", "a",
-                          [("width", "100%"), ("cellspacing","0")])])
+                          [("width", "100%"), ("cellspacing", "0")])])
 
         self._run_check('<a id="foo"class="bar">',
                         [("starttag", "a",
-                          [("id", "foo"), ("class","bar")])])
+                          [("id", "foo"), ("class", "bar")])])
 
     def test_missing_attribute_value(self):
         self._run_check('<a v=>',

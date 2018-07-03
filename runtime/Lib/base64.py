@@ -23,7 +23,7 @@ __all__ = [
     #
     # http://zgp.org/pipermail/p2p-hackers/2001-September/000316.html
     'urlsafe_b64encode', 'urlsafe_b64decode',
-    ]
+]
 
 _translation = [chr(_x) for _x in range(256)]
 EMPTYSTRING = ''
@@ -36,7 +36,6 @@ def _translate(s, altchars):
     return s.translate(''.join(translation))
 
 
-
 # Base64 encoding/decoding uses binascii
 
 def b64encode(s, altchars=None):
@@ -71,7 +70,7 @@ def b64decode(s, altchars=None):
         s = _translate(s, {altchars[0]: '+', altchars[1]: '/'})
     try:
         return binascii.a2b_base64(s)
-    except binascii.Error, msg:
+    except binascii.Error as msg:
         # Transform this exception for consistency
         raise TypeError(msg)
 
@@ -83,6 +82,7 @@ def standard_b64encode(s):
     """
     return b64encode(s)
 
+
 def standard_b64decode(s):
     """Decode a string encoded with the standard Base64 alphabet.
 
@@ -92,6 +92,7 @@ def standard_b64decode(s):
     """
     return b64decode(s)
 
+
 def urlsafe_b64encode(s):
     """Encode a string using a url-safe Base64 alphabet.
 
@@ -99,6 +100,7 @@ def urlsafe_b64encode(s):
     uses '-' instead of '+' and '_' instead of '/'.
     """
     return b64encode(s, '-_')
+
 
 def urlsafe_b64decode(s):
     """Decode a string encoded with the standard Base64 alphabet.
@@ -112,10 +114,10 @@ def urlsafe_b64decode(s):
     return b64decode(s, '-_')
 
 
-
+
 # Base32 encoding/decoding must be done in Python
 _b32alphabet = {
-    0: 'A',  9: 'J', 18: 'S', 27: '3',
+    0: 'A', 9: 'J', 18: 'S', 27: '3',
     1: 'B', 10: 'K', 19: 'T', 28: '4',
     2: 'C', 11: 'L', 20: 'U', 29: '5',
     3: 'D', 12: 'M', 21: 'V', 30: '6',
@@ -124,10 +126,9 @@ _b32alphabet = {
     6: 'G', 15: 'P', 24: 'Y',
     7: 'H', 16: 'Q', 25: 'Z',
     8: 'I', 17: 'R', 26: '2',
-    }
+}
 
-_b32tab = _b32alphabet.items()
-_b32tab.sort()
+_b32tab = sorted(_b32alphabet.items())
 _b32tab = [v for k, v in _b32tab]
 _b32rev = dict([(v, long(k)) for k, v in _b32alphabet.items()])
 
@@ -149,15 +150,15 @@ def b32encode(s):
         # leftover bit of c1 and tack it onto c2.  Then we take the 2 leftover
         # bits of c2 and tack them onto c3.  The shifts and masks are intended
         # to give us values of exactly 5 bits in width.
-        c1, c2, c3 = struct.unpack('!HHB', s[i*5:(i+1)*5])
-        c2 += (c1 & 1) << 16 # 17 bits wide
+        c1, c2, c3 = struct.unpack('!HHB', s[i * 5:(i + 1) * 5])
+        c2 += (c1 & 1) << 16  # 17 bits wide
         c3 += (c2 & 3) << 8  # 10 bits wide
         parts.extend([_b32tab[c1 >> 11],         # bits 1 - 5
-                      _b32tab[(c1 >> 6) & 0x1f], # bits 6 - 10
-                      _b32tab[(c1 >> 1) & 0x1f], # bits 11 - 15
+                      _b32tab[(c1 >> 6) & 0x1f],  # bits 6 - 10
+                      _b32tab[(c1 >> 1) & 0x1f],  # bits 11 - 15
                       _b32tab[c2 >> 12],         # bits 16 - 20 (1 - 5)
-                      _b32tab[(c2 >> 7) & 0x1f], # bits 21 - 25 (6 - 10)
-                      _b32tab[(c2 >> 2) & 0x1f], # bits 26 - 30 (11 - 15)
+                      _b32tab[(c2 >> 7) & 0x1f],  # bits 21 - 25 (6 - 10)
+                      _b32tab[(c2 >> 2) & 0x1f],  # bits 26 - 30 (11 - 15)
                       _b32tab[c3 >> 5],          # bits 31 - 35 (1 - 5)
                       _b32tab[c3 & 0x1f],        # bits 36 - 40 (1 - 5)
                       ])
@@ -244,7 +245,6 @@ def b32decode(s, casefold=False, map01=None):
     return EMPTYSTRING.join(parts)
 
 
-
 # RFC 3548, Base 16 Alphabet specifies uppercase, but hexlify() returns
 # lowercase.  The RFC also recommends against accepting input case
 # insensitively.
@@ -274,13 +274,14 @@ def b16decode(s, casefold=False):
     return binascii.unhexlify(s)
 
 
-
 # Legacy interface.  This code could be cleaned up since I don't believe
 # binascii has any line length limitations.  It just doesn't seem worth it
 # though.
 
-MAXLINESIZE = 76 # Excluding the CRLF
-MAXBINSIZE = (MAXLINESIZE//4)*3
+
+MAXLINESIZE = 76  # Excluding the CRLF
+MAXBINSIZE = (MAXLINESIZE // 4) * 3
+
 
 def encode(input, output):
     """Encode a file."""
@@ -289,7 +290,7 @@ def encode(input, output):
         if not s:
             break
         while len(s) < MAXBINSIZE:
-            ns = input.read(MAXBINSIZE-len(s))
+            ns = input.read(MAXBINSIZE - len(s))
             if not ns:
                 break
             s += ns
@@ -311,7 +312,7 @@ def encodestring(s):
     """Encode a string into multiple lines of base-64 data."""
     pieces = []
     for i in range(0, len(s), MAXBINSIZE):
-        chunk = s[i : i + MAXBINSIZE]
+        chunk = s[i: i + MAXBINSIZE]
         pieces.append(binascii.b2a_base64(chunk))
     return "".join(pieces)
 
@@ -321,27 +322,32 @@ def decodestring(s):
     return binascii.a2b_base64(s)
 
 
-
 # Useable as a script...
 def test():
     """Small test program"""
-    import sys, getopt
+    import sys
+    import getopt
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'deut')
-    except getopt.error, msg:
+    except getopt.error as msg:
         sys.stdout = sys.stderr
         print msg
         print """usage: %s [-d|-e|-u|-t] [file|-]
         -d, -u: decode
         -e: encode (default)
-        -t: encode and decode string 'Aladdin:open sesame'"""%sys.argv[0]
+        -t: encode and decode string 'Aladdin:open sesame'""" % sys.argv[0]
         sys.exit(2)
     func = encode
     for o, a in opts:
-        if o == '-e': func = encode
-        if o == '-d': func = decode
-        if o == '-u': func = decode
-        if o == '-t': test1(); return
+        if o == '-e':
+            func = encode
+        if o == '-d':
+            func = decode
+        if o == '-u':
+            func = decode
+        if o == '-t':
+            test1()
+            return
     if args and args[0] != '-':
         with open(args[0], 'rb') as f:
             func(f, sys.stdout)

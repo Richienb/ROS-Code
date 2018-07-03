@@ -118,7 +118,7 @@ class JythonCommand(object):
             self._java_home = None
             self._java_command = "java"
             return
-            
+
         if "JAVA_HOME" not in os.environ:
             self._java_home = None
             self._java_command = "jdb" if self.args.jdb else "java"
@@ -138,7 +138,7 @@ class JythonCommand(object):
             return self._executable
         # Modified from
         # http://stackoverflow.com/questions/3718657/how-to-properly-determine-current-script-directory-in-python/22881871#22881871
-        if getattr(sys, "frozen", False): # py2exe, PyInstaller, cx_Freeze
+        if getattr(sys, "frozen", False):  # py2exe, PyInstaller, cx_Freeze
             path = os.path.abspath(sys.executable)
         else:
             def inspect_this(): pass
@@ -153,9 +153,11 @@ class JythonCommand(object):
         if "JYTHON_HOME" in os.environ:
             self._jython_home = os.environ["JYTHON_HOME"]
         else:
-            self._jython_home = os.path.dirname(os.path.dirname(self.executable))
+            self._jython_home = os.path.dirname(
+                os.path.dirname(self.executable))
         if self.uname == "cygwin":
-            self._jython_home = subprocess.check_output(["cygpath", "--windows", self._jython_home]).strip()
+            self._jython_home = subprocess.check_output(
+                ["cygpath", "--windows", self._jython_home]).strip()
         return self._jython_home
 
     @property
@@ -174,16 +176,20 @@ class JythonCommand(object):
             jars = [os.path.join(self.jython_home, "jython-dev.jar")]
             if self.args.boot:
                 # Wildcard expansion does not work for bootclasspath
-                for jar in glob.glob(os.path.join(self.jython_home, "javalib", "*.jar")):
+                for jar in glob.glob(
+                    os.path.join(
+                        self.jython_home,
+                        "javalib",
+                        "*.jar")):
                     jars.append(jar)
             else:
                 jars.append(os.path.join(self.jython_home, "javalib", "*"))
-        elif not os.path.exists(os.path.join(self.jython_home, "jython.jar")): 
+        elif not os.path.exists(os.path.join(self.jython_home, "jython.jar")):
             bad_option("""{jython_home} contains neither jython-dev.jar nor jython.jar.
-Try running this script from the 'bin' directory of an installed Jython or 
+Try running this script from the 'bin' directory of an installed Jython or
 setting {envvar_specifier}JYTHON_HOME.""".format(
-                    jython_home=self.jython_home,
-                    envvar_specifier="%" if self.uname == "windows" else "$"))
+                jython_home=self.jython_home,
+                envvar_specifier="%" if self.uname == "windows" else "$"))
         else:
             jars = [os.path.join(self.jython_home, "jython.jar")]
         self._jython_jars = jars
@@ -213,7 +219,7 @@ setting {envvar_specifier}JYTHON_HOME.""".format(
     @property
     def java_opts(self):
         return [self.java_mem, self.java_stack]
-        
+
     @property
     def java_profile_agent(self):
         return os.path.join(self.jython_home, "javalib", "profile.jar")
@@ -236,7 +242,8 @@ setting {envvar_specifier}JYTHON_HOME.""".format(
             if not arg.startswith("/cygdrive/"):
                 new_path = self.convert(arg).replace("/", "\\")
             else:
-                new_path = subprocess.check_output(["cygpath", "-pw", self.convert(arg)]).strip()
+                new_path = subprocess.check_output(
+                    ["cygpath", "-pw", self.convert(arg)]).strip()
             return new_path
         else:
             return self.convert(arg)
@@ -251,15 +258,25 @@ setting {envvar_specifier}JYTHON_HOME.""".format(
         classpath = self.java_classpath
         jython_jars = self.jython_jars
         if self.args.boot:
-            args.append("-Xbootclasspath/a:%s" % self.convert_path(self.make_classpath(jython_jars)))
+            args.append(
+                "-Xbootclasspath/a:%s" %
+                self.convert_path(
+                    self.make_classpath(jython_jars)))
         else:
-            classpath = self.make_classpath(jython_jars) + self.classpath_delimiter + classpath
+            classpath = self.make_classpath(
+                jython_jars) + self.classpath_delimiter + classpath
         args.extend(["-classpath", self.convert_path(classpath)])
 
         if "python.home" not in self.args.properties:
-            args.append("-Dpython.home=%s" % self.convert_path(self.jython_home))
+            args.append(
+                "-Dpython.home=%s" %
+                self.convert_path(
+                    self.jython_home))
         if "python.executable" not in self.args.properties:
-            args.append("-Dpython.executable=%s" % self.convert_path(self.executable))
+            args.append(
+                "-Dpython.executable=%s" %
+                self.convert_path(
+                    self.executable))
         if "python.launcher.uname" not in self.args.properties:
             args.append("-Dpython.launcher.uname=%s" % self.uname)
         # Determines whether running on a tty for the benefit of
@@ -267,12 +284,16 @@ setting {envvar_specifier}JYTHON_HOME.""".format(
         # terminal emulator doesn't behave like a standard Microsoft
         # Windows tty, and so JNR Posix doesn't detect it properly.
         if "python.launcher.tty" not in self.args.properties:
-            args.append("-Dpython.launcher.tty=%s" % str(os.isatty(sys.stdin.fileno())).lower())
+            args.append("-Dpython.launcher.tty=%s" %
+                        str(os.isatty(sys.stdin.fileno())).lower())
         if self.uname == "cygwin" and "python.console" not in self.args.properties:
             args.append("-Dpython.console=org.python.core.PlainConsole")
         if self.args.profile:
             args.append("-XX:-UseSplitVerifier")
-            args.append("-javaagent:%s" % self.convert_path(self.java_profile_agent))
+            args.append(
+                "-javaagent:%s" %
+                self.convert_path(
+                    self.java_profile_agent))
         for k, v in self.args.properties.iteritems():
             args.append("-D%s=%s" % (self.convert(k), self.convert(v)))
         args.append("org.python.util.jython")
@@ -311,6 +332,7 @@ JYTHON_HOME: Jython installation directory
 JYTHON_OPTS: default command line arguments
 """
 
+
 def support_java_opts(args):
     it = iter(args)
     while it:
@@ -322,7 +344,8 @@ def support_java_opts(args):
             try:
                 yield next(it)
             except StopIteration:
-                bad_option("Argument expected for -classpath option in JAVA_OPTS")
+                bad_option(
+                    "Argument expected for -classpath option in JAVA_OPTS")
         else:
             yield "-J" + arg
 
@@ -422,7 +445,8 @@ def main(sys_args):
         else:
             print " ".join(pipes.quote(arg) for arg in jython_command.command)
     else:
-        if not (is_windows or not hasattr(os, "execvp") or args.help or jython_command.uname == "cygwin"):
+        if not (is_windows or not hasattr(os, "execvp") or
+                args.help or jython_command.uname == "cygwin"):
             # Replace this process with the java process.
             #
             # NB such replacements actually do not work under Windows,

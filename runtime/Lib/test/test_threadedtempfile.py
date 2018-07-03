@@ -26,6 +26,7 @@ from traceback import print_exc
 
 startEvent = threading.Event()
 
+
 class TempFileGreedy(threading.Thread):
     error_count = 0
     ok_count = 0
@@ -37,7 +38,7 @@ class TempFileGreedy(threading.Thread):
             try:
                 f = tempfile.TemporaryFile("w+b")
                 f.close()
-            except:
+            except BaseException:
                 self.error_count += 1
                 print_exc(file=self.errors)
             else:
@@ -67,12 +68,14 @@ class ThreadedTempFileTest(unittest.TestCase):
         threading_cleanup(*thread_info)
 
         msg = "Errors: errors %d ok %d\n%s" % (len(errors), ok,
-            '\n'.join(errors))
+                                               '\n'.join(errors))
         self.assertEqual(errors, [], msg)
         self.assertEqual(ok, NUM_THREADS * FILES_PER_THREAD)
 
+
 def test_main():
     run_unittest(ThreadedTempFileTest)
+
 
 if __name__ == "__main__":
     test_main()

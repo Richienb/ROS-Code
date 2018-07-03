@@ -3,6 +3,7 @@ import unittest
 import __builtin__ as builtins
 import rlcompleter
 
+
 class CompleteMe(object):
     """ Trivial class used in testing rlcompleter.Completer. """
     spam = 1
@@ -21,6 +22,7 @@ class TestRlcompleter(unittest.TestCase):
     def test_namespace(self):
         class A(dict):
             pass
+
         class B(list):
             pass
 
@@ -31,10 +33,10 @@ class TestRlcompleter(unittest.TestCase):
 
     def test_global_matches(self):
         # test with builtins namespace
-        self.assertEqual(sorted(self.stdcompleter.global_matches('di')),
-                         [x+'(' for x in dir(builtins) if x.startswith('di')])
-        self.assertEqual(sorted(self.stdcompleter.global_matches('st')),
-                         [x+'(' for x in dir(builtins) if x.startswith('st')])
+        self.assertEqual(sorted(self.stdcompleter.global_matches('di')), [
+                         x + '(' for x in dir(builtins) if x.startswith('di')])
+        self.assertEqual(sorted(self.stdcompleter.global_matches('st')), [
+                         x + '(' for x in dir(builtins) if x.startswith('st')])
         self.assertEqual(self.stdcompleter.global_matches('akaksajadhak'), [])
 
         # test with a customized namespace
@@ -51,7 +53,8 @@ class TestRlcompleter(unittest.TestCase):
         self.assertEqual(self.stdcompleter.attr_matches('str.s'),
                          ['str.{}('.format(x) for x in dir(str)
                           if x.startswith('s')])
-        self.assertEqual(self.stdcompleter.attr_matches('tuple.foospamegg'), [])
+        self.assertEqual(
+            self.stdcompleter.attr_matches('tuple.foospamegg'), [])
 
         # test with a customized namespace
         self.assertEqual(self.completer.attr_matches('CompleteMe.sp'),
@@ -64,6 +67,7 @@ class TestRlcompleter(unittest.TestCase):
         self.assertEqual(self.completer.attr_matches('egg.s'),
                          ['egg.{}('.format(x) for x in dir(str)
                           if x.startswith('s')])
+
 
 def test_main():
     support.run_unittest(TestRlcompleter)

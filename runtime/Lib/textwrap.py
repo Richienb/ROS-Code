@@ -7,7 +7,8 @@
 
 __revision__ = "$Id$"
 
-import string, re
+import string
+import re
 
 try:
     _unicode = unicode
@@ -20,9 +21,9 @@ except NameError:
 # Do the right thing with boolean values for all known Python versions
 # (so this module can be copied to projects that don't depend on Python
 # 2.3, e.g. Optik and Docutils) by uncommenting the block of code below.
-#try:
+# try:
 #    True, False
-#except NameError:
+# except NameError:
 #    (True, False) = (1, 0)
 
 __all__ = ['TextWrapper', 'wrap', 'fill', 'dedent']
@@ -36,6 +37,7 @@ __all__ = ['TextWrapper', 'wrap', 'fill', 'dedent']
 # *non-breaking* space), 2) possibly cause problems with Unicode,
 # since 0xa0 is not in range(128).
 _whitespace = '\t\n\x0b\x0c\r '
+
 
 class TextWrapper:
     """
@@ -111,7 +113,6 @@ class TextWrapper:
                                  r'\Z'                # end of chunk
                                  % string.lowercase)
 
-
     def __init__(self,
                  width=70,
                  initial_indent="",
@@ -139,7 +140,6 @@ class TextWrapper:
         self.wordsep_simple_re_uni = re.compile(
             self.wordsep_simple_re.pattern, re.U)
 
-
     # -- Private methods -----------------------------------------------
     # (possibly useful for subclasses to override)
 
@@ -158,7 +158,6 @@ class TextWrapper:
             elif isinstance(text, _unicode):
                 text = text.translate(self.unicode_whitespace_trans)
         return text
-
 
     def _split(self, text):
         """_split(text : string) -> [string]
@@ -200,9 +199,9 @@ class TextWrapper:
         """
         i = 0
         patsearch = self.sentence_end_re.search
-        while i < len(chunks)-1:
-            if chunks[i+1] == " " and patsearch(chunks[i]):
-                chunks[i+1] = "  "
+        while i < len(chunks) - 1:
+            if chunks[i + 1] == " " and patsearch(chunks[i]):
+                chunks[i + 1] = "  "
                 i += 2
             else:
                 i += 1
@@ -300,7 +299,8 @@ class TextWrapper:
                 self._handle_long_word(chunks, cur_line, cur_len, width)
 
             # If the last chunk on this line is all whitespace, drop it.
-            if self.drop_whitespace and cur_line and cur_line[-1].strip() == '':
+            if self.drop_whitespace and cur_line and cur_line[-1].strip(
+            ) == '':
                 del cur_line[-1]
 
             # Convert current line back to a string and store it in list
@@ -309,7 +309,6 @@ class TextWrapper:
                 lines.append(indent + ''.join(cur_line))
 
         return lines
-
 
     # -- Public interface ----------------------------------------------
 
@@ -353,6 +352,7 @@ def wrap(text, width=70, **kwargs):
     w = TextWrapper(width=width, **kwargs)
     return w.wrap(text)
 
+
 def fill(text, width=70, **kwargs):
     """Fill a single paragraph of text, returning a new string.
 
@@ -370,6 +370,7 @@ def fill(text, width=70, **kwargs):
 
 _whitespace_only_re = re.compile('^[ \t]+$', re.MULTILINE)
 _leading_whitespace_re = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
+
 
 def dedent(text):
     """Remove any common leading whitespace from every line in `text`.
@@ -413,13 +414,14 @@ def dedent(text):
     if 0 and margin:
         for line in text.split("\n"):
             assert not line or line.startswith(margin), \
-                   "line = %r, margin = %r" % (line, margin)
+                "line = %r, margin = %r" % (line, margin)
 
     if margin:
         text = re.sub(r'(?m)^' + margin, '', text)
     return text
 
+
 if __name__ == "__main__":
-    #print dedent("\tfoo\n\tbar")
-    #print dedent("  \thello there\n  \t  how are you?")
+    # print dedent("\tfoo\n\tbar")
+    # print dedent("  \thello there\n  \t  how are you?")
     print dedent("Hello there.\n  This is indented.")

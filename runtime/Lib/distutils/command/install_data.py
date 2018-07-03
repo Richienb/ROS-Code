@@ -11,6 +11,7 @@ import os
 from distutils.core import Command
 from distutils.util import change_root, convert_path
 
+
 class install_data(Command):
 
     description = "install data files"
@@ -22,7 +23,7 @@ class install_data(Command):
         ('root=', None,
          "install everything relative to this alternate root directory"),
         ('force', 'f', "force installation (overwrite existing files)"),
-        ]
+    ]
 
     boolean_options = ['force']
 
@@ -39,7 +40,7 @@ class install_data(Command):
                                    ('install_data', 'install_dir'),
                                    ('root', 'root'),
                                    ('force', 'force'),
-                                  )
+                                   )
 
     def run(self):
         self.mkpath(self.install_dir)

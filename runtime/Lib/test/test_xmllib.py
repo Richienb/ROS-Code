@@ -20,6 +20,7 @@ import unittest
 # Silence Py3k warning
 xmllib = test_support.import_module('xmllib', deprecated=True)
 
+
 class XMLParserTestCase(unittest.TestCase):
 
     def test_simple(self):
@@ -32,17 +33,18 @@ class XMLParserTestCase(unittest.TestCase):
         class H(xmllib.XMLParser):
             def unknown_starttag(self, name, attr):
                 self.name, self.attr = name, attr
-        h=H()
+        h = H()
         h.feed(nsdoc)
         h.close()
         # The default namespace applies to elements...
         self.assertEqual(h.name, "URI foo")
         # but not to attributes
-        self.assertEqual(h.attr, {'attr':'val'})
+        self.assertEqual(h.attr, {'attr': 'val'})
 
 
 def test_main():
     test_support.run_unittest(XMLParserTestCase)
+
 
 if __name__ == "__main__":
     test_main()

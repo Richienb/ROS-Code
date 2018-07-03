@@ -1,8 +1,9 @@
 # a test for PR#155, %g conversion differs from CPython.
 
+
 def test(fmt, expected, input=1.0):
     x = fmt % input
-    if x <> expected:
+    if x != expected:
         print 'PR#155: fmt conversion failed.',
         print '(got %s, expected %s)' % (x, expected)
 

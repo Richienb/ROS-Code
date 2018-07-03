@@ -2,47 +2,59 @@ from test import test_support
 import unittest
 import pickle
 
-#myint and its test taken from pickletester, the other "my" classes and tests
+# myint and its test taken from pickletester, the other "my" classes and tests
 #      are based on it.
+
+
 class myint(int):
     def __init__(self, x):
         self.str = str(x)
+
 
 class mystr(str):
     def __init__(self, x):
         self.str = str(x)
 
+
 class mytuple(tuple):
     def __init__(self, x):
         self.str = str(x)
 
-class myint(int):
-    def __init__(self, x):
-        self.str = str(x)
 
 class myint(int):
     def __init__(self, x):
         self.str = str(x)
 
-class myint(int):
-    def __init__(self, x):
-        self.str = str(x)
 
 class myint(int):
     def __init__(self, x):
         self.str = str(x)
 
-class myint(int):
-    def __init__(self, x):
-        self.str = str(x)
 
 class myint(int):
     def __init__(self, x):
         self.str = str(x)
 
+
 class myint(int):
     def __init__(self, x):
         self.str = str(x)
+
+
+class myint(int):
+    def __init__(self, x):
+        self.str = str(x)
+
+
+class myint(int):
+    def __init__(self, x):
+        self.str = str(x)
+
+
+class myint(int):
+    def __init__(self, x):
+        self.str = str(x)
+
 
 class myint(int):
     def __init__(self, x):
@@ -80,7 +92,7 @@ class TestSubclasses(unittest.TestCase):
             def __str__(self):
                 return "hi"
 
-        self.assertEqual(Spam(), 0L)
+        self.assertEqual(Spam(), 0)
         self.assertEqual(str(Spam()), "hi")
 
     def test_tuple(self):
@@ -88,10 +100,9 @@ class TestSubclasses(unittest.TestCase):
             def __str__(self):
                 return "hi"
 
-        #XXX: subclasses of tuple are not coming out equal...
+        # XXX: subclasses of tuple are not coming out equal...
         #self.assertEqual(Spam(), ())
         self.assertEqual(str(Spam()), "hi")
-
 
     def test_str(self):
         class Spam(str):
@@ -183,15 +194,16 @@ class TestSubclasses(unittest.TestCase):
         self.assertEqual(picklee, y)
 
     def test_pickle_builtins(self):
-        #ignores cPickle for now.
+        # ignores cPickle for now.
 
         self.picklecheck(myint(4))
         self.picklecheck(mystr('x'))
-        self.picklecheck(mytuple([1,2]))
+        self.picklecheck(mytuple([1, 2]))
 
 
 def test_main():
     test_support.run_unittest(TestSubclasses)
+
 
 if __name__ == "__main__":
     test_main()

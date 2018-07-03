@@ -31,6 +31,7 @@ _BLOCKSIZE = 512
 
 error = IOError                         # For anydbm
 
+
 class _Database(UserDict.DictMixin):
 
     # The on-disk directory and data files can remain in mutually
@@ -132,7 +133,7 @@ class _Database(UserDict.DictMixin):
         f.seek(0, 2)
         pos = int(f.tell())
         npos = ((pos + _BLOCKSIZE - 1) // _BLOCKSIZE) * _BLOCKSIZE
-        f.write('\0'*(npos-pos))
+        f.write('\0' * (npos - pos))
         pos = npos
         f.write(val)
         f.close()
@@ -161,7 +162,7 @@ class _Database(UserDict.DictMixin):
 
     def __setitem__(self, key, val):
         if not type(key) == type('') == type(val):
-            raise TypeError, "keys and values must be strings"
+            raise TypeError("keys and values must be strings")
         if key not in self._index:
             self._addkey(key, self._addval(val))
         else:
@@ -217,12 +218,12 @@ class _Database(UserDict.DictMixin):
 
     __del__ = close
 
-    def _chmod (self, file):
+    def _chmod(self, file):
         if hasattr(self._os, 'chmod'):
             self._os.chmod(file, self._mode)
 
 
-def open(file, flag=None, mode=0666):
+def open(file, flag=None, mode=0o666):
     """Open the database file, filename, and return corresponding object.
 
     The flag argument, used to control how the database is opened in the

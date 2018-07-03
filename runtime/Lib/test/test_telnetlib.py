@@ -11,6 +11,7 @@ threading = test_support.import_module('threading')
 HOST = test_support.HOST
 EOF_sigil = object()
 
+
 def server(evt, serv, dataq=None):
     """ Open a tcp server in three steps
         1) set evt to true to let the parent know we are ready
@@ -40,6 +41,7 @@ def server(evt, serv, dataq=None):
     finally:
         serv.close()
 
+
 class GeneralTests(TestCase):
 
     def setUp(self):
@@ -47,7 +49,9 @@ class GeneralTests(TestCase):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.settimeout(60)  # Safety net. Look issue 11812
         self.port = test_support.bind_port(self.sock)
-        self.thread = threading.Thread(target=server, args=(self.evt,self.sock))
+        self.thread = threading.Thread(
+            target=server, args=(
+                self.evt, self.sock))
         self.thread.setDaemon(True)
         self.thread.start()
         self.evt.wait()
@@ -92,18 +96,23 @@ class GeneralTests(TestCase):
         self.assertEqual(telnet.sock.gettimeout(), 30)
         telnet.sock.close()
 
+
 def _read_setUp(self):
     self.evt = threading.Event()
     self.dataq = Queue.Queue()
     self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.sock.settimeout(10)
     self.port = test_support.bind_port(self.sock)
-    self.thread = threading.Thread(target=server, args=(self.evt,self.sock, self.dataq))
+    self.thread = threading.Thread(
+        target=server, args=(
+            self.evt, self.sock, self.dataq))
     self.thread.start()
     self.evt.wait()
 
+
 def _read_tearDown(self):
     self.thread.join()
+
 
 class ReadTests(TestCase):
     setUp = _read_setUp
@@ -113,6 +122,7 @@ class ReadTests(TestCase):
     # these will never pass 100% but make the fuzz big enough that it is rare
     block_long = 0.6
     block_short = 0.3
+
     def test_read_until_A(self):
         """
         read_until(expected, [timeout])
@@ -186,7 +196,7 @@ class ReadTests(TestCase):
         telnet = telnetlib.Telnet(HOST, self.port)
         self.dataq.join()
         telnet.read_all()
-        telnet.read_all() # shouldn't raise
+        telnet.read_all()  # shouldn't raise
 
     def test_read_some_A(self):
         """
@@ -245,10 +255,13 @@ class ReadTests(TestCase):
     # (they behave differently but we only test the gaurantees)
     def test_read_very_eager_A(self):
         self._test_read_any_eager_A('read_very_eager')
+
     def test_read_very_eager_B(self):
         self._test_read_any_eager_B('read_very_eager')
+
     def test_read_eager_A(self):
         self._test_read_any_eager_A('read_eager')
+
     def test_read_eager_B(self):
         self._test_read_any_eager_B('read_eager')
     # NB -- we need to test the IAC block which is mentioned in the docstring
@@ -308,6 +321,7 @@ class ReadTests(TestCase):
     def test_read_very_lazy_B(self):
         self._test_read_any_lazy_B('read_very_lazy')
 
+
 class nego_collector(object):
     def __init__(self, sb_getter=None):
         self.seen = ''
@@ -320,7 +334,10 @@ class nego_collector(object):
             sb_data = self.sb_getter()
             self.sb_seen += sb_data
 
+
 tl = telnetlib
+
+
 class OptionTests(TestCase):
     setUp = _read_setUp
     tearDown = _read_tearDown
@@ -337,11 +354,11 @@ class OptionTests(TestCase):
         telnet.set_option_negotiation_callback(nego.do_nego)
         txt = telnet.read_all()
         cmd = nego.seen
-        self.assertTrue(len(cmd) > 0) # we expect at least one command
+        self.assertTrue(len(cmd) > 0)  # we expect at least one command
         self.assertIn(cmd[0], self.cmds)
         self.assertEqual(cmd[1], tl.NOOPT)
         self.assertEqual(len(''.join(data[:-1])), len(txt + cmd))
-        nego.sb_getter = None # break the nego => telnet cycle
+        nego.sb_getter = None  # break the nego => telnet cycle
         self.tearDown()
 
     def test_IAC_commands(self):
@@ -352,8 +369,8 @@ class OptionTests(TestCase):
         self.tearDown()
 
         for cmd in self.cmds:
-            self._test_command(['x' * 100, tl.IAC + cmd, 'y'*100, EOF_sigil])
-            self._test_command(['x' * 10, tl.IAC + cmd, 'y'*10, EOF_sigil])
+            self._test_command(['x' * 100, tl.IAC + cmd, 'y' * 100, EOF_sigil])
+            self._test_command(['x' * 10, tl.IAC + cmd, 'y' * 10, EOF_sigil])
             self._test_command([tl.IAC + cmd, EOF_sigil])
         # all at once
         self._test_command([tl.IAC + cmd for (cmd) in self.cmds] + [EOF_sigil])
@@ -361,13 +378,41 @@ class OptionTests(TestCase):
 
     def test_SB_commands(self):
         # RFC 855, subnegotiations portion
-        send = [tl.IAC + tl.SB + tl.IAC + tl.SE,
-                tl.IAC + tl.SB + tl.IAC + tl.IAC + tl.IAC + tl.SE,
-                tl.IAC + tl.SB + tl.IAC + tl.IAC + 'aa' + tl.IAC + tl.SE,
-                tl.IAC + tl.SB + 'bb' + tl.IAC + tl.IAC + tl.IAC + tl.SE,
-                tl.IAC + tl.SB + 'cc' + tl.IAC + tl.IAC + 'dd' + tl.IAC + tl.SE,
-                EOF_sigil,
-               ]
+        send = [
+            tl.IAC +
+            tl.SB +
+            tl.IAC +
+            tl.SE,
+            tl.IAC +
+            tl.SB +
+            tl.IAC +
+            tl.IAC +
+            tl.IAC +
+            tl.SE,
+            tl.IAC +
+            tl.SB +
+            tl.IAC +
+            tl.IAC +
+            'aa' +
+            tl.IAC +
+            tl.SE,
+            tl.IAC +
+            tl.SB +
+            'bb' +
+            tl.IAC +
+            tl.IAC +
+            tl.IAC +
+            tl.SE,
+            tl.IAC +
+            tl.SB +
+            'cc' +
+            tl.IAC +
+            tl.IAC +
+            'dd' +
+            tl.IAC +
+            tl.SE,
+            EOF_sigil,
+        ]
         self.dataq.put(send)
         telnet = telnetlib.Telnet(HOST, self.port)
         self.dataq.join()
@@ -378,7 +423,7 @@ class OptionTests(TestCase):
         want_sb_data = tl.IAC + tl.IAC + 'aabb' + tl.IAC + 'cc' + tl.IAC + 'dd'
         self.assertEqual(nego.sb_seen, want_sb_data)
         self.assertEqual('', telnet.read_sb_data())
-        nego.sb_getter = None # break the nego => telnet cycle
+        nego.sb_getter = None  # break the nego => telnet cycle
 
 
 class ExpectTests(TestCase):
@@ -388,8 +433,9 @@ class ExpectTests(TestCase):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.settimeout(10)
         self.port = test_support.bind_port(self.sock)
-        self.thread = threading.Thread(target=server, args=(self.evt,self.sock,
-                                                            self.dataq))
+        self.thread = threading.Thread(
+            target=server, args=(
+                self.evt, self.sock, self.dataq))
         self.thread.start()
         self.evt.wait()
 
@@ -400,6 +446,7 @@ class ExpectTests(TestCase):
     # these will never pass 100% but make the fuzz big enough that it is rare
     block_long = 0.6
     block_short = 0.3
+
     def test_expect_A(self):
         """
         expect(expected, [timeout])
@@ -410,7 +457,7 @@ class ExpectTests(TestCase):
         self.dataq.put(want)
         telnet = telnetlib.Telnet(HOST, self.port)
         self.dataq.join()
-        (_,_,data) = telnet.expect(['match'])
+        (_, _, data) = telnet.expect(['match'])
         self.assertEqual(data, ''.join(want[:-2]))
 
     def test_expect_B(self):
@@ -419,7 +466,7 @@ class ExpectTests(TestCase):
         self.dataq.put(want)
         telnet = telnetlib.Telnet(HOST, self.port)
         self.dataq.join()
-        (_,_,data) = telnet.expect(['not seen'], self.block_short)
+        (_, _, data) = telnet.expect(['not seen'], self.block_short)
         self.assertEqual(data, want[0])
         self.assertEqual(telnet.read_all(), 'not seen')
 
@@ -432,7 +479,7 @@ class ExpectTests(TestCase):
             raise unittest.SkipTest('select.poll() is required')
         telnet._has_poll = True
         self.dataq.join()
-        (_,_,data) = telnet.expect(['match'])
+        (_, _, data) = telnet.expect(['match'])
         self.assertEqual(data, ''.join(want[:-2]))
 
     def test_expect_with_select(self):
@@ -442,13 +489,14 @@ class ExpectTests(TestCase):
         telnet = telnetlib.Telnet(HOST, self.port)
         telnet._has_poll = False
         self.dataq.join()
-        (_,_,data) = telnet.expect(['match'])
+        (_, _, data) = telnet.expect(['match'])
         self.assertEqual(data, ''.join(want[:-2]))
 
 
 def test_main(verbose=None):
     test_support.run_unittest(GeneralTests, ReadTests, OptionTests,
                               ExpectTests)
+
 
 if __name__ == '__main__':
     test_main()

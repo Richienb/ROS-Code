@@ -48,7 +48,7 @@ class BuildScriptsTestCase(support.TempdirManager,
             build_scripts=target,
             force=1,
             executable=sys.executable
-            )
+        )
         return build_scripts(dist)
 
     def write_sample_scripts(self, dir):
@@ -82,7 +82,6 @@ class BuildScriptsTestCase(support.TempdirManager,
         target = self.mkdtemp()
         expected = self.write_sample_scripts(source)
 
-
         cmd = self.get_build_scripts_cmd(target,
                                          [os.path.join(source, fn)
                                           for fn in expected])
@@ -105,8 +104,10 @@ class BuildScriptsTestCase(support.TempdirManager,
         for name in expected:
             self.assertTrue(name in built)
 
+
 def test_suite():
     return unittest.makeSuite(BuildScriptsTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

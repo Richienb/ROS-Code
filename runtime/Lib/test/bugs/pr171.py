@@ -3,7 +3,9 @@
 
 import sys
 
-try: 1/0
-except: frame = sys.exc_info()[2].tb_frame
+try:
+    1 / 0
+except BaseException:
+    frame = sys.exc_info()[2].tb_frame
 
 del frame.f_trace

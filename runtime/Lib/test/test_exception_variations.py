@@ -2,6 +2,7 @@
 from test.test_support import run_unittest
 import unittest
 
+
 class ExceptionTestCase(unittest.TestCase):
     def test_try_except_else_finally(self):
         hit_except = False
@@ -9,8 +10,8 @@ class ExceptionTestCase(unittest.TestCase):
         hit_finally = False
 
         try:
-            raise Exception, 'nyaa!'
-        except:
+            raise Exception('nyaa!')
+        except BaseException:
             hit_except = True
         else:
             hit_else = True
@@ -28,7 +29,7 @@ class ExceptionTestCase(unittest.TestCase):
 
         try:
             pass
-        except:
+        except BaseException:
             hit_except = True
         else:
             hit_else = True
@@ -44,8 +45,8 @@ class ExceptionTestCase(unittest.TestCase):
         hit_finally = False
 
         try:
-            raise Exception, 'yarr!'
-        except:
+            raise Exception('yarr!')
+        except BaseException:
             hit_except = True
         finally:
             hit_finally = True
@@ -59,7 +60,7 @@ class ExceptionTestCase(unittest.TestCase):
 
         try:
             pass
-        except:
+        except BaseException:
             hit_except = True
         finally:
             hit_finally = True
@@ -71,8 +72,8 @@ class ExceptionTestCase(unittest.TestCase):
         hit_except = False
 
         try:
-            raise Exception, 'ahoy!'
-        except:
+            raise Exception('ahoy!')
+        except BaseException:
             hit_except = True
 
         self.assertTrue(hit_except)
@@ -82,7 +83,7 @@ class ExceptionTestCase(unittest.TestCase):
 
         try:
             pass
-        except:
+        except BaseException:
             hit_except = True
 
         self.assertFalse(hit_except)
@@ -92,8 +93,8 @@ class ExceptionTestCase(unittest.TestCase):
         hit_else = False
 
         try:
-            raise Exception, 'foo!'
-        except:
+            raise Exception('foo!')
+        except BaseException:
             hit_except = True
         else:
             hit_else = True
@@ -107,7 +108,7 @@ class ExceptionTestCase(unittest.TestCase):
 
         try:
             pass
-        except:
+        except BaseException:
             hit_except = True
         else:
             hit_else = True
@@ -132,8 +133,8 @@ class ExceptionTestCase(unittest.TestCase):
 
         try:
             try:
-                raise Exception, 'inner exception'
-            except:
+                raise Exception('inner exception')
+            except BaseException:
                 hit_inner_except = True
             finally:
                 hit_inner_finally = True
@@ -154,13 +155,13 @@ class ExceptionTestCase(unittest.TestCase):
         try:
             try:
                 pass
-            except:
+            except BaseException:
                 hit_inner_except = True
             else:
                 hit_inner_else = True
 
-            raise Exception, 'outer exception'
-        except:
+            raise Exception('outer exception')
+        except BaseException:
             hit_except = True
         else:
             hit_else = True
@@ -173,8 +174,10 @@ class ExceptionTestCase(unittest.TestCase):
         self.assertTrue(hit_finally)
         self.assertTrue(hit_except)
 
+
 def test_main():
     run_unittest(ExceptionTestCase)
+
 
 if __name__ == '__main__':
     test_main()

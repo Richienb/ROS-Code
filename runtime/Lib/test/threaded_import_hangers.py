@@ -18,6 +18,8 @@ errors = []
 # this module holds the import lock, so if the function called by T tries
 # to do its own imports it will block waiting for this module's import
 # to complete.
+
+
 class Worker(threading.Thread):
     def __init__(self, function, args):
         threading.Thread.__init__(self)
@@ -27,13 +29,14 @@ class Worker(threading.Thread):
     def run(self):
         self.function(*self.args)
 
+
 for name, func, args in [
         # Bug 147376:  TemporaryFile hung on Windows, starting in Python 2.4.
         ("tempfile.TemporaryFile", tempfile.TemporaryFile, ()),
 
         # The real cause for bug 147376:  ntpath.abspath() caused the hang.
         ("os.path.abspath", os.path.abspath, ('.',)),
-        ]:
+]:
 
     t = Worker(func, args)
     t.start()

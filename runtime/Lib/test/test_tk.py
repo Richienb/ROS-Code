@@ -6,13 +6,14 @@ test_support.import_module('_tkinter')
 
 this_dir = os.path.dirname(os.path.abspath(__file__))
 lib_tk_test = os.path.abspath(os.path.join(this_dir, os.path.pardir,
-    'lib-tk', 'test'))
+                                           'lib-tk', 'test'))
 
 with test_support.DirsOnSysPath(lib_tk_test):
     import runtktests
 
 # Skip test if tk cannot be initialized.
 runtktests.check_tk_availability()
+
 
 def test_main(enable_gui=False):
     if enable_gui:
@@ -24,6 +25,7 @@ def test_main(enable_gui=False):
     with test_support.DirsOnSysPath(lib_tk_test):
         test_support.run_unittest(
             *runtktests.get_tests(text=False, packages=['test_tkinter']))
+
 
 if __name__ == '__main__':
     test_main(enable_gui=True)

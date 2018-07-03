@@ -6,6 +6,7 @@ from test.test_support import run_unittest
 from distutils.command.bdist_wininst import bdist_wininst
 from distutils.tests import support
 
+
 class BuildWinInstTestCase(support.TempdirManager,
                            support.LoggingSilencer,
                            unittest.TestCase):
@@ -25,8 +26,10 @@ class BuildWinInstTestCase(support.TempdirManager,
         exe_file = cmd.get_exe_bytes()
         self.assertTrue(len(exe_file) > 10)
 
+
 def test_suite():
     return unittest.makeSuite(BuildWinInstTestCase)
+
 
 if __name__ == '__main__':
     run_unittest(test_suite())

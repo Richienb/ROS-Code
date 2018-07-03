@@ -11,10 +11,13 @@ cjson = test_support.import_fresh_module('json', fresh=['_json'])
 pyjson = test_support.import_fresh_module('json', blocked=['_json'])
 
 # create two base classes that will be used by the other tests
+
+
 class PyTest(unittest.TestCase):
     json = pyjson
     loads = staticmethod(pyjson.loads)
     dumps = staticmethod(pyjson.dumps)
+
 
 @unittest.skipUnless(cjson, 'requires _json')
 class CTest(unittest.TestCase):
@@ -24,6 +27,8 @@ class CTest(unittest.TestCase):
         dumps = staticmethod(cjson.dumps)
 
 # test PyTest and CTest checking if the functions come from the right module
+
+
 class TestPyTest(PyTest):
     def test_pyjson(self):
         self.assertEqual(self.json.scanner.make_scanner.__module__,
@@ -32,6 +37,7 @@ class TestPyTest(PyTest):
                          'json.decoder')
         self.assertEqual(self.json.encoder.encode_basestring_ascii.__module__,
                          'json.encoder')
+
 
 class TestCTest(CTest):
     def test_cjson(self):
@@ -44,6 +50,7 @@ class TestCTest(CTest):
 
 here = os.path.dirname(__file__)
 
+
 def test_suite():
     suite = additional_tests()
     loader = unittest.TestLoader()
@@ -55,6 +62,7 @@ def test_suite():
             suite.addTests(loader.loadTestsFromModule(module))
     return suite
 
+
 def additional_tests():
     suite = unittest.TestSuite()
     for mod in (json, json.encoder, json.decoder):
@@ -63,11 +71,17 @@ def additional_tests():
     suite.addTest(TestCTest('test_cjson'))
     return suite
 
+
 def main():
     suite = test_suite()
     runner = unittest.TextTestRunner()
     runner.run(suite)
 
+
 if __name__ == '__main__':
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    sys.path.insert(
+        0, os.path.dirname(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.abspath(__file__)))))
     main()

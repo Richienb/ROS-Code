@@ -3,11 +3,13 @@
 Like base64 and rot13, this returns Python strings, not Unicode.
 """
 
-import codecs, quopri
+import codecs
+import quopri
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
+
 
 def quopri_encode(input, errors='strict'):
     """Encode the input, returning a tuple (output object, length consumed).
@@ -25,6 +27,7 @@ def quopri_encode(input, errors='strict'):
     output = g.getvalue()
     return (output, len(input))
 
+
 def quopri_decode(input, errors='strict'):
     """Decode the input, returning a tuple (output object, length consumed).
 
@@ -40,28 +43,35 @@ def quopri_decode(input, errors='strict'):
     output = g.getvalue()
     return (output, len(input))
 
+
 class Codec(codecs.Codec):
 
-    def encode(self, input,errors='strict'):
-        return quopri_encode(input,errors)
-    def decode(self, input,errors='strict'):
-        return quopri_decode(input,errors)
+    def encode(self, input, errors='strict'):
+        return quopri_encode(input, errors)
+
+    def decode(self, input, errors='strict'):
+        return quopri_decode(input, errors)
+
 
 class IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         return quopri_encode(input, self.errors)[0]
 
+
 class IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=False):
         return quopri_decode(input, self.errors)[0]
 
+
 class StreamWriter(Codec, codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+
+class StreamReader(Codec, codecs.StreamReader):
     pass
 
 # encodings module API
+
 
 def getregentry():
     return codecs.CodecInfo(

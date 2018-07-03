@@ -1,11 +1,13 @@
-import unittest, string
+import unittest
+import string
 from test import test_support, string_tests
 from UserList import UserList
+
 
 class StringTest(
     string_tests.CommonTest,
     string_tests.MixinStrStringUserStringTest
-    ):
+):
 
     type2test = str
 
@@ -36,10 +38,18 @@ class StringTest(
         self.checkequal('abc', ('abc',), 'join', 'a')
         self.checkequal('z', UserList(['z']), 'join', 'a')
         if test_support.have_unicode:
-            self.checkequal(unicode('a.b.c'), ['a', 'b', 'c'], 'join', unicode('.'))
-            self.checkequal(unicode('a.b.c'), [unicode('a'), 'b', 'c'], 'join', '.')
-            self.checkequal(unicode('a.b.c'), ['a', unicode('b'), 'c'], 'join', '.')
-            self.checkequal(unicode('a.b.c'), ['a', 'b', unicode('c')], 'join', '.')
+            self.checkequal(
+                unicode('a.b.c'), [
+                    'a', 'b', 'c'], 'join', unicode('.'))
+            self.checkequal(
+                unicode('a.b.c'), [
+                    unicode('a'), 'b', 'c'], 'join', '.')
+            self.checkequal(
+                unicode('a.b.c'), [
+                    'a', unicode('b'), 'c'], 'join', '.')
+            self.checkequal(
+                unicode('a.b.c'), [
+                    'a', 'b', unicode('c')], 'join', '.')
             self.checkraises(TypeError, ['a', unicode('b'), 3], 'join', '.')
         for i in [5, 25, 125]:
             self.checkequal(
@@ -55,13 +65,11 @@ class StringTest(
             def f():
                 yield 4 + ""
             self.fixtype(' ').join(f())
-        except TypeError, e:
+        except TypeError as e:
             if '+' not in str(e):
                 self.fail('join() ate exception message')
         else:
             self.fail('exception not raised')
-
-
 
 
 class ModuleTest(unittest.TestCase):
@@ -83,7 +91,7 @@ class ModuleTest(unittest.TestCase):
         self.assertRaises(ValueError, string.atoi, " x1 ")
 
     def test_atol(self):
-        self.assertEqual(string.atol("  1  "), 1L)
+        self.assertEqual(string.atol("  1  "), 1)
         self.assertRaises(ValueError, string.atol, "  1x ")
         self.assertRaises(ValueError, string.atol, "  x1 ")
 
@@ -104,7 +112,9 @@ class ModuleTest(unittest.TestCase):
         self.assertEqual(string.capwords('abc\t   def  \nghi'), 'Abc Def Ghi')
         self.assertEqual(string.capwords('ABC DEF GHI'), 'Abc Def Ghi')
         self.assertEqual(string.capwords('ABC-DEF-GHI', '-'), 'Abc-Def-Ghi')
-        self.assertEqual(string.capwords('ABC-def DEF-ghi GHI'), 'Abc-def Def-ghi Ghi')
+        self.assertEqual(
+            string.capwords('ABC-def DEF-ghi GHI'),
+            'Abc-def Def-ghi Ghi')
         self.assertEqual(string.capwords('   aBc  DeF   '), 'Abc Def')
         self.assertEqual(string.capwords('\taBc\tDeF\t'), 'Abc Def')
         self.assertEqual(string.capwords('\taBc\tDeF\t', '\t'), '\tAbc\tDef\t')
@@ -133,9 +143,8 @@ class ModuleTest(unittest.TestCase):
                 else:
                     string.Formatter.get_value(key, args, kwds)
 
-        fmt = NamespaceFormatter({'greeting':'hello'})
+        fmt = NamespaceFormatter({'greeting': 'hello'})
         self.assertEqual(fmt.format("{greeting}, world!"), 'hello, world!')
-
 
         # override format_field #########################################
         class CallFormatter(string.Formatter):
@@ -143,8 +152,7 @@ class ModuleTest(unittest.TestCase):
                 return format(value(), format_spec)
 
         fmt = CallFormatter()
-        self.assertEqual(fmt.format('*{0}*', lambda : 'result'), '*result*')
-
+        self.assertEqual(fmt.format('*{0}*', lambda: 'result'), '*result*')
 
         # override convert_field ########################################
         class XFormatter(string.Formatter):
@@ -155,7 +163,6 @@ class ModuleTest(unittest.TestCase):
 
         fmt = XFormatter()
         self.assertEqual(fmt.format("{0!r}:{0!x}", 'foo', 'foo'), "'foo':None")
-
 
         # override parse ################################################
         class BarFormatter(string.Formatter):
@@ -190,7 +197,14 @@ class ModuleTest(unittest.TestCase):
         self.assertEqual(fmt.format("{0}", 10), "10")
         self.assertEqual(fmt.format("{0}{i}", 10, i=100), "10100")
         self.assertEqual(fmt.format("{0}{i}{1}", 10, 20, i=100), "1010020")
-        self.assertRaises(ValueError, fmt.format, "{0}{i}{1}", 10, 20, i=100, j=0)
+        self.assertRaises(
+            ValueError,
+            fmt.format,
+            "{0}{i}{1}",
+            10,
+            20,
+            i=100,
+            j=0)
         self.assertRaises(ValueError, fmt.format, "{0}", 10, 20)
         self.assertRaises(ValueError, fmt.format, "{0}", 10, 20, i=100)
         self.assertRaises(ValueError, fmt.format, "{i}", 10, 20, i=100)
@@ -198,6 +212,7 @@ class ModuleTest(unittest.TestCase):
         # Alternate formatting is not supported
         self.assertRaises(ValueError, format, '', '#')
         self.assertRaises(ValueError, format, '', '#20')
+
 
 class BytesAliasTest(unittest.TestCase):
 
@@ -210,8 +225,10 @@ class BytesAliasTest(unittest.TestCase):
         self.assertTrue(type(b""), str)
         self.assertTrue(type(br""), str)
 
+
 def test_main():
     test_support.run_unittest(StringTest, ModuleTest, BytesAliasTest)
+
 
 if __name__ == "__main__":
     test_main()

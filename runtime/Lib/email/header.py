@@ -8,7 +8,7 @@ __all__ = [
     'Header',
     'decode_header',
     'make_header',
-    ]
+]
 
 import re
 import binascii
@@ -52,12 +52,10 @@ fcre = re.compile(r'[\041-\176]+:$')
 _embeded_header = re.compile(r'\n[^ \t]+:')
 
 
-
 # Helpers
 _max_append = email.quoprimime._max_append
 
 
-
 def decode_header(header):
     """Decode a message header value without converting charset.
 
@@ -96,7 +94,8 @@ def decode_header(header):
                 if encoding == 'q':
                     dec = email.quoprimime.header_decode(encoded)
                 elif encoding == 'b':
-                    paderr = len(encoded) % 4   # Postel's law: add missing padding
+                    # Postel's law: add missing padding
+                    paderr = len(encoded) % 4
                     if paderr:
                         encoded += '==='[:4 - paderr]
                     try:
@@ -117,7 +116,6 @@ def decode_header(header):
     return decoded
 
 
-
 def make_header(decoded_seq, maxlinelen=None, header_name=None,
                 continuation_ws=' '):
     """Create a Header from a sequence of pairs as returned by decode_header()
@@ -140,7 +138,6 @@ def make_header(decoded_seq, maxlinelen=None, header_name=None,
     return h
 
 
-
 class Header:
     def __init__(self, s=None, charset=None,
                  maxlinelen=None, header_name=None,
@@ -334,7 +331,7 @@ class Header:
     def _split_ascii(self, s, charset, firstlen, splitchars):
         chunks = _split_ascii(s, firstlen, self._maxlinelen,
                               self._continuation_ws, splitchars)
-        return zip(chunks, [charset]*len(chunks))
+        return zip(chunks, [charset] * len(chunks))
 
     def _encode_chunks(self, newchunks, maxlinelen):
         # MIME-encode a header with many different charsets and/or encodings.
@@ -410,11 +407,10 @@ class Header:
         value = self._encode_chunks(newchunks, maxlinelen)
         if _embeded_header.search(value):
             raise HeaderParseError("header value appears to contain "
-                "an embedded header: {!r}".format(value))
+                                   "an embedded header: {!r}".format(value))
         return value
 
 
-
 def _split_ascii(s, firstlen, restlen, continuation_ws, splitchars):
     lines = []
     maxlen = firstlen
@@ -451,13 +447,13 @@ def _split_ascii(s, firstlen, restlen, continuation_ws, splitchars):
         this = []
         linelen = 0
         for part in cre.split(line):
-            curlen = linelen + max(0, len(this)-1) * joinlen
+            curlen = linelen + max(0, len(this) - 1) * joinlen
             partlen = len(part)
             onfirstline = not lines
             # We don't want to split after the field name, if we're on the
             # first line and the field name is present in the header string.
             if ch == ' ' and onfirstline and \
-                   len(this) == 1 and fcre.match(this[0]):
+                    len(this) == 1 and fcre.match(this[0]):
                 this.append(part)
                 linelen += partlen
             elif curlen + partlen > maxlen:
@@ -484,7 +480,6 @@ def _split_ascii(s, firstlen, restlen, continuation_ws, splitchars):
     return lines
 
 
-
 def _binsplit(splittable, charset, maxlinelen):
     i = 0
     j = len(splittable)
@@ -497,7 +492,7 @@ def _binsplit(splittable, charset, maxlinelen):
         # 3. We don't know about splittable[:k] for k in i+1..j.
         # 4. We want to set i to the largest k that fits, with i <= k <= j.
         #
-        m = (i+j+1) >> 1  # ceiling((i+j)/2); i < m <= j
+        m = (i + j + 1) >> 1  # ceiling((i+j)/2); i < m <= j
         chunk = charset.from_splittable(splittable[:m], True)
         chunklen = charset.encoded_header_len(chunk)
         if chunklen <= maxlinelen:
@@ -510,5 +505,5 @@ def _binsplit(splittable, charset, maxlinelen):
     # invariant #2 implies that splittable[:i+1] does not fit, so i
     # is what we're looking for.
     first = charset.from_splittable(splittable[:i], False)
-    last  = charset.from_splittable(splittable[i:], False)
+    last = charset.from_splittable(splittable[i:], False)
     return first, last

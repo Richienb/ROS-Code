@@ -13,6 +13,7 @@ sunaudio = test_support.import_module('sunaudio', deprecated=True)
 
 SND_FORMAT_MULAW_8 = 1
 
+
 class LinuxAudioDevTests(unittest.TestCase):
 
     def setUp(self):
@@ -60,40 +61,50 @@ class LinuxAudioDevTests(unittest.TestCase):
         nchannels = 1
         try:
             self.dev.setparameters(-1, size, nchannels, fmt)
-        except ValueError, err:
+        except ValueError as err:
             self.assertEqual(err.args[0], "expected rate >= 0, not -1")
         try:
             self.dev.setparameters(rate, -2, nchannels, fmt)
-        except ValueError, err:
+        except ValueError as err:
             self.assertEqual(err.args[0], "expected sample size >= 0, not -2")
         try:
             self.dev.setparameters(rate, size, 3, fmt)
-        except ValueError, err:
+        except ValueError as err:
             self.assertEqual(err.args[0], "nchannels must be 1 or 2, not 3")
         try:
             self.dev.setparameters(rate, size, nchannels, 177)
-        except ValueError, err:
+        except ValueError as err:
             self.assertEqual(err.args[0], "unknown audio encoding: 177")
         try:
-            self.dev.setparameters(rate, size, nchannels, linuxaudiodev.AFMT_U16_LE)
-        except ValueError, err:
-            self.assertEqual(err.args[0], "for linear unsigned 16-bit little-endian "
-                             "audio, expected sample size 16, not 8")
+            self.dev.setparameters(
+                rate, size, nchannels, linuxaudiodev.AFMT_U16_LE)
+        except ValueError as err:
+            self.assertEqual(
+                err.args[0], "for linear unsigned 16-bit little-endian "
+                "audio, expected sample size 16, not 8")
         try:
             self.dev.setparameters(rate, 16, nchannels, fmt)
-        except ValueError, err:
-            self.assertEqual(err.args[0], "for linear unsigned 8-bit audio, expected "
-                             "sample size 8, not 16")
+        except ValueError as err:
+            self.assertEqual(
+                err.args[0],
+                "for linear unsigned 8-bit audio, expected "
+                "sample size 8, not 16")
+
 
 def test_main():
     try:
         dsp = linuxaudiodev.open('w')
-    except linuxaudiodev.error, msg:
-        if msg.args[0] in (errno.EACCES, errno.ENOENT, errno.ENODEV, errno.EBUSY):
+    except linuxaudiodev.error as msg:
+        if msg.args[0] in (
+                errno.EACCES,
+                errno.ENOENT,
+                errno.ENODEV,
+                errno.EBUSY):
             raise unittest.SkipTest(msg)
         raise
     dsp.close()
     run_unittest(LinuxAudioDevTests)
+
 
 if __name__ == '__main__':
     test_main()

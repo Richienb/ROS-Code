@@ -31,13 +31,15 @@ option involved with the exception.
 # - a option string with a W followed by semicolon should
 #   treat "-W foo" as "--foo"
 
-__all__ = ["GetoptError","error","getopt","gnu_getopt"]
+__all__ = ["GetoptError", "error", "getopt", "gnu_getopt"]
 
 import os
+
 
 class GetoptError(Exception):
     opt = ''
     msg = ''
+
     def __init__(self, msg, opt=''):
         self.msg = msg
         self.opt = opt
@@ -46,9 +48,11 @@ class GetoptError(Exception):
     def __str__(self):
         return self.msg
 
-error = GetoptError # backward compatibility
 
-def getopt(args, shortopts, longopts = []):
+error = GetoptError  # backward compatibility
+
+
+def getopt(args, shortopts, longopts=[]):
     """getopt(args, options[, long_options]) -> opts, args
 
     Parses command line options and parameter list.  args is the
@@ -76,7 +80,7 @@ def getopt(args, shortopts, longopts = []):
     """
 
     opts = []
-    if type(longopts) == type(""):
+    if isinstance(longopts, type("")):
         longopts = [longopts]
     else:
         longopts = list(longopts)
@@ -91,7 +95,8 @@ def getopt(args, shortopts, longopts = []):
 
     return opts, args
 
-def gnu_getopt(args, shortopts, longopts = []):
+
+def gnu_getopt(args, shortopts, longopts=[]):
     """getopt(args, options[, long_options]) -> opts, args
 
     This function works like getopt(), except that GNU style scanning
@@ -141,13 +146,14 @@ def gnu_getopt(args, shortopts, longopts = []):
 
     return opts, prog_args
 
+
 def do_longs(opts, opt, longopts, args):
     try:
         i = opt.index('=')
     except ValueError:
         optarg = None
     else:
-        opt, optarg = opt[:i], opt[i+1:]
+        opt, optarg = opt[:i], opt[i + 1:]
 
     has_arg, opt = long_has_args(opt, longopts)
     if has_arg:
@@ -163,6 +169,8 @@ def do_longs(opts, opt, longopts, args):
 # Return:
 #   has_arg?
 #   full option name
+
+
 def long_has_args(opt, longopts):
     possibilities = [o for o in longopts if o.startswith(opt)]
     if not possibilities:
@@ -184,6 +192,7 @@ def long_has_args(opt, longopts):
         unique_match = unique_match[:-1]
     return has_arg, unique_match
 
+
 def do_shorts(opts, optstring, shortopts, args):
     while optstring != '':
         opt, optstring = optstring[0], optstring[1:]
@@ -199,11 +208,13 @@ def do_shorts(opts, optstring, shortopts, args):
         opts.append(('-' + opt, optarg))
     return opts, args
 
+
 def short_has_arg(opt, shortopts):
     for i in range(len(shortopts)):
         if opt == shortopts[i] != ':':
-            return shortopts.startswith(':', i+1)
+            return shortopts.startswith(':', i + 1)
     raise GetoptError('option -%s not recognized' % opt, opt)
+
 
 if __name__ == '__main__':
     import sys

@@ -1,6 +1,7 @@
 # Test to see if openpty works. (But don't worry if it isn't available.)
 
-import os, unittest
+import os
+import unittest
 from test.test_support import run_unittest
 
 if not hasattr(os, "openpty"):
@@ -16,8 +17,10 @@ class OpenptyTest(unittest.TestCase):
         os.write(slave, 'Ping!')
         self.assertEqual(os.read(master, 1024), 'Ping!')
 
+
 def test_main():
     run_unittest(OpenptyTest)
+
 
 if __name__ == '__main__':
     test_main()

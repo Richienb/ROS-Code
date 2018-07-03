@@ -8,16 +8,17 @@ import doctest
 import xml.parsers.expat as expat
 from xml.etree.ElementTree import *
 
+
 def jython(function):
     if JYTHON:
         return function
     else:
         return None
 
+
 class sortdict(dict):
     def __repr__(self):
-        items = self.items()
-        items.sort()
+        items = sorted(self.items())
         pairs = ["%r: %r" % pair for pair in items]
         return "{%s}" % ", ".join(pairs)
     __str__ = __repr__
@@ -77,7 +78,8 @@ class Outputter:
     def DefaultHandlerExpand(self, userData):
         pass
 
-_=  """
+
+_ = """
     >>> data = '''\
     ... <?xml version="1.0" encoding="iso-8859-1" standalone="no"?>
     ... <?xml-stylesheet href="stylesheet.css"?>
@@ -100,6 +102,7 @@ _=  """
     ... </root>
     ... '''
     """
+
 
 def test_utf8():
     """
@@ -251,6 +254,7 @@ def test_errors_submodule():
     'XML declaration not well-formed'
     """
 
+
 def test_model_submodule():
     """
     >>> import xml.parsers.expat as expat
@@ -259,6 +263,7 @@ def test_model_submodule():
     >>> print sortdict(expat.model.__dict__)
     {'XML_CQUANT_NONE': 0, 'XML_CQUANT_OPT': 1, 'XML_CQUANT_PLUS': 3, 'XML_CQUANT_REP': 2, 'XML_CTYPE_ANY': 2, 'XML_CTYPE_CHOICE': 5, 'XML_CTYPE_EMPTY': 1, 'XML_CTYPE_MIXED': 3, 'XML_CTYPE_NAME': 4, 'XML_CTYPE_SEQ': 6, '__doc__': 'Constants used to interpret content model information.', '__name__': 'pyexpat.model'}
     """
+
 
 def test_parse_only_xml_data():
     """
@@ -400,6 +405,7 @@ def test_with_and_without_namespace():
     sub2
     """
 
+
 def test_unicode_bug():
     """
     Regression introduced by revision 28
@@ -408,6 +414,7 @@ def test_unicode_bug():
     >>> doc.text
     u'\u8230'
     """
+
 
 def test_DTD():
     """
@@ -448,6 +455,7 @@ def test_DTD():
     ELEMENT: (u'plus', (6, 3, None, ((4, 0, u'empty', ()),)))
     1
     """
+
 
 def test_entity():
     """
@@ -494,6 +502,7 @@ def test_entity():
     override DefaultHandler ... More tests todo here ...
     """
 
+
 def test_resolve_entity_handlers():
     """
     >>> xml = '''<!DOCTYPE doc [
@@ -513,6 +522,7 @@ def test_resolve_entity_handlers():
     1
     """
 
+
 def handler(name, header="XML>", returns=None):
     def _handler(*args):
         if len(args) == 1:
@@ -523,6 +533,7 @@ def handler(name, header="XML>", returns=None):
         return returns
     return _handler
 
+
 def parse(xml, *handlers):
     parser = expat.ParserCreate()
     for name in handlers:
@@ -532,6 +543,7 @@ def parse(xml, *handlers):
             returns = None
         setattr(parser, name, handler(name, returns=returns))
     parser.Parse(xml, True)
+
 
 def test_internal_entities():
     """
@@ -570,6 +582,7 @@ def test_internal_entities():
     XML> ...CharacterDataHandler(u'entity-content')...
     """
 
+
 def test_external_entities():
     """
     >>> xml = '''<!DOCTYPE doc [
@@ -606,6 +619,7 @@ def test_external_entities():
     XML> ...ExternalEntityRefHandler(u'entity', None, u'entity-file', u'http://entity-web')...
     """
 
+
 def test_undefined_entities():
     """
     >>> xml = "<doc>&entity;</doc>"
@@ -615,10 +629,12 @@ def test_undefined_entities():
     ExpatError: undefined entity: line 1, column 5
     """
 
+
 def locate(parser, name):
     def _handler(*args):
         print name, parser.CurrentLineNumber, parser.CurrentColumnNumber
     return _handler
+
 
 def test_current_location():
     """
@@ -698,6 +714,7 @@ def test_error_location():
     (1, 9)
     """
 
+
 @jython
 def test_resolveEntity():
     """
@@ -750,6 +767,7 @@ def test_resolveEntity():
     Entity name: entity
     """
 
+
 def test_close_files():
     # http://bugs.jython.org/issue1479
     """
@@ -766,6 +784,7 @@ def test_close_files():
     >>> tree = ET.parse(test_support.TESTFN)
     >>> os.remove(test_support.TESTFN)
     """
+
 
 if __name__ == "__main__":
     doctest.testmod()

@@ -36,8 +36,10 @@ import sys
 
 __all__ = ["Error", "encode", "decode"]
 
+
 class Error(Exception):
     pass
+
 
 def encode(in_file, out_file, name=None, mode=None):
     """Uuencode file"""
@@ -72,11 +74,11 @@ def encode(in_file, out_file, name=None, mode=None):
         if name is None:
             name = '-'
         if mode is None:
-            mode = 0666
+            mode = 0o666
         #
         # Write the data
         #
-        out_file.write('begin %o %s\n' % ((mode&0777),name))
+        out_file.write('begin %o %s\n' % ((mode & 0o777), name))
         data = in_file.read(45)
         while len(data) > 0:
             out_file.write(binascii.b2a_uu(data))
@@ -141,9 +143,9 @@ def decode(in_file, out_file=None, mode=None, quiet=0):
         while s and s.strip() != 'end':
             try:
                 data = binascii.a2b_uu(s)
-            except binascii.Error, v:
+            except binascii.Error as v:
                 # Workaround for broken uuencoders by /Fredrik Lundh
-                nbytes = (((ord(s[0])-32) & 63) * 4 + 5) // 3
+                nbytes = (((ord(s[0]) - 32) & 63) * 4 + 5) // 3
                 data = binascii.a2b_uu(s[:nbytes])
                 if not quiet:
                     sys.stderr.write("Warning: %s\n" % v)
@@ -155,13 +157,27 @@ def decode(in_file, out_file=None, mode=None, quiet=0):
         for f in opened_files:
             f.close()
 
+
 def test():
     """uuencode/uudecode main program"""
 
     import optparse
-    parser = optparse.OptionParser(usage='usage: %prog [-d] [-t] [input [output]]')
-    parser.add_option('-d', '--decode', dest='decode', help='Decode (instead of encode)?', default=False, action='store_true')
-    parser.add_option('-t', '--text', dest='text', help='data is text, encoded format unix-compatible text?', default=False, action='store_true')
+    parser = optparse.OptionParser(
+        usage='usage: %prog [-d] [-t] [input [output]]')
+    parser.add_option(
+        '-d',
+        '--decode',
+        dest='decode',
+        help='Decode (instead of encode)?',
+        default=False,
+        action='store_true')
+    parser.add_option(
+        '-t',
+        '--text',
+        dest='text',
+        help='data is text, encoded format unix-compatible text?',
+        default=False,
+        action='store_true')
 
     (options, args) = parser.parse_args()
     if len(args) > 2:
@@ -191,6 +207,7 @@ def test():
                 print sys.argv[0], ': cannot do -t from stdin'
                 sys.exit(1)
         encode(input, output)
+
 
 if __name__ == '__main__':
     test()

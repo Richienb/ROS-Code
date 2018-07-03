@@ -6,6 +6,7 @@ from test.test_support import run_unittest, is_jython
 
 import traceback
 
+
 class TracebackCases(unittest.TestCase):
     # For now, a very minimal set of tests.  I want to be sure that
     # formatting of SyntaxErrors works based on changes for 2.1.
@@ -13,10 +14,10 @@ class TracebackCases(unittest.TestCase):
     def get_exception_format(self, func, exc):
         try:
             func()
-        except exc, value:
+        except exc as value:
             return traceback.format_exception_only(exc, value)
         else:
-            raise ValueError, "call did not raise exception"
+            raise ValueError("call did not raise exception")
 
     def syntax_error_with_caret(self):
         compile("def fact(x):\n\treturn x!\n", "?", "exec")
@@ -34,8 +35,9 @@ class TracebackCases(unittest.TestCase):
                                         SyntaxError)
         self.assert_(len(err) == 4)
         self.assert_(err[1].strip() == "return x!")
-        self.assert_("^" in err[2]) # third line has caret
-        self.assert_(err[1].find("!") == err[2].find("^")) # in the right place
+        self.assert_("^" in err[2])  # third line has caret
+        # in the right place
+        self.assert_(err[1].find("!") == err[2].find("^"))
 
     def test_nocaret(self):
         if is_jython:
@@ -54,10 +56,13 @@ class TracebackCases(unittest.TestCase):
         self.assert_("^" in err[2])
         # Antlr thinks the error is at the indentation, while CPython points at
         # the end of the line.  I am agreeing with Antlr over CPython here.
-        self.assert_(err[1].find("p") -1 == err[2].find("^"))
+        self.assert_(err[1].find("p") - 1 == err[2].find("^"))
 
     def test_bug737473(self):
-        import sys, os, tempfile, time
+        import sys
+        import os
+        import tempfile
+        import time
 
         savedpath = sys.path[:]
         testdir = tempfile.mkdtemp()
@@ -77,7 +82,7 @@ def test():
                 test_bug737473.test()
             except ValueError:
                 # this loads source code to linecache
-                traceback.extract_tb(sys.exc_traceback)
+                traceback.extract_tb(sys.exc_info()[2])
 
             # If this test runs too quickly, test_bug737473.py's mtime
             # attribute will remain unchanged even if the file is rewritten.
@@ -95,7 +100,7 @@ def test():
             try:
                 test_bug737473.test()
             except NotImplementedError:
-                src = traceback.extract_tb(sys.exc_traceback)[-1][-1]
+                src = traceback.extract_tb(sys.exc_info()[2])[-1][-1]
                 self.failUnlessEqual(src, 'raise NotImplementedError')
         finally:
             sys.path[:] = savedpath
@@ -109,8 +114,8 @@ def test():
     def na_jython_test_members(self):
         # Covers Python/structmember.c::listmembers()
         try:
-            1/0
-        except:
+            1 / 0
+        except BaseException:
             import sys
             sys.exc_traceback.__members__
 
@@ -152,7 +157,7 @@ def test():
     def test_format_exception_only_bad__str__(self):
         class X(Exception):
             def __str__(self):
-                1/0
+                1 / 0
         err = traceback.format_exception_only(X, X())
         self.assertEqual(len(err), 1)
         str_value = '<unprintable %s object>' % X.__name__
@@ -161,6 +166,7 @@ def test():
     def test_without_exception(self):
         err = traceback.format_exception_only(None, None)
         self.assertEqual(err, ['None\n'])
+
 
 def test_main():
     run_unittest(TracebackCases)

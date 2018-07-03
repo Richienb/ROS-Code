@@ -68,6 +68,7 @@ __all__ = ["MiniFieldStorage", "FieldStorage", "FormContentDict",
 logfile = ""            # Filename to log to, if not empty
 logfp = None            # File object to log to, if not None
 
+
 def initlog(*allargs):
     """Write a log message, if there is a log file.
 
@@ -103,13 +104,16 @@ def initlog(*allargs):
         log = dolog
     log(*allargs)
 
+
 def dolog(fmt, *args):
     """Write a log message to the log file.  See initlog() for docs."""
-    logfp.write(fmt%args + "\n")
+    logfp.write(fmt % args + "\n")
+
 
 def nolog(*allargs):
     """Dummy function, assigned to log when logging is disabled."""
     pass
+
 
 log = initlog           # The current logging function
 
@@ -120,6 +124,7 @@ log = initlog           # The current logging function
 # Maximum input we will accept when REQUEST_METHOD is POST
 # 0 ==> unlimited input
 maxlen = 0
+
 
 def parse(fp=None, environ=os.environ, keep_blank_values=0, strict_parsing=0):
     """Parse a query in the environment or from a file (default stdin)
@@ -143,7 +148,7 @@ def parse(fp=None, environ=os.environ, keep_blank_values=0, strict_parsing=0):
     """
     if fp is None:
         fp = sys.stdin
-    if not 'REQUEST_METHOD' in environ:
+    if 'REQUEST_METHOD' not in environ:
         environ['REQUEST_METHOD'] = 'GET'       # For testing stand-alone
     if environ['REQUEST_METHOD'] == 'POST':
         ctype, pdict = parse_header(environ['CONTENT_TYPE'])
@@ -152,15 +157,17 @@ def parse(fp=None, environ=os.environ, keep_blank_values=0, strict_parsing=0):
         elif ctype == 'application/x-www-form-urlencoded':
             clength = int(environ['CONTENT_LENGTH'])
             if maxlen and clength > maxlen:
-                raise ValueError, 'Maximum content length exceeded'
+                raise ValueError('Maximum content length exceeded')
             qs = fp.read(clength)
         else:
             qs = ''                     # Unknown content-type
         if 'QUERY_STRING' in environ:
-            if qs: qs = qs + '&'
+            if qs:
+                qs = qs + '&'
             qs = qs + environ['QUERY_STRING']
         elif sys.argv[1:]:
-            if qs: qs = qs + '&'
+            if qs:
+                qs = qs + '&'
             qs = qs + sys.argv[1]
         environ['QUERY_STRING'] = qs    # XXX Shouldn't, really
     elif 'QUERY_STRING' in environ:
@@ -189,6 +196,7 @@ def parse_qsl(qs, keep_blank_values=0, strict_parsing=0):
     warn("cgi.parse_qsl is deprecated, use urlparse.parse_qsl instead",
          PendingDeprecationWarning, 2)
     return urlparse.parse_qsl(qs, keep_blank_values, strict_parsing)
+
 
 def parse_multipart(fp, pdict):
     """Parse multipart input.
@@ -219,8 +227,8 @@ def parse_multipart(fp, pdict):
     if 'boundary' in pdict:
         boundary = pdict['boundary']
     if not valid_boundary(boundary):
-        raise ValueError,  ('Invalid boundary in multipart form: %r'
-                            % (boundary,))
+        raise ValueError('Invalid boundary in multipart form: %r'
+                         % (boundary,))
 
     nextpart = "--" + boundary
     lastpart = "--" + boundary + "--"
@@ -241,16 +249,16 @@ def parse_multipart(fp, pdict):
                     pass
             if bytes > 0:
                 if maxlen and bytes > maxlen:
-                    raise ValueError, 'Maximum content length exceeded'
+                    raise ValueError('Maximum content length exceeded')
                 data = fp.read(bytes)
             else:
                 data = ""
         # Read lines until end of part.
         lines = []
-        while 1:
+        while True:
             line = fp.readline()
             if not line:
-                terminator = lastpart # End outer loop
+                terminator = lastpart  # End outer loop
                 break
             if line[:2] == "--":
                 terminator = line.strip()
@@ -300,6 +308,7 @@ def _parseparam(s):
         yield f.strip()
         s = s[end:]
 
+
 def parse_header(line):
     """Parse a Content-type like header.
 
@@ -313,7 +322,7 @@ def parse_header(line):
         i = p.find('=')
         if i >= 0:
             name = p[:i].strip().lower()
-            value = p[i+1:].strip()
+            value = p[i + 1:].strip()
             if len(value) >= 2 and value[0] == value[-1] == '"':
                 value = value[1:-1]
                 value = value.replace('\\\\', '\\').replace('\\"', '"')
@@ -496,7 +505,7 @@ class FieldStorage:
             except ValueError:
                 pass
             if maxlen and clen > maxlen:
-                raise ValueError, 'Maximum content length exceeded'
+                raise ValueError('Maximum content length exceeded')
         self.length = clen
 
         self.list = self.file = None
@@ -511,14 +520,14 @@ class FieldStorage:
     def __repr__(self):
         """Return a printable representation."""
         return "FieldStorage(%r, %r, %r)" % (
-                self.name, self.filename, self.value)
+            self.name, self.filename, self.value)
 
     def __iter__(self):
         return iter(self.keys())
 
     def __getattr__(self, name):
         if name != 'value':
-            raise AttributeError, name
+            raise AttributeError(name)
         if self.file:
             self.file.seek(0)
             value = self.file.read()
@@ -532,12 +541,13 @@ class FieldStorage:
     def __getitem__(self, key):
         """Dictionary style indexing."""
         if self.list is None:
-            raise TypeError, "not indexable"
+            raise TypeError("not indexable")
         found = []
         for item in self.list:
-            if item.name == key: found.append(item)
+            if item.name == key:
+                found.append(item)
         if not found:
-            raise KeyError, key
+            raise KeyError(key)
         if len(found) == 1:
             return found[0]
         else:
@@ -547,7 +557,7 @@ class FieldStorage:
         """Dictionary style get() method, including 'value' lookup."""
         if key in self:
             value = self[key]
-            if type(value) is type([]):
+            if isinstance(value, type([])):
                 return map(attrgetter('value'), value)
             else:
                 return value.value
@@ -558,7 +568,7 @@ class FieldStorage:
         """ Return the first value received."""
         if key in self:
             value = self[key]
-            if type(value) is type([]):
+            if isinstance(value, type([])):
                 return value[0].value
             else:
                 return value.value
@@ -569,7 +579,7 @@ class FieldStorage:
         """ Return list of received values."""
         if key in self:
             value = self[key]
-            if type(value) is type([]):
+            if isinstance(value, type([])):
                 return map(attrgetter('value'), value)
             else:
                 return [value.value]
@@ -579,19 +589,19 @@ class FieldStorage:
     def keys(self):
         """Dictionary style keys() method."""
         if self.list is None:
-            raise TypeError, "not indexable"
+            raise TypeError("not indexable")
         return list(set(item.name for item in self.list))
 
     def has_key(self, key):
         """Dictionary style has_key() method."""
         if self.list is None:
-            raise TypeError, "not indexable"
+            raise TypeError("not indexable")
         return any(item.name == key for item in self.list)
 
     def __contains__(self, key):
         """Dictionary style __contains__ method."""
         if self.list is None:
-            raise TypeError, "not indexable"
+            raise TypeError("not indexable")
         return any(item.name == key for item in self.list)
 
     def __len__(self):
@@ -608,7 +618,7 @@ class FieldStorage:
             qs += '&' + self.qs_on_post
         self.list = list = []
         for key, value in urlparse.parse_qsl(qs, self.keep_blank_values,
-                                            self.strict_parsing):
+                                             self.strict_parsing):
             list.append(MiniFieldStorage(key, value))
         self.skip_lines()
 
@@ -618,11 +628,11 @@ class FieldStorage:
         """Internal: read a part that is itself multipart."""
         ib = self.innerboundary
         if not valid_boundary(ib):
-            raise ValueError, 'Invalid boundary in multipart form: %r' % (ib,)
+            raise ValueError('Invalid boundary in multipart form: %r' % (ib,))
         self.list = []
         if self.qs_on_post:
-            for key, value in urlparse.parse_qsl(self.qs_on_post,
-                                self.keep_blank_values, self.strict_parsing):
+            for key, value in urlparse.parse_qsl(
+                    self.qs_on_post, self.keep_blank_values, self.strict_parsing):
                 self.list.append(MiniFieldStorage(key, value))
             FieldStorageClass = None
 
@@ -646,7 +656,7 @@ class FieldStorage:
             self.read_lines()
         self.file.seek(0)
 
-    bufsize = 8*1024            # I/O buffering size for copy to file
+    bufsize = 8 * 1024            # I/O buffering size for copy to file
 
     def read_binary(self):
         """Internal: read binary data."""
@@ -679,8 +689,8 @@ class FieldStorage:
 
     def read_lines_to_eof(self):
         """Internal: read lines until EOF."""
-        while 1:
-            line = self.fp.readline(1<<16)
+        while True:
+            line = self.fp.readline(1 << 16)
             if not line:
                 self.done = -1
                 break
@@ -692,8 +702,8 @@ class FieldStorage:
         last = next + "--"
         delim = ""
         last_line_lfend = True
-        while 1:
-            line = self.fp.readline(1<<16)
+        while True:
+            line = self.fp.readline(1 << 16)
             if not line:
                 self.done = -1
                 break
@@ -725,8 +735,8 @@ class FieldStorage:
         next = "--" + self.outerboundary
         last = next + "--"
         last_line_lfend = True
-        while 1:
-            line = self.fp.readline(1<<16)
+        while True:
+            line = self.fp.readline(1 << 16)
             if not line:
                 self.done = -1
                 break
@@ -767,7 +777,6 @@ class FieldStorage:
         return tempfile.TemporaryFile("w+b")
 
 
-
 # Backwards Compatibility Classes
 # ===============================
 
@@ -784,7 +793,12 @@ class FormContentDict(UserDict.UserDict):
     form.dict == {key: [val, val, ...], ...}
 
     """
-    def __init__(self, environ=os.environ, keep_blank_values=0, strict_parsing=0):
+
+    def __init__(
+            self,
+            environ=os.environ,
+            keep_blank_values=0,
+            strict_parsing=0):
         self.dict = self.data = parse(environ=environ,
                                       keep_blank_values=keep_blank_values,
                                       strict_parsing=strict_parsing)
@@ -803,38 +817,49 @@ class SvFormContentDict(FormContentDict):
     lists of strings otherwise.
 
     """
+
     def __getitem__(self, key):
         if len(self.dict[key]) > 1:
-            raise IndexError, 'expecting a single value'
+            raise IndexError('expecting a single value')
         return self.dict[key][0]
+
     def getlist(self, key):
         return self.dict[key]
+
     def values(self):
         result = []
         for value in self.dict.values():
             if len(value) == 1:
                 result.append(value[0])
-            else: result.append(value)
+            else:
+                result.append(value)
         return result
+
     def items(self):
         result = []
         for key, value in self.dict.items():
             if len(value) == 1:
                 result.append((key, value[0]))
-            else: result.append((key, value))
+            else:
+                result.append((key, value))
         return result
 
 
 class InterpFormContentDict(SvFormContentDict):
     """This class is present for backwards compatibility only."""
+
     def __getitem__(self, key):
         v = SvFormContentDict.__getitem__(self, key)
         if v[0] in '0123456789+-.':
-            try: return int(v)
+            try:
+                return int(v)
             except ValueError:
-                try: return float(v)
-                except ValueError: pass
+                try:
+                    return float(v)
+                except ValueError:
+                    pass
         return v.strip()
+
     def values(self):
         result = []
         for key in self.keys():
@@ -843,6 +868,7 @@ class InterpFormContentDict(SvFormContentDict):
             except IndexError:
                 result.append(self.dict[key])
         return result
+
     def items(self):
         result = []
         for key in self.keys():
@@ -855,23 +881,37 @@ class InterpFormContentDict(SvFormContentDict):
 
 class FormContent(FormContentDict):
     """This class is present for backwards compatibility only."""
+
     def values(self, key):
-        if key in self.dict :return self.dict[key]
-        else: return None
+        if key in self.dict:
+            return self.dict[key]
+        else:
+            return None
+
     def indexed_value(self, key, location):
         if key in self.dict:
             if len(self.dict[key]) > location:
                 return self.dict[key][location]
-            else: return None
-        else: return None
+            else:
+                return None
+        else:
+            return None
+
     def value(self, key):
-        if key in self.dict: return self.dict[key][0]
-        else: return None
+        if key in self.dict:
+            return self.dict[key][0]
+        else:
+            return None
+
     def length(self, key):
         return len(self.dict[key])
+
     def stripped(self, key):
-        if key in self.dict: return self.dict[key][0].strip()
-        else: return None
+        if key in self.dict:
+            return self.dict[key][0].strip()
+        else:
+            return None
+
     def pars(self):
         return self.dict
 
@@ -896,13 +936,15 @@ def test(environ=os.environ):
         print_form(form)
         print_environ(environ)
         print_environ_usage()
+
         def f():
             exec "testing print_exception() -- <I>italics?</I>"
+
         def g(f=f):
             f()
         print "<H3>What follows is a test, not an actual exception:</H3>"
         g()
-    except:
+    except BaseException:
         print_exception()
 
     print "<H1>Second try with a small maxlen...</H1>"
@@ -915,8 +957,9 @@ def test(environ=os.environ):
         print_arguments()
         print_form(form)
         print_environ(environ)
-    except:
+    except BaseException:
         print_exception()
+
 
 def print_exception(type=None, value=None, tb=None, limit=None):
     if type is None:
@@ -925,17 +968,17 @@ def print_exception(type=None, value=None, tb=None, limit=None):
     print
     print "<H3>Traceback (most recent call last):</H3>"
     list = traceback.format_tb(tb, limit) + \
-           traceback.format_exception_only(type, value)
+        traceback.format_exception_only(type, value)
     print "<PRE>%s<B>%s</B></PRE>" % (
         escape("".join(list[:-1])),
         escape(list[-1]),
-        )
+    )
     del tb
+
 
 def print_environ(environ=os.environ):
     """Dump the shell environment as HTML."""
-    keys = environ.keys()
-    keys.sort()
+    keys = sorted(environ.keys())
     print
     print "<H3>Shell Environment:</H3>"
     print "<DL>"
@@ -944,10 +987,10 @@ def print_environ(environ=os.environ):
     print "</DL>"
     print
 
+
 def print_form(form):
     """Dump the contents of a form as HTML."""
-    keys = form.keys()
-    keys.sort()
+    keys = sorted(form.keys())
     print
     print "<H3>Form Contents:</H3>"
     if not keys:
@@ -961,17 +1004,19 @@ def print_form(form):
     print "</DL>"
     print
 
+
 def print_directory():
     """Dump the current directory as HTML."""
     print
     print "<H3>Current Working Directory:</H3>"
     try:
         pwd = os.getcwd()
-    except os.error, msg:
+    except os.error as msg:
         print "os.error:", escape(str(msg))
     else:
         print escape(pwd)
     print
+
 
 def print_arguments():
     print
@@ -979,6 +1024,7 @@ def print_arguments():
     print
     print sys.argv
     print
+
 
 def print_environ_usage():
     """Dump a list of environment variables used by CGI as HTML."""
@@ -1031,12 +1077,13 @@ def escape(s, quote=None):
     '''Replace special characters "&", "<" and ">" to HTML-safe sequences.
     If the optional flag quote is true, the quotation mark character (")
     is also translated.'''
-    s = s.replace("&", "&amp;") # Must be done first!
+    s = s.replace("&", "&amp;")  # Must be done first!
     s = s.replace("<", "&lt;")
     s = s.replace(">", "&gt;")
     if quote:
         s = s.replace('"', "&quot;")
     return s
+
 
 def valid_boundary(s, _vb_pattern="^[ -~]{0,200}[!-~]$"):
     import re
@@ -1044,6 +1091,7 @@ def valid_boundary(s, _vb_pattern="^[ -~]{0,200}[!-~]$"):
 
 # Invoke mainline
 # ===============
+
 
 # Call test() when this file is run as a script (not imported as a module)
 if __name__ == '__main__':

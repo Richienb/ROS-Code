@@ -18,9 +18,12 @@ __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
 error = ValueError
 
 # Exceptions raised for bad input
+
+
 class IllegalMonthError(ValueError):
     def __init__(self, month):
         self.month = month
+
     def __str__(self):
         return "bad month number %r; must be 1-12" % self.month
 
@@ -28,6 +31,7 @@ class IllegalMonthError(ValueError):
 class IllegalWeekdayError(ValueError):
     def __init__(self, weekday):
         self.weekday = weekday
+
     def __str__(self):
         return "bad weekday number %r; must be 0 (Monday) to 6 (Sunday)" % self.weekday
 
@@ -44,9 +48,10 @@ mdays = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 # that, but supply localized names.  Note that the values are computed
 # fresh on each call, in case the user changes locale between calls.
 
+
 class _localized_month:
 
-    _months = [datetime.date(2001, i+1, 1).strftime for i in range(12)]
+    _months = [datetime.date(2001, i + 1, 1).strftime for i in range(12)]
     _months.insert(0, lambda x: "")
 
     def __init__(self, format):
@@ -66,7 +71,7 @@ class _localized_month:
 class _localized_day:
 
     # January 1, 2001, was a Monday.
-    _days = [datetime.date(2001, 1, i+1).strftime for i in range(7)]
+    _days = [datetime.date(2001, 1, i + 1).strftime for i in range(7)]
 
     def __init__(self, format):
         self.format = format
@@ -104,7 +109,8 @@ def leapdays(y1, y2):
        Assume y1 <= y2."""
     y1 -= 1
     y2 -= 1
-    return (y2//4 - y1//4) - (y2//100 - y1//100) + (y2//400 - y1//400)
+    return (y2 // 4 - y1 // 4) - (y2 // 100 -
+                                  y1 // 100) + (y2 // 400 - y1 // 400)
 
 
 def weekday(year, month, day):
@@ -130,7 +136,7 @@ class Calendar(object):
     """
 
     def __init__(self, firstweekday=0):
-        self.firstweekday = firstweekday # 0 = Monday, 6 = Sunday
+        self.firstweekday = firstweekday  # 0 = Monday, 6 = Sunday
 
     def getfirstweekday(self):
         return self._firstweekday % 7
@@ -146,7 +152,7 @@ class Calendar(object):
         configured first one.
         """
         for i in range(self.firstweekday, self.firstweekday + 7):
-            yield i%7
+            yield i % 7
 
     def itermonthdates(self, year, month):
         """
@@ -197,7 +203,7 @@ class Calendar(object):
         Each row represents a week; week entries are datetime.date values.
         """
         dates = list(self.itermonthdates(year, month))
-        return [ dates[i:i+7] for i in range(0, len(dates), 7) ]
+        return [dates[i:i + 7] for i in range(0, len(dates), 7)]
 
     def monthdays2calendar(self, year, month):
         """
@@ -207,7 +213,7 @@ class Calendar(object):
         are zero.
         """
         days = list(self.itermonthdays2(year, month))
-        return [ days[i:i+7] for i in range(0, len(days), 7) ]
+        return [days[i:i + 7] for i in range(0, len(days), 7)]
 
     def monthdayscalendar(self, year, month):
         """
@@ -215,7 +221,7 @@ class Calendar(object):
         Each row represents a week; days outside this month are zero.
         """
         days = list(self.itermonthdays(year, month))
-        return [ days[i:i+7] for i in range(0, len(days), 7) ]
+        return [days[i:i + 7] for i in range(0, len(days), 7)]
 
     def yeardatescalendar(self, year, width=3):
         """
@@ -226,9 +232,9 @@ class Calendar(object):
         """
         months = [
             self.monthdatescalendar(year, i)
-            for i in range(January, January+12)
+            for i in range(January, January + 12)
         ]
-        return [months[i:i+width] for i in range(0, len(months), width) ]
+        return [months[i:i + width] for i in range(0, len(months), width)]
 
     def yeardays2calendar(self, year, width=3):
         """
@@ -239,9 +245,9 @@ class Calendar(object):
         """
         months = [
             self.monthdays2calendar(year, i)
-            for i in range(January, January+12)
+            for i in range(January, January + 12)
         ]
-        return [months[i:i+width] for i in range(0, len(months), width) ]
+        return [months[i:i + width] for i in range(0, len(months), width)]
 
     def yeardayscalendar(self, year, width=3):
         """
@@ -251,9 +257,9 @@ class Calendar(object):
         """
         months = [
             self.monthdayscalendar(year, i)
-            for i in range(January, January+12)
+            for i in range(January, January + 12)
         ]
-        return [months[i:i+width] for i in range(0, len(months), width) ]
+        return [months[i:i + width] for i in range(0, len(months), width)]
 
 
 class TextCalendar(Calendar):
@@ -298,7 +304,8 @@ class TextCalendar(Calendar):
         """
         Return a header for a week.
         """
-        return ' '.join(self.formatweekday(i, width) for i in self.iterweekdays())
+        return ' '.join(self.formatweekday(i, width)
+                        for i in self.iterweekdays())
 
     def formatmonthname(self, theyear, themonth, width, withyear=True):
         """
@@ -341,20 +348,20 @@ class TextCalendar(Calendar):
         colwidth = (w + 1) * 7 - 1
         v = []
         a = v.append
-        a(repr(theyear).center(colwidth*m+c*(m-1)).rstrip())
-        a('\n'*l)
+        a(repr(theyear).center(colwidth * m + c * (m - 1)).rstrip())
+        a('\n' * l)
         header = self.formatweekheader(w)
         for (i, row) in enumerate(self.yeardays2calendar(theyear, m)):
             # months in this row
-            months = range(m*i+1, min(m*(i+1)+1, 13))
-            a('\n'*l)
+            months = range(m * i + 1, min(m * (i + 1) + 1, 13))
+            a('\n' * l)
             names = (self.formatmonthname(theyear, k, colwidth, False)
                      for k in months)
             a(formatstring(names, colwidth, c).rstrip())
-            a('\n'*l)
+            a('\n' * l)
             headers = (header for k in months)
             a(formatstring(headers, colwidth, c).rstrip())
-            a('\n'*l)
+            a('\n' * l)
             # max number of weeks for this row
             height = max(len(cal) for cal in row)
             for j in range(height):
@@ -386,7 +393,7 @@ class HTMLCalendar(Calendar):
         Return a day as a table cell.
         """
         if day == 0:
-            return '<td class="noday">&nbsp;</td>' # day outside month
+            return '<td class="noday">&nbsp;</td>'  # day outside month
         else:
             return '<td class="%s">%d</td>' % (self.cssclasses[weekday], day)
 
@@ -449,9 +456,9 @@ class HTMLCalendar(Calendar):
         a('<table border="0" cellpadding="0" cellspacing="0" class="year">')
         a('\n')
         a('<tr><th colspan="%d" class="year">%s</th></tr>' % (width, theyear))
-        for i in range(January, January+12, width):
+        for i in range(January, January + 12, width):
             # months in this row
-            months = range(i, min(i+width, 13))
+            months = range(i, min(i + width, 13))
             a('<tr>')
             for m in months:
                 a('<td>')
@@ -461,7 +468,12 @@ class HTMLCalendar(Calendar):
         a('</table>')
         return ''.join(v)
 
-    def formatyearpage(self, theyear, width=3, css='calendar.css', encoding=None):
+    def formatyearpage(
+            self,
+            theyear,
+            width=3,
+            css='calendar.css',
+            encoding=None):
         """
         Return a formatted year as a complete HTML page.
         """
@@ -540,6 +552,7 @@ class LocaleHTMLCalendar(HTMLCalendar):
     an encoding all strings containing month and weekday names will be returned
     as unicode.
     """
+
     def __init__(self, firstweekday=0, locale=None):
         HTMLCalendar.__init__(self, firstweekday)
         if locale is None:
@@ -568,6 +581,7 @@ c = TextCalendar()
 
 firstweekday = c.getfirstweekday
 
+
 def setfirstweekday(firstweekday):
     try:
         firstweekday.__index__
@@ -576,6 +590,7 @@ def setfirstweekday(firstweekday):
     if not MONDAY <= firstweekday <= SUNDAY:
         raise IllegalWeekdayError(firstweekday)
     c.firstweekday = firstweekday
+
 
 monthcalendar = c.monthdayscalendar
 prweek = c.prweek
@@ -588,7 +603,7 @@ prcal = c.pryear
 
 
 # Spacing of month columns for multi-column year calendar
-_colwidth = 7*3 - 1         # Amount printed by prweek()
+_colwidth = 7 * 3 - 1         # Amount printed by prweek()
 _spacing = 6                # Number of spaces between columns
 
 
@@ -611,15 +626,16 @@ def timegm(tuple):
     """Unrelated but handy function to calculate Unix timestamp from GMT."""
     year, month, day, hour, minute, second = tuple[:6]
     days = datetime.date(year, month, 1).toordinal() - _EPOCH_ORD + day - 1
-    hours = days*24 + hour
-    minutes = hours*60 + minute
-    seconds = minutes*60 + second
+    hours = days * 24 + hour
+    minutes = hours * 60 + minute
+    seconds = minutes * 60 + second
     return seconds
 
 
 def main(args):
     import optparse
-    parser = optparse.OptionParser(usage="usage: %prog [options] [year [month]]")
+    parser = optparse.OptionParser(
+        usage="usage: %prog [options] [year [month]]")
     parser.add_option(
         "-w", "--width",
         dest="width", type="int", default=2,

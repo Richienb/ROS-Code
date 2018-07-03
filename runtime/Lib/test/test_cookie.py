@@ -9,24 +9,24 @@ class CookieTests(unittest.TestCase):
     # Currently this only tests SimpleCookie
     def test_basic(self):
         cases = [
-            { 'data': 'chips=ahoy; vienna=finger',
-              'dict': {'chips':'ahoy', 'vienna':'finger'},
-              'repr': "<SimpleCookie: chips='ahoy' vienna='finger'>",
-              'output': 'Set-Cookie: chips=ahoy\nSet-Cookie: vienna=finger',
-            },
+            {'data': 'chips=ahoy; vienna=finger',
+             'dict': {'chips': 'ahoy', 'vienna': 'finger'},
+             'repr': "<SimpleCookie: chips='ahoy' vienna='finger'>",
+             'output': 'Set-Cookie: chips=ahoy\nSet-Cookie: vienna=finger',
+             },
 
-            { 'data': 'keebler="E=mc2; L=\\"Loves\\"; fudge=\\012;"',
-              'dict': {'keebler' : 'E=mc2; L="Loves"; fudge=\012;'},
-              'repr': '''<SimpleCookie: keebler='E=mc2; L="Loves"; fudge=\\n;'>''',
-              'output': 'Set-Cookie: keebler="E=mc2; L=\\"Loves\\"; fudge=\\012;"',
-            },
+            {'data': 'keebler="E=mc2; L=\\"Loves\\"; fudge=\\012;"',
+             'dict': {'keebler': 'E=mc2; L="Loves"; fudge=\012;'},
+             'repr': '''<SimpleCookie: keebler='E=mc2; L="Loves"; fudge=\\n;'>''',
+             'output': 'Set-Cookie: keebler="E=mc2; L=\\"Loves\\"; fudge=\\012;"',
+             },
 
             # Check illegal cookies that have an '=' char in an unquoted value
-            { 'data': 'keebler=E=mc2',
-              'dict': {'keebler' : 'E=mc2'},
-              'repr': "<SimpleCookie: keebler='E=mc2'>",
-              'output': 'Set-Cookie: keebler=E=mc2',
-            }
+            {'data': 'keebler=E=mc2',
+             'dict': {'keebler': 'E=mc2'},
+             'repr': "<SimpleCookie: keebler='E=mc2'>",
+             'output': 'Set-Cookie: keebler=E=mc2',
+             }
         ]
 
         for case in cases:
@@ -46,7 +46,7 @@ class CookieTests(unittest.TestCase):
         self.assertEqual(C['Customer']['path'], '/acme')
 
         self.assertEqual(C.output(['path']),
-            'Set-Cookie: Customer="WILE_E_COYOTE"; Path=/acme')
+                         'Set-Cookie: Customer="WILE_E_COYOTE"; Path=/acme')
         self.assertEqual(C.js_output(), r"""
         <script type="text/javascript">
         <!-- begin hiding
@@ -78,7 +78,7 @@ class CookieTests(unittest.TestCase):
         C = Cookie.SimpleCookie()
         C['val'] = "some,funky;stuff"
         self.assertEqual(C.output(['val']),
-            'Set-Cookie: val="some\\054funky\\073stuff"')
+                         'Set-Cookie: val="some\\054funky\\073stuff"')
 
     def test_quoted_meta(self):
         # Try cookie with quoted meta-data
@@ -88,12 +88,14 @@ class CookieTests(unittest.TestCase):
         self.assertEqual(C['Customer']['version'], '1')
         self.assertEqual(C['Customer']['path'], '/acme')
 
+
 def test_main():
     run_unittest(CookieTests)
     if Cookie.__doc__ is not None:
         with check_warnings(('.+Cookie class is insecure; do not use it',
                              DeprecationWarning)):
             run_doctest(Cookie)
+
 
 if __name__ == '__main__':
     test_main()

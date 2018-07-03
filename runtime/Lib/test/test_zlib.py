@@ -44,15 +44,15 @@ class ChecksumTestCase(unittest.TestCase):
     def assertEqual32(self, seen, expected):
         # 32-bit values masked -- checksums on 32- vs 64- bit machines
         # This is important if bit 31 (0x08000000L) is set.
-        self.assertEqual(seen & 0x0FFFFFFFFL, expected & 0x0FFFFFFFFL)
+        self.assertEqual(seen & 0x0FFFFFFFF, expected & 0x0FFFFFFFF)
 
     def test_penguins(self):
-        self.assertEqual32(zlib.crc32("penguin", 0), 0x0e5c1a120L)
+        self.assertEqual32(zlib.crc32("penguin", 0), 0x0e5c1a120)
         self.assertEqual32(zlib.crc32("penguin", 1), 0x43b6aa94)
         self.assertEqual32(zlib.adler32("penguin", 1), 0x0bd602f7)
 
         self.assertEqual(zlib.crc32("penguin"), zlib.crc32("penguin", 0))
-        self.assertEqual(zlib.adler32("penguin"),zlib.adler32("penguin",1))
+        self.assertEqual(zlib.adler32("penguin"), zlib.adler32("penguin", 1))
 
     @unittest.skipIf(is_jython, "jython uses java.util.zip.Adler32, \
                 which does not support a start value other than 1")
@@ -65,7 +65,7 @@ class ChecksumTestCase(unittest.TestCase):
         # explicitly test signed behavior
         self.assertEqual(zlib.crc32(foo), -1808088941)
         self.assertEqual(zlib.crc32('spam'), 1138425661)
-        self.assertEqual(zlib.adler32(foo+foo), -721416943)
+        self.assertEqual(zlib.adler32(foo + foo), -721416943)
         self.assertEqual(zlib.adler32('spam'), 72286642)
 
     def test_same_as_binascii_crc32(self):
@@ -77,11 +77,11 @@ class ChecksumTestCase(unittest.TestCase):
         # The range of valid input values for the crc state should be
         # -2**31 through 2**32-1 to allow inputs artifically constrained
         # to a signed 32-bit integer.
-        self.assertEqual(zlib.crc32('ham', -1), zlib.crc32('ham', 0xffffffffL))
+        self.assertEqual(zlib.crc32('ham', -1), zlib.crc32('ham', 0xffffffff))
         self.assertEqual(zlib.crc32('spam', -3141593),
-                         zlib.crc32('spam',  0xffd01027L))
+                         zlib.crc32('spam', 0xffd01027))
         self.assertEqual(zlib.crc32('spam', -(2**31)),
-                         zlib.crc32('spam',  (2**31)))
+                         zlib.crc32('spam', (2**31)))
 
 
 class ExceptionTestCase(unittest.TestCase):
@@ -96,8 +96,12 @@ class ExceptionTestCase(unittest.TestCase):
         # verify failure on building compress object with bad params
         self.assertRaises(ValueError, zlib.compressobj, 1, zlib.DEFLATED, 0)
         # specifying total bits too large causes an error
-        self.assertRaises(ValueError,
-                zlib.compressobj, 1, zlib.DEFLATED, zlib.MAX_WBITS + 1)
+        self.assertRaises(
+            ValueError,
+            zlib.compressobj,
+            1,
+            zlib.DEFLATED,
+            zlib.MAX_WBITS + 1)
 
     def test_baddecompressobj(self):
         # verify failure on building decompress object with bad params
@@ -130,12 +134,12 @@ class BaseCompressTestCase(object):
             # http://bugs.jython.org/issue2013
             # Since testing string formatting is not the purpose of the test
             # it is necessary to generate the random test data in a different
-            # way on jython. (There may be a better way than what I have 
+            # way on jython. (There may be a better way than what I have
             # implemented here)
             #
             from java.math import BigInteger
             from java.util import Random
-            num_bits = 8 * _1M # causes "java.lang.OutOfMemoryError: Java heap space"
+            num_bits = 8 * _1M  # causes "java.lang.OutOfMemoryError: Java heap space"
             num_bits = _1M
             data = ''.join([str(BigInteger((num_bits), Random()).toByteArray())
                             for i in range(10)])
@@ -179,21 +183,22 @@ class CompressTestCase(BaseCompressTestCase, unittest.TestCase):
         # An useful error message is given
         x = zlib.compress(HAMLET_SCENE)
         self.assertRaisesRegexp(zlib.error,
-            "Error -5 while decompressing data: incomplete or truncated stream",
-            zlib.decompress, x[:-1])
+                                "Error -5 while decompressing data: incomplete or truncated stream",
+                                zlib.decompress,
+                                x[:-1])
 
     # Memory use of the following functions takes into account overallocation
 
     @precisionbigmemtest(size=_1G + 1024 * 1024, memuse=3)
     def test_big_compress_buffer(self, size):
-        compress = lambda s: zlib.compress(s, 1)
+        def compress(s): return zlib.compress(s, 1)
         self.check_big_compress_buffer(size, compress)
 
     @precisionbigmemtest(size=_1G + 1024 * 1024, memuse=2)
     def test_big_decompress_buffer(self, size):
         """
-        This is NOT testing for a 'size=_1G + 1024 * 1024', because of the definition of 
-        the precisionbigmemtest decorator, which resets the value to 5147, based on 
+        This is NOT testing for a 'size=_1G + 1024 * 1024', because of the definition of
+        the precisionbigmemtest decorator, which resets the value to 5147, based on
         the definition of test_support.real_max_memuse == 0
         This is the case on my windows installation of python 2.7.3.
         Python 2.7.3 (default, Apr 10 2012, 23:31:26) [MSC v.1500 32 bit (Intel)] on win32
@@ -212,7 +217,7 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         co = zlib.compressobj()
         x1 = co.compress(data)
         x2 = co.flush()
-        self.assertRaises(zlib.error, co.flush) # second flush should not work
+        self.assertRaises(zlib.error, co.flush)  # second flush should not work
         dco = zlib.decompressobj()
         y1 = dco.decompress(x1 + x2)
         y2 = dco.flush()
@@ -239,7 +244,7 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         co = zlib.compressobj()
         bufs = []
         for i in range(0, len(data), 256):
-            bufs.append(co.compress(data[i:i+256]))
+            bufs.append(co.compress(data[i:i + 256]))
         bufs.append(co.flush())
         combuf = ''.join(bufs)
 
@@ -255,7 +260,7 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         co = zlib.compressobj()
         bufs = []
         for i in range(0, len(data), cx):
-            bufs.append(co.compress(data[i:i+cx]))
+            bufs.append(co.compress(data[i:i + cx]))
         bufs.append(co.flush())
         combuf = ''.join(bufs)
 
@@ -264,10 +269,10 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         dco = zlib.decompressobj()
         bufs = []
         for i in range(0, len(combuf), dcx):
-            bufs.append(dco.decompress(combuf[i:i+dcx]))
-            self.assertEqual('', dco.unconsumed_tail, ########
+            bufs.append(dco.decompress(combuf[i:i + dcx]))
+            self.assertEqual('', dco.unconsumed_tail,
                              "(A) uct should be '': not %d long" %
-                                       len(dco.unconsumed_tail))
+                             len(dco.unconsumed_tail))
         if flush:
             bufs.append(dco.flush())
         else:
@@ -277,9 +282,9 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                     bufs.append(chunk)
                 else:
                     break
-        self.assertEqual('', dco.unconsumed_tail, ########
+        self.assertEqual('', dco.unconsumed_tail,
                          "(B) uct should be '': not %d long" %
-                                       len(dco.unconsumed_tail))
+                         len(dco.unconsumed_tail))
         self.assertEqual(data, ''.join(bufs))
         # Failure means: "decompressobj with init options failed"
 
@@ -294,7 +299,7 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         co = zlib.compressobj()
         bufs = []
         for i in range(0, len(data), cx):
-            bufs.append(co.compress(data[i:i+cx]))
+            bufs.append(co.compress(data[i:i + cx]))
         bufs.append(co.flush())
         combuf = ''.join(bufs)
         self.assertEqual(data, zlib.decompress(combuf),
@@ -307,7 +312,7 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
             #max_length = 1 + len(cb)//10
             chunk = dco.decompress(cb, dcx)
             self.assertFalse(len(chunk) > dcx,
-                    'chunk too big (%d>%d)' % (len(chunk), dcx))
+                             'chunk too big (%d>%d)' % (len(chunk), dcx))
             bufs.append(chunk)
             cb = dco.unconsumed_tail
         bufs.append(dco.flush())
@@ -319,7 +324,7 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         co = zlib.compressobj()
         bufs = []
         for i in range(0, len(data), 256):
-            bufs.append(co.compress(data[i:i+256]))
+            bufs.append(co.compress(data[i:i + 256]))
         bufs.append(co.flush())
         combuf = ''.join(bufs)
         self.assertEqual(data, zlib.decompress(combuf),
@@ -329,10 +334,11 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         bufs = []
         cb = combuf
         while cb:
-            max_length = 1 + len(cb)//10
+            max_length = 1 + len(cb) // 10
             chunk = dco.decompress(cb, max_length)
-            self.assertFalse(len(chunk) > max_length,
-                        'chunk too big (%d>%d)' % (len(chunk),max_length))
+            self.assertFalse(
+                len(chunk) > max_length, 'chunk too big (%d>%d)' %
+                (len(chunk), max_length))
             bufs.append(chunk)
             cb = dco.unconsumed_tail
         if flush:
@@ -340,8 +346,9 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         else:
             while chunk:
                 chunk = dco.decompress('', max_length)
-                self.assertFalse(len(chunk) > max_length,
-                            'chunk too big (%d>%d)' % (len(chunk),max_length))
+                self.assertFalse(
+                    len(chunk) > max_length, 'chunk too big (%d>%d)' %
+                    (len(chunk), max_length))
                 bufs.append(chunk)
         self.assertEqual(data, ''.join(bufs), 'Wrong data retrieved')
 
@@ -373,12 +380,12 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
         for sync in sync_opt:
             for level in range(10):
-                obj = zlib.compressobj( level )
-                a = obj.compress( data[:3000] )
-                b = obj.flush( sync )
-                c = obj.compress( data[3000:] )
+                obj = zlib.compressobj(level)
+                a = obj.compress(data[:3000])
+                b = obj.flush(sync)
+                c = obj.compress(data[3000:])
                 d = obj.flush()
-                self.assertEqual(zlib.decompress(''.join([a,b,c,d])),
+                self.assertEqual(zlib.decompress(''.join([a, b, c, d])),
                                  data, ("Decompress failed: flush "
                                         "mode=%i, level=%i") % (sync, level))
                 del obj
@@ -425,7 +432,7 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         co = zlib.compressobj(zlib.Z_BEST_COMPRESSION)
         self.assertTrue(co.flush())  # Returns a zlib header
         dco = zlib.decompressobj()
-        self.assertEqual(dco.flush(), "") # Returns nothing
+        self.assertEqual(dco.flush(), "")  # Returns nothing
 
     def test_decompress_incomplete_stream(self):
         # This is 'foo', deflated
@@ -433,7 +440,7 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # For the record
         self.assertEqual(zlib.decompress(x), 'foo')
         if not is_jython:
-            # There is inconsistency between cpython zlib.decompress (which does not accept 
+            # There is inconsistency between cpython zlib.decompress (which does not accept
             # incomplete streams) and zlib.decompressobj().decompress (which does accept
             # incomplete streams, the whole point of this test)
             # On jython, both zlib.decompress and zlib.decompressobject().decompress behave
@@ -470,8 +477,8 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
             bufs1.append(c1.flush())
             s1 = ''.join(bufs1)
 
-            self.assertEqual(zlib.decompress(s0),data0+data0)
-            self.assertEqual(zlib.decompress(s1),data0+data1)
+            self.assertEqual(zlib.decompress(s0), data0 + data0)
+            self.assertEqual(zlib.decompress(s1), data0 + data1)
 
         def test_badcompresscopy(self):
             # Test copying a compression object in an inconsistent state
@@ -499,8 +506,8 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
             bufs1.append(d1.decompress(comp[32:]))
             s1 = ''.join(bufs1)
 
-            self.assertEqual(s0,s1)
-            self.assertEqual(s0,data)
+            self.assertEqual(s0, s1)
+            self.assertEqual(s0, data)
 
         def test_baddecompresscopy(self):
             # Test copying a compression object in an inconsistent state
@@ -515,14 +522,15 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
     @precisionbigmemtest(size=_1G + 1024 * 1024, memuse=3)
     def test_big_compress_buffer(self, size):
         c = zlib.compressobj(1)
-        compress = lambda s: c.compress(s) + c.flush()
+
+        def compress(s): return c.compress(s) + c.flush()
         self.check_big_compress_buffer(size, compress)
 
     @precisionbigmemtest(size=_1G + 1024 * 1024, memuse=2)
     def test_big_decompress_buffer(self, size):
         """
-        This is NOT testing for a 'size=_1G + 1024 * 1024', because of the definition of 
-        the precisionbigmemtest decorator, which resets the value to 5147, based on 
+        This is NOT testing for a 'size=_1G + 1024 * 1024', because of the definition of
+        the precisionbigmemtest decorator, which resets the value to 5147, based on
         the definition of test_support.real_max_memuse == 0
         This is the case on my windows installation of python 2.7.3.
         Python 2.7.3 (default, Apr 10 2012, 23:31:26) [MSC v.1500 32 bit (Intel)] on win32
@@ -531,7 +539,8 @@ class CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         [Java HotSpot(TM) Client VM (Sun Microsystems Inc.)] on java1.6.0_29
         """
         d = zlib.decompressobj()
-        decompress = lambda s: d.decompress(s) + d.flush()
+
+        def decompress(s): return d.decompress(s) + d.flush()
         self.check_big_decompress_buffer(size, decompress)
 
 
@@ -544,10 +553,9 @@ def genblock(seed, length, step=1024, generator=random):
         step = length
     blocks = []
     for i in range(0, length, step):
-        blocks.append(''.join([chr(randint(0,255))
+        blocks.append(''.join([chr(randint(0, 255))
                                for x in range(step)]))
     return ''.join(blocks)[:length]
-
 
 
 def choose_lines(source, number, seed=None, generator=random):
@@ -556,7 +564,6 @@ def choose_lines(source, number, seed=None, generator=random):
         generator.seed(seed)
     sources = source.split('\n')
     return [generator.choice(sources) for n in range(number)]
-
 
 
 HAMLET_SCENE = """
@@ -631,6 +638,7 @@ def test_main():
         CompressTestCase,
         CompressObjectTestCase
     )
+
 
 if __name__ == "__main__":
     test_main()

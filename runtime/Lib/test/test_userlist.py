@@ -3,6 +3,7 @@
 from UserList import UserList
 from test import test_support, list_tests
 
+
 class UserListTest(list_tests.CommonTest):
     type2test = UserList
 
@@ -50,12 +51,14 @@ class UserListTest(list_tests.CommonTest):
         class T(self.type2test):
             def __getitem__(self, key):
                 return str(key) + '!!!'
-        self.assertEqual(iter(T((1,2))).next(), "0!!!")
+        self.assertEqual(iter(T((1, 2))).next(), "0!!!")
+
 
 def test_main():
     with test_support.check_py3k_warnings(
             (".+__(get|set|del)slice__ has been removed", DeprecationWarning)):
         test_support.run_unittest(UserListTest)
+
 
 if __name__ == "__main__":
     test_main()

@@ -64,6 +64,7 @@ class PyPIRCCommandTestCase(support.TempdirManager,
         class command(PyPIRCCommand):
             def __init__(self, dist):
                 PyPIRCCommand.__init__(self, dist)
+
             def initialize_options(self):
                 pass
             finalize_options = initialize_options
@@ -86,8 +87,7 @@ class PyPIRCCommandTestCase(support.TempdirManager,
         cmd = self._cmd(self.dist)
         config = cmd._read_pypirc()
 
-        config = config.items()
-        config.sort()
+        config = sorted(config.items())
         waited = [('password', 'secret'), ('realm', 'pypi'),
                   ('repository', 'http://pypi.python.org/pypi'),
                   ('server', 'server1'), ('username', 'me')]
@@ -116,8 +116,10 @@ class PyPIRCCommandTestCase(support.TempdirManager,
         finally:
             f.close()
 
+
 def test_suite():
     return unittest.makeSuite(PyPIRCCommandTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

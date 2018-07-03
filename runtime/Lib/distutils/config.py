@@ -18,6 +18,7 @@ username:%s
 password:%s
 """
 
+
 class PyPIRCCommand(Command):
     """Base command that knows how to handle the .pypirc file
     """
@@ -28,7 +29,7 @@ class PyPIRCCommand(Command):
 
     user_options = [
         ('repository=', 'r',
-         "url of repository [default: %s]" % \
+         "url of repository [default: %s]" %
             DEFAULT_REPOSITORY),
         ('show-response', None,
          'display full response text from server')]
@@ -42,7 +43,7 @@ class PyPIRCCommand(Command):
     def _store_pypirc(self, username, password):
         """Creates a default .pypirc file."""
         rc = self._get_rc_file()
-        f = os.fdopen(os.open(rc, os.O_CREAT | os.O_WRONLY, 0600), 'w')
+        f = os.fdopen(os.open(rc, os.O_CREAT | os.O_WRONLY, 0o600), 'w')
         try:
             f.write(DEFAULT_PYPIRC % (username, password))
         finally:
@@ -85,7 +86,7 @@ class PyPIRCCommand(Command):
                         else:
                             current[key] = default
                     if (current['server'] == repository or
-                        current['repository'] == repository):
+                            current['repository'] == repository):
                         return current
             elif 'server-login' in sections:
                 # old format

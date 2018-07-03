@@ -8,6 +8,7 @@ from distutils import sysconfig
 from distutils.tests import support
 from test.test_support import TESTFN
 
+
 class SysconfigTestCase(support.EnvironGuard,
                         unittest.TestCase):
     def setUp(self):
@@ -71,13 +72,18 @@ class SysconfigTestCase(support.EnvironGuard,
         self.assertEqual(d, {'CONFIG_ARGS': r"'--arg1=optarg1' 'ENV=\$LIB'",
                              'OTHER': 'foo'})
 
-
     def test_sysconfig_module(self):
         import sysconfig as global_sysconfig
-        self.assertEqual(global_sysconfig.get_config_var('CFLAGS'), sysconfig.get_config_var('CFLAGS'))
-        self.assertEqual(global_sysconfig.get_config_var('LDFLAGS'), sysconfig.get_config_var('LDFLAGS'))
+        self.assertEqual(
+            global_sysconfig.get_config_var('CFLAGS'),
+            sysconfig.get_config_var('CFLAGS'))
+        self.assertEqual(
+            global_sysconfig.get_config_var('LDFLAGS'),
+            sysconfig.get_config_var('LDFLAGS'))
 
-    @unittest.skipIf(sysconfig.get_config_var('CUSTOMIZED_OSX_COMPILER'),'compiler flags customized')
+    @unittest.skipIf(
+        sysconfig.get_config_var('CUSTOMIZED_OSX_COMPILER'),
+        'compiler flags customized')
     def test_sysconfig_compiler_vars(self):
         # On OS X, binary installers support extension module building on
         # various levels of the operating system with differing Xcode
@@ -96,9 +102,12 @@ class SysconfigTestCase(support.EnvironGuard,
         import sysconfig as global_sysconfig
         if sysconfig.get_config_var('CUSTOMIZED_OSX_COMPILER'):
             return
-        self.assertEqual(global_sysconfig.get_config_var('LDSHARED'), sysconfig.get_config_var('LDSHARED'))
-        self.assertEqual(global_sysconfig.get_config_var('CC'), sysconfig.get_config_var('CC'))
-
+        self.assertEqual(
+            global_sysconfig.get_config_var('LDSHARED'),
+            sysconfig.get_config_var('LDSHARED'))
+        self.assertEqual(
+            global_sysconfig.get_config_var('CC'),
+            sysconfig.get_config_var('CC'))
 
 
 def test_suite():

@@ -55,7 +55,7 @@ def import_state(**kwargs):
             setattr(sys, attr, new_value)
         if len(kwargs):
             raise ValueError(
-                    'unrecognized arguments: {0}'.format(kwargs.keys()))
+                'unrecognized arguments: {0}'.format(kwargs.keys()))
         yield
     finally:
         for attr, value in originals.items():
@@ -111,7 +111,6 @@ class mock_modules(object):
 
     def __exit__(self, *exc_info):
         self._uncache.__exit__(None, None, None)
-
 
 
 class ImportModuleTests(unittest.TestCase):

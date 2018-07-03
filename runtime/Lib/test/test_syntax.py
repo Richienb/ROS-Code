@@ -1,4 +1,4 @@
-#XXX: The details of the exception messages have been excluded.
+# XXX: The details of the exception messages have been excluded.
 #     This should be revisited, since matching some of these
 #     exception messages is sensible.
 """This module tests SyntaxErrors.
@@ -429,6 +429,7 @@ import warnings
 
 from test import test_support
 
+
 class SyntaxTestCase(unittest.TestCase):
 
     def _check_error(self, code, errtext=None,
@@ -444,7 +445,7 @@ class SyntaxTestCase(unittest.TestCase):
         """
         try:
             compile(code, filename, mode)
-        except SyntaxError, err:
+        except SyntaxError as err:
             if subclass and not isinstance(err, subclass):
                 self.fail("SyntaxError is not a %s" % subclass.__name__)
             if errtext is not None:
@@ -511,10 +512,12 @@ class SyntaxTestCase(unittest.TestCase):
         else:
             self._check_error("int(base=10, '2')", "non-keyword arg")
 
+
 def test_main():
     test_support.run_unittest(SyntaxTestCase)
     from test import test_syntax
     test_support.run_doctest(test_syntax, verbosity=True)
+
 
 if __name__ == "__main__":
     test_main()

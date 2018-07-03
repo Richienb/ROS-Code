@@ -12,13 +12,17 @@ While BeOS doesn't officially support fork and native threading in
 the same application, the present example should work just fine.  DC
 """
 
-import os, sys, time, unittest
+import os
+import sys
+import time
+import unittest
 import test.test_support as test_support
 thread = test_support.import_module('thread')
 
 LONGSLEEP = 2
 SHORTSLEEP = 0.5
 NUM_THREADS = 4
+
 
 class ForkWait(unittest.TestCase):
 
@@ -44,7 +48,9 @@ class ForkWait(unittest.TestCase):
             time.sleep(2 * SHORTSLEEP)
 
         self.assertEqual(spid, cpid)
-        self.assertEqual(status, 0, "cause = %d, exit = %d" % (status&0xff, status>>8))
+        self.assertEqual(
+            status, 0, "cause = %d, exit = %d" %
+            (status & 0xff, status >> 8))
 
     def test_wait(self):
         for i in range(NUM_THREADS):
@@ -52,8 +58,7 @@ class ForkWait(unittest.TestCase):
 
         time.sleep(LONGSLEEP)
 
-        a = self.alive.keys()
-        a.sort()
+        a = sorted(self.alive.keys())
         self.assertEqual(a, range(NUM_THREADS))
 
         prefork_lives = self.alive.copy()
@@ -76,4 +81,4 @@ class ForkWait(unittest.TestCase):
             self.wait_impl(cpid)
             # Tell threads to die
             self.stop = 1
-            time.sleep(2*SHORTSLEEP) # Wait for threads to die
+            time.sleep(2 * SHORTSLEEP)  # Wait for threads to die

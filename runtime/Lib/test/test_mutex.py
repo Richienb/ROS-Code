@@ -3,6 +3,7 @@ import test.test_support
 
 mutex = test.test_support.import_module("mutex", deprecated=True)
 
+
 class MutexTest(unittest.TestCase):
 
     def test_lock_and_unlock(self):
@@ -17,7 +18,7 @@ class MutexTest(unittest.TestCase):
             self.assertEqual(some_data, "eggs")
             self.assertTrue(m.test(), "mutex not held")
             self.assertTrue(ready_for_2,
-                         "called_by_mutex2 called too soon")
+                            "called_by_mutex2 called too soon")
 
         m = mutex.mutex()
         read_for_2 = False
@@ -28,8 +29,10 @@ class MutexTest(unittest.TestCase):
         m.unlock()
         self.assertFalse(m.test(), "mutex still held")
 
+
 def test_main():
     test.test_support.run_unittest(MutexTest)
+
 
 if __name__ == "__main__":
     test_main()

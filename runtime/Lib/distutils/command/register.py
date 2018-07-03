@@ -15,15 +15,16 @@ from warnings import warn
 from distutils.core import PyPIRCCommand
 from distutils import log
 
+
 class register(PyPIRCCommand):
 
     description = ("register the distribution with the Python package index")
     user_options = PyPIRCCommand.user_options + [
         ('list-classifiers', None,
          'list the valid Trove classifiers'),
-        ('strict', None ,
+        ('strict', None,
          'Will stop the registering if the meta-data are not fully compliant')
-        ]
+    ]
     boolean_options = PyPIRCCommand.boolean_options + [
         'verify', 'list-classifiers', 'strict']
 
@@ -86,7 +87,9 @@ class register(PyPIRCCommand):
     def classifiers(self):
         ''' Fetch the list of classifiers from the server.
         '''
-        response = urllib2.urlopen(self.repository+'?:action=list_classifiers')
+        response = urllib2.urlopen(
+            self.repository +
+            '?:action=list_classifiers')
         log.info(response.read())
 
     def verify_metadata(self):
@@ -95,7 +98,6 @@ class register(PyPIRCCommand):
         # send the info to the server and report the result
         (code, result) = self.post_to_server(self.build_post_data('verify'))
         log.info('Server response (%s): %s' % (code, result))
-
 
     def send_metadata(self):
         ''' Send the metadata to the package index server.
@@ -165,7 +167,7 @@ Your selection [default 1]: ''', log.INFO)
             auth.add_password(self.realm, host, username, password)
             # send the info to the server and report the result
             code, result = self.post_to_server(self.build_post_data('submit'),
-                auth)
+                                               auth)
             self.announce('Server response (%s): %s' % (code, result),
                           log.INFO)
 
@@ -178,7 +180,7 @@ Your selection [default 1]: ''', log.INFO)
                 else:
                     self.announce(('I can store your PyPI login so future '
                                    'submissions will be faster.'), log.INFO)
-                    self.announce('(the login will be stored in %s)' % \
+                    self.announce('(the login will be stored in %s)' %
                                   self._get_rc_file(), log.INFO)
                     choice = 'X'
                     while choice.lower() not in 'yn':
@@ -226,7 +228,7 @@ Your selection [default 1]: ''', log.INFO)
         meta = self.distribution.metadata
         data = {
             ':action': action,
-            'metadata_version' : '1.0',
+            'metadata_version': '1.0',
             'name': meta.get_name(),
             'version': meta.get_version(),
             'summary': meta.get_description(),
@@ -253,8 +255,8 @@ Your selection [default 1]: ''', log.INFO)
         '''
         if 'name' in data:
             self.announce('Registering %s to %s' % (data['name'],
-                                                   self.repository),
-                                                   log.INFO)
+                                                    self.repository),
+                          log.INFO)
         # Build up the MIME payload for the urllib2 POST data
         boundary = '--------------GHSKFJDLGDS7543FJKLFHRE75642756743254'
         sep_boundary = '\n--' + boundary
@@ -262,11 +264,13 @@ Your selection [default 1]: ''', log.INFO)
         chunks = []
         for key, value in data.items():
             # handle multiple entries for the same name
-            if type(value) not in (type([]), type( () )):
+            if type(value) not in (type([]), type(())):
                 value = [value]
             for value in value:
                 chunks.append(sep_boundary)
-                chunks.append('\nContent-Disposition: form-data; name="%s"'%key)
+                chunks.append(
+                    '\nContent-Disposition: form-data; name="%s"' %
+                    key)
                 chunks.append("\n\n")
                 chunks.append(value)
                 if value and value[-1] == '\r':
@@ -286,7 +290,7 @@ Your selection [default 1]: ''', log.INFO)
 
         # build the Request
         headers = {
-            'Content-type': 'multipart/form-data; boundary=%s; charset=utf-8'%boundary,
+            'Content-type': 'multipart/form-data; boundary=%s; charset=utf-8' % boundary,
             'Content-length': str(len(body))
         }
         req = urllib2.Request(self.repository, body, headers)
@@ -298,11 +302,11 @@ Your selection [default 1]: ''', log.INFO)
         data = ''
         try:
             result = opener.open(req)
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             if self.show_response:
                 data = e.fp.read()
             result = e.code, e.msg
-        except urllib2.URLError, e:
+        except urllib2.URLError as e:
             result = 500, str(e)
         else:
             if self.show_response:

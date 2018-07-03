@@ -15,7 +15,7 @@ try:
     from java.lang import System, Runnable
     from javatests import GCTestHelper
 except ImportError:
-    #i.e. not Jython is running
+    # i.e. not Jython is running
     pass
 
 
@@ -23,15 +23,15 @@ class GCTests_Jy_CyclicGarbage(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        #Jython-specific block:
+        # Jython-specific block:
         try:
             cls.savedJythonGCFlags = gc.getJythonGCFlags()
-            #the finalizer-related tests need this flag to pass in Jython:
+            # the finalizer-related tests need this flag to pass in Jython:
             gc.addJythonGCFlags(gc.DONT_FINALIZE_CYCLIC_GARBAGE)
             gc.stopMonitoring()
         except Exception:
             pass
-     
+
     @classmethod
     def tearDownClass(cls):
         try:
@@ -46,6 +46,7 @@ class GCTests_Jy_CyclicGarbage(unittest.TestCase):
         # in gc.garbage.
         class A:
             def __del__(self): pass
+
         class B:
             pass
         a = A()
@@ -71,6 +72,7 @@ class GCTests_Jy_CyclicGarbage(unittest.TestCase):
         # in gc.garbage.
         class A(object):
             def __del__(self): pass
+
         class B(object):
             pass
         a = A()
@@ -92,30 +94,30 @@ class GCTests_Jy_CyclicGarbage(unittest.TestCase):
         gc.garbage.remove(obj)
 
     @unittest.skipUnless(test_support.is_jython,
-        'CPython has no monitor state')
+                         'CPython has no monitor state')
     def test_manual_monitoring(self):
         # since tuples are immutable we close the loop with a list
         l = []
         t = (l,)
         l.append(t)
         gc.monitorObject(l)
-        #gc.monitorObject(t) <- intentionally only monitor one of them
+        # gc.monitorObject(t) <- intentionally only monitor one of them
         gc.collect()
         del t
         del l
-        #Note that usually two collected objects would be expected - l and t.
-        #But we intentionally only monitored one of them, so only one should
-        #be counted.
+        # Note that usually two collected objects would be expected - l and t.
+        # But we intentionally only monitored one of them, so only one should
+        # be counted.
         self.assertEqual(gc.collect(), 1)
 
 
 @unittest.skipUnless(test_support.is_jython,
-        'CPython has no gc preprocess and postprocess features')
+                     'CPython has no gc preprocess and postprocess features')
 class GCTests_Jy_preprocess_and_postprocess(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        #Jython-specific block:
+        # Jython-specific block:
         try:
             cls.savedJythonGCFlags = gc.getJythonGCFlags()
             gc.setMonitorGlobal(True)
@@ -130,18 +132,19 @@ class GCTests_Jy_preprocess_and_postprocess(unittest.TestCase):
             pass
 
     def test_finalization_preprocess_and_postprocess(self):
-        #Note that this test is done here again (already was in another class
-        #in this module), to see that everything works as it should also with
-        #a different flag-context.
+        # Note that this test is done here again (already was in another class
+        # in this module), to see that everything works as it should also with
+        # a different flag-context.
         comments = []
         self0 = self
+
         class A:
             def __del__(self):
                 self0.assertIn("run PreProcess", comments)
                 comments.append("A del")
-                #let's simulate a time-consuming finalizer
-                #to ensure that post finalization processing
-                #is sensitive to this
+                # let's simulate a time-consuming finalizer
+                # to ensure that post finalization processing
+                # is sensitive to this
                 time.sleep(0.5)
                 comments.append("A del done")
 
@@ -161,21 +164,21 @@ class GCTests_Jy_preprocess_and_postprocess(unittest.TestCase):
         a = None
         prePr = PreProcess()
         postPr = PostProcess()
-        time.sleep(1) #   <- to avoid that the newly registered processes
-                      #      become subject to previous run (remember: We
-                      #      are not in monitor-mode, i.e. gc runs async.
+        time.sleep(1)  # <- to avoid that the newly registered processes
+        #      become subject to previous run (remember: We
+        #      are not in monitor-mode, i.e. gc runs async.
         gc.registerPreFinalizationProcess(prePr)
         gc.registerPostFinalizationProcess(postPr)
-        #Note that order matters here:
-        #If the flag gc.DONT_FINALIZE_RESURRECTED_OBJECTS is used,
-        #gc.registerPostFinalizationProcess(postPr, 0) would lead to failure,
-        #because postPr asserts that a's finalizer already ran. Since
-        #DONT_FINALIZE_RESURRECTED_OBJECTS also inserted a postprocess,
-        #to perform delayed finalization, the 0-index would prepend postPr
-        #before the process that actually runs the finalizers.
+        # Note that order matters here:
+        # If the flag gc.DONT_FINALIZE_RESURRECTED_OBJECTS is used,
+        # gc.registerPostFinalizationProcess(postPr, 0) would lead to failure,
+        # because postPr asserts that a's finalizer already ran. Since
+        # DONT_FINALIZE_RESURRECTED_OBJECTS also inserted a postprocess,
+        # to perform delayed finalization, the 0-index would prepend postPr
+        # before the process that actually runs the finalizers.
         System.gc()
-        #we wait a bit longer here, since PostProcess runs asynchronous
-        #and must wait for the finalizer of A
+        # we wait a bit longer here, since PostProcess runs asynchronous
+        # and must wait for the finalizer of A
         time.sleep(2)
         self.assertIn("run PostProcess", comments)
         comments = []
@@ -184,42 +187,45 @@ class GCTests_Jy_preprocess_and_postprocess(unittest.TestCase):
 
     def test_with_extern_NonPyObjectFinalizer_that_notifies_gc(self):
         comments = []
+
         class A:
             def __init__(self, index):
                 self.index = index
 
             def __del__(self):
-                comments.append("A_del_"+str(self.index))
+                comments.append("A_del_" + str(self.index))
 
         class PreProcess(Runnable):
             preCount = 0
+
             def run(self):
                 PreProcess.preCount += 1
 
         class PostProcess(Runnable):
             postCount = 0
+
             def run(self):
                 PostProcess.postCount += 1
 
         prePr = PreProcess()
         postPr = PostProcess()
-        time.sleep(1) #   <- to avoid that the newly registered processes
-                      #      become subject to previous run (remember: We
-                      #      are not in monitor-mode, i.e. gc runs async.
+        time.sleep(1)  # <- to avoid that the newly registered processes
+        #      become subject to previous run (remember: We
+        #      are not in monitor-mode, i.e. gc runs async.
         gc.registerPreFinalizationProcess(prePr)
         gc.registerPostFinalizationProcess(postPr)
         for i in range(4):
             f = A(i)
             del f
-        #NastyFinalizer would cause this test occasionally to fail
+        # NastyFinalizer would cause this test occasionally to fail
         externFinalizer = GCTestHelper.NotSoNastyFinalizer()
         del externFinalizer
         for i in range(4, 8):
             f = A(i)
             del f
         System.gc()
-        #we wait a bit longer here, since PostProcess runs asynchronous
-        #and must wait for the finalizer of A
+        # we wait a bit longer here, since PostProcess runs asynchronous
+        # and must wait for the finalizer of A
         time.sleep(4)
         self.assertEqual(len(comments), 8)
         self.assertEqual(PreProcess.preCount, 1)
@@ -230,15 +236,15 @@ class GCTests_Jy_preprocess_and_postprocess(unittest.TestCase):
 
 
 @unittest.skipUnless(test_support.is_jython,
-        'This class tests detailed Jython-specific behavior.')
+                     'This class tests detailed Jython-specific behavior.')
 class GCTests_Jy_Delayed_Finalization(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        #Jython-specific block:
+        # Jython-specific block:
         try:
             cls.savedJythonGCFlags = gc.getJythonGCFlags()
-            #the finalizer-related tests need this flag to pass in Jython:
+            # the finalizer-related tests need this flag to pass in Jython:
             gc.addJythonGCFlags(gc.DONT_FINALIZE_RESURRECTED_OBJECTS)
             gc.stopMonitoring()
         except Exception:
@@ -251,21 +257,22 @@ class GCTests_Jy_Delayed_Finalization(unittest.TestCase):
         except Exception:
             pass
 
-    #Tests from GCTests_Jy_preprocess_and_postprocess are repeated here
-    #without monitoring.
+    # Tests from GCTests_Jy_preprocess_and_postprocess are repeated here
+    # without monitoring.
     def test_finalization_preprocess_and_postprocess(self):
-        #Note that this test is done here again (already was in another class
-        #in this module), to see that everything works as it should also with
-        #a different flag-context.
+        # Note that this test is done here again (already was in another class
+        # in this module), to see that everything works as it should also with
+        # a different flag-context.
         comments = []
         self0 = self
+
         class A:
             def __del__(self):
                 self0.assertIn("run PreProcess", comments)
                 comments.append("A del")
-                #let's simulate a time-consuming finalizer
-                #to ensure that post finalization processing
-                #is sensitive to this
+                # let's simulate a time-consuming finalizer
+                # to ensure that post finalization processing
+                # is sensitive to this
                 time.sleep(0.5)
                 comments.append("A del done")
 
@@ -285,20 +292,20 @@ class GCTests_Jy_Delayed_Finalization(unittest.TestCase):
         a = None
         prePr = PreProcess()
         postPr = PostProcess()
-        time.sleep(1) #   <- to avoid that the newly registered processes
-                      #      become subject to previous run
+        time.sleep(1)  # <- to avoid that the newly registered processes
+        #      become subject to previous run
         gc.registerPreFinalizationProcess(prePr)
         gc.registerPostFinalizationProcess(postPr)
-        #Note that order matters here:
-        #If the flag gc.DONT_FINALIZE_RESURRECTED_OBJECTS is used,
-        #gc.registerPostFinalizationProcess(postPr, 0) would lead to failure,
-        #because postPr asserts that a's finalizer already ran. Since
-        #DONT_FINALIZE_RESURRECTED_OBJECTS also inserted a postprocess,
-        #to perform delayed finalization, the 0-index would prepend postPr
-        #before the process that actually runs the finalizers.
+        # Note that order matters here:
+        # If the flag gc.DONT_FINALIZE_RESURRECTED_OBJECTS is used,
+        # gc.registerPostFinalizationProcess(postPr, 0) would lead to failure,
+        # because postPr asserts that a's finalizer already ran. Since
+        # DONT_FINALIZE_RESURRECTED_OBJECTS also inserted a postprocess,
+        # to perform delayed finalization, the 0-index would prepend postPr
+        # before the process that actually runs the finalizers.
         System.gc()
-        #we wait a bit longer here, since PostProcess runs asynchronous
-        #and must wait for the finalizer of A
+        # we wait a bit longer here, since PostProcess runs asynchronous
+        # and must wait for the finalizer of A
         time.sleep(2)
         self.assertIn("run PostProcess", comments)
         comments = []
@@ -307,42 +314,45 @@ class GCTests_Jy_Delayed_Finalization(unittest.TestCase):
 
     def test_with_extern_NonPyObjectFinalizer_that_notifies_gc(self):
         comments = []
+
         class A:
             def __init__(self, index):
                 self.index = index
 
             def __del__(self):
-                comments.append("A_del_"+str(self.index))
+                comments.append("A_del_" + str(self.index))
 
         class PreProcess(Runnable):
             preCount = 0
+
             def run(self):
                 PreProcess.preCount += 1
 
         class PostProcess(Runnable):
             postCount = 0
+
             def run(self):
                 PostProcess.postCount += 1
 
         prePr = PreProcess()
         postPr = PostProcess()
-        time.sleep(1) #   <- to avoid that the newly registered processes
-                      #      become subject to previous run (remember: We
-                      #      are not in monitor-mode, i.e. gc runs async.
+        time.sleep(1)  # <- to avoid that the newly registered processes
+        #      become subject to previous run (remember: We
+        #      are not in monitor-mode, i.e. gc runs async.
         gc.registerPreFinalizationProcess(prePr)
         gc.registerPostFinalizationProcess(postPr)
         for i in range(4):
             f = A(i)
             del f
-        #NastyFinalizer would cause this test occasionally to fail
+        # NastyFinalizer would cause this test occasionally to fail
         externFinalizer = GCTestHelper.NotSoNastyFinalizer()
         del externFinalizer
         for i in range(4, 8):
             f = A(i)
             del f
         System.gc()
-        #we wait a bit longer here, since PostProcess runs asynchronous
-        #and must wait for the finalizer of A
+        # we wait a bit longer here, since PostProcess runs asynchronous
+        # and must wait for the finalizer of A
         time.sleep(4)
         self.assertEqual(len(comments), 8)
         self.assertEqual(PreProcess.preCount, 1)
@@ -352,7 +362,7 @@ class GCTests_Jy_Delayed_Finalization(unittest.TestCase):
         gc.unregisterPostFinalizationProcess(postPr)
 
     def test_delayedFinalization(self):
-        #time.sleep(2)
+        # time.sleep(2)
         resurrect = []
         comments = []
 
@@ -361,20 +371,20 @@ class GCTests_Jy_Delayed_Finalization(unittest.TestCase):
                 self.name = name
 
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
 
         class Test_Resurrection(object):
             def __init__(self, name):
                 self.name = name
-            
+
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
                 if hasattr(self, "toResurrect"):
                     resurrect.append(self.toResurrect)
 
@@ -383,17 +393,17 @@ class GCTests_Jy_Delayed_Finalization(unittest.TestCase):
         c = Test_Resurrection("c")
         c.a = a
         c.toResurrect = Test_Finalizable("d")
-         
+
         del a
         del c
         self.assertNotEqual(gc.collect(), 0)
         time.sleep(1)
-        #Note that CPython would collect a, b and c in one run.
-        #With gc.DONT_FINALIZE_RESURRECTED_OBJECTS set, Jython
-        #Would not collect a and b in the same run with c
-        #because a and b might have been resurrected by c and
-        #Java allows not to detect such resurrection in any
-        #other way than waiting for the next gc-run.
+        # Note that CPython would collect a, b and c in one run.
+        # With gc.DONT_FINALIZE_RESURRECTED_OBJECTS set, Jython
+        # Would not collect a and b in the same run with c
+        # because a and b might have been resurrected by c and
+        # Java allows not to detect such resurrection in any
+        # other way than waiting for the next gc-run.
         self.assertIn('del c', comments)
         self.assertEqual(1, len(comments))
         comments = []
@@ -412,16 +422,16 @@ class GCTests_Jy_Monitoring(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        #Jython-specific block:
+        # Jython-specific block:
         try:
             cls.savedJythonGCFlags = gc.getJythonGCFlags()
             gc.setMonitorGlobal(True)
             gc.addJythonGCFlags(gc.DONT_FINALIZE_RESURRECTED_OBJECTS)
-            #since gc module already exists, it would not be caught by monitorGlobal.
-            #so we have to monitor it manually:
+            # since gc module already exists, it would not be caught by monitorGlobal.
+            # so we have to monitor it manually:
             gc.monitorObject(gc)
-            #the finalizer-related tests need this flag to pass in Jython:
-            #gc.addJythonGCFlags(gc.DONT_FINALIZE_CYCLIC_GARBAGE)
+            # the finalizer-related tests need this flag to pass in Jython:
+            # gc.addJythonGCFlags(gc.DONT_FINALIZE_CYCLIC_GARBAGE)
         except Exception:
             pass
 
@@ -433,7 +443,9 @@ class GCTests_Jy_Monitoring(unittest.TestCase):
         except Exception:
             pass
 
-    @unittest.skipUnless(test_support.is_jython, 'CPython has no monitor-state.')
+    @unittest.skipUnless(
+        test_support.is_jython,
+        'CPython has no monitor-state.')
     def test_monitor_status_after_delayed_finalization(self):
         resurrect = []
         comments = []
@@ -443,20 +455,20 @@ class GCTests_Jy_Monitoring(unittest.TestCase):
                 self.name = name
 
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
 
         class Test_Resurrection(object):
             def __init__(self, name):
                 self.name = name
-            
+
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
                 if hasattr(self, "toResurrect"):
                     resurrect.append(self.toResurrect)
 
@@ -471,13 +483,14 @@ class GCTests_Jy_Monitoring(unittest.TestCase):
         gc.collect()
         del a
         del c
-        #gc.set_debug(gc.DEBUG_SAVEALL)
-        self.assertEqual(gc.collect(), 0) #c is not cyclic and a, b are resurrected,
-                                          #so nothing to count here
+        # gc.set_debug(gc.DEBUG_SAVEALL)
+        # c is not cyclic and a, b are resurrected,
+        self.assertEqual(gc.collect(), 0)
+        # so nothing to count here
         #self.asserEqual(len(gc.garbage), 0)
-            #if we called gc.set_debug(gc.DEBUG_SAVEALL) above, it would
-            #be okay for gc.garbage to be empty, because a and b
-            #are not finalized and c is not cyclic.
+        # if we called gc.set_debug(gc.DEBUG_SAVEALL) above, it would
+        # be okay for gc.garbage to be empty, because a and b
+        # are not finalized and c is not cyclic.
         self.assertEqual(comments, ['del c'])
         self.assertEqual(str(resurrect), "[<a>]")
         self.assertTrue(gc.isMonitored(resurrect[0]))
@@ -492,10 +505,10 @@ class GCTests_Jy_Monitoring(unittest.TestCase):
                 self.name = name
 
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
 
         a = Test_Finalizable("a")
         lst = []
@@ -511,8 +524,9 @@ class GCTests_Jy_Monitoring(unittest.TestCase):
         except AttributeError:
             pass
         del a
-        self.assertEqual(gc.collect(), 2) # c is not cyclic and a, b are resurrected,
-                                          # the cycle of two lists is counted here
+        # c is not cyclic and a, b are resurrected,
+        self.assertEqual(gc.collect(), 2)
+        # the cycle of two lists is counted here
         self.assertEqual(comments, ['del a', 'del b'])
 
 
@@ -520,7 +534,7 @@ class GCTests_Jy_Weakref(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        #Jython-specific block:
+        # Jython-specific block:
         try:
             cls.savedJythonGCFlags = gc.getJythonGCFlags()
             gc.addJythonGCFlags(gc.PRESERVE_WEAKREFS_ON_RESURRECTION)
@@ -538,25 +552,26 @@ class GCTests_Jy_Weakref(unittest.TestCase):
     def test_weakref_after_resurrection(self):
         resurrect = []
         comments = []
+
         class Test_Finalizable(object):
             def __init__(self, name):
                 self.name = name
 
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
 
         class Test_Resurrection(object):
             def __init__(self, name):
                 self.name = name
-            
+
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
                 if hasattr(self, "toResurrect"):
                     resurrect.append(self)
 
@@ -564,7 +579,7 @@ class GCTests_Jy_Weakref(unittest.TestCase):
             comments.append("clb")
 
         def clb2(ref):
-            comments.append("clb2 "+str(comments))
+            comments.append("clb2 " + str(comments))
 
         a = Test_Finalizable("a")
         wa = weakref.ref(a, clb)
@@ -588,25 +603,26 @@ class GCTests_Jy_Weakref(unittest.TestCase):
     def test_weakref_after_resurrection_and_delayed_finalize(self):
         resurrect = []
         comments = []
+
         class Test_Finalizable(object):
             def __init__(self, name):
                 self.name = name
 
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
 
         class Test_Resurrection(object):
             def __init__(self, name):
                 self.name = name
-            
+
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
                 if hasattr(self, "toResurrect"):
                     resurrect.append(self)
 
@@ -614,7 +630,7 @@ class GCTests_Jy_Weakref(unittest.TestCase):
             comments.append("clb")
 
         def clb2(ref):
-            comments.append("clb2 "+str(comments))
+            comments.append("clb2 " + str(comments))
 
         a = Test_Finalizable("a")
         wa = weakref.ref(a, clb)
@@ -652,20 +668,20 @@ class GCTests_Jy_Weakref(unittest.TestCase):
                 self.name = name
 
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
 
         class Test_Resurrection(object):
             def __init__(self, name):
                 self.name = name
-            
+
             def __repr__(self):
-                return "<"+self.name+">"
+                return "<" + self.name + ">"
 
             def __del__(self):
-                comments.append("del "+self.name)
+                comments.append("del " + self.name)
                 if hasattr(self, "toResurrect"):
                     resurrect.append(self)
 
@@ -697,7 +713,7 @@ class GCTests_Jy_Weakref(unittest.TestCase):
 
 
 @unittest.skipUnless(test_support.is_jython,
-        '''
+                     '''
         The test involves Java-classes and is thus not supported by
         non-Jython interpreters.
         ''')
@@ -705,7 +721,7 @@ class GCTests_Jy_TraverseByReflection(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        #Jython-specific block:
+        # Jython-specific block:
         try:
             cls.savedJythonGCFlags = gc.getJythonGCFlags()
             gc.addJythonGCFlags(gc.SUPPRESS_TRAVERSE_BY_REFLECTION_WARNING)

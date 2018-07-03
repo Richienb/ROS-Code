@@ -19,16 +19,19 @@ class MessageTestCase(unittest.TestCase):
         self.assertTrue(msg.get("to") == '"last, first" <userid@foo.net>')
         self.assertTrue(msg.get("TO") == '"last, first" <userid@foo.net>')
         self.assertTrue(msg.get("No-Such-Header") is None)
-        self.assertTrue(msg.get("No-Such-Header", "No-Such-Value")
-                     == "No-Such-Value")
+        self.assertTrue(msg.get("No-Such-Header", "No-Such-Value") ==
+                        "No-Such-Value")
 
     def test_setdefault(self):
         msg = self.create_message(
             'To: "last, first" <userid@foo.net>\n\ntest\n')
-        self.assertTrue(not msg.has_key("New-Header"))
-        self.assertTrue(msg.setdefault("New-Header", "New-Value") == "New-Value")
-        self.assertTrue(msg.setdefault("New-Header", "Different-Value")
-                     == "New-Value")
+        self.assertTrue("New-Header" not in msg)
+        self.assertTrue(
+            msg.setdefault(
+                "New-Header",
+                "New-Value") == "New-Value")
+        self.assertTrue(msg.setdefault("New-Header", "Different-Value") ==
+                        "New-Value")
         self.assertTrue(msg["new-header"] == "New-Value")
 
         self.assertTrue(msg.setdefault("Another-Header") == "")
@@ -59,7 +62,6 @@ class MessageTestCase(unittest.TestCase):
             self.assertEqual(out,
                              (1999, 1, 13, 23, 57, 35, 0, 1, 0),
                              "date conversion failed")
-
 
     # Note: all test cases must have the same date (in various formats),
     # or no date!
@@ -194,7 +196,7 @@ class MessageTestCase(unittest.TestCase):
             '\t : Rossum" <guido@python.org>\n'
             'Subject: test2\n'
             '\n'
-            'test2\n' ))
+            'test2\n'))
         self.assertEqual(sorted(m), ['date', 'from', 'subject', 'to'])
 
     def test_rfc2822_phrases(self):
@@ -207,7 +209,7 @@ class MessageTestCase(unittest.TestCase):
                    [('User J. Person', 'person@dom.ain')])
 
     # This takes too long to add to the test suite
-##    def test_an_excrutiatingly_long_address_field(self):
+# def test_an_excrutiatingly_long_address_field(self):
 ##        OBSCENELY_LONG_HEADER_MULTIPLIER = 10000
 ##        oneaddr = ('Person' * 10) + '@' + ('.'.join(['dom']*10)) + '.com'
 ##        addr = ', '.join([oneaddr] * OBSCENELY_LONG_HEADER_MULTIPLIER)
@@ -226,8 +228,7 @@ A test message.
 """)
         ccs = [('', a) for a in
                ['bperson@dom.ain', 'cperson@dom.ain', 'dperson@dom.ain']]
-        addrs = msg.getaddrlist('cc')
-        addrs.sort()
+        addrs = sorted(msg.getaddrlist('cc'))
         eq(addrs, ccs)
         # Try again, this one used to fail
         addrs = msg.getaddrlist('cc')

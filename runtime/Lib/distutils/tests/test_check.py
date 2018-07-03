@@ -7,6 +7,7 @@ from distutils.command.check import check, HAS_DOCUTILS
 from distutils.tests import support
 from distutils.errors import DistutilsSetupError
 
+
 class CheckTestCase(support.LoggingSilencer,
                     support.TempdirManager,
                     unittest.TestCase):
@@ -57,7 +58,7 @@ class CheckTestCase(support.LoggingSilencer,
         self.assertEqual(cmd._warnings, 0)
 
     def test_check_document(self):
-        if not HAS_DOCUTILS: # won't test without docutils
+        if not HAS_DOCUTILS:  # won't test without docutils
             return
         pkg_info, dist = self.create_dist()
         cmd = check(dist)
@@ -73,7 +74,7 @@ class CheckTestCase(support.LoggingSilencer,
         self.assertEqual(len(msgs), 0)
 
     def test_check_restructuredtext(self):
-        if not HAS_DOCUTILS: # won't test without docutils
+        if not HAS_DOCUTILS:  # won't test without docutils
             return
         # let's see if it detects broken rest in long_description
         broken_rest = 'title\n===\n\ntest'
@@ -102,8 +103,10 @@ class CheckTestCase(support.LoggingSilencer,
                           {}, **{'strict': 1,
                                  'restructuredtext': 1})
 
+
 def test_suite():
     return unittest.makeSuite(CheckTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

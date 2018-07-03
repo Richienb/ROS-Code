@@ -143,7 +143,7 @@ import imp
 # putting them in test_grammar.py has no effect:
 warnings.filterwarnings("ignore", "hex/oct constants", FutureWarning,
                         ".*test.test_grammar$")
-if sys.maxint > 0x7fffffff:
+if sys.maxsize > 0x7fffffff:
     # Also suppress them in <string>, because for 64-bit platforms,
     # that's where test_grammar.py hides them.
     warnings.filterwarnings("ignore", "hex/oct constants", FutureWarning,
@@ -170,7 +170,7 @@ if sys.platform == 'darwin':
         pass
     else:
         soft, hard = resource.getrlimit(resource.RLIMIT_STACK)
-        newsoft = min(hard, max(soft, 1024*2048))
+        newsoft = min(hard, max(soft, 1024 * 2048))
         resource.setrlimit(resource.RLIMIT_STACK, (newsoft, hard))
 
 import test as _test
@@ -182,7 +182,8 @@ RESOURCE_NAMES = ('audio', 'curses', 'largefile', 'network', 'bsddb',
 
 def usage(code, msg=''):
     print __doc__
-    if msg: print msg
+    if msg:
+        print msg
     sys.exit(code)
 
 
@@ -223,7 +224,7 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
                                     'huntrleaks=', 'verbose2', 'memlimit=',
                                     'expected', 'memo'
                                     ])
-    except getopt.error, msg:
+    except getopt.error as msg:
         usage(2, msg)
 
     # Defaults
@@ -238,7 +239,7 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
         elif o in ('-w', '--verbose2'):
             verbose2 = True
         elif o in ('-q', '--quiet'):
-            quiet = True;
+            quiet = True
             verbose = 0
         elif o in ('-x', '--exclude'):
             exclude = True
@@ -307,7 +308,7 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
                     use_resources.append(r)
         else:
             print >>sys.stderr, ("No handler for option {0}.  Please "
-                "report this as a bug at http://bugs.python.org.").format(o)
+                                 "report this as a bug at http://bugs.python.org.").format(o)
             sys.exit(1)
     if single and fromfile:
         usage(2, "-s and -f don't go together!")
@@ -329,7 +330,7 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
             # Uncomment the line below to report garbage that is not
             # freeable by reference counting alone.  By default only
             # garbage that is not collectable by the GC is reported.
-            #gc.set_debug(gc.DEBUG_SAVEALL)
+            # gc.set_debug(gc.DEBUG_SAVEALL)
             found_garbage = []
 
     if single:
@@ -347,7 +348,7 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
         tests = []
         fp = open(fromfile)
         for line in fp:
-            guts = line.split() # assuming no test has whitespace in its name
+            guts = line.split()  # assuming no test has whitespace in its name
             if guts and not guts[0].startswith('#'):
                 tests.extend(guts)
         fp.close()
@@ -418,7 +419,7 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
                 # print a newline separate from the ^C
                 print
                 break
-            except:
+            except BaseException:
                 raise
             if ok > 0:
                 good.append(test)
@@ -457,10 +458,12 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
     surprises = 0
     if skipped and not quiet:
         print count(len(skipped), "test"), "skipped:"
-        surprises += countsurprises(skips, skipped, 'skip', 'ran', allran, resource_denieds)
+        surprises += countsurprises(skips, skipped,
+                                    'skip', 'ran', allran, resource_denieds)
     if bad:
-         print count(len(bad), "test"), "failed:"
-         surprises += countsurprises(failures, bad, 'fail', 'passed', allran, resource_denieds)
+        print count(len(bad), "test"), "failed:"
+        surprises += countsurprises(failures, bad,
+                                    'fail', 'passed', allran, resource_denieds)
 
     if verbose2 and bad:
         print "Re-running failed tests in verbose mode"
@@ -475,7 +478,7 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
                 # print a newline separate from the ^C
                 print
                 break
-            except:
+            except BaseException:
                 raise
 
     if single:
@@ -486,7 +489,7 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
                     os.unlink(filename)
                 else:
                     fp = open(filename, 'w')
-                    fp.write(alltests[i+1] + '\n')
+                    fp.write(alltests[i + 1] + '\n')
                     fp.close()
                 break
         else:
@@ -500,7 +503,7 @@ def main(tests=None, testdir=None, verbose=0, quiet=False,
         os.system("leaks %d" % os.getpid())
 
     if memo:
-        savememo(memo,good,bad,skipped)
+        savememo(memo, good, bad, skipped)
 
     sys.exit(surprises > 0)
 
@@ -522,7 +525,7 @@ STDTESTS = [
     # find these warnings, test_py3kwarn is executed first to catch them
     # before the other modules.  This shouldn't affect 2.7+
     'test_py3kwarn',
-   ]
+]
 
 NOTTESTS = {
     'test_support',
@@ -530,18 +533,20 @@ NOTTESTS = {
     'test_future2',
 }
 
+
 def findtests(testdir=None, stdtests=STDTESTS, nottests=NOTTESTS):
     """Return a list of all applicable test modules."""
     testdir = findtestdir()
     names = os.listdir(testdir)
     tests = []
     for name in names:
-        if name[:5] == "test_" and name[-3:] == os.extsep+"py":
+        if name[:5] == "test_" and name[-3:] == os.extsep + "py":
             modname = name[:-3]
             if modname not in stdtests and modname not in nottests:
                 tests.append(modname)
     tests.sort()
     return stdtests + tests
+
 
 def runtest(test, verbose, quiet, test_times,
             testdir=None, huntrleaks=False, junit_xml=None):
@@ -566,6 +571,7 @@ def runtest(test, verbose, quiet, test_times,
                              testdir, huntrleaks, junit_xml)
     finally:
         cleanup_test_droppings(test, verbose)
+
 
 def runtest_inner(test, verbose, quiet, test_times,
                   testdir=None, huntrleaks=False, junit_xml_dir=None):
@@ -619,7 +625,7 @@ def runtest_inner(test, verbose, quiet, test_times,
             if junit_xml_dir:
                 sys.stderr = save_stderr
                 test_time = time.time() - start_time
-    except test_support.ResourceDenied, msg:
+    except test_support.ResourceDenied as msg:
         if not quiet:
             print test, "skipped --", msg
             sys.stdout.flush()
@@ -629,7 +635,7 @@ def runtest_inner(test, verbose, quiet, test_times,
                               stdout=stdout.getvalue(),
                               stderr=stderr.getvalue())
         return -2
-    except (ImportError, unittest.SkipTest), msg:
+    except (ImportError, unittest.SkipTest) as msg:
         if not quiet:
             print test, "skipped --", msg
             sys.stdout.flush()
@@ -641,7 +647,7 @@ def runtest_inner(test, verbose, quiet, test_times,
         return -1
     except KeyboardInterrupt:
         raise
-    except test_support.TestFailed, msg:
+    except test_support.TestFailed as msg:
         print "test", test, "failed --", msg
         sys.stdout.flush()
         if junit_xml_dir and indirect_test is None:
@@ -650,7 +656,7 @@ def runtest_inner(test, verbose, quiet, test_times,
                               stdout=stdout.getvalue(),
                               stderr=stderr.getvalue())
         return 0
-    except:
+    except BaseException:
         type, value = sys.exc_info()[:2]
         print "test", test, "crashed --", str(type) + ":", value
         sys.stdout.flush()
@@ -677,6 +683,7 @@ def runtest_inner(test, verbose, quiet, test_times,
         sys.stdout.flush()
         return 0
 
+
 def cleanup_test_droppings(testname, verbose):
     import shutil
 
@@ -688,7 +695,7 @@ def cleanup_test_droppings(testname, verbose):
     # name of the offending test, which is a real help).
     for name in (test_support.TESTFN,
                  "db_home",
-                ):
+                 ):
         if not os.path.exists(name):
             continue
 
@@ -708,13 +715,16 @@ def cleanup_test_droppings(testname, verbose):
             print "%r left behind %s %r" % (testname, kind, name)
         try:
             nuker(name)
-        except Exception, msg:
+        except Exception as msg:
             print >> sys.stderr, ("%r left behind %s %r and it couldn't be "
-                "removed: %s" % (testname, kind, name, msg))
+                                  "removed: %s" % (testname, kind, name, msg))
+
 
 def dash_R(the_module, test, indirect_test, huntrleaks):
     # This code is hackish and inelegant, but it seems to do the job.
-    import copy_reg, _abcoll, io
+    import copy_reg
+    import _abcoll
+    import io
 
     if not hasattr(sys, 'gettotalrefcount'):
         raise Exception("Tracking reference leaks requires a debug build "
@@ -744,7 +754,7 @@ def dash_R(the_module, test, indirect_test, huntrleaks):
     nwarmup, ntracked, fname = huntrleaks
     repcount = nwarmup + ntracked
     print >> sys.stderr, "beginning", repcount, "repetitions"
-    print >> sys.stderr, ("1234567890"*(repcount//10 + 1))[:repcount]
+    print >> sys.stderr, ("1234567890" * (repcount // 10 + 1))[:repcount]
     dash_R_cleanup(fs, ps, pic, abcs)
     for i in range(repcount):
         rc = sys.gettotalrefcount()
@@ -761,12 +771,20 @@ def dash_R(the_module, test, indirect_test, huntrleaks):
         print >> refrep, msg
         refrep.close()
 
+
 def dash_R_cleanup(fs, ps, pic, abcs):
-    import gc, copy_reg
-    import _strptime, linecache
+    import gc
+    import copy_reg
+    import _strptime
+    import linecache
     dircache = test_support.import_module('dircache', deprecated=True)
-    import urlparse, urllib, urllib2, mimetypes, doctest
-    import struct, filecmp
+    import urlparse
+    import urllib
+    import urllib2
+    import mimetypes
+    import doctest
+    import struct
+    import filecmp
     from distutils.dir_util import _path_created
 
     # Clear the warnings registry, so they can be displayed again
@@ -807,19 +825,23 @@ def dash_R_cleanup(fs, ps, pic, abcs):
     # Collect cyclic trash.
     gc.collect()
 
+
 def findtestdir(path=None):
     return path or os.path.dirname(__file__) or os.curdir
+
 
 def removepy(name):
     if name.endswith(os.extsep + "py"):
         name = name[:-3]
     return name
 
+
 def count(n, word):
     if n == 1:
         return "%d %s" % (n, word)
     else:
         return "%d %ss" % (n, word)
+
 
 def printlist(x, width=70, indent=4):
     """Print the elements of iterable x to stdout.
@@ -835,13 +857,20 @@ def printlist(x, width=70, indent=4):
     print fill(' '.join(str(elt) for elt in sorted(x)), width,
                initial_indent=blanks, subsequent_indent=blanks)
 
-def countsurprises(expected, actual, action, antiaction, allran, resource_denieds):
+
+def countsurprises(
+        expected,
+        actual,
+        action,
+        antiaction,
+        allran,
+        resource_denieds):
     """returns the number of items in actual that aren't in expected."""
     printlist(actual)
     if not expected.isvalid():
         print "Ask someone to teach regrtest.py about which tests are"
         print "expected to %s on %s." % (action, sys.platform)
-        return 1#Surprising not to know what to expect....
+        return 1  # Surprising not to know what to expect....
     good_surprise = expected.getexpected() - set(actual)
     if allran and good_surprise:
         print count(len(good_surprise), 'test'), antiaction, 'unexpectedly:'
@@ -868,6 +897,7 @@ def countsurprises(expected, actual, action, antiaction, allran, resource_denied
 #
 # Tests that are expected to be skipped everywhere except on one platform
 # are also handled separately.
+
 
 _expectations = {
     'win32':
@@ -912,7 +942,7 @@ _expectations = {
         test_kqueue
         test_ossaudiodev
         """,
-   'mac':
+    'mac':
         """
         test_atexit
         test_bsddb
@@ -1345,6 +1375,7 @@ if _platform[:4] == 'java':
             # http://bugs.python.org/issue1559298
             _failures['java'] += '\ntest_popen'
 
+
 class _ExpectedSkips:
     def __init__(self):
         import os.path
@@ -1372,10 +1403,10 @@ class _ExpectedSkips:
             if test_timeout.skip_expected:
                 self.expected.add('test_timeout')
 
-            if sys.maxint == 9223372036854775807L:
+            if sys.maxsize == 9223372036854775807:
                 self.expected.add('test_imageop')
 
-            if not sys.platform in ("mac", "darwin"):
+            if sys.platform not in ("mac", "darwin"):
                 MAC_ONLY = ["test_macos", "test_macostools", "test_aepack",
                             "test_plistlib", "test_scriptpackages",
                             "test_applesingle"]
@@ -1409,8 +1440,8 @@ class _ExpectedSkips:
             if test_support.is_jython:
                 if os._name != 'posix':
                     self.expected.update([
-                            'test_grp', 'test_mhlib', 'test_posix', 'test_pwd',
-                            'test_signal'])
+                        'test_grp', 'test_mhlib', 'test_posix', 'test_pwd',
+                        'test_signal'])
                 if os._name != 'nt':
                     self.expected.add('test_nt_paths_jy')
 
@@ -1449,6 +1480,7 @@ class _ExpectedSkips:
             for word in trunc_line.split():
                 yield word
 
+
 class _ExpectedFailures(_ExpectedSkips):
     def __init__(self):
         self.valid = False
@@ -1457,16 +1489,18 @@ class _ExpectedFailures(_ExpectedSkips):
             self.expected = set(self.split_commented(s))
             self.valid = True
 
-def savememo(memo,good,bad,skipped):
-    f = open(memo,'w')
+
+def savememo(memo, good, bad, skipped):
+    f = open(memo, 'w')
     try:
-        for n,l in [('good',good),('bad',bad),('skipped',skipped)]:
-            print >>f,"%s = [" % n
+        for n, l in [('good', good), ('bad', bad), ('skipped', skipped)]:
+            print >>f, "%s = [" % n
             for x in l:
-                print >>f,"    %r," % x
-            print >>f," ]"
+                print >>f, "    %r," % x
+            print >>f, " ]"
     finally:
         f.close()
+
 
 if __name__ == '__main__':
     # Remove regrtest.py's own directory from the module search path.  This

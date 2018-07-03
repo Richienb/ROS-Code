@@ -2,7 +2,8 @@
 """Test script for the bsddb C module by Roger E. Masse
    Adapted to unittest format and expanded scope by Raymond Hettinger
 """
-import os, sys
+import os
+import sys
 import unittest
 from test import test_support
 
@@ -19,7 +20,13 @@ class TestBSDDB(unittest.TestCase):
 
     def setUp(self):
         self.f = self.openmethod[0](self.fname, self.openflag, cachesize=32768)
-        self.d = dict(q='Guido', w='van', e='Rossum', r='invented', t='Python', y='')
+        self.d = dict(
+            q='Guido',
+            w='van',
+            e='Rossum',
+            r='invented',
+            t='Python',
+            y='')
         for k, v in self.d.iteritems():
             self.f[k] = v
 
@@ -72,10 +79,10 @@ class TestBSDDB(unittest.TestCase):
 
     def test_iter_while_modifying_values(self):
         di = iter(self.d)
-        while 1:
+        while True:
             try:
                 key = di.next()
-                self.d[key] = 'modified '+key
+                self.d[key] = 'modified ' + key
             except StopIteration:
                 break
 
@@ -84,10 +91,10 @@ class TestBSDDB(unittest.TestCase):
         # or removing keys should)
         loops_left = len(self.f)
         fi = iter(self.f)
-        while 1:
+        while True:
             try:
                 key = fi.next()
-                self.f[key] = 'modified '+key
+                self.f[key] = 'modified ' + key
                 loops_left -= 1
             except StopIteration:
                 break
@@ -98,7 +105,7 @@ class TestBSDDB(unittest.TestCase):
     def test_iter_abort_on_changed_size(self):
         def DictIterAbort():
             di = iter(self.d)
-            while 1:
+            while True:
                 try:
                     di.next()
                     self.d['newkey'] = 'SPAM'
@@ -108,7 +115,7 @@ class TestBSDDB(unittest.TestCase):
 
         def DbIterAbort():
             fi = iter(self.f)
-            while 1:
+            while True:
                 try:
                     fi.next()
                     self.f['newkey'] = 'SPAM'
@@ -119,7 +126,7 @@ class TestBSDDB(unittest.TestCase):
     def test_iteritems_abort_on_changed_size(self):
         def DictIteritemsAbort():
             di = self.d.iteritems()
-            while 1:
+            while True:
                 try:
                     di.next()
                     self.d['newkey'] = 'SPAM'
@@ -129,7 +136,7 @@ class TestBSDDB(unittest.TestCase):
 
         def DbIteritemsAbort():
             fi = self.f.iteritems()
-            while 1:
+            while True:
                 try:
                     key, value = fi.next()
                     del self.f[key]
@@ -139,10 +146,10 @@ class TestBSDDB(unittest.TestCase):
 
     def test_iteritems_while_modifying_values(self):
         di = self.d.iteritems()
-        while 1:
+        while True:
             try:
                 k, v = di.next()
-                self.d[k] = 'modified '+v
+                self.d[k] = 'modified ' + v
             except StopIteration:
                 break
 
@@ -151,10 +158,10 @@ class TestBSDDB(unittest.TestCase):
         # or removing keys should)
         loops_left = len(self.f)
         fi = self.f.iteritems()
-        while 1:
+        while True:
             try:
                 k, v = fi.next()
-                self.f[k] = 'modified '+v
+                self.f[k] = 'modified ' + v
                 loops_left -= 1
             except StopIteration:
                 break
@@ -200,8 +207,8 @@ class TestBSDDB(unittest.TestCase):
 
     def test_has_key(self):
         for k in self.d:
-            self.assertTrue(self.f.has_key(k))
-        self.assertTrue(not self.f.has_key('not here'))
+            self.assertTrue(k in self.f)
+        self.assertTrue('not here' not in self.f)
 
     def test_clear(self):
         self.f.clear()
@@ -215,42 +222,54 @@ class TestBSDDB(unittest.TestCase):
         # in pybsddb's _DBWithCursor this causes an internal DBCursor
         # object is created.  Other test_ methods in this class could
         # inadvertently cause the deadlock but an explicit test is needed.
-        if debug: print "A"
-        k,v = self.f.first()
-        if debug: print "B", k
+        if debug:
+            print "A"
+        k, v = self.f.first()
+        if debug:
+            print "B", k
         self.f[k] = "deadlock.  do not pass go.  do not collect $200."
-        if debug: print "C"
+        if debug:
+            print "C"
         # if the bsddb implementation leaves the DBCursor open during
         # the database write and locking+threading support is enabled
         # the cursor's read lock will deadlock the write lock request..
 
         # test the iterator interface
         if True:
-            if debug: print "D"
+            if debug:
+                print "D"
             i = self.f.iteritems()
-            k,v = i.next()
-            if debug: print "E"
+            k, v = i.next()
+            if debug:
+                print "E"
             self.f[k] = "please don't deadlock"
-            if debug: print "F"
-            while 1:
+            if debug:
+                print "F"
+            while True:
                 try:
-                    k,v = i.next()
+                    k, v = i.next()
                 except StopIteration:
                     break
-            if debug: print "F2"
+            if debug:
+                print "F2"
 
             i = iter(self.f)
-            if debug: print "G"
+            if debug:
+                print "G"
             while i:
                 try:
-                    if debug: print "H"
+                    if debug:
+                        print "H"
                     k = i.next()
-                    if debug: print "I"
+                    if debug:
+                        print "I"
                     self.f[k] = "deadlocks-r-us"
-                    if debug: print "J"
+                    if debug:
+                        print "J"
                 except StopIteration:
                     i = None
-            if debug: print "K"
+            if debug:
+                print "K"
 
         # test the legacy cursor interface mixed with writes
         self.assertIn(self.f.first()[0], self.d)
@@ -275,14 +294,14 @@ class TestBSDDB(unittest.TestCase):
 
         self.assertEqual(nc1, nc2)
         self.assertEqual(nc1, nc4)
-        self.assertTrue(nc3 == nc1+1)
+        self.assertTrue(nc3 == nc1 + 1)
 
     def test_popitem(self):
         k, v = self.f.popitem()
         self.assertIn(k, self.d)
         self.assertIn(v, self.d.values())
         self.assertNotIn(k, self.f)
-        self.assertEqual(len(self.d)-1, len(self.f))
+        self.assertEqual(len(self.d) - 1, len(self.f))
 
     def test_pop(self):
         k = 'w'
@@ -290,7 +309,7 @@ class TestBSDDB(unittest.TestCase):
         self.assertEqual(v, self.d[k])
         self.assertNotIn(k, self.f)
         self.assertNotIn(v, self.f.values())
-        self.assertEqual(len(self.d)-1, len(self.f))
+        self.assertEqual(len(self.d) - 1, len(self.f))
 
     def test_get(self):
         self.assertEqual(self.f.get('NotHere'), None)
@@ -311,38 +330,43 @@ class TestBSDDB(unittest.TestCase):
     def test_keyordering(self):
         if self.openmethod[0] is not bsddb.btopen:
             return
-        keys = self.d.keys()
-        keys.sort()
+        keys = sorted(self.d.keys())
         self.assertEqual(self.f.first()[0], keys[0])
         self.assertEqual(self.f.next()[0], keys[1])
         self.assertEqual(self.f.last()[0], keys[-1])
         self.assertEqual(self.f.previous()[0], keys[-2])
         self.assertEqual(list(self.f), keys)
 
+
 class TestBTree(TestBSDDB):
     fname = test_support.TESTFN
     openmethod = [bsddb.btopen]
 
+
 class TestBTree_InMemory(TestBSDDB):
     fname = None
     openmethod = [bsddb.btopen]
+
 
 class TestBTree_InMemory_Truncate(TestBSDDB):
     fname = None
     openflag = 'n'
     openmethod = [bsddb.btopen]
 
+
 class TestHashTable(TestBSDDB):
     fname = test_support.TESTFN
     openmethod = [bsddb.hashopen]
+
 
 class TestHashTable_InMemory(TestBSDDB):
     fname = None
     openmethod = [bsddb.hashopen]
 
-##         # (bsddb.rnopen,'Record Numbers'), 'put' for RECNO for bsddb 1.85
-##         #                                   appears broken... at least on
-##         #                                   Solaris Intel - rmasse 1/97
+# (bsddb.rnopen,'Record Numbers'), 'put' for RECNO for bsddb 1.85
+# appears broken... at least on
+# Solaris Intel - rmasse 1/97
+
 
 def test_main(verbose=None):
     test_support.run_unittest(
@@ -352,6 +376,7 @@ def test_main(verbose=None):
         TestHashTable_InMemory,
         TestBTree_InMemory_Truncate,
     )
+
 
 if __name__ == "__main__":
     test_main(verbose=True)

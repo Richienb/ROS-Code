@@ -10,10 +10,12 @@ lib_tk_test = os.path.abspath(os.path.join(this_dir, '..', 'lib-tk', 'test'))
 with test_support.DirsOnSysPath(lib_tk_test):
     import runtktests
 
+
 def test_main():
     with test_support.DirsOnSysPath(lib_tk_test):
         test_support.run_unittest(
             *runtktests.get_tests(gui=False, packages=['test_ttk']))
+
 
 if __name__ == '__main__':
     test_main()

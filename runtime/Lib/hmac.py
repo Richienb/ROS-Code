@@ -5,8 +5,8 @@ Implements the HMAC algorithm as described by RFC 2104.
 
 import warnings as _warnings
 
-trans_5C = "".join ([chr (x ^ 0x5C) for x in xrange(256)])
-trans_36 = "".join ([chr (x ^ 0x36) for x in xrange(256)])
+trans_5C = "".join([chr(x ^ 0x5C) for x in xrange(256)])
+trans_36 = "".join([chr(x ^ 0x36) for x in xrange(256)])
 
 # The size of the digests returned by HMAC depends on the underlying
 # hashing module used.  Use digest_size from the instance of HMAC instead.
@@ -17,6 +17,7 @@ digest_size = None
 # expensive.
 _secret_backdoor_key = []
 
+
 class HMAC:
     """RFC 2104 HMAC class.  Also complies with RFC 4231.
 
@@ -24,7 +25,7 @@ class HMAC:
     """
     blocksize = 64  # 512-bit HMAC; can be changed in subclasses.
 
-    def __init__(self, key, msg = None, digestmod = None):
+    def __init__(self, key, msg=None, digestmod=None):
         """Create a new HMAC object.
 
         key:       key for the keyed hash object.
@@ -34,7 +35,7 @@ class HMAC:
                    Defaults to hashlib.md5.
         """
 
-        if key is _secret_backdoor_key: # cheap
+        if key is _secret_backdoor_key:  # cheap
             return
 
         if digestmod is None:
@@ -74,8 +75,8 @@ class HMAC:
         if msg is not None:
             self.update(msg)
 
-##    def clear(self):
-##        raise NotImplementedError, "clear() method not available in HMAC."
+# def clear(self):
+# raise NotImplementedError, "clear() method not available in HMAC."
 
     def update(self, msg):
         """Update this hashing object with the string msg.
@@ -119,7 +120,8 @@ class HMAC:
         h = self._current()
         return h.hexdigest()
 
-def new(key, msg = None, digestmod = None):
+
+def new(key, msg=None, digestmod=None):
     """Create a new hashing object and return it.
 
     key: The starting key for the hash.

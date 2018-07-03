@@ -5,6 +5,7 @@ import unittest
 
 from test import test_support
 
+
 class TestGetProfile(unittest.TestCase):
     def setUp(self):
         sys.setprofile(None)
@@ -22,15 +23,16 @@ class TestGetProfile(unittest.TestCase):
         sys.setprofile(fn)
         self.assertIs(sys.getprofile(), fn)
 
+
 class HookWatcher:
     def __init__(self):
         self.frames = []
         self.events = []
 
     def callback(self, frame, event, arg):
-        if (event == "call"
-            or event == "return"
-            or event == "exception"):
+        if (event == "call" or
+            event == "return" or
+                event == "exception"):
             self.add_event(event, frame)
 
     def add_event(self, event, frame=None):
@@ -86,7 +88,7 @@ class ProfileSimulator(HookWatcher):
         'c_call': trace_pass,
         'c_return': trace_pass,
         'c_exception': trace_pass,
-        }
+    }
 
 
 class TestCaseBase(unittest.TestCase):
@@ -111,7 +113,7 @@ class ProfileHookTestCase(TestCaseBase):
 
     def test_exception(self):
         def f(p):
-            1./0
+            1. / 0
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -119,8 +121,10 @@ class ProfileHookTestCase(TestCaseBase):
 
     def test_caught_exception(self):
         def f(p):
-            try: 1./0
-            except: pass
+            try:
+                1. / 0
+            except BaseException:
+                pass
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -128,8 +132,10 @@ class ProfileHookTestCase(TestCaseBase):
 
     def test_caught_nested_exception(self):
         def f(p):
-            try: 1./0
-            except: pass
+            try:
+                1. / 0
+            except BaseException:
+                pass
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -137,7 +143,7 @@ class ProfileHookTestCase(TestCaseBase):
 
     def test_nested_exception(self):
         def f(p):
-            1./0
+            1. / 0
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               # This isn't what I expected:
@@ -148,13 +154,16 @@ class ProfileHookTestCase(TestCaseBase):
 
     def test_exception_in_except_clause(self):
         def f(p):
-            1./0
+            1. / 0
+
         def g(p):
             try:
                 f(p)
-            except:
-                try: f(p)
-                except: pass
+            except BaseException:
+                try:
+                    f(p)
+                except BaseException:
+                    pass
         f_ident = ident(f)
         g_ident = ident(g)
         self.check_events(g, [(1, 'call', g_ident),
@@ -167,10 +176,13 @@ class ProfileHookTestCase(TestCaseBase):
 
     def test_exception_propogation(self):
         def f(p):
-            1./0
+            1. / 0
+
         def g(p):
-            try: f(p)
-            finally: p.add_event("falling through")
+            try:
+                f(p)
+            finally:
+                p.add_event("falling through")
         f_ident = ident(f)
         g_ident = ident(g)
         self.check_events(g, [(1, 'call', g_ident),
@@ -182,8 +194,10 @@ class ProfileHookTestCase(TestCaseBase):
 
     def test_raise_twice(self):
         def f(p):
-            try: 1./0
-            except: 1./0
+            try:
+                1. / 0
+            except BaseException:
+                1. / 0
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -191,8 +205,10 @@ class ProfileHookTestCase(TestCaseBase):
 
     def test_raise_reraise(self):
         def f(p):
-            try: 1./0
-            except: raise
+            try:
+                1. / 0
+            except BaseException:
+                raise
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -208,13 +224,17 @@ class ProfileHookTestCase(TestCaseBase):
 
     def test_distant_exception(self):
         def f():
-            1./0
+            1. / 0
+
         def g():
             f()
+
         def h():
             g()
+
         def i():
             h()
+
         def j(p):
             i()
         f_ident = ident(f)
@@ -238,6 +258,7 @@ class ProfileHookTestCase(TestCaseBase):
         def f():
             for i in range(2):
                 yield i
+
         def g(p):
             for i in f():
                 pass
@@ -261,6 +282,7 @@ class ProfileHookTestCase(TestCaseBase):
             for i in range(2):
                 yield i
             raise StopIteration
+
         def g(p):
             for i in f():
                 pass
@@ -293,7 +315,7 @@ class ProfileSimulatorTestCase(TestCaseBase):
 
     def test_basic_exception(self):
         def f(p):
-            1./0
+            1. / 0
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -301,8 +323,10 @@ class ProfileSimulatorTestCase(TestCaseBase):
 
     def test_caught_exception(self):
         def f(p):
-            try: 1./0
-            except: pass
+            try:
+                1. / 0
+            except BaseException:
+                pass
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -310,13 +334,17 @@ class ProfileSimulatorTestCase(TestCaseBase):
 
     def test_distant_exception(self):
         def f():
-            1./0
+            1. / 0
+
         def g():
             f()
+
         def h():
             g()
+
         def i():
             h()
+
         def j(p):
             i()
         f_ident = ident(f)
@@ -346,8 +374,11 @@ def ident(function):
 
 
 def protect(f, p):
-    try: f(p)
-    except: pass
+    try:
+        f(p)
+    except BaseException:
+        pass
+
 
 protect_ident = ident(protect)
 

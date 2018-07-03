@@ -18,9 +18,11 @@ import gc
 class A:
     def __hash__(self):
         return hash("__del__")
+
     def __eq__(self, other):
         del self.other
         return False
+
 
 a = A()
 b = A()

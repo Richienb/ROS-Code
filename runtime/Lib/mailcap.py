@@ -2,9 +2,10 @@
 
 import os
 
-__all__ = ["getcaps","findmatch"]
+__all__ = ["getcaps", "findmatch"]
 
 # Part 1: top-level interface.
+
 
 def getcaps():
     """Return a dictionary containing the mailcap database.
@@ -25,11 +26,12 @@ def getcaps():
         morecaps = readmailcapfile(fp)
         fp.close()
         for key, value in morecaps.iteritems():
-            if not key in caps:
+            if key not in caps:
                 caps[key] = value
             else:
                 caps[key] = caps[key] + value
     return caps
+
 
 def listmailcapfiles():
     """Return a list of all mailcap files found on the system."""
@@ -42,9 +44,9 @@ def listmailcapfiles():
             home = os.environ['HOME']
         else:
             # Don't bother with getpwuid()
-            home = '.' # Last resort
+            home = '.'  # Last resort
         mailcaps = [home + '/.mailcap', '/etc/mailcap',
-                '/usr/etc/mailcap', '/usr/local/etc/mailcap']
+                    '/usr/etc/mailcap', '/usr/local/etc/mailcap']
     return mailcaps
 
 
@@ -60,9 +62,10 @@ def readmailcapfile(fp):
     the viewing command is stored with the key "view".
     """
     caps = {}
-    while 1:
+    while True:
         line = fp.readline()
-        if not line: break
+        if not line:
+            break
         # Ignore comments and blank lines
         if line[0] == '#' or line.strip() == '':
             continue
@@ -70,7 +73,8 @@ def readmailcapfile(fp):
         # Join continuation lines
         while nextline[-2:] == '\\\n':
             nextline = fp.readline()
-            if not nextline: nextline = '\n'
+            if not nextline:
+                nextline = '\n'
             line = line[:-2] + nextline
         # Parse the line
         key, fields = parseline(line)
@@ -88,6 +92,7 @@ def readmailcapfile(fp):
             caps[key] = [fields]
     return caps
 
+
 def parseline(line):
     """Parse one entry in a mailcap file and return a dictionary.
 
@@ -99,7 +104,7 @@ def parseline(line):
     while i < n:
         field, i = parsefield(line, i, n)
         fields.append(field)
-        i = i+1 # Skip semicolon
+        i = i + 1  # Skip semicolon
     if len(fields) < 2:
         return None, None
     key, view, rest = fields[0], fields[1], fields[2:]
@@ -111,13 +116,14 @@ def parseline(line):
             fvalue = ""
         else:
             fkey = field[:i].strip()
-            fvalue = field[i+1:].strip()
+            fvalue = field[i + 1:].strip()
         if fkey in fields:
             # Ignore it
             pass
         else:
             fields[fkey] = fvalue
     return key, fields
+
 
 def parsefield(line, i, n):
     """Separate one key-value pair in a mailcap entry."""
@@ -127,9 +133,9 @@ def parsefield(line, i, n):
         if c == ';':
             break
         elif c == '\\':
-            i = i+2
+            i = i + 2
         else:
-            i = i+1
+            i = i + 1
     return line[start:i].strip(), i
 
 
@@ -155,6 +161,7 @@ def findmatch(caps, MIMEtype, key='view', filename="/dev/null", plist=[]):
         return command, e
     return None, None
 
+
 def lookup(caps, MIMEtype, key=None):
     entries = []
     if MIMEtype in caps:
@@ -167,18 +174,22 @@ def lookup(caps, MIMEtype, key=None):
         entries = filter(lambda e, key=key: key in e, entries)
     return entries
 
+
 def subst(field, MIMEtype, filename, plist=[]):
     # XXX Actually, this is Unix-specific
     res = ''
     i, n = 0, len(field)
     while i < n:
-        c = field[i]; i = i+1
+        c = field[i]
+        i = i + 1
         if c != '%':
             if c == '\\':
-                c = field[i:i+1]; i = i+1
+                c = field[i:i + 1]
+                i = i + 1
             res = res + c
         else:
-            c = field[i]; i = i+1
+            c = field[i]
+            i = i + 1
             if c == '%':
                 res = res + c
             elif c == 's':
@@ -188,9 +199,9 @@ def subst(field, MIMEtype, filename, plist=[]):
             elif c == '{':
                 start = i
                 while i < n and field[i] != '}':
-                    i = i+1
+                    i = i + 1
                 name = field[start:i]
-                i = i+1
+                i = i + 1
                 res = res + findparam(name, plist)
             # XXX To do:
             # %n == number of parts if type is multipart/*
@@ -198,6 +209,7 @@ def subst(field, MIMEtype, filename, plist=[]):
             else:
                 res = res + '%' + c
     return res
+
 
 def findparam(name, plist):
     name = name.lower() + '='
@@ -217,7 +229,7 @@ def test():
         show(caps)
         return
     for i in range(1, len(sys.argv), 2):
-        args = sys.argv[i:i+2]
+        args = sys.argv[i:i + 2]
         if len(args) < 2:
             print "usage: mailcap [MIMEtype file] ..."
             return
@@ -232,24 +244,26 @@ def test():
             if sts:
                 print "Exit status:", sts
 
+
 def show(caps):
     print "Mailcap files:"
-    for fn in listmailcapfiles(): print "\t" + fn
+    for fn in listmailcapfiles():
+        print "\t" + fn
     print
-    if not caps: caps = getcaps()
+    if not caps:
+        caps = getcaps()
     print "Mailcap entries:"
     print
-    ckeys = caps.keys()
-    ckeys.sort()
+    ckeys = sorted(caps.keys())
     for type in ckeys:
         print type
         entries = caps[type]
         for e in entries:
-            keys = e.keys()
-            keys.sort()
+            keys = sorted(e.keys())
             for k in keys:
                 print "  %-15s" % k, e[k]
             print
+
 
 if __name__ == '__main__':
     test()

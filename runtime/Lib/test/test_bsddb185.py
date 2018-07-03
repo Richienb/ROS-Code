@@ -13,6 +13,7 @@ import os
 import tempfile
 import shutil
 
+
 class Bsddb185Tests(unittest.TestCase):
 
     def test_open_existing_hash(self):
@@ -36,8 +37,10 @@ class Bsddb185Tests(unittest.TestCase):
         finally:
             shutil.rmtree(tmpdir)
 
+
 def test_main():
     run_unittest(Bsddb185Tests)
+
 
 if __name__ == "__main__":
     test_main()

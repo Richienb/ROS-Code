@@ -48,6 +48,7 @@ class SHATestCase(unittest.TestCase):
         self.check(chr(0xAA) * 80,
                    '4ca0ef38f1794b28a8f8ee110ee79d48ce13be25')
 
+
 def test_main():
     test_support.run_unittest(SHATestCase)
 

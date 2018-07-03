@@ -1,9 +1,10 @@
 """Redo the builtin repr() (representation) but with limits on most sizes."""
 
-__all__ = ["Repr","repr"]
+__all__ = ["Repr", "repr"]
 
 import __builtin__
 from itertools import islice
+
 
 class Repr:
 
@@ -33,9 +34,9 @@ class Repr:
         else:
             s = __builtin__.repr(x)
             if len(s) > self.maxother:
-                i = max(0, (self.maxother-3)//2)
-                j = max(0, self.maxother-3-i)
-                s = s[:i] + '...' + s[len(s)-j:]
+                i = max(0, (self.maxother - 3) // 2)
+                j = max(0, self.maxother - 3 - i)
+                s = s[:i] + '...' + s[len(s) - j:]
             return s
 
     def _repr_iterable(self, x, level, left, right, maxiter, trail=''):
@@ -46,9 +47,11 @@ class Repr:
             newlevel = level - 1
             repr1 = self.repr1
             pieces = [repr1(elem, newlevel) for elem in islice(x, maxiter)]
-            if n > maxiter:  pieces.append('...')
+            if n > maxiter:
+                pieces.append('...')
             s = ', '.join(pieces)
-            if n == 1 and trail:  right = trail + right
+            if n == 1 and trail:
+                right = trail + right
         return '%s%s%s' % (left, s, right)
 
     def repr_tuple(self, x, level):
@@ -75,8 +78,10 @@ class Repr:
 
     def repr_dict(self, x, level):
         n = len(x)
-        if n == 0: return '{}'
-        if level <= 0: return '{...}'
+        if n == 0:
+            return '{}'
+        if level <= 0:
+            return '{...}'
         newlevel = level - 1
         repr1 = self.repr1
         pieces = []
@@ -84,25 +89,26 @@ class Repr:
             keyrepr = repr1(key, newlevel)
             valrepr = repr1(x[key], newlevel)
             pieces.append('%s: %s' % (keyrepr, valrepr))
-        if n > self.maxdict: pieces.append('...')
+        if n > self.maxdict:
+            pieces.append('...')
         s = ', '.join(pieces)
         return '{%s}' % (s,)
 
     def repr_str(self, x, level):
         s = __builtin__.repr(x[:self.maxstring])
         if len(s) > self.maxstring:
-            i = max(0, (self.maxstring-3)//2)
-            j = max(0, self.maxstring-3-i)
-            s = __builtin__.repr(x[:i] + x[len(x)-j:])
-            s = s[:i] + '...' + s[len(s)-j:]
+            i = max(0, (self.maxstring - 3) // 2)
+            j = max(0, self.maxstring - 3 - i)
+            s = __builtin__.repr(x[:i] + x[len(x) - j:])
+            s = s[:i] + '...' + s[len(s) - j:]
         return s
 
     def repr_long(self, x, level):
-        s = __builtin__.repr(x) # XXX Hope this isn't too slow...
+        s = __builtin__.repr(x)  # XXX Hope this isn't too slow...
         if len(s) > self.maxlong:
-            i = max(0, (self.maxlong-3)//2)
-            j = max(0, self.maxlong-3-i)
-            s = s[:i] + '...' + s[len(s)-j:]
+            i = max(0, (self.maxlong - 3) // 2)
+            j = max(0, self.maxlong - 3 - i)
+            s = s[:i] + '...' + s[len(s) - j:]
         return s
 
     def repr_instance(self, x, level):
@@ -113,9 +119,9 @@ class Repr:
         except Exception:
             return '<%s instance at %x>' % (x.__class__.__name__, id(x))
         if len(s) > self.maxstring:
-            i = max(0, (self.maxstring-3)//2)
-            j = max(0, self.maxstring-3-i)
-            s = s[:i] + '...' + s[len(s)-j:]
+            i = max(0, (self.maxstring - 3) // 2)
+            j = max(0, self.maxstring - 3 - i)
+            s = s[:i] + '...' + s[len(s) - j:]
         return s
 
 
@@ -127,6 +133,7 @@ def _possibly_sorted(x):
         return sorted(x)
     except Exception:
         return list(x)
+
 
 aRepr = Repr()
 repr = aRepr.repr

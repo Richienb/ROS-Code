@@ -88,7 +88,10 @@ class SymtableTest(unittest.TestCase):
 
     def test_function_info(self):
         func = self.spam
-        self.assertEqual(sorted(func.get_parameters()), ["a", "b", "kw", "var"])
+        self.assertEqual(
+            sorted(
+                func.get_parameters()), [
+                "a", "b", "kw", "var"])
         expected = ["a", "b", "internal", "kw", "var", "x"]
         self.assertEqual(sorted(func.get_locals()), expected)
         self.assertEqual(sorted(func.get_globals()), ["bar", "glob"])
@@ -155,8 +158,8 @@ class SymtableTest(unittest.TestCase):
         self.assertEqual(self.Mine.get_methods(), ('a_method',))
 
     def test_filename_correct(self):
-        ### Bug tickler: SyntaxError file name correct whether error raised
-        ### while parsing or building symbol table.
+        # Bug tickler: SyntaxError file name correct whether error raised
+        # while parsing or building symbol table.
         def checkfilename(brokencode):
             try:
                 symtable.symtable(brokencode, "spam", "exec")
@@ -179,6 +182,7 @@ class SymtableTest(unittest.TestCase):
 
 def test_main():
     test_support.run_unittest(SymtableTest)
+
 
 if __name__ == '__main__':
     test_main()

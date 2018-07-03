@@ -4,8 +4,9 @@ import os
 from test_support import run_unittest, import_module
 msilib = import_module('msilib')
 
+
 class Test_make_id(unittest.TestCase):
-    #http://msdn.microsoft.com/en-us/library/aa369212(v=vs.85).aspx
+    # http://msdn.microsoft.com/en-us/library/aa369212(v=vs.85).aspx
     """The Identifier data type is a text string. Identifiers may contain the
     ASCII characters A-Z (a-z), digits, underscores (_), or periods (.).
     However, every identifier must begin with either a letter or an
@@ -23,7 +24,7 @@ class Test_make_id(unittest.TestCase):
             msilib.make_id("_"), "_")
         self.assertEqual(
             msilib.make_id("a"), "a")
-        #self.assertEqual(
+        # self.assertEqual(
         #    msilib.make_id(""), "")
 
     def test_invalid_first_char(self):
@@ -35,12 +36,13 @@ class Test_make_id(unittest.TestCase):
     def test_invalid_any_char(self):
         self.assertEqual(
             msilib.make_id(".s\x82ort"), "_.s_ort")
-        self.assertEqual    (
+        self.assertEqual(
             msilib.make_id(".s\x82o?*+rt"), "_.s_o___rt")
 
 
 def test_main():
     run_unittest(__name__)
+
 
 if __name__ == '__main__':
     test_main()

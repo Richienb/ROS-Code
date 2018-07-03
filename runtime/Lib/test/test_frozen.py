@@ -4,23 +4,24 @@ from test.test_support import captured_stdout, run_unittest
 import unittest
 import sys
 
+
 class FrozenTests(unittest.TestCase):
     def test_frozen(self):
 
         with captured_stdout() as stdout:
             try:
                 import __hello__
-            except ImportError, x:
+            except ImportError as x:
                 self.fail("import __hello__ failed:" + str(x))
 
             try:
                 import __phello__
-            except ImportError, x:
+            except ImportError as x:
                 self.fail("import __phello__ failed:" + str(x))
 
             try:
                 import __phello__.spam
-            except ImportError, x:
+            except ImportError as x:
                 self.fail("import __phello__.spam failed:" + str(x))
 
             try:
@@ -40,7 +41,6 @@ class FrozenTests(unittest.TestCase):
 
 def test_main():
     run_unittest(FrozenTests)
-
 
 
 if __name__ == '__main__':

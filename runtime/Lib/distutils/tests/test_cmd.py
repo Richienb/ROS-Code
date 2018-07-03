@@ -8,9 +8,11 @@ from distutils.dist import Distribution
 from distutils.errors import DistutilsOptionError
 from distutils import debug
 
+
 class MyCmd(Command):
     def initialize_options(self):
         pass
+
 
 class CommandTestCase(unittest.TestCase):
 
@@ -52,6 +54,7 @@ class CommandTestCase(unittest.TestCase):
     def test_dump_options(self):
 
         msgs = []
+
         def _announce(msg, level):
             msgs.append(msg)
         cmd = self.cmd
@@ -120,8 +123,10 @@ class CommandTestCase(unittest.TestCase):
         finally:
             debug.DEBUG = False
 
+
 def test_suite():
     return unittest.makeSuite(CommandTestCase)
+
 
 if __name__ == '__main__':
     run_unittest(test_suite())

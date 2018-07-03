@@ -16,15 +16,15 @@
 
 class PseudoIndex(object):
     def __index__(self):
-        for c in "foobar"*n:
+        for c in "foobar" * n:
             a.append(c)
         return n * 4
 
 
 for n in range(1, 100000, 100):
-    a = bytearray("test"*n)
+    a = bytearray("test" * n)
     buf = buffer(a)
 
     s = buf[:PseudoIndex():1]
-    #print repr(s)
+    # print repr(s)
     #assert s == "test"*n

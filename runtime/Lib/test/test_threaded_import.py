@@ -12,6 +12,7 @@ thread = import_module('thread')
 critical_section = thread.allocate_lock()
 done = thread.allocate_lock()
 
+
 def task():
     global N, critical_section, done
     import random
@@ -25,6 +26,7 @@ def task():
     critical_section.release()
     if finished:
         done.release()
+
 
 def test_import_hangers():
     import sys
@@ -51,6 +53,7 @@ def test_import_hangers():
 # regrtest to invoke a module's "test_main" function (if any) after
 # importing it.
 
+
 def test_main():        # magic name!  see above
     global N, done
 
@@ -71,6 +74,7 @@ def test_main():        # magic name!  see above
     done.release()
 
     test_import_hangers()
+
 
 if __name__ == "__main__":
     test_main()

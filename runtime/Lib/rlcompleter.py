@@ -40,8 +40,9 @@ import __main__
 
 __all__ = ["Completer"]
 
+
 class Completer:
-    def __init__(self, namespace = None):
+    def __init__(self, namespace=None):
         """Create a new completer for the command line.
 
         Completer([namespace]) -> completer instance.
@@ -57,7 +58,7 @@ class Completer:
         """
 
         if namespace and not isinstance(namespace, dict):
-            raise TypeError,'namespace must be a dictionary'
+            raise TypeError('namespace must be a dictionary')
 
         # Don't bind to namespace quite yet, but flag whether the user wants a
         # specific namespace or to use __main__.__dict__. This will allow us
@@ -151,12 +152,14 @@ class Completer:
                 matches.append(word)
         return matches
 
+
 def get_class_members(klass):
     ret = dir(klass)
-    if hasattr(klass,'__bases__'):
+    if hasattr(klass, '__bases__'):
         for base in klass.__bases__:
             ret = ret + get_class_members(base)
     return ret
+
 
 try:
     import readline

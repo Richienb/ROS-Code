@@ -41,7 +41,7 @@ class FormatTests(unittest.TestCase):
             ('%e', 1.234),
             ('%+e', 1.234),
             ('%-e', 1.234),
-            ]
+        ]
 
         with check_warnings(('PyOS_ascii_formatd is deprecated',
                              DeprecationWarning)):
@@ -53,6 +53,7 @@ class FormatTests(unittest.TestCase):
 
 def test_main():
     run_unittest(FormatDeprecationTests, FormatTests)
+
 
 if __name__ == '__main__':
     test_main()

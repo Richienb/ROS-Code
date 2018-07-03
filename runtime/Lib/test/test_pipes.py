@@ -12,6 +12,7 @@ TESTFN2 = TESTFN + "2"
 # tr a-z A-Z is not portable, so make the ranges explicit
 s_command = 'tr %s %s' % (string.ascii_lowercase, string.ascii_uppercase)
 
+
 class SimplePipeTests(unittest.TestCase):
     def tearDown(self):
         for f in (TESTFN, TESTFN2):
@@ -50,7 +51,7 @@ class SimplePipeTests(unittest.TestCase):
             f.write(d)
         with open(TESTFN2, 'w') as f:
             f.write('')
-        t=pipes.Template()
+        t = pipes.Template()
         t.copy(TESTFN, TESTFN2)
         with open(TESTFN2) as f:
             self.assertEqual(f.read(), d)
@@ -60,7 +61,7 @@ class SimplePipeTests(unittest.TestCase):
         d = 'empty pipeline test READ'
         with open(TESTFN, 'w') as f:
             f.write(d)
-        t=pipes.Template()
+        t = pipes.Template()
         with t.open(TESTFN, 'r') as f:
             self.assertEqual(f.read(), d)
 
@@ -82,7 +83,7 @@ class SimplePipeTests(unittest.TestCase):
         self.assertEqual(pipes.quote('test file name'), "'test file name'")
         for u in unsafe:
             self.assertEqual(pipes.quote('test%sname' % u),
-                              "'test%sname'" % u)
+                             "'test%sname'" % u)
         for u in unsafe:
             self.assertEqual(pipes.quote("test%s'name'" % u),
                              "'test%s'\"'\"'name'\"'\"''" % u)
@@ -92,7 +93,7 @@ class SimplePipeTests(unittest.TestCase):
         self.assertEqual(repr(t), "<Template instance, steps=[]>")
         t.append('tr a-z A-Z', pipes.STDIN_STDOUT)
         self.assertEqual(repr(t),
-                    "<Template instance, steps=[('tr a-z A-Z', '--')]>")
+                         "<Template instance, steps=[('tr a-z A-Z', '--')]>")
 
     def testSetDebug(self):
         t = pipes.Template()
@@ -135,19 +136,18 @@ class SimplePipeTests(unittest.TestCase):
         # command needing file input but with no $IN
         t = pipes.Template()
         self.assertRaises(ValueError, t.append, 'boguscmd $OUT',
-                           pipes.FILEIN_FILEOUT)
+                          pipes.FILEIN_FILEOUT)
         t = pipes.Template()
         self.assertRaises(ValueError, t.append, 'boguscmd',
-                           pipes.FILEIN_STDOUT)
+                          pipes.FILEIN_STDOUT)
 
         # command needing file output but with no $OUT
         t = pipes.Template()
         self.assertRaises(ValueError, t.append, 'boguscmd $IN',
-                           pipes.FILEIN_FILEOUT)
+                          pipes.FILEIN_FILEOUT)
         t = pipes.Template()
         self.assertRaises(ValueError, t.append, 'boguscmd',
-                           pipes.STDIN_FILEOUT)
-
+                          pipes.STDIN_FILEOUT)
 
     def testBadPrependOptions(self):
         t = pipes.Template()
@@ -169,18 +169,18 @@ class SimplePipeTests(unittest.TestCase):
         # command needing file input but with no $IN
         t = pipes.Template()
         self.assertRaises(ValueError, t.prepend, 'boguscmd $OUT',
-                           pipes.FILEIN_FILEOUT)
+                          pipes.FILEIN_FILEOUT)
         t = pipes.Template()
         self.assertRaises(ValueError, t.prepend, 'boguscmd',
-                           pipes.FILEIN_STDOUT)
+                          pipes.FILEIN_STDOUT)
 
         # command needing file output but with no $OUT
         t = pipes.Template()
         self.assertRaises(ValueError, t.prepend, 'boguscmd $IN',
-                           pipes.FILEIN_FILEOUT)
+                          pipes.FILEIN_FILEOUT)
         t = pipes.Template()
         self.assertRaises(ValueError, t.prepend, 'boguscmd',
-                           pipes.STDIN_FILEOUT)
+                          pipes.STDIN_FILEOUT)
 
     def testBadOpenMode(self):
         t = pipes.Template()
@@ -196,9 +196,11 @@ class SimplePipeTests(unittest.TestCase):
         self.assertNotEqual(id(t.steps), id(u.steps))
         self.assertEqual(t.debugging, u.debugging)
 
+
 def test_main():
     run_unittest(SimplePipeTests)
     reap_children()
+
 
 if __name__ == "__main__":
     test_main()

@@ -4,6 +4,7 @@ from test import test_support
 
 pwd = test_support.import_module('pwd')
 
+
 class PwdTest(unittest.TestCase):
 
     def test_values(self):
@@ -43,7 +44,7 @@ class PwdTest(unittest.TestCase):
         # for each uid is among those from getpwall() for this uid
         for e in entries:
             if not e[0] or e[0] == '+':
-                continue # skip NIS entries etc.
+                continue  # skip NIS entries etc.
             self.assertIn(pwd.getpwnam(e.pw_name), entriesbyname[e.pw_name])
             self.assertIn(pwd.getpwuid(e.pw_uid), entriesbyuid[e.pw_uid])
 
@@ -91,7 +92,7 @@ class PwdTest(unittest.TestCase):
         # loop, say), pwd.getpwuid() might still be able to find data for that
         # uid. Using sys.maxint may provoke the same problems, but hopefully
         # it will be a more repeatable failure.
-        fakeuid = sys.maxint
+        fakeuid = sys.maxsize
         self.assertNotIn(fakeuid, byuids)
         self.assertRaises(KeyError, pwd.getpwuid, fakeuid)
 
@@ -102,8 +103,10 @@ class PwdTest(unittest.TestCase):
         self.assertRaises(KeyError, pwd.getpwuid, 2**128)
         self.assertRaises(KeyError, pwd.getpwuid, -2**128)
 
+
 def test_main():
     test_support.run_unittest(PwdTest)
+
 
 if __name__ == "__main__":
     test_main()

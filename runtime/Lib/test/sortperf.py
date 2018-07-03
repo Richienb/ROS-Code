@@ -14,6 +14,7 @@ import os
 
 td = tempfile.gettempdir()
 
+
 def randfloats(n):
     """Return a list of n random floats in [0, 1)."""
     # Generating floats is expensive, so this writes them out to a file in
@@ -37,7 +38,7 @@ def randfloats(n):
                         os.unlink(fn)
                     except os.error:
                         pass
-        except IOError, msg:
+        except IOError as msg:
             print "can't write", fn, ":", msg
     else:
         result = marshal.load(fp)
@@ -53,15 +54,18 @@ def randfloats(n):
     assert len(result) == n
     return result
 
+
 def flush():
     sys.stdout.flush()
+
 
 def doit(L):
     t0 = time.clock()
     L.sort()
     t1 = time.clock()
-    print "%6.2f" % (t1-t0),
+    print "%6.2f" % (t1 - t0),
     flush()
+
 
 def tabulate(r):
     """Tabulate sort speed for lists of various sizes.
@@ -83,34 +87,34 @@ def tabulate(r):
 
     """
     cases = tuple([ch + "sort" for ch in r"*\/3+%~=!"])
-    fmt = ("%2s %7s" + " %6s"*len(cases))
+    fmt = ("%2s %7s" + " %6s" * len(cases))
     print fmt % (("i", "2**i") + cases)
     for i in r:
         n = 1 << i
         L = randfloats(n)
         print "%2d %7d" % (i, n),
         flush()
-        doit(L) # *sort
+        doit(L)  # *sort
         L.reverse()
-        doit(L) # \sort
-        doit(L) # /sort
+        doit(L)  # \sort
+        doit(L)  # /sort
 
         # Do 3 random exchanges.
         for dummy in range(3):
             i1 = random.randrange(n)
             i2 = random.randrange(n)
             L[i1], L[i2] = L[i2], L[i1]
-        doit(L) # 3sort
+        doit(L)  # 3sort
 
         # Replace the last 10 with random floats.
         if n >= 10:
             L[-10:] = [random.random() for dummy in range(10)]
-        doit(L) # +sort
+        doit(L)  # +sort
 
         # Replace 1% of the elements at random.
         for dummy in xrange(n // 100):
             L[random.randrange(n)] = random.random()
-        doit(L) # %sort
+        doit(L)  # %sort
 
         # Arrange for lots of duplicates.
         if n > 4:
@@ -119,12 +123,12 @@ def tabulate(r):
             # Force the elements to be distinct objects, else timings can be
             # artificially low.
             L = map(lambda x: --x, L)
-        doit(L) # ~sort
+        doit(L)  # ~sort
         del L
 
         # All equal.  Again, force the elements to be distinct objects.
         L = map(abs, [-0.5] * n)
-        doit(L) # =sort
+        doit(L)  # =sort
         del L
 
         # This one looks like [3, 2, 1, 0, 0, 1, 2, 3].  It was a bad case
@@ -136,8 +140,9 @@ def tabulate(r):
         # Force to float, so that the timings are comparable.  This is
         # significantly faster if we leave tham as ints.
         L = map(float, L)
-        doit(L) # !sort
+        doit(L)  # !sort
         print
+
 
 def main():
     """Main program when invoked as a script.
@@ -162,8 +167,9 @@ def main():
                 for a in sys.argv[3:]:
                     x = 69069 * x + hash(a)
                 random.seed(x)
-    r = range(k1, k2+1)                 # include the end point
+    r = range(k1, k2 + 1)                 # include the end point
     tabulate(r)
+
 
 if __name__ == '__main__':
     main()

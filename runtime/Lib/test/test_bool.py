@@ -4,6 +4,9 @@ import unittest
 from test import test_support
 
 import os
+import numbers
+import collections
+
 
 class BoolTest(unittest.TestCase):
 
@@ -52,9 +55,9 @@ class BoolTest(unittest.TestCase):
         self.assertIsNot(float(True), True)
 
     def test_long(self):
-        self.assertEqual(long(False), 0L)
+        self.assertEqual(long(False), 0)
         self.assertIsNot(long(False), False)
-        self.assertEqual(long(True), 1L)
+        self.assertEqual(long(True), 1)
         self.assertIsNot(long(True), True)
 
     def test_math(self):
@@ -72,35 +75,35 @@ class BoolTest(unittest.TestCase):
         self.assertEqual(~False, -1)
         self.assertEqual(~True, -2)
 
-        self.assertEqual(False+2, 2)
-        self.assertEqual(True+2, 3)
-        self.assertEqual(2+False, 2)
-        self.assertEqual(2+True, 3)
+        self.assertEqual(False + 2, 2)
+        self.assertEqual(True + 2, 3)
+        self.assertEqual(2 + False, 2)
+        self.assertEqual(2 + True, 3)
 
-        self.assertEqual(False+False, 0)
-        self.assertIsNot(False+False, False)
-        self.assertEqual(False+True, 1)
-        self.assertIsNot(False+True, True)
-        self.assertEqual(True+False, 1)
-        self.assertIsNot(True+False, True)
-        self.assertEqual(True+True, 2)
+        self.assertEqual(False + False, 0)
+        self.assertIsNot(False + False, False)
+        self.assertEqual(False + True, 1)
+        self.assertIsNot(False + True, True)
+        self.assertEqual(True + False, 1)
+        self.assertIsNot(True + False, True)
+        self.assertEqual(True + True, 2)
 
-        self.assertEqual(True-True, 0)
-        self.assertIsNot(True-True, False)
-        self.assertEqual(False-False, 0)
-        self.assertIsNot(False-False, False)
-        self.assertEqual(True-False, 1)
-        self.assertIsNot(True-False, True)
-        self.assertEqual(False-True, -1)
+        self.assertEqual(True - True, 0)
+        self.assertIsNot(True - True, False)
+        self.assertEqual(False - False, 0)
+        self.assertIsNot(False - False, False)
+        self.assertEqual(True - False, 1)
+        self.assertIsNot(True - False, True)
+        self.assertEqual(False - True, -1)
 
-        self.assertEqual(True*1, 1)
-        self.assertEqual(False*1, 0)
-        self.assertIsNot(False*1, False)
+        self.assertEqual(True * 1, 1)
+        self.assertEqual(False * 1, 0)
+        self.assertIsNot(False * 1, False)
 
-        self.assertEqual(True//1, 1)
-        self.assertIsNot(True//1, True)
-        self.assertEqual(False//1, 0)
-        self.assertIsNot(False//1, False)
+        self.assertEqual(True // 1, 1)
+        self.assertIsNot(True // 1, True)
+        self.assertEqual(False // 1, 0)
+        self.assertIsNot(False // 1, False)
 
         for b in False, True:
             for i in 0, 1, 2:
@@ -109,34 +112,34 @@ class BoolTest(unittest.TestCase):
 
         for a in False, True:
             for b in False, True:
-                self.assertIs(a&b, bool(int(a)&int(b)))
-                self.assertIs(a|b, bool(int(a)|int(b)))
-                self.assertIs(a^b, bool(int(a)^int(b)))
-                self.assertEqual(a&int(b), int(a)&int(b))
-                self.assertIsNot(a&int(b), bool(int(a)&int(b)))
-                self.assertEqual(a|int(b), int(a)|int(b))
-                self.assertIsNot(a|int(b), bool(int(a)|int(b)))
-                self.assertEqual(a^int(b), int(a)^int(b))
-                self.assertIsNot(a^int(b), bool(int(a)^int(b)))
-                self.assertEqual(int(a)&b, int(a)&int(b))
-                self.assertIsNot(int(a)&b, bool(int(a)&int(b)))
-                self.assertEqual(int(a)|b, int(a)|int(b))
-                self.assertIsNot(int(a)|b, bool(int(a)|int(b)))
-                self.assertEqual(int(a)^b, int(a)^int(b))
-                self.assertIsNot(int(a)^b, bool(int(a)^int(b)))
+                self.assertIs(a & b, bool(int(a) & int(b)))
+                self.assertIs(a | b, bool(int(a) | int(b)))
+                self.assertIs(a ^ b, bool(int(a) ^ int(b)))
+                self.assertEqual(a & int(b), int(a) & int(b))
+                self.assertIsNot(a & int(b), bool(int(a) & int(b)))
+                self.assertEqual(a | int(b), int(a) | int(b))
+                self.assertIsNot(a | int(b), bool(int(a) | int(b)))
+                self.assertEqual(a ^ int(b), int(a) ^ int(b))
+                self.assertIsNot(a ^ int(b), bool(int(a) ^ int(b)))
+                self.assertEqual(int(a) & b, int(a) & int(b))
+                self.assertIsNot(int(a) & b, bool(int(a) & int(b)))
+                self.assertEqual(int(a) | b, int(a) | int(b))
+                self.assertIsNot(int(a) | b, bool(int(a) | int(b)))
+                self.assertEqual(int(a) ^ b, int(a) ^ int(b))
+                self.assertIsNot(int(a) ^ b, bool(int(a) ^ int(b)))
 
-        self.assertIs(1==1, True)
-        self.assertIs(1==0, False)
-        self.assertIs(0<1, True)
-        self.assertIs(1<0, False)
-        self.assertIs(0<=0, True)
-        self.assertIs(1<=0, False)
-        self.assertIs(1>0, True)
-        self.assertIs(1>1, False)
-        self.assertIs(1>=1, True)
-        self.assertIs(0>=1, False)
-        self.assertIs(0!=1, True)
-        self.assertIs(0!=0, False)
+        self.assertIs(1 == 1, True)
+        self.assertIs(1 == 0, False)
+        self.assertIs(0 < 1, True)
+        self.assertIs(1 < 0, False)
+        self.assertIs(0 <= 0, True)
+        self.assertIs(1 <= 0, False)
+        self.assertIs(1 > 0, True)
+        self.assertIs(1 > 1, False)
+        self.assertIs(1 >= 1, True)
+        self.assertIs(0 >= 1, False)
+        self.assertIs(0 != 1, True)
+        self.assertIs(0 != 0, False)
 
         x = [1]
         self.assertIs(x is x, True)
@@ -197,10 +200,10 @@ class BoolTest(unittest.TestCase):
 
     def test_haskey(self):
         self.assertIs(1 in {}, False)
-        self.assertIs(1 in {1:1}, True)
+        self.assertIs(1 in {1: 1}, True)
         with test_support.check_py3k_warnings():
-            self.assertIs({}.has_key(1), False)
-            self.assertIs({1:1}.has_key(1), True)
+            self.assertIs(1 in {}, False)
+            self.assertIs(1 in {1: 1}, True)
 
     def test_string(self):
         self.assertIs("xyz".endswith("z"), True)
@@ -223,8 +226,22 @@ class BoolTest(unittest.TestCase):
         self.assertIs("xyz".startswith("z"), False)
 
         if test_support.have_unicode:
-            self.assertIs(unicode("xyz", 'ascii').endswith(unicode("z", 'ascii')), True)
-            self.assertIs(unicode("xyz", 'ascii').endswith(unicode("x", 'ascii')), False)
+            self.assertIs(
+                unicode(
+                    "xyz",
+                    'ascii').endswith(
+                    unicode(
+                        "z",
+                        'ascii')),
+                True)
+            self.assertIs(
+                unicode(
+                    "xyz",
+                    'ascii').endswith(
+                    unicode(
+                        "x",
+                        'ascii')),
+                False)
             self.assertIs(unicode("xyz0123", 'ascii').isalnum(), True)
             self.assertIs(unicode("@#$%", 'ascii').isalnum(), False)
             self.assertIs(unicode("xyz", 'ascii').isalpha(), True)
@@ -243,8 +260,22 @@ class BoolTest(unittest.TestCase):
             self.assertIs(unicode("x", 'ascii').istitle(), False)
             self.assertIs(unicode("XYZ", 'ascii').isupper(), True)
             self.assertIs(unicode("xyz", 'ascii').isupper(), False)
-            self.assertIs(unicode("xyz", 'ascii').startswith(unicode("x", 'ascii')), True)
-            self.assertIs(unicode("xyz", 'ascii').startswith(unicode("z", 'ascii')), False)
+            self.assertIs(
+                unicode(
+                    "xyz",
+                    'ascii').startswith(
+                    unicode(
+                        "x",
+                        'ascii')),
+                True)
+            self.assertIs(
+                unicode(
+                    "xyz",
+                    'ascii').startswith(
+                    unicode(
+                        "z",
+                        'ascii')),
+                False)
 
     def test_boolean(self):
         self.assertEqual(True & 1, 1)
@@ -279,18 +310,18 @@ class BoolTest(unittest.TestCase):
         self.assertIs(operator.truth(0), False)
         self.assertIs(operator.truth(1), True)
         with test_support.check_py3k_warnings():
-            self.assertIs(operator.isCallable(0), False)
-            self.assertIs(operator.isCallable(len), True)
-        self.assertIs(operator.isNumberType(None), False)
-        self.assertIs(operator.isNumberType(0), True)
+            self.assertIs(hasattr(0, '__call__'), False)
+            self.assertIs(hasattr(len, '__call__'), True)
+        self.assertIs(isinstance(None, numbers.Number), False)
+        self.assertIs(isinstance(0, numbers.Number), True)
         self.assertIs(operator.not_(1), False)
         self.assertIs(operator.not_(0), True)
-        self.assertIs(operator.isSequenceType(0), False)
-        self.assertIs(operator.isSequenceType([]), True)
+        self.assertIs(isinstance(0, collections.Sequence), False)
+        self.assertIs(isinstance([], collections.Sequence), True)
         self.assertIs(operator.contains([], 1), False)
         self.assertIs(operator.contains([1], 1), True)
-        self.assertIs(operator.isMappingType(1), False)
-        self.assertIs(operator.isMappingType({}), True)
+        self.assertIs(isinstance(1, collections.Mapping), False)
+        self.assertIs(isinstance({}, collections.Mapping), True)
         self.assertIs(operator.lt(0, 0), False)
         self.assertIs(operator.lt(0, 1), True)
         self.assertIs(operator.is_(True, True), True)
@@ -318,7 +349,8 @@ class BoolTest(unittest.TestCase):
         self.assertIs(cPickle.loads(cPickle.dumps(False, True)), False)
 
     def test_mixedpickle(self):
-        import pickle, cPickle
+        import pickle
+        import cPickle
         self.assertIs(pickle.loads(cPickle.dumps(True)), True)
         self.assertIs(pickle.loads(cPickle.dumps(False)), False)
         self.assertIs(pickle.loads(cPickle.dumps(True, True)), True)
@@ -330,7 +362,8 @@ class BoolTest(unittest.TestCase):
         self.assertIs(cPickle.loads(pickle.dumps(False, True)), False)
 
     def test_picklevalues(self):
-        import pickle, cPickle
+        import pickle
+        import cPickle
 
         # Test for specific backwards-compatible pickle values
         self.assertEqual(pickle.dumps(True), "I01\n.")
@@ -346,7 +379,8 @@ class BoolTest(unittest.TestCase):
         # Verify that TypeError occurs when bad things are returned
         # from __nonzero__().  This isn't really a bool test, but
         # it's related.
-        check = lambda o: self.assertRaises(TypeError, bool, o)
+        def check(o): return self.assertRaises(TypeError, bool, o)
+
         class Foo(object):
             def __nonzero__(self):
                 return self
@@ -365,6 +399,7 @@ class BoolTest(unittest.TestCase):
 
 def test_main():
     test_support.run_unittest(BoolTest)
+
 
 if __name__ == "__main__":
     test_main()

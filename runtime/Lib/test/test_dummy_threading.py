@@ -3,6 +3,7 @@ import unittest
 import dummy_threading as _threading
 import time
 
+
 class DummyThreadingTestCase(unittest.TestCase):
 
     class TestThread(_threading.Thread):
@@ -45,7 +46,7 @@ class DummyThreadingTestCase(unittest.TestCase):
 
     def test_tasks(self):
         for i in range(self.numtasks):
-            t = self.TestThread(name="<thread %d>"%i)
+            t = self.TestThread(name="<thread %d>" % i)
             self.threads.append(t)
             t.start()
 
@@ -56,8 +57,10 @@ class DummyThreadingTestCase(unittest.TestCase):
         if test_support.verbose:
             print 'all tasks done'
 
+
 def test_main():
     test_support.run_unittest(DummyThreadingTestCase)
+
 
 if __name__ == '__main__':
     test_main()

@@ -16,6 +16,7 @@ class AnchorCollector(htmllib.HTMLParser):
     def anchor_bgn(self, *args):
         self.__anchors.append(args)
 
+
 class DeclCollector(htmllib.HTMLParser):
     def __init__(self, *args, **kw):
         self.__decls = []
@@ -60,6 +61,7 @@ class HTMLParserTestCase(unittest.TestCase):
                          ["if !supportEmptyParas",
                           "endif"
                           ])
+
 
 def test_main():
     test_support.run_unittest(HTMLParserTestCase)

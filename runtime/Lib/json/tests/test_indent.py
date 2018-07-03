@@ -5,8 +5,8 @@ from json.tests import PyTest, CTest
 
 class TestIndent(object):
     def test_indent(self):
-        h = [['blorpie'], ['whoops'], [], 'd-shtaeou', 'd-nthiouh', 'i-vhbjkhnth',
-             {'nifty': 87}, {'field': 'yes', 'morefield': False} ]
+        h = [['blorpie'], ['whoops'], [], 'd-shtaeou', 'd-nthiouh',
+             'i-vhbjkhnth', {'nifty': 87}, {'field': 'yes', 'morefield': False}]
 
         expect = textwrap.dedent("""\
         [
@@ -29,7 +29,6 @@ class TestIndent(object):
           }
         ]""")
 
-
         d1 = self.dumps(h)
         d2 = self.dumps(h, indent=2, sort_keys=True, separators=(',', ': '))
 
@@ -42,6 +41,7 @@ class TestIndent(object):
 
     def test_indent0(self):
         h = {3: 1}
+
         def check(indent, expected):
             d1 = self.dumps(h, indent=indent)
             self.assertEqual(d1, expected)
@@ -56,5 +56,9 @@ class TestIndent(object):
         check(None, '{"3": 1}')
 
 
-class TestPyIndent(TestIndent, PyTest): pass
-class TestCIndent(TestIndent, CTest): pass
+class TestPyIndent(TestIndent, PyTest):
+    pass
+
+
+class TestCIndent(TestIndent, CTest):
+    pass

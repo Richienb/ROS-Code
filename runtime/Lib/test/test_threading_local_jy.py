@@ -7,11 +7,13 @@ import unittest
 from test import test_support
 from threading import local
 
+
 class LocalStuff(local):
     def __init__(self, stuff, foo=1):
         local.__init__(self)
         self.stuff = stuff
         self.foo = foo
+
 
 class TestThread(threading.Thread):
     def __init__(self, stuff, name):
@@ -30,13 +32,14 @@ class TestThread(threading.Thread):
                     self.errors.append("myStuff should equal self.stuff.stuff")
                 if self.stuff.foo != 1:
                     self.errors.append("foo should be 1")
-            except TypeError, te:
+            except TypeError as te:
                 self.errors.append("TypeError: %s" % te)
-            except:
-                self.errors.append("unexpected error: %s" % sys.exc_info()[0] )
+            except BaseException:
+                self.errors.append("unexpected error: %s" % sys.exc_info()[0])
 
     def getErrors(self):
         return self.errors
+
 
 class ThreadLocalConstructorTestCase(unittest.TestCase):
 

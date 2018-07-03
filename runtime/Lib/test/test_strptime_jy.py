@@ -10,9 +10,18 @@ class ParsingTests(unittest.TestCase):
 
     def test_iso8601(self):
         now = datetime.utcnow().replace(microsecond=0)
-        self.assertEqual(now, datetime.strptime(now.isoformat('T'), "%Y-%m-%dT%H:%M:%S"))
+        self.assertEqual(
+            now,
+            datetime.strptime(
+                now.isoformat('T'),
+                "%Y-%m-%dT%H:%M:%S"))
         # tests bug 1662
-        self.assertEqual(now, datetime.strptime(now.isoformat('T') + 'Z', "%Y-%m-%dT%H:%M:%SZ"))
+        self.assertEqual(
+            now,
+            datetime.strptime(
+                now.isoformat('T') +
+                'Z',
+                "%Y-%m-%dT%H:%M:%SZ"))
 
     def test_IllegalArgument_to_ValueError(self):
         with self.assertRaises(ValueError):
@@ -25,6 +34,7 @@ class ParsingTests(unittest.TestCase):
     def test_issue2112(self):
         d = strptime('1', '%d')
         self.assertEqual(1900, d.tm_year)
+
 
 def test_main():
     test_support.run_unittest(

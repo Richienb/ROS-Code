@@ -7,6 +7,7 @@ from test.test_support import run_unittest, TESTFN, unlink
 import cProfile
 from test.test_profile import ProfileTest, regenerate_expected_output
 
+
 class CProfileTest(ProfileTest):
     profilerclass = cProfile.Profile
     expected_list_sort_output = "{method 'sort' of 'list' objects}"
@@ -29,6 +30,7 @@ class CProfileTest(ProfileTest):
 def test_main():
     run_unittest(CProfileTest)
 
+
 def main():
     if '-r' not in sys.argv:
         test_main()
@@ -37,7 +39,7 @@ def main():
 
 
 # Don't remove this comment. Everything below it is auto-generated.
-#--cut--------------------------------------------------------------------------
+# --cut--------------------------------------------------------------------------
 CProfileTest.expected_output['print_stats'] = """\
          126 function calls (106 primitive calls) in 1.000 seconds
 

@@ -12,8 +12,10 @@
 
 import weakref
 
+
 class A(object):
     pass
+
 
 def callback(x):
     del lst[:]

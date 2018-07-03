@@ -3,6 +3,7 @@ from test import test_support
 import java.lang
 import unittest
 
+
 class WrappedStrCmpTest(unittest.TestCase):
 
     def testWrappedWorksAsKey(self):
@@ -14,15 +15,18 @@ class WrappedStrCmpTest(unittest.TestCase):
         class Wrapper(object):
             def __init__(self, content):
                 self.content = content
+
             def __hash__(self):
                 return hash(self.content)
+
             def __cmp__(self, other):
                 if isinstance(other, Wrapper):
                     return cmp(self.content, other.content)
                 return cmp(self.content, other)
-        d = {'ABC' : 1}
+        d = {'ABC': 1}
         ABC = Wrapper('ABC')
         self.assertEquals(1, d[ABC])
+
 
 class StrConstructorTest(unittest.TestCase):
 
@@ -32,8 +36,14 @@ class StrConstructorTest(unittest.TestCase):
 
     def test_unicode_resistance(self):
         # Issue 2037: prevent byte/str elements > 255
-        self.assertRaises(UnicodeEncodeError, str, java.lang.String(u"caf\xe9 noir"))
-        self.assertRaises(UnicodeEncodeError, str, java.lang.String(u"abc\u0111efgh"))
+        self.assertRaises(
+            UnicodeEncodeError,
+            str,
+            java.lang.String(u"caf\xe9 noir"))
+        self.assertRaises(
+            UnicodeEncodeError,
+            str,
+            java.lang.String(u"abc\u0111efgh"))
 
 
 class StringSlicingTest(unittest.TestCase):
@@ -43,6 +53,7 @@ class StringSlicingTest(unittest.TestCase):
             "a"[10:]
         except StringOutOfBoundsError:
             self.fail("str slice threw StringOutOfBoundsError")
+
 
 class FormatTest(unittest.TestCase):
 
@@ -71,16 +82,16 @@ class FormatTest(unittest.TestCase):
         foo = False
         try:
             r = '%d' % (1, 2)
-        except TypeError, e:
+        except TypeError as e:
             self.failUnless("not all arguments converted" in str(e))
 
         try:
             r = '%d%d' % 1
-        except TypeError, e:
+        except TypeError as e:
             self.failUnless("not enough arguments for format string" in str(e))
         try:
             s = '%d%d' % (1,)
-        except TypeError, e:
+        except TypeError as e:
             self.failUnless("not enough arguments for format string" in str(e))
 
     def test_unicode_arg(self):
@@ -97,10 +108,14 @@ class FormatTest(unittest.TestCase):
 
         class S(object):
             def __str__(self): return "str"
+
             def __unicode__(self): return "unicode"
 
-        # Also, once a unicode has been found, next args should be __unicode__'d
-        self.assertEquals("%s %s %s" % ("foo", u"bar", S()), u"foo bar unicode")
+        # Also, once a unicode has been found, next args should be
+        # __unicode__'d
+        self.assertEquals(
+            "%s %s %s" %
+            ("foo", u"bar", S()), u"foo bar unicode")
         # But, args found before the first unicode should not be __unicode__'d
         self.assertEquals("%s %s %s" % (S(), u"bar", S()), u"str bar unicode")
 
@@ -110,6 +125,7 @@ class DisplayTest(unittest.TestCase):
     def test_str_and_repr(self):
         class s(str):
             pass
+
         class u(str):
             pass
 
@@ -117,12 +133,12 @@ class DisplayTest(unittest.TestCase):
             foo = cls('foo')
             for expr in 'str(foo)', 'foo.__str__()':
                 result = eval(expr)
-                self.assert_(type(result) == str)
+                self.assert_(isinstance(result, str))
                 self.assertEqual(result, 'foo')
 
             for expr in 'repr(foo)', 'foo.__repr__()':
                 result = eval(expr)
-                self.assert_(type(result) == str)
+                self.assert_(isinstance(result, str))
                 if issubclass(cls, unicode):
                     self.assertEqual(result, "u'foo'")
                 else:
@@ -131,7 +147,8 @@ class DisplayTest(unittest.TestCase):
     def test_basic_escapes(self):
         test = '\r\n\tfoo\a\b\f\v'
         self.assertEqual(repr(test), "'\\r\\n\\tfoo\\x07\\x08\\x0c\\x0b'")
-        self.assertEqual(repr(unicode(test)), "u'\\r\\n\\tfoo\\x07\\x08\\x0c\\x0b'")
+        self.assertEqual(repr(unicode(test)),
+                         "u'\\r\\n\\tfoo\\x07\\x08\\x0c\\x0b'")
         test2 = "'bar"
         self.assertEqual(repr(test2), '"\'bar"')
         self.assertEqual(repr(unicode(test2)), 'u"\'bar"')
@@ -169,6 +186,7 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(ord(bar[1]), 92)
         self.assertEqual(ord(bar[2]), 110)
 
+
 def test_main():
     test_support.run_unittest(
         WrappedStrCmpTest,
@@ -177,6 +195,7 @@ def test_main():
         FormatTest,
         DisplayTest,
         ParserTest)
+
 
 if __name__ == '__main__':
     test_main()

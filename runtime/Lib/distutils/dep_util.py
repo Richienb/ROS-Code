@@ -10,6 +10,7 @@ import os
 from stat import ST_MTIME
 from distutils.errors import DistutilsFileError
 
+
 def newer(source, target):
     """Tells if the target is newer than the source.
 
@@ -30,6 +31,7 @@ def newer(source, target):
 
     return os.stat(source)[ST_MTIME] > os.stat(target)[ST_MTIME]
 
+
 def newer_pairwise(sources, targets):
     """Walk two filename lists in parallel, testing if each source is newer
     than its corresponding target.  Return a pair of lists (sources,
@@ -37,7 +39,7 @@ def newer_pairwise(sources, targets):
     of 'newer()'.
     """
     if len(sources) != len(targets):
-        raise ValueError, "'sources' and 'targets' must be same length"
+        raise ValueError("'sources' and 'targets' must be same length")
 
     # build a pair of lists (sources, targets) where  source is newer
     n_sources = []
@@ -48,6 +50,7 @@ def newer_pairwise(sources, targets):
             n_targets.append(target)
 
     return n_sources, n_targets
+
 
 def newer_group(sources, target, missing='error'):
     """Return true if 'target' is out-of-date with respect to any file
@@ -79,9 +82,9 @@ def newer_group(sources, target, missing='error'):
             if missing == 'error':      # blow up when we stat() the file
                 pass
             elif missing == 'ignore':   # missing source dropped from
-                continue                #  target's dependency list
+                continue  # target's dependency list
             elif missing == 'newer':    # missing source means target is
-                return True             #  out-of-date
+                return True  # out-of-date
 
         if os.stat(source)[ST_MTIME] > target_mtime:
             return True

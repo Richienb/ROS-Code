@@ -20,7 +20,7 @@ class test_dist(Command):
 
     user_options = [
         ("sample-option=", "S", "help text"),
-        ]
+    ]
 
     def initialize_options(self):
         self.sample_option = None
@@ -224,13 +224,13 @@ class DistributionTestCase(support.TempdirManager,
             all_files = d.find_config_files()
 
             d = distutils.dist.Distribution(attrs={'script_args':
-                                            ['--no-user-cfg']})
+                                                   ['--no-user-cfg']})
             files = d.find_config_files()
         finally:
             os.path.expanduser = old_expander
 
         # make sure --no-user-cfg disables the user cfg file
-        self.assertEqual(len(all_files)-1, len(files))
+        self.assertEqual(len(all_files) - 1, len(files))
 
 
 class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
@@ -384,7 +384,7 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
                 os.environ['HOME'] = temp_dir
                 files = dist.find_config_files()
                 self.assertIn(user_filename, files,
-                             '%r not found in %r' % (user_filename, files))
+                              '%r not found in %r' % (user_filename, files))
         finally:
             os.remove(user_filename)
 
@@ -440,6 +440,7 @@ def test_suite():
     suite.addTest(unittest.makeSuite(DistributionTestCase))
     suite.addTest(unittest.makeSuite(MetadataTestCase))
     return suite
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

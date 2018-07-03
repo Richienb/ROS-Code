@@ -5,11 +5,21 @@
 from test.test_support import verbose, import_module
 al = import_module('al', deprecated=True)
 
-alattrs = ['__doc__', '__name__', 'getdefault', 'getminmax', 'getname', 'getparams',
-           'newconfig', 'openport', 'queryparams', 'setparams']
+alattrs = [
+    '__doc__',
+    '__name__',
+    'getdefault',
+    'getminmax',
+    'getname',
+    'getparams',
+    'newconfig',
+    'openport',
+    'queryparams',
+    'setparams']
 
 # This is a very unobtrusive test for the existence of the al module and all its
 # attributes.  More comprehensive examples can be found in Demo/al
+
 
 def test_main():
     # touch all the attributes of al without doing anything

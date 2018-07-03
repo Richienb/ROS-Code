@@ -6,12 +6,17 @@ import test.test_support
 # changed number=10000 so we don't spend too much time testing this
 # module in the regrtest
 
+
 class TestTimeit(unittest.TestCase):
 
     def test_oct(self):
-        timing = timeit.Timer('for i in xrange(10): oct(i)', 'gc.enable()').timeit(number=10000)
+        timing = timeit.Timer(
+            'for i in xrange(10): oct(i)',
+            'gc.enable()').timeit(
+            number=10000)
         self.assertTrue(timing > 0.)
-        timing_vector = timeit.Timer('for i in xrange(10): oct(i)').repeat(number=10000)
+        timing_vector = timeit.Timer(
+            'for i in xrange(10): oct(i)').repeat(number=10000)
         self.assertEqual(len(timing_vector), 3)
         self.assertTrue(min(timing_vector) > 0.)
 
@@ -32,6 +37,7 @@ class TestTimeit(unittest.TestCase):
 
 def test_main():
     test.test_support.run_unittest(TestTimeit)
+
 
 if __name__ == "__main__":
     test_main()

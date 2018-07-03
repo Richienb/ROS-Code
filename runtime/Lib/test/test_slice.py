@@ -6,6 +6,7 @@ from cPickle import loads, dumps
 
 import sys
 
+
 class SliceTest(unittest.TestCase):
 
     def test_constructor(self):
@@ -33,7 +34,7 @@ class SliceTest(unittest.TestCase):
         class BadCmp(object):
             def __eq__(self, other):
                 raise Exc
-            __hash__ = None # Silence Py3k warning
+            __hash__ = None  # Silence Py3k warning
 
         s1 = slice(BadCmp())
         s2 = slice(BadCmp())
@@ -74,12 +75,12 @@ class SliceTest(unittest.TestCase):
         self.assertTrue(s.stop is obj)
 
     def test_indices(self):
-        self.assertEqual(slice(None           ).indices(10), (0, 10,  1))
-        self.assertEqual(slice(None,  None,  2).indices(10), (0, 10,  2))
-        self.assertEqual(slice(1,     None,  2).indices(10), (1, 10,  2))
-        self.assertEqual(slice(None,  None, -1).indices(10), (9, -1, -1))
-        self.assertEqual(slice(None,  None, -2).indices(10), (9, -1, -2))
-        self.assertEqual(slice(3,     None, -2).indices(10), (3, -1, -2))
+        self.assertEqual(slice(None).indices(10), (0, 10, 1))
+        self.assertEqual(slice(None, None, 2).indices(10), (0, 10, 2))
+        self.assertEqual(slice(1, None, 2).indices(10), (1, 10, 2))
+        self.assertEqual(slice(None, None, -1).indices(10), (9, -1, -1))
+        self.assertEqual(slice(None, None, -2).indices(10), (9, -1, -2))
+        self.assertEqual(slice(3, None, -2).indices(10), (3, -1, -2))
         # issue 3004 tests
         self.assertEqual(slice(None, -9).indices(10), (0, 1, 1))
         self.assertEqual(slice(None, -10).indices(10), (0, 0, 1))
@@ -95,21 +96,22 @@ class SliceTest(unittest.TestCase):
         self.assertEqual(slice(None, 10, -1).indices(10), (9, 9, -1))
 
         self.assertEqual(
-            slice(-100,  100     ).indices(10),
+            slice(-100, 100).indices(10),
             slice(None).indices(10)
         )
         self.assertEqual(
-            slice(100,  -100,  -1).indices(10),
+            slice(100, -100, -1).indices(10),
             slice(None, None, -1).indices(10)
         )
-        self.assertEqual(slice(-100L, 100L, 2L).indices(10), (0, 10,  2))
+        self.assertEqual(slice(-100, 100, 2).indices(10), (0, 10, 2))
 
-        self.assertEqual(range(10)[::sys.maxint - 1], [0])
+        self.assertEqual(range(10)[::sys.maxsize - 1], [0])
 
-        self.assertRaises(OverflowError, slice(None).indices, 1L<<100)
+        self.assertRaises(OverflowError, slice(None).indices, 1 << 100)
 
     def test_setslice_without_getslice(self):
         tmp = []
+
         class X(object):
             def __setslice__(self, i, j, k):
                 tmp.append((i, j, k))
@@ -121,14 +123,16 @@ class SliceTest(unittest.TestCase):
 
     def test_pickle(self):
         s = slice(10, 20, 3)
-        for protocol in (0,1,2):
+        for protocol in (0, 1, 2):
             t = loads(dumps(s, protocol))
             self.assertEqual(s, t)
             self.assertEqual(s.indices(15), t.indices(15))
             self.assertNotEqual(id(s), id(t))
 
+
 def test_main():
     test_support.run_unittest(SliceTest)
+
 
 if __name__ == "__main__":
     test_main()

@@ -39,8 +39,10 @@ username:tarek
 password:password
 """
 
+
 class RawInputs(object):
     """Fakes user inputs."""
+
     def __init__(self, *answers):
         self.answers = answers
         self.index = 0
@@ -51,8 +53,10 @@ class RawInputs(object):
         finally:
             self.index += 1
 
+
 class FakeOpener(object):
     """Fakes a PyPI server"""
+
     def __init__(self):
         self.reqs = []
 
@@ -66,12 +70,14 @@ class FakeOpener(object):
     def read(self):
         return 'xxx'
 
+
 class RegisterTestCase(PyPIRCCommandTestCase):
 
     def setUp(self):
         super(RegisterTestCase, self).setUp()
         # patching the password prompt
         self._old_getpass = getpass.getpass
+
         def _getpass(prompt):
             return 'password'
         getpass.getpass = _getpass
@@ -283,8 +289,10 @@ class RegisterTestCase(PyPIRCCommandTestCase):
             cmd.check_metadata()
             self.assertEqual(len(w.warnings), 1)
 
+
 def test_suite():
     return unittest.makeSuite(RegisterTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

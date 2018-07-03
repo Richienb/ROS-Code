@@ -2,6 +2,7 @@ from test import test_support
 import unittest
 dbm = test_support.import_module('dbm')
 
+
 class DbmTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -35,8 +36,10 @@ class DbmTestCase(unittest.TestCase):
             except dbm.error:
                 self.fail()
 
+
 def test_main():
     test_support.run_unittest(DbmTestCase)
+
 
 if __name__ == '__main__':
     test_main()

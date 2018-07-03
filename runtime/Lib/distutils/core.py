@@ -33,6 +33,7 @@ usage: %(script)s [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
    or: %(script)s cmd --help
 """
 
+
 def gen_usage(script_name):
     script = os.path.basename(script_name)
     return USAGE % {'script': script}
@@ -57,6 +58,7 @@ extension_keywords = ('name', 'sources', 'include_dirs',
                       'library_dirs', 'libraries', 'runtime_library_dirs',
                       'extra_objects', 'extra_compile_args', 'extra_link_args',
                       'swig_opts', 'export_symbols', 'depends', 'language')
+
 
 def setup(**attrs):
     """The gateway to the Distutils: do everything your setup script needs
@@ -110,12 +112,12 @@ def setup(**attrs):
     # (ie. everything except distclass) to initialize it
     try:
         _setup_distribution = dist = klass(attrs)
-    except DistutilsSetupError, msg:
+    except DistutilsSetupError as msg:
         if 'name' in attrs:
-            raise SystemExit, "error in %s setup command: %s" % \
-                  (attrs['name'], msg)
+            raise SystemExit("error in %s setup command: %s" %
+                             (attrs['name'], msg))
         else:
-            raise SystemExit, "error in setup command: %s" % msg
+            raise SystemExit("error in setup command: %s" % msg)
 
     if _setup_stop_after == "init":
         return dist
@@ -136,8 +138,8 @@ def setup(**attrs):
     # SystemExit to suppress tracebacks.
     try:
         ok = dist.parse_command_line()
-    except DistutilsArgError, msg:
-        raise SystemExit, gen_usage(dist.script_name) + "\nerror: %s" % msg
+    except DistutilsArgError as msg:
+        raise SystemExit(gen_usage(dist.script_name) + "\nerror: %s" % msg)
 
     if DEBUG:
         print "options (after parsing command line):"
@@ -151,22 +153,22 @@ def setup(**attrs):
         try:
             dist.run_commands()
         except KeyboardInterrupt:
-            raise SystemExit, "interrupted"
-        except (IOError, os.error), exc:
+            raise SystemExit("interrupted")
+        except (IOError, os.error) as exc:
             error = grok_environment_error(exc)
 
             if DEBUG:
                 sys.stderr.write(error + "\n")
                 raise
             else:
-                raise SystemExit, error
+                raise SystemExit(error)
 
         except (DistutilsError,
-                CCompilerError), msg:
+                CCompilerError) as msg:
             if DEBUG:
                 raise
             else:
-                raise SystemExit, "error: " + str(msg)
+                raise SystemExit("error: " + str(msg))
 
     return dist
 
@@ -203,7 +205,7 @@ def run_setup(script_name, script_args=None, stop_after="run"):
     used to drive the Distutils.
     """
     if stop_after not in ('init', 'config', 'commandline', 'run'):
-        raise ValueError, "invalid value for 'stop_after': %r" % (stop_after,)
+        raise ValueError("invalid value for 'stop_after': %r" % (stop_after,))
 
     global _setup_stop_after, _setup_distribution
     _setup_stop_after = stop_after
@@ -228,14 +230,13 @@ def run_setup(script_name, script_args=None, stop_after="run"):
         # Hmm, should we do something if exiting with a non-zero code
         # (ie. error)?
         pass
-    except:
+    except BaseException:
         raise
 
     if _setup_distribution is None:
-        raise RuntimeError, \
-              ("'distutils.core.setup()' was never called -- "
-               "perhaps '%s' is not a Distutils setup script?") % \
-              script_name
+        raise RuntimeError(("'distutils.core.setup()' was never called -- "
+                            "perhaps '%s' is not a Distutils setup script?") %
+                           script_name)
 
     # I wonder if the setup script's namespace -- g and l -- would be of
     # any interest to callers?

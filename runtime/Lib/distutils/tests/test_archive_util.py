@@ -35,6 +35,7 @@ try:
 except ImportError:
     zlib = None
 
+
 def can_fs_encode(filename):
     """
     Return True if the filename can be saved in the file system.
@@ -96,8 +97,7 @@ class ArchiveUtilTestCase(support.TempdirManager,
     def _tarinfo(self, path):
         tar = tarfile.open(path)
         try:
-            names = tar.getnames()
-            names.sort()
+            names = sorted(tar.getnames())
             return tuple(names)
         finally:
             tar.close()
@@ -120,7 +120,7 @@ class ArchiveUtilTestCase(support.TempdirManager,
     @unittest.skipUnless(find_executable('tar') and find_executable('gzip'),
                          'Need the tar command to run')
     def test_tarfile_vs_tar(self):
-        tmpdir, tmpdir2, base_name =  self._create_files()
+        tmpdir, tmpdir2, base_name = self._create_files()
         old_dir = os.getcwd()
         os.chdir(tmpdir)
         try:
@@ -173,7 +173,7 @@ class ArchiveUtilTestCase(support.TempdirManager,
     @unittest.skipUnless(find_executable('compress'),
                          'The compress program is required')
     def test_compress_deprecated(self):
-        tmpdir, tmpdir2, base_name =  self._create_files()
+        tmpdir, tmpdir2, base_name = self._create_files()
 
         # using compress and testing the PendingDeprecationWarning
         old_dir = os.getcwd()
@@ -237,8 +237,8 @@ class ArchiveUtilTestCase(support.TempdirManager,
         else:
             group = owner = 'root'
 
-        base_dir, root_dir, base_name =  self._create_files()
-        base_name = os.path.join(self.mkdtemp() , 'archive')
+        base_dir, root_dir, base_name = self._create_files()
+        base_name = os.path.join(self.mkdtemp(), 'archive')
         res = make_archive(base_name, 'zip', root_dir, base_dir, owner=owner,
                            group=group)
         self.assertTrue(os.path.exists(res))
@@ -257,7 +257,7 @@ class ArchiveUtilTestCase(support.TempdirManager,
     @unittest.skipUnless(zlib, "Requires zlib")
     @unittest.skipUnless(UID_GID_SUPPORT, "Requires grp and pwd support")
     def test_tarfile_root_owner(self):
-        tmpdir, tmpdir2, base_name =  self._create_files()
+        tmpdir, tmpdir2, base_name = self._create_files()
         old_dir = os.getcwd()
         os.chdir(tmpdir)
         group = grp.getgrgid(0)[0]
@@ -282,13 +282,14 @@ class ArchiveUtilTestCase(support.TempdirManager,
 
     def test_make_archive_cwd(self):
         current_dir = os.getcwd()
+
         def _breaks(*args, **kw):
             raise RuntimeError()
         ARCHIVE_FORMATS['xxx'] = (_breaks, [], 'xxx file')
         try:
             try:
                 make_archive('xxx', 'xxx', root_dir=self.mkdtemp())
-            except:
+            except BaseException:
                 pass
             self.assertEqual(os.getcwd(), current_dir)
         finally:
@@ -303,26 +304,28 @@ class ArchiveUtilTestCase(support.TempdirManager,
 
     @unittest.skipUnless(zlib, "requires zlib")
     @unittest.skipUnless(can_fs_encode(u'årchiv'),
-        'File system cannot handle this filename')
+                         'File system cannot handle this filename')
     def test_make_tarball_unicode_latin1(self):
         """
         Mirror test_make_tarball, except filename is unicode and contains
         latin characters.
         """
-        self._make_tarball(u'årchiv') # note this isn't a real word
+        self._make_tarball(u'årchiv')  # note this isn't a real word
 
     @unittest.skipUnless(zlib, "requires zlib")
     @unittest.skipUnless(can_fs_encode(u'のアーカイブ'),
-        'File system cannot handle this filename')
+                         'File system cannot handle this filename')
     def test_make_tarball_unicode_extended(self):
         """
         Mirror test_make_tarball, except filename is unicode and contains
         characters outside the latin charset.
         """
-        self._make_tarball(u'のアーカイブ') # japanese for archive
+        self._make_tarball(u'のアーカイブ')  # japanese for archive
+
 
 def test_suite():
     return unittest.makeSuite(ArchiveUtilTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

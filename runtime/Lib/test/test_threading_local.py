@@ -5,13 +5,16 @@ import threading
 import weakref
 import gc
 
+
 class Weak(object):
     pass
+
 
 def target(local, weaklist):
     weak = Weak()
     local.weak = weak
     weaklist.append(weakref.ref(weak))
+
 
 class ThreadingLocalTest(unittest.TestCase):
 
@@ -34,13 +37,13 @@ class ThreadingLocalTest(unittest.TestCase):
 
         # XXX threading.local keeps the local of the last stopped thread alive.
         deadlist = [weak for weak in weaklist if weak() is None]
-        self.assertEqual(len(deadlist), n-1)
+        self.assertEqual(len(deadlist), n - 1)
 
         # Assignment to the same thread local frees it sometimes (!)
         local.someothervar = None
         gc.collect()
         deadlist = [weak for weak in weaklist if weak() is None]
-        self.assert_(len(deadlist) in (n-1, n), (n, len(deadlist)))
+        self.assert_(len(deadlist) in (n - 1, n), (n, len(deadlist)))
 
     def test_derived(self):
         # Issue 3088: if there is a threads switch inside the __init__
@@ -48,6 +51,7 @@ class ThreadingLocalTest(unittest.TestCase):
         # is created but not correctly set on the object.
         # The first member set may be bogus.
         import time
+
         class Local(threading.local):
             def __init__(self):
                 time.sleep(0.01)
@@ -58,7 +62,7 @@ class ThreadingLocalTest(unittest.TestCase):
             # Simply check that the variable is correctly set
             self.assertEqual(local.x, i)
 
-        threads= []
+        threads = []
         for i in range(10):
             t = threading.Thread(target=f, args=(i,))
             t.start()
@@ -120,8 +124,10 @@ def test_main():
     else:
         import _threading_local
         local_orig = _threading_local.local
+
         def setUp(test):
             _threading_local.local = _local
+
         def tearDown(test):
             _threading_local.local = local_orig
         suite.addTest(DocTestSuite('_threading_local',
@@ -129,6 +135,7 @@ def test_main():
                       )
 
     test_support.run_unittest(suite)
+
 
 if __name__ == '__main__':
     test_main()

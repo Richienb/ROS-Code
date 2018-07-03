@@ -7,17 +7,18 @@ import StringIO
 mimetools = test_support.import_module("mimetools", deprecated=True)
 
 msgtext1 = mimetools.Message(StringIO.StringIO(
-"""Content-Type: text/plain; charset=iso-8859-1; format=flowed
+    """Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Transfer-Encoding: 8bit
 
 Foo!
 """))
 
+
 class MimeToolsTest(unittest.TestCase):
 
     def test_decodeencode(self):
         start = string.ascii_letters + "=" + string.digits + "\n"
-        for enc in ['7bit','8bit','base64','quoted-printable',
+        for enc in ['7bit', '8bit', 'base64', 'quoted-printable',
                     'uuencode', 'x-uuencode', 'uue', 'x-uue']:
             i = StringIO.StringIO(start)
             o = StringIO.StringIO()
@@ -39,15 +40,19 @@ class MimeToolsTest(unittest.TestCase):
         self.assertEqual(msg.gettype(), "text/plain")
         self.assertEqual(msg.getmaintype(), "text")
         self.assertEqual(msg.getsubtype(), "plain")
-        self.assertEqual(msg.getplist(), ["charset=iso-8859-1", "format=flowed"])
+        self.assertEqual(
+            msg.getplist(), [
+                "charset=iso-8859-1", "format=flowed"])
         self.assertEqual(msg.getparamnames(), ["charset", "format"])
         self.assertEqual(msg.getparam("charset"), "iso-8859-1")
         self.assertEqual(msg.getparam("format"), "flowed")
         self.assertEqual(msg.getparam("spam"), None)
         self.assertEqual(msg.getencoding(), "8bit")
 
+
 def test_main():
     test_support.run_unittest(MimeToolsTest)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     test_main()

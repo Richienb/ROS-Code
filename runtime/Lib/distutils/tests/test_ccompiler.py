@@ -9,6 +9,7 @@ from distutils.sysconfig import customize_compiler
 from distutils import debug
 from distutils.tests import support
 
+
 class FakeCompiler(object):
     def library_dir_option(self, dir):
         return "-L" + dir
@@ -21,6 +22,7 @@ class FakeCompiler(object):
 
     def library_option(self, lib):
         return "-l" + lib
+
 
 class CCompilerTestCase(support.EnvironGuard, unittest.TestCase):
 
@@ -75,8 +77,10 @@ class CCompilerTestCase(support.EnvironGuard, unittest.TestCase):
         customize_compiler(comp)
         self.assertEqual(comp.exes['archiver'], 'my_ar -arflags')
 
+
 def test_suite():
     return unittest.makeSuite(CCompilerTestCase)
+
 
 if __name__ == "__main__":
     unittest.main(defaultTest="test_suite")

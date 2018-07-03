@@ -33,8 +33,10 @@ tested for existence, and add interfaces to other dbm-like
 implementations.
 """
 
+
 class error(Exception):
     pass
+
 
 _names = ['dbhash', 'gdbm', 'dbm', 'dumbdbm']
 _errors = [error]
@@ -50,11 +52,12 @@ for _name in _names:
     _errors.append(_mod.error)
 
 if not _defaultmod:
-    raise ImportError, "no dbm clone found; tried %s" % _names
+    raise ImportError("no dbm clone found; tried %s" % _names)
 
 error = tuple(_errors)
 
-def open(file, flag='r', mode=0666):
+
+def open(file, flag='r', mode=0o666):
     """Open or create database at path given by *file*.
 
     Optional argument *flag* can be 'r' (default) for read-only access, 'w'
@@ -68,7 +71,7 @@ def open(file, flag='r', mode=0666):
 
     # guess the type of an existing database
     from whichdb import whichdb
-    result=whichdb(file)
+    result = whichdb(file)
     if result is None:
         # db doesn't exist
         if 'c' in flag or 'n' in flag:
@@ -76,10 +79,10 @@ def open(file, flag='r', mode=0666):
             # flag was used so use default type
             mod = _defaultmod
         else:
-            raise error, "need 'c' or 'n' flag to open new db"
+            raise error("need 'c' or 'n' flag to open new db")
     elif result == "":
         # db type cannot be determined
-        raise error, "db type could not be determined"
+        raise error("db type could not be determined")
     else:
         mod = __import__(result)
     return mod.open(file, flag, mode)

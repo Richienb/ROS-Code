@@ -33,7 +33,7 @@ a = f()
 
 SOURCE_3 = '''
 def f():
-    return 3''' # No ending newline
+    return 3'''  # No ending newline
 
 
 class LineCacheTests(unittest.TestCase):
@@ -124,8 +124,10 @@ class LineCacheTests(unittest.TestCase):
                 self.assertEqual(line, getline(source_name, index + 1))
                 source_list.append(line)
 
+
 def test_main():
     support.run_unittest(LineCacheTests)
+
 
 if __name__ == "__main__":
     test_main()

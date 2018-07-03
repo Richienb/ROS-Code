@@ -59,19 +59,19 @@ class TestUnicode(object):
         p = [(u"xkd", 1), (u"kcw", 2), (u"art", 3), (u"hxm", 4),
              (u"qrt", 5), (u"pad", 6), (u"hoy", 7)]
         self.assertEqual(self.loads(s), eval(s))
-        self.assertEqual(self.loads(s, object_pairs_hook = lambda x: x), p)
-        od = self.loads(s, object_pairs_hook = OrderedDict)
+        self.assertEqual(self.loads(s, object_pairs_hook=lambda x: x), p)
+        od = self.loads(s, object_pairs_hook=OrderedDict)
         self.assertEqual(od, OrderedDict(p))
         self.assertEqual(type(od), OrderedDict)
         # the object_pairs_hook takes priority over the object_hook
         self.assertEqual(self.loads(s,
-                                    object_pairs_hook = OrderedDict,
-                                    object_hook = lambda x: None),
+                                    object_pairs_hook=OrderedDict,
+                                    object_hook=lambda x: None),
                          OrderedDict(p))
 
     def test_default_encoding(self):
         self.assertEqual(self.loads(u'{"a": "\xe9"}'.encode('utf-8')),
-            {'a': u'\xe9'})
+                         {'a': u'\xe9'})
 
     def test_unicode_preservation(self):
         self.assertEqual(type(self.loads(u'""')), unicode)
@@ -85,5 +85,9 @@ class TestUnicode(object):
         self.assertRaises(TypeError, self.loads, '"a"', 1)
 
 
-class TestPyUnicode(TestUnicode, PyTest): pass
-class TestCUnicode(TestUnicode, CTest): pass
+class TestPyUnicode(TestUnicode, PyTest):
+    pass
+
+
+class TestCUnicode(TestUnicode, CTest):
+    pass

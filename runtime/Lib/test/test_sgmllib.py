@@ -68,7 +68,7 @@ class CDATAEventCollector(EventCollector):
 class HTMLEntityCollector(EventCollector):
 
     entity_or_charref = re.compile('(?:&([a-zA-Z][-.a-zA-Z0-9]*)'
-        '|&#(x[0-9a-zA-Z]+|[0-9]+))(;?)')
+                                   '|&#(x[0-9a-zA-Z]+|[0-9]+))(;?)')
 
     def convert_charref(self, name):
         self.append(("charref", "convert", name))
@@ -106,7 +106,7 @@ class SGMLParserTestCase(unittest.TestCase):
             for s in source:
                 parser.feed(s)
             parser.close()
-        except:
+        except BaseException:
             #self.events = parser.events
             raise
         return parser.get_events()
@@ -114,7 +114,7 @@ class SGMLParserTestCase(unittest.TestCase):
     def check_events(self, source, expected_events):
         try:
             events = self.get_events(source)
-        except:
+        except BaseException:
             #import sys
             #print >>sys.stderr, pprint.pformat(self.events)
             raise
@@ -151,13 +151,13 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
 ]"""
         self.check_events(["<!%s>" % inside], [
             ("decl", inside),
-            ])
+        ])
 
     def test_doctype_decl_external(self):
         inside = "DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'"
         self.check_events("<!%s>" % inside, [
             ("decl", inside),
-            ])
+        ])
 
     def test_underscore_in_attrname(self):
         # SF bug #436621
@@ -165,7 +165,7 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
         self.check_events("<a has_under _under>", [
             ("starttag", "a", [("has_under", "has_under"),
                                ("_under", "_under")]),
-            ])
+        ])
 
     def test_underscore_in_tagname(self):
         # SF bug #436621
@@ -173,14 +173,14 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
         self.check_events("<has_under></has_under>", [
             ("starttag", "has_under", []),
             ("endtag", "has_under"),
-            ])
+        ])
 
     def test_quotes_in_unquoted_attrs(self):
         # SF bug #436621
         """Be sure quotes in unquoted attributes are made part of the value"""
         self.check_events("<a href=foo'bar\"baz>", [
             ("starttag", "a", [("href", "foo'bar\"baz")]),
-            ])
+        ])
 
     def test_xhtml_empty_tag(self):
         """Handling of XHTML-style empty start tags"""
@@ -189,12 +189,12 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
             ("data", "text"),
             ("starttag", "i", []),
             ("endtag", "i"),
-            ])
+        ])
 
     def test_processing_instruction_only(self):
         self.check_events("<?processing instruction>", [
             ("pi", "processing instruction"),
-            ])
+        ])
 
     def test_bad_nesting(self):
         self.check_events("<a><b></a></b>", [
@@ -202,22 +202,22 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
             ("starttag", "b", []),
             ("endtag", "a"),
             ("endtag", "b"),
-            ])
+        ])
 
     def test_bare_ampersands(self):
         self.check_events("this text & contains & ampersands &", [
             ("data", "this text & contains & ampersands &"),
-            ])
+        ])
 
     def test_bare_pointy_brackets(self):
         self.check_events("this < text > contains < bare>pointy< brackets", [
             ("data", "this < text > contains < bare>pointy< brackets"),
-            ])
+        ])
 
     def test_attr_syntax(self):
         output = [
-          ("starttag", "a", [("b", "v"), ("c", "v"), ("d", "v"), ("e", "e")])
-          ]
+            ("starttag", "a", [("b", "v"), ("c", "v"), ("d", "v"), ("e", "e")])
+        ]
         self.check_events("""<a b='v' c="v" d=v e>""", output)
         self.check_events("""<a  b = 'v' c = "v" d = v e>""", output)
         self.check_events("""<a\nb\n=\n'v'\nc\n=\n"v"\nd\n=\nv\ne>""", output)
@@ -225,13 +225,13 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
 
     def test_attr_values(self):
         self.check_events("""<a b='xxx\n\txxx' c="yyy\t\nyyy" d='\txyz\n'>""",
-                        [("starttag", "a", [("b", "xxx\n\txxx"),
-                                            ("c", "yyy\t\nyyy"),
-                                            ("d", "\txyz\n")])
-                         ])
+                          [("starttag", "a", [("b", "xxx\n\txxx"),
+                                              ("c", "yyy\t\nyyy"),
+                                              ("d", "\txyz\n")])
+                           ])
         self.check_events("""<a b='' c="">""", [
             ("starttag", "a", [("b", ""), ("c", "")]),
-            ])
+        ])
         # URL construction stuff from RFC 1808:
         safe = "$-_.+"
         extra = "!*'(),"
@@ -240,11 +240,11 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
             safe, extra, reserved)
         self.check_events("""<e a=%s>""" % url, [
             ("starttag", "e", [("a", url)]),
-            ])
+        ])
         # Regression test for SF patch #669683.
         self.check_events("<e a=rgb(1,2,3)>", [
             ("starttag", "e", [("a", "rgb(1,2,3)")]),
-            ])
+        ])
 
     def test_attr_values_entities(self):
         """Substitution of entities and charrefs in attribute values"""
@@ -253,17 +253,17 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
                                 f="&xxx;" g='&#32;&#33;' h='&#500;'
                                 i='x?a=b&c=d;'
                                 j='&amp;#42;' k='&#38;#42;'>""",
-            [("starttag", "a", [("b", "<"),
-                                ("c", "<>"),
-                                ("d", "&lt->"),
-                                ("e", "< "),
-                                ("f", "&xxx;"),
-                                ("g", " !"),
-                                ("h", "&#500;"),
-                                ("i", "x?a=b&c=d;"),
-                                ("j", "&#42;"),
-                                ("k", "&#42;"),
-                                ])])
+                          [("starttag", "a", [("b", "<"),
+                                              ("c", "<>"),
+                                              ("d", "&lt->"),
+                                              ("e", "< "),
+                                              ("f", "&xxx;"),
+                                              ("g", " !"),
+                                              ("h", "&#500;"),
+                                              ("i", "x?a=b&c=d;"),
+                                              ("j", "&#42;"),
+                                              ("k", "&#42;"),
+                                              ])])
 
     def test_convert_overrides(self):
         # This checks that the character and entity reference
@@ -283,12 +283,12 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
             ('charref', '42'),
             ('charref', 'convert', '42'),
             ('codepoint', 'convert', 42),
-            ])
+        ])
 
     def test_attr_funky_names(self):
         self.check_events("""<a a.b='v' c:d=v e-f=v>""", [
             ("starttag", "a", [("a.b", "v"), ("c:d", "v"), ("e-f", "v")]),
-            ])
+        ])
 
     def test_attr_value_ip6_url(self):
         # http://www.python.org/sf/853506
@@ -296,17 +296,17 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
                            "<a href=http://[1080::8:800:200C:417A]/>"), [
             ("starttag", "a", [("href", "http://[1080::8:800:200C:417A]/")]),
             ("starttag", "a", [("href", "http://[1080::8:800:200C:417A]/")]),
-            ])
+        ])
 
     def test_weird_starttags(self):
         self.check_events("<a<a>", [
             ("starttag", "a", []),
             ("starttag", "a", []),
-            ])
+        ])
         self.check_events("</a<a>", [
             ("endtag", "a"),
             ("starttag", "a", []),
-            ])
+        ])
 
     def test_declaration_junk_chars(self):
         self.check_parse_error("<!DOCTYPE foo $ >")
@@ -315,7 +315,7 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
         s = """<foobar   \n   one="1"\ttwo=2   >"""
         self.check_events(s, [
             ("starttag", "foobar", [("one", "1"), ("two", "2")]),
-            ])
+        ])
 
     def test_cdata_content(self):
         s = ("<cdata> <!-- not a comment --> &not-an-entity-ref; </cdata>"
@@ -330,13 +330,13 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
             ("comment", " comment "),
             ("data", " "),
             ("endtag", "notcdata"),
-            ])
+        ])
         s = """<cdata> <not a='start tag'> </cdata>"""
         self.check_events(s, [
             ("starttag", "cdata", []),
             ("data", " <not a='start tag'> "),
             ("endtag", "cdata"),
-            ])
+        ])
 
     def test_illegal_declarations(self):
         s = 'abc<!spacer type="block" height="25">def'
@@ -344,13 +344,13 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
             ("data", "abc"),
             ("unknown decl", 'spacer type="block" height="25"'),
             ("data", "def"),
-            ])
+        ])
 
     def test_enumerated_attr_type(self):
         s = "<!DOCTYPE doc [<!ATTLIST doc attr (a | b) >]>"
         self.check_events(s, [
             ('decl', 'DOCTYPE doc [<!ATTLIST doc attr (a | b) >]'),
-            ])
+        ])
 
     def test_read_chunks(self):
         # SF bug #1541697, this caused sgml parser to hang
@@ -359,20 +359,21 @@ DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'
 
         f = open(test_support.findfile('sgml_input.html'))
         fp = sgmllib.SGMLParser()
-        while 1:
+        while True:
             data = f.read(CHUNK)
             fp.feed(data)
             if len(data) != CHUNK:
                 break
 
     def test_only_decode_ascii(self):
-        # SF bug #1651995, make sure non-ascii character references are not decoded
+        # SF bug #1651995, make sure non-ascii character references are not
+        # decoded
         s = '<signs exclamation="&#33" copyright="&#169" quoteleft="&#8216;">'
         self.check_events(s, [
             ('starttag', 'signs',
              [('exclamation', '!'), ('copyright', '&#169'),
               ('quoteleft', '&#8216;')]),
-            ])
+        ])
 
     # XXX These tests have been disabled by prefixing their names with
     # an underscore.  The first two exercise outstanding bugs in the

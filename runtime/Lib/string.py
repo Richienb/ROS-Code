@@ -42,6 +42,8 @@ del l
 # Functions which aren't available as string methods.
 
 # Capitalize the words in a string, e.g. " aBc  dEf " -> "Abc Def".
+
+
 def capwords(s, sep=None):
     """capwords(s [,sep]) -> string
 
@@ -58,6 +60,8 @@ def capwords(s, sep=None):
 
 # Construct a translation string
 _idmapL = None
+
+
 def maketrans(fromstr, tostr):
     """maketrans(frm, to) -> string
 
@@ -67,7 +71,7 @@ def maketrans(fromstr, tostr):
 
     """
     if len(fromstr) != len(tostr):
-        raise ValueError, "maketrans arguments must have same length"
+        raise ValueError("maketrans arguments must have same length")
     global _idmapL
     if not _idmapL:
         _idmapL = list(_idmap)
@@ -82,12 +86,14 @@ def maketrans(fromstr, tostr):
 ####################################################################
 import re as _re
 
+
 class _multimap:
     """Helper class for combining multiple mappings.
 
     Used by .{safe_,}substitute() to combine the mapping and keyword
     arguments.
     """
+
     def __init__(self, primary, secondary):
         self._primary = primary
         self._secondary = secondary
@@ -115,9 +121,9 @@ class _TemplateMetaclass(type):
             pattern = cls.pattern
         else:
             pattern = _TemplateMetaclass.pattern % {
-                'delim' : _re.escape(cls.delimiter),
-                'id'    : cls.idpattern,
-                }
+                'delim': _re.escape(cls.delimiter),
+                'id': cls.idpattern,
+            }
         cls.pattern = _re.compile(pattern, _re.IGNORECASE | _re.VERBOSE)
 
 
@@ -155,6 +161,7 @@ class Template:
         else:
             mapping = args[0]
         # Helper function for .sub()
+
         def convert(mo):
             # Check the most common path first.
             named = mo.group('named') or mo.group('braced')
@@ -181,6 +188,7 @@ class Template:
         else:
             mapping = args[0]
         # Helper function for .sub()
+
         def convert(mo):
             named = mo.group('named')
             if named is not None:
@@ -205,10 +213,10 @@ class Template:
         return self.pattern.sub(convert, self.template)
 
 
-
 ####################################################################
 # NOTE: Everything below here is deprecated.  Use string methods instead.
 # This stuff will go away in Python 3.0.
+
 
 # Backward compatible names for exceptions
 index_error = ValueError
@@ -217,6 +225,8 @@ atof_error = ValueError
 atol_error = ValueError
 
 # convert UPPER CASE letters to lower case
+
+
 def lower(s):
     """lower(s) -> string
 
@@ -226,6 +236,8 @@ def lower(s):
     return s.lower()
 
 # Convert lower case letters to UPPER CASE
+
+
 def upper(s):
     """upper(s) -> string
 
@@ -235,6 +247,8 @@ def upper(s):
     return s.upper()
 
 # Swap lower case letters and UPPER CASE
+
+
 def swapcase(s):
     """swapcase(s) -> string
 
@@ -245,6 +259,8 @@ def swapcase(s):
     return s.swapcase()
 
 # Strip leading and trailing tabs and spaces
+
+
 def strip(s, chars=None):
     """strip(s [,chars]) -> string
 
@@ -257,6 +273,8 @@ def strip(s, chars=None):
     return s.strip(chars)
 
 # Strip leading tabs and spaces
+
+
 def lstrip(s, chars=None):
     """lstrip(s [,chars]) -> string
 
@@ -267,6 +285,8 @@ def lstrip(s, chars=None):
     return s.lstrip(chars)
 
 # Strip trailing tabs and spaces
+
+
 def rstrip(s, chars=None):
     """rstrip(s [,chars]) -> string
 
@@ -290,9 +310,13 @@ def split(s, sep=None, maxsplit=-1):
 
     """
     return s.split(sep, maxsplit)
+
+
 splitfields = split
 
 # Split a string into a list of space/tab-separated words
+
+
 def rsplit(s, sep=None, maxsplit=-1):
     """rsplit(s [,sep [,maxsplit]]) -> list of strings
 
@@ -305,7 +329,9 @@ def rsplit(s, sep=None, maxsplit=-1):
     return s.rsplit(sep, maxsplit)
 
 # Join fields with optional separator
-def join(words, sep = ' '):
+
+
+def join(words, sep=' '):
     """join(list [,sep]) -> string
 
     Return a string composed of the words in list, with
@@ -316,9 +342,13 @@ def join(words, sep = ' '):
 
     """
     return sep.join(words)
+
+
 joinfields = join
 
 # Find substring, raise exception if not found
+
+
 def index(s, *args):
     """index(s, sub [,start [,end]]) -> int
 
@@ -328,6 +358,8 @@ def index(s, *args):
     return s.index(*args)
 
 # Find last substring, raise exception if not found
+
+
 def rindex(s, *args):
     """rindex(s, sub [,start [,end]]) -> int
 
@@ -337,6 +369,8 @@ def rindex(s, *args):
     return s.rindex(*args)
 
 # Count non-overlapping occurrences of substring
+
+
 def count(s, *args):
     """count(s, sub[, start[,end]]) -> int
 
@@ -348,6 +382,8 @@ def count(s, *args):
     return s.count(*args)
 
 # Find substring, return -1 if not found
+
+
 def find(s, *args):
     """find(s, sub [,start [,end]]) -> in
 
@@ -361,6 +397,8 @@ def find(s, *args):
     return s.find(*args)
 
 # Find last substring, return -1 if not found
+
+
 def rfind(s, *args):
     """rfind(s, sub [,start [,end]]) -> int
 
@@ -373,12 +411,15 @@ def rfind(s, *args):
     """
     return s.rfind(*args)
 
+
 # for a bit of speed
 _float = float
 _int = int
 _long = long
 
 # Convert string to float
+
+
 def atof(s):
     """atof(s) -> float
 
@@ -389,7 +430,7 @@ def atof(s):
 
 
 # Convert string to integer
-def atoi(s , base=10):
+def atoi(s, base=10):
     """atoi(s [,base]) -> int
 
     Return the integer represented by the string s in the given
@@ -431,6 +472,8 @@ def ljust(s, width, *args):
     return s.ljust(width, *args)
 
 # Right-justify a string
+
+
 def rjust(s, width, *args):
     """rjust(s, width[, fillchar]) -> string
 
@@ -442,6 +485,8 @@ def rjust(s, width, *args):
     return s.rjust(width, *args)
 
 # Center a string
+
+
 def center(s, width, *args):
     """center(s, width[, fillchar]) -> string
 
@@ -455,6 +500,8 @@ def center(s, width, *args):
 # Zero-fill a number, e.g., (12, 3) --> '012' and (-3, 3) --> '-03'
 # Decadent feature: the argument may be a string or a number
 # (Use of this is deprecated; it should be a string as with ljust c.s.)
+
+
 def zfill(x, width):
     """zfill(x, width) -> string
 
@@ -468,6 +515,8 @@ def zfill(x, width):
 
 # Expand tabs in a string.
 # Doesn't take non-printing chars into account, but does understand \n.
+
+
 def expandtabs(s, tabsize=8):
     """expandtabs(s [,tabsize]) -> string
 
@@ -479,6 +528,8 @@ def expandtabs(s, tabsize=8):
     return s.expandtabs(tabsize)
 
 # Character translation through look-up table.
+
+
 def translate(s, table, deletions=""):
     """translate(s,table [,deletions]) -> string
 
@@ -498,6 +549,8 @@ def translate(s, table, deletions=""):
         return s.translate(table + s[:0])
 
 # Capitalize a string, e.g. "aBc  dEf" -> "Abc  def".
+
+
 def capitalize(s):
     """capitalize(s) -> string
 
@@ -508,6 +561,8 @@ def capitalize(s):
     return s.capitalize()
 
 # Substring replacement (global)
+
+
 def replace(s, old, new, maxreplace=-1):
     """replace (str, old, new[, maxreplace]) -> string
 
@@ -540,6 +595,7 @@ except ImportError:
 # The overall parser is implemented in str._formatter_parser.
 # The field name parser is implemented in str._formatter_field_name_split
 
+
 class Formatter(object):
     def format(self, format_string, *args, **kwargs):
         return self.vformat(format_string, args, kwargs)
@@ -550,7 +606,13 @@ class Formatter(object):
         self.check_unused_args(used_args, args, kwargs)
         return result
 
-    def _vformat(self, format_string, args, kwargs, used_args, recursion_depth):
+    def _vformat(
+            self,
+            format_string,
+            args,
+            kwargs,
+            used_args,
+            recursion_depth):
         if recursion_depth < 0:
             raise ValueError('Max string recursion exceeded')
         result = []
@@ -576,13 +638,12 @@ class Formatter(object):
 
                 # expand the format spec, if needed
                 format_spec = self._vformat(format_spec, args, kwargs,
-                                            used_args, recursion_depth-1)
+                                            used_args, recursion_depth - 1)
 
                 # format the object and append to the result
                 result.append(self.format_field(obj, format_spec))
 
         return ''.join(result)
-
 
     def get_value(self, key, args, kwargs):
         if isinstance(key, (int, long)):
@@ -590,14 +651,11 @@ class Formatter(object):
         else:
             return kwargs[key]
 
-
     def check_unused_args(self, used_args, args, kwargs):
         pass
 
-
     def format_field(self, value, format_spec):
         return format(value, format_spec)
-
 
     def convert_field(self, value, conversion):
         # do any conversion on the resulting object
@@ -607,8 +665,8 @@ class Formatter(object):
             return str(value)
         elif conversion == 'r':
             return repr(value)
-        raise ValueError("Unknown conversion specifier {0!s}".format(conversion))
-
+        raise ValueError(
+            "Unknown conversion specifier {0!s}".format(conversion))
 
     # returns an iterable that contains tuples of the form:
     # (literal_text, field_name, format_spec, conversion)
@@ -619,7 +677,6 @@ class Formatter(object):
     #  with format_spec and conversion and then used
     def parse(self, format_string):
         return format_string._formatter_parser()
-
 
     # given a field_name, find the object it references.
     #  field_name:   the field being looked up, e.g. "0.name"

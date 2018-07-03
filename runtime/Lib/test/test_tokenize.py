@@ -559,9 +559,10 @@ Pathological whitespace (http://bugs.python.org/issue16152)
 
 from test import test_support
 from tokenize import (untokenize, generate_tokens, NUMBER, NAME, OP,
-                     STRING, ENDMARKER, tok_name)
+                      STRING, ENDMARKER, tok_name)
 from StringIO import StringIO
 import os
+
 
 def dump_tokens(s):
     """Print out the tokens in s in a table format.
@@ -576,6 +577,8 @@ def dump_tokens(s):
         print("%(type)-10.10s %(token)-13.13r %(start)s %(end)s" % locals())
 
 # This is an example from the docs, set up as a doctest.
+
+
 def decistmt(s):
     """Substitute Decimals for floats in a string of statements.
 
@@ -601,7 +604,7 @@ def decistmt(s):
 
     result = []
     g = generate_tokens(StringIO(s).readline)   # tokenize the string
-    for toknum, tokval, _, _, _  in g:
+    for toknum, tokval, _, _, _ in g:
         if toknum == NUMBER and '.' in tokval:  # replace NUMBER tokens
             result.extend([
                 (NAME, 'Decimal'),
@@ -614,12 +617,13 @@ def decistmt(s):
     return untokenize(result)
 
 
-__test__ = {"doctests" : doctests, 'decistmt': decistmt}
+__test__ = {"doctests": doctests, 'decistmt': decistmt}
 
 
 def test_main():
     from test import test_tokenize
     test_support.run_doctest(test_tokenize, True)
+
 
 if __name__ == "__main__":
     test_main()

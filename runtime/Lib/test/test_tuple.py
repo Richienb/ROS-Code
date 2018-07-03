@@ -1,6 +1,7 @@
 import unittest
 from test import test_support, seq_tests
 
+
 class TupleTest(seq_tests.CommonTest):
     type2test = tuple
 
@@ -45,7 +46,7 @@ class TupleTest(seq_tests.CommonTest):
         from java.lang import OutOfMemoryError
         try:
             self._test_hash()
-        except OutOfMemoryError, oome:
+        except OutOfMemoryError as oome:
             oome.printStackTrace()
             raise
 
@@ -65,15 +66,15 @@ class TupleTest(seq_tests.CommonTest):
         #      more than 15 collisions.  Any worse and the hash function
         #      is sorely suspect.
 
-        N=50
+        N = 50
         base = range(N)
         xp = [(i, j) for i in base for j in base]
         inps = base + [(i, j) for i in base for j in xp] + \
-                     [(i, j) for i in xp for j in base] + xp + zip(base)
+            [(i, j) for i in xp for j in base] + xp + zip(base)
         hashes = map(hash, inps)
         unique = set(hashes)
         unique_len = len(unique)
-        collisions  = len(inps) - unique_len
+        collisions = len(inps) - unique_len
         #collisions = len(inps) - len(set(map(hash, inps)))
         self.assert_(collisions <= 15)
 
@@ -89,13 +90,15 @@ class TupleTest(seq_tests.CommonTest):
         self.assertEqual(repr(a2), "(0, 1, 2)")
 
     def test_setitem(self):
-        #This test is equivalent to (1,2)[0] = 0 which was briefly broken in
-        #Jython 2.5b2
+        # This test is equivalent to (1,2)[0] = 0 which was briefly broken in
+        # Jython 2.5b2
         import operator
-        self.assertRaises(TypeError, operator.setitem, (1,2), 0, 0)
+        self.assertRaises(TypeError, operator.setitem, (1, 2), 0, 0)
+
 
 def test_main():
     test_support.run_unittest(TupleTest)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     test_main()

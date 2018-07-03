@@ -20,7 +20,7 @@ class TestDecode(object):
         # the whitespace regex, so this test is designed to try and
         # exercise the uncommon cases. The array cases are already covered.
         rval = self.loads('{   "key"    :    "value"    ,  "k":"v"    }')
-        self.assertEqual(rval, {"key":"value", "k":"v"})
+        self.assertEqual(rval, {"key": "value", "k": "v"})
 
     def test_empty_objects(self):
         self.assertEqual(self.loads('{}'), {})
@@ -55,5 +55,10 @@ class TestDecode(object):
         msg = 'escape'
         self.assertRaisesRegexp(ValueError, msg, self.loads, s)
 
-class TestPyDecode(TestDecode, PyTest): pass
-class TestCDecode(TestDecode, CTest): pass
+
+class TestPyDecode(TestDecode, PyTest):
+    pass
+
+
+class TestCDecode(TestDecode, CTest):
+    pass

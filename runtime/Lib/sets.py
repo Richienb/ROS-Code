@@ -60,7 +60,8 @@ __all__ = ['BaseSet', 'Set', 'ImmutableSet']
 
 import warnings
 warnings.warn("the sets module is deprecated", DeprecationWarning,
-                stacklevel=2)
+              stacklevel=2)
+
 
 class BaseSet(object):
     """Common base class for mutable and immutable sets."""
@@ -73,8 +74,8 @@ class BaseSet(object):
         """This is an abstract class."""
         # Don't call this from a concrete subclass!
         if self.__class__ is BaseSet:
-            raise TypeError, ("BaseSet is an abstract class.  "
-                              "Use Set or ImmutableSet.")
+            raise TypeError("BaseSet is an abstract class.  "
+                            "Use Set or ImmutableSet.")
 
     # Standard protocols: __len__, __repr__, __str__, __iter__
 
@@ -111,7 +112,7 @@ class BaseSet(object):
     # case).
 
     def __cmp__(self, other):
-        raise TypeError, "can't compare sets using cmp()"
+        raise TypeError("can't compare sets using cmp()")
 
     # Equality comparisons using the underlying dicts.  Mixed-type comparisons
     # are allowed here, where Set == z for non-Set z always returns False,
@@ -148,7 +149,7 @@ class BaseSet(object):
         result._data.update(self._data)
         return result
 
-    __copy__ = copy # For the copy module
+    __copy__ = copy  # For the copy module
 
     def __deepcopy__(self, memo):
         """Return a deep copy of a set; used by copy module."""
@@ -244,7 +245,7 @@ class BaseSet(object):
             data[elt] = value
         return result
 
-    def  __sub__(self, other):
+    def __sub__(self, other):
         """Return the difference of two sets as a new Set.
 
         (I.e. all elements that are in this set and not in the other.)
@@ -281,7 +282,7 @@ class BaseSet(object):
         except TypeError:
             transform = getattr(element, "__as_temporarily_immutable__", None)
             if transform is None:
-                raise # re-raise the TypeError exception we caught
+                raise  # re-raise the TypeError exception we caught
             return transform() in self._data
 
     # Subset and superset test
@@ -325,7 +326,7 @@ class BaseSet(object):
         # Check that the other argument to a binary operation is also
         # a set, raising a TypeError otherwise.
         if not isinstance(other, BaseSet):
-            raise TypeError, "Binary operation only permitted between sets"
+            raise TypeError("Binary operation only permitted between sets")
 
     def _compute_hash(self):
         # Calculate hash code for a set by xor'ing the hash codes of
@@ -361,7 +362,7 @@ class BaseSet(object):
                 except TypeError:
                     transform = getattr(element, "__as_immutable__", None)
                     if transform is None:
-                        raise # re-raise the TypeError exception we caught
+                        raise  # re-raise the TypeError exception we caught
                     data[transform()] = value
         else:
             # Safe: only catch TypeError where intended
@@ -371,7 +372,7 @@ class BaseSet(object):
                 except TypeError:
                     transform = getattr(element, "__as_immutable__", None)
                     if transform is None:
-                        raise # re-raise the TypeError exception we caught
+                        raise  # re-raise the TypeError exception we caught
                     data[transform()] = value
 
 
@@ -399,6 +400,7 @@ class ImmutableSet(BaseSet):
 
     def __setstate__(self, state):
         self._data, self._hashcode = state
+
 
 class Set(BaseSet):
     """ Mutable set class."""
@@ -506,7 +508,7 @@ class Set(BaseSet):
         except TypeError:
             transform = getattr(element, "__as_immutable__", None)
             if transform is None:
-                raise # re-raise the TypeError exception we caught
+                raise  # re-raise the TypeError exception we caught
             self._data[transform()] = True
 
     def remove(self, element):
@@ -519,7 +521,7 @@ class Set(BaseSet):
         except TypeError:
             transform = getattr(element, "__as_temporarily_immutable__", None)
             if transform is None:
-                raise # re-raise the TypeError exception we caught
+                raise  # re-raise the TypeError exception we caught
             del self._data[transform()]
 
     def discard(self, element):

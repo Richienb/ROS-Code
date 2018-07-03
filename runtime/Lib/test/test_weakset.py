@@ -29,11 +29,13 @@ import contextlib
 class Foo:
     pass
 
+
 class SomeClass(object):
     def __init__(self, value):
         self.value = value
+
     def __eq__(self, other):
-        if type(other) != type(self):
+        if not isinstance(other, type(self)):
             return False
         return other.value == self.value
 
@@ -46,9 +48,11 @@ class SomeClass(object):
     def __repr__(self):
         return "SC(%s,%s)" % (self.value, id(self.value))
 
+
 class RefCycle(object):
     def __init__(self):
         self.cycle = self
+
 
 class TestWeakSet(unittest.TestCase):
 
@@ -74,7 +78,7 @@ class TestWeakSet(unittest.TestCase):
             if method == 'test_c_api' or method.startswith('_'):
                 continue
             self.assertIn(method, weaksetmethods,
-                         "WeakSet missing method " + method)
+                          "WeakSet missing method " + method)
 
     def test_new_or_init(self):
         self.assertRaises(TypeError, WeakSet, [], 2)
@@ -113,10 +117,12 @@ class TestWeakSet(unittest.TestCase):
             self.assertEqual(self.s.union(c), x)
             del c
             gc.collect()
-        self.assertEqual(len(list(u)), len(list(self.items)) + len(list(self.items2)))
+        self.assertEqual(len(list(u)), len(
+            list(self.items)) + len(list(self.items2)))
         self.items2.pop()
         gc.collect()
-        self.assertEqual(len(list(u)), len(list(self.items)) + len(list(self.items2)))
+        self.assertEqual(len(list(u)), len(
+            list(self.items)) + len(list(self.items2)))
 
     def test_or(self):
         i = self.s.union(self.items2)
@@ -170,7 +176,8 @@ class TestWeakSet(unittest.TestCase):
         self.assertEqual(len(i), len(self.items) + len(self.items2))
         self.items2.pop()
         gc.collect()
-        self.assertEqual(len(list(i)), len(list(self.items)) + len(list(self.items2)))
+        self.assertEqual(len(list(i)), len(
+            list(self.items)) + len(list(self.items2)))
 
     def test_xor(self):
         i = self.s.symmetric_difference(self.items2)
@@ -213,8 +220,8 @@ class TestWeakSet(unittest.TestCase):
         class H(WeakSet):
             def __hash__(self):
                 return int(id(self) & 0x7fffffff)
-        s=H()
-        f=set()
+        s = H()
+        f = set()
         f.add(s)
         self.assertIn(s, f)
         f.remove(s)
@@ -227,8 +234,8 @@ class TestWeakSet(unittest.TestCase):
         self.assertEqual(s, self.s)
         s.__init__(self.items2)
         self.assertEqual(s, WeakSet(self.items2))
-        self.assertRaises(TypeError, s.__init__, s, 2);
-        self.assertRaises(TypeError, s.__init__, 1);
+        self.assertRaises(TypeError, s.__init__, s, 2)
+        self.assertRaises(TypeError, s.__init__, 1)
 
     def test_constructor_identity(self):
         s = WeakSet(self.items)
@@ -330,7 +337,10 @@ class TestWeakSet(unittest.TestCase):
                 self.assertNotIn(c, self.s)
         if not test_support.is_jython:  # Jython/JVM can weakly reference list and other objects
             self.assertRaises(TypeError, self.s.difference_update, [[]])
-            self.assertRaises(TypeError, self.s.symmetric_difference_update, [[]])
+            self.assertRaises(
+                TypeError,
+                self.s.symmetric_difference_update,
+                [[]])
 
     def test_isub(self):
         self.s -= set(self.items2)
@@ -400,9 +410,11 @@ class TestWeakSet(unittest.TestCase):
         self.assertEqual(len(s), len(items))
 
     def test_weak_destroy_and_mutate_while_iterating(self):
-        # Issue #7105: iterators shouldn't crash when a key is implicitly removed
+        # Issue #7105: iterators shouldn't crash when a key is implicitly
+        # removed
         items = [SomeClass(c) for c in string.ascii_letters]
         s = WeakSet(items)
+
         @contextlib.contextmanager
         def testcontext():
             try:
@@ -451,7 +463,9 @@ class TestWeakSet(unittest.TestCase):
         self.assertIn(n1, (0, 1))
         self.assertEqual(n2, 0)
 
-    @unittest.skipIf(test_support.is_jython, "GarbageCollection not deterministic in Jython")
+    @unittest.skipIf(
+        test_support.is_jython,
+        "GarbageCollection not deterministic in Jython")
     def test_len_race(self):
         # Extended sanity checks for len() in the face of cyclic collection
         self.addCleanup(gc.set_threshold, *gc.get_threshold())
@@ -479,6 +493,7 @@ class TestWeakSet(unittest.TestCase):
 
 def test_main(verbose=None):
     test_support.run_unittest(TestWeakSet)
+
 
 if __name__ == "__main__":
     test_main(verbose=True)

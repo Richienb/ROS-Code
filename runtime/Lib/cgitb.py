@@ -33,6 +33,7 @@ import tokenize
 import traceback
 import types
 
+
 def reset():
     """Return a string that resets the CGI and browser to a known state."""
     return '''<!--: spam
@@ -43,12 +44,16 @@ Content-Type: text/html
 </font> </font> </font> </script> </object> </blockquote> </pre>
 </table> </table> </table> </table> </table> </font> </font> </font>'''
 
+
 __UNDEF__ = []                          # a special sentinel object
+
+
 def small(text):
     if text:
         return '<small>' + text + '</small>'
     else:
         return ''
+
 
 def strong(text):
     if text:
@@ -56,11 +61,13 @@ def strong(text):
     else:
         return ''
 
+
 def grey(text):
     if text:
         return '<font color="#909090">' + text + '</font>'
     else:
         return ''
+
 
 def lookup(name, frame, locals):
     """Find the value for a given name in the given environment."""
@@ -70,7 +77,7 @@ def lookup(name, frame, locals):
         return 'global', frame.f_globals[name]
     if '__builtins__' in frame.f_globals:
         builtins = frame.f_globals['__builtins__']
-        if type(builtins) is type({}):
+        if isinstance(builtins, type({})):
             if name in builtins:
                 return 'builtin', builtins[name]
         else:
@@ -78,11 +85,13 @@ def lookup(name, frame, locals):
                 return 'builtin', getattr(builtins, name)
     return None, __UNDEF__
 
+
 def scanvars(reader, frame, locals):
     """Scan one logical line of Python and look up values of variables used."""
     vars, lasttoken, parent, prefix, value = [], None, None, '', __UNDEF__
     for ttype, token, start, end, line in tokenize.generate_tokens(reader):
-        if ttype == tokenize.NEWLINE: break
+        if ttype == tokenize.NEWLINE:
+            break
         if ttype == tokenize.NAME and token not in keyword.kwlist:
             if lasttoken == '.':
                 if parent is not __UNDEF__:
@@ -99,10 +108,11 @@ def scanvars(reader, frame, locals):
         lasttoken = token
     return vars
 
+
 def html(einfo, context=5):
     """Return a nice HTML document describing a given traceback."""
     etype, evalue, etb = einfo
-    if type(etype) is types.ClassType:
+    if isinstance(etype, types.ClassType):
         etype = etype.__name__
     pyver = 'Python ' + sys.version.split()[0] + ': ' + sys.executable
     date = time.ctime(time.time())
@@ -119,7 +129,8 @@ function calls leading up to the error, in the order they occurred.</p>'''
     for frame, file, lnum, func, lines, index in records:
         if file:
             file = os.path.abspath(file)
-            link = '<a href="file://%s">%s</a>' % (file, pydoc.html.escape(file))
+            link = '<a href="file://%s">%s</a>' % (file,
+                                                   pydoc.html.escape(file))
         else:
             file = link = '?'
         args, varargs, varkw, locals = inspect.getargvalues(frame)
@@ -127,13 +138,16 @@ function calls leading up to the error, in the order they occurred.</p>'''
         if func != '?':
             call = 'in ' + strong(func) + \
                 inspect.formatargvalues(args, varargs, varkw, locals,
-                    formatvalue=lambda value: '=' + pydoc.html.repr(value))
+                                        formatvalue=lambda value: '=' + pydoc.html.repr(value))
 
         highlight = {}
+
         def reader(lnum=[lnum]):
             highlight[lnum[0]] = 1
-            try: return linecache.getline(file, lnum[0])
-            finally: lnum[0] += 1
+            try:
+                return linecache.getline(file, lnum[0])
+            finally:
+                lnum[0] += 1
         vars = scanvars(reader, frame, locals)
 
         rows = ['<tr><td bgcolor="#d8bbff">%s%s %s</td></tr>' %
@@ -141,18 +155,23 @@ function calls leading up to the error, in the order they occurred.</p>'''
         if index is not None:
             i = lnum - index
             for line in lines:
-                num = small('&nbsp;' * (5-len(str(i))) + str(i)) + '&nbsp;'
+                num = small('&nbsp;' * (5 - len(str(i))) + str(i)) + '&nbsp;'
                 if i in highlight:
-                    line = '<tt>=&gt;%s%s</tt>' % (num, pydoc.html.preformat(line))
-                    rows.append('<tr><td bgcolor="#ffccee">%s</td></tr>' % line)
+                    line = '<tt>=&gt;%s%s</tt>' % (num,
+                                                   pydoc.html.preformat(line))
+                    rows.append(
+                        '<tr><td bgcolor="#ffccee">%s</td></tr>' %
+                        line)
                 else:
-                    line = '<tt>&nbsp;&nbsp;%s%s</tt>' % (num, pydoc.html.preformat(line))
+                    line = '<tt>&nbsp;&nbsp;%s%s</tt>' % (
+                        num, pydoc.html.preformat(line))
                     rows.append('<tr><td>%s</td></tr>' % grey(line))
                 i += 1
 
         done, dump = {}, []
         for name, where, value in vars:
-            if name in done: continue
+            if name in done:
+                continue
             done[name] = 1
             if value is not __UNDEF__:
                 if where in ('global', 'builtin'):
@@ -174,7 +193,8 @@ function calls leading up to the error, in the order they occurred.</p>'''
                                 pydoc.html.escape(str(evalue)))]
     if isinstance(evalue, BaseException):
         for name in dir(evalue):
-            if name[:1] == '_': continue
+            if name[:1] == '_':
+                continue
             value = pydoc.html.repr(getattr(evalue, name))
             exception.append('\n<br>%s%s&nbsp;=\n%s' % (indent, name, value))
 
@@ -188,12 +208,13 @@ function calls leading up to the error, in the order they occurred.</p>'''
 %s
 -->
 ''' % pydoc.html.escape(
-          ''.join(traceback.format_exception(etype, evalue, etb)))
+        ''.join(traceback.format_exception(etype, evalue, etb)))
+
 
 def text(einfo, context=5):
     """Return a plain text document describing a given traceback."""
     etype, evalue, etb = einfo
-    if type(etype) is types.ClassType:
+    if isinstance(etype, types.ClassType):
         etype = etype.__name__
     pyver = 'Python ' + sys.version.split()[0] + ': ' + sys.executable
     date = time.ctime(time.time())
@@ -211,13 +232,16 @@ function calls leading up to the error, in the order they occurred.
         if func != '?':
             call = 'in ' + func + \
                 inspect.formatargvalues(args, varargs, varkw, locals,
-                    formatvalue=lambda value: '=' + pydoc.text.repr(value))
+                                        formatvalue=lambda value: '=' + pydoc.text.repr(value))
 
         highlight = {}
+
         def reader(lnum=[lnum]):
             highlight[lnum[0]] = 1
-            try: return linecache.getline(file, lnum[0])
-            finally: lnum[0] += 1
+            try:
+                return linecache.getline(file, lnum[0])
+            finally:
+                lnum[0] += 1
         vars = scanvars(reader, frame, locals)
 
         rows = [' %s %s' % (file, call)]
@@ -225,16 +249,19 @@ function calls leading up to the error, in the order they occurred.
             i = lnum - index
             for line in lines:
                 num = '%5d ' % i
-                rows.append(num+line.rstrip())
+                rows.append(num + line.rstrip())
                 i += 1
 
         done, dump = {}, []
         for name, where, value in vars:
-            if name in done: continue
+            if name in done:
+                continue
             done[name] = 1
             if value is not __UNDEF__:
-                if where == 'global': name = 'global ' + name
-                elif where != 'local': name = where + name.split('.')[-1]
+                if where == 'global':
+                    name = 'global ' + name
+                elif where != 'local':
+                    name = where + name.split('.')[-1]
                 dump.append('%s = %s' % (name, pydoc.text.repr(value)))
             else:
                 dump.append(name + ' undefined')
@@ -246,7 +273,7 @@ function calls leading up to the error, in the order they occurred.
     if isinstance(evalue, BaseException):
         for name in dir(evalue):
             value = pydoc.text.repr(getattr(evalue, name))
-            exception.append('\n%s%s = %s' % (" "*4, name, value))
+            exception.append('\n%s%s = %s' % (" " * 4, name, value))
 
     return head + ''.join(frames) + ''.join(exception) + '''
 
@@ -255,6 +282,7 @@ the original traceback:
 
 %s
 ''' % ''.join(traceback.format_exception(etype, evalue, etb))
+
 
 class Hook:
     """A hook to replace sys.excepthook that shows tracebacks in HTML."""
@@ -275,11 +303,11 @@ class Hook:
         if self.format == "html":
             self.file.write(reset())
 
-        formatter = (self.format=="html") and html or text
+        formatter = (self.format == "html") and html or text
         plain = False
         try:
             doc = formatter(info, self.context)
-        except:                         # just in case something goes wrong
+        except BaseException:                         # just in case something goes wrong
             doc = ''.join(traceback.format_exception(*info))
             plain = True
 
@@ -293,7 +321,7 @@ class Hook:
             self.file.write('<p>A problem occurred in a Python script.\n')
 
         if self.logdir is not None:
-            suffix = ['.txt', '.html'][self.format=="html"]
+            suffix = ['.txt', '.html'][self.format == "html"]
             (fd, path) = tempfile.mkstemp(suffix=suffix, dir=self.logdir)
 
             try:
@@ -301,7 +329,7 @@ class Hook:
                 file.write(doc)
                 file.close()
                 msg = '%s contains the description of this error.' % path
-            except:
+            except BaseException:
                 msg = 'Tried to save traceback to %s, but failed.' % path
 
             if self.format == 'html':
@@ -310,9 +338,13 @@ class Hook:
                 self.file.write(msg + '\n')
         try:
             self.file.flush()
-        except: pass
+        except BaseException:
+            pass
+
 
 handler = Hook().handle
+
+
 def enable(display=1, logdir=None, context=5, format="html"):
     """Install an exception handler that formats tracebacks as HTML.
 

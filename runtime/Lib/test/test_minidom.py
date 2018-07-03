@@ -12,27 +12,32 @@ if __name__ == "__main__":
     base = sys.argv[0]
 else:
     base = __file__
-tstfile = os.path.join(os.path.dirname(base), "test"+os.extsep+"xml")
+tstfile = os.path.join(os.path.dirname(base), "test" + os.extsep + "xml")
 del base
 
-def confirm(test, testname = "Test"):
+
+def confirm(test, testname="Test"):
     if not test:
         print "Failed " + testname
         raise Exception
 
+
 Node._debug = 1
+
 
 def testParseFromFile():
     from StringIO import StringIO
     dom = parse(StringIO(open(tstfile).read()))
     dom.unlink()
-    confirm(isinstance(dom,Document))
+    confirm(isinstance(dom, Document))
+
 
 def testGetElementsByTagName():
     dom = parse(tstfile)
-    confirm(dom.getElementsByTagName("LI") == \
+    confirm(dom.getElementsByTagName("LI") ==
             dom.documentElement.getElementsByTagName("LI"))
     dom.unlink()
+
 
 def testInsertBefore():
     dom = parseString("<doc><foo/></doc>")
@@ -40,41 +45,39 @@ def testInsertBefore():
     elem = root.childNodes[0]
     nelem = dom.createElement("element")
     root.insertBefore(nelem, elem)
-    confirm(len(root.childNodes) == 2
-            and root.childNodes.length == 2
-            and root.childNodes[0] is nelem
-            and root.childNodes.item(0) is nelem
-            and root.childNodes[1] is elem
-            and root.childNodes.item(1) is elem
-            and root.firstChild is nelem
-            and root.lastChild is elem
-            and root.toxml() == "<doc><element/><foo/></doc>"
-            , "testInsertBefore -- node properly placed in tree")
+    confirm(len(root.childNodes) == 2 and
+            root.childNodes.length == 2 and
+            root.childNodes[0] is nelem and
+            root.childNodes.item(0) is nelem and
+            root.childNodes[1] is elem and
+            root.childNodes.item(1) is elem and
+            root.firstChild is nelem and
+            root.lastChild is elem and
+            root.toxml() == "<doc><element/><foo/></doc>", "testInsertBefore -- node properly placed in tree")
     nelem = dom.createElement("element")
     root.insertBefore(nelem, None)
-    confirm(len(root.childNodes) == 3
-            and root.childNodes.length == 3
-            and root.childNodes[1] is elem
-            and root.childNodes.item(1) is elem
-            and root.childNodes[2] is nelem
-            and root.childNodes.item(2) is nelem
-            and root.lastChild is nelem
-            and nelem.previousSibling is elem
-            and root.toxml() == "<doc><element/><foo/><element/></doc>"
-            , "testInsertBefore -- node properly placed in tree")
+    confirm(len(root.childNodes) == 3 and
+            root.childNodes.length == 3 and
+            root.childNodes[1] is elem and
+            root.childNodes.item(1) is elem and
+            root.childNodes[2] is nelem and
+            root.childNodes.item(2) is nelem and
+            root.lastChild is nelem and
+            nelem.previousSibling is elem and
+            root.toxml() == "<doc><element/><foo/><element/></doc>", "testInsertBefore -- node properly placed in tree")
     nelem2 = dom.createElement("bar")
     root.insertBefore(nelem2, nelem)
-    confirm(len(root.childNodes) == 4
-            and root.childNodes.length == 4
-            and root.childNodes[2] is nelem2
-            and root.childNodes.item(2) is nelem2
-            and root.childNodes[3] is nelem
-            and root.childNodes.item(3) is nelem
-            and nelem2.nextSibling is nelem
-            and nelem.previousSibling is nelem2
-            and root.toxml() == "<doc><element/><foo/><bar/><element/></doc>"
-            , "testInsertBefore -- node properly placed in tree")
+    confirm(len(root.childNodes) == 4 and
+            root.childNodes.length == 4 and
+            root.childNodes[2] is nelem2 and
+            root.childNodes.item(2) is nelem2 and
+            root.childNodes[3] is nelem and
+            root.childNodes.item(3) is nelem and
+            nelem2.nextSibling is nelem and
+            nelem.previousSibling is nelem2 and
+            root.toxml() == "<doc><element/><foo/><bar/><element/></doc>", "testInsertBefore -- node properly placed in tree")
     dom.unlink()
+
 
 def _create_fragment_test_nodes():
     dom = parseString("<doc/>")
@@ -88,6 +91,7 @@ def _create_fragment_test_nodes():
     frag.appendChild(c2)
     frag.appendChild(c3)
     return dom, orig, c1, c2, c3, frag
+
 
 def testInsertBeforeFragment():
     dom, orig, c1, c2, c3, frag = _create_fragment_test_nodes()
@@ -104,12 +108,14 @@ def testInsertBeforeFragment():
     frag.unlink()
     dom.unlink()
 
+
 def testAppendChild():
     dom = parse(tstfile)
     dom.documentElement.appendChild(dom.createComment(u"Hello"))
     confirm(dom.documentElement.childNodes[-1].nodeName == "#comment")
     confirm(dom.documentElement.childNodes[-1].data == "Hello")
     dom.unlink()
+
 
 def testAppendChildFragment():
     dom, orig, c1, c2, c3, frag = _create_fragment_test_nodes()
@@ -118,6 +124,7 @@ def testAppendChildFragment():
             "appendChild(<fragment>)")
     frag.unlink()
     dom.unlink()
+
 
 def testReplaceChildFragment():
     dom, orig, c1, c2, c3, frag = _create_fragment_test_nodes()
@@ -128,40 +135,52 @@ def testReplaceChildFragment():
     frag.unlink()
     dom.unlink()
 
+
 def testLegalChildren():
     dom = Document()
     elem = dom.createElement('element')
     text = dom.createTextNode('text')
 
-    try: dom.appendChild(text)
-    except HierarchyRequestErr: pass
+    try:
+        dom.appendChild(text)
+    except HierarchyRequestErr:
+        pass
     else:
         print "dom.appendChild didn't raise HierarchyRequestErr"
 
     dom.appendChild(elem)
-    try: dom.insertBefore(text, elem)
-    except HierarchyRequestErr: pass
+    try:
+        dom.insertBefore(text, elem)
+    except HierarchyRequestErr:
+        pass
     else:
         print "dom.appendChild didn't raise HierarchyRequestErr"
 
-    try: dom.replaceChild(text, elem)
-    except HierarchyRequestErr: pass
+    try:
+        dom.replaceChild(text, elem)
+    except HierarchyRequestErr:
+        pass
     else:
         print "dom.appendChild didn't raise HierarchyRequestErr"
 
     nodemap = elem.attributes
-    try: nodemap.setNamedItem(text)
-    except HierarchyRequestErr: pass
+    try:
+        nodemap.setNamedItem(text)
+    except HierarchyRequestErr:
+        pass
     else:
         print "NamedNodeMap.setNamedItem didn't raise HierarchyRequestErr"
 
-    try: nodemap.setNamedItemNS(text)
-    except HierarchyRequestErr: pass
+    try:
+        nodemap.setNamedItemNS(text)
+    except HierarchyRequestErr:
+        pass
     else:
         print "NamedNodeMap.setNamedItemNS didn't raise HierarchyRequestErr"
 
     elem.appendChild(text)
     dom.unlink()
+
 
 def testNamedNodeMapSetItem():
     dom = Document()
@@ -180,22 +199,26 @@ def testNamedNodeMapSetItem():
     elem.unlink()
     dom.unlink()
 
+
 def testNonZero():
     dom = parse(tstfile)
-    confirm(dom)# should not be zero
+    confirm(dom)  # should not be zero
     dom.appendChild(dom.createComment("foo"))
     confirm(not dom.childNodes[-1].childNodes)
     dom.unlink()
 
+
 def testUnlink():
     dom = parse(tstfile)
     dom.unlink()
+
 
 def testElement():
     dom = Document()
     dom.appendChild(dom.createElement("abc"))
     confirm(dom.documentElement)
     dom.unlink()
+
 
 def testAAA():
     dom = parseString("<abc/>")
@@ -209,6 +232,7 @@ def testAAA():
             "setAttribute() sets ownerElement")
     dom.unlink()
 
+
 def testAAB():
     dom = parseString("<abc/>")
     el = dom.documentElement
@@ -216,6 +240,7 @@ def testAAB():
     el.setAttribute("spam", "jam2")
     confirm(el.toxml() == '<abc spam="jam2"/>', "testAAB")
     dom.unlink()
+
 
 def testAddAttr():
     dom = Document()
@@ -238,6 +263,7 @@ def testAddAttr():
     confirm(len(child.attributes) == 2)
     dom.unlink()
 
+
 def testDeleteAttr():
     dom = Document()
     child = dom.appendChild(dom.createElement("abc"))
@@ -248,6 +274,7 @@ def testDeleteAttr():
     del child.attributes["def"]
     confirm(len(child.attributes) == 0)
     dom.unlink()
+
 
 def testRemoveAttr():
     dom = Document()
@@ -260,18 +287,20 @@ def testRemoveAttr():
 
     dom.unlink()
 
+
 def testRemoveAttrNS():
     dom = Document()
     child = dom.appendChild(
-            dom.createElementNS("http://www.python.org", "python:abc"))
+        dom.createElementNS("http://www.python.org", "python:abc"))
     child.setAttributeNS("http://www.w3.org", "xmlns:python",
-                                            "http://www.python.org")
+                         "http://www.python.org")
     child.setAttributeNS("http://www.python.org", "python:abcattr", "foo")
     confirm(len(child.attributes) == 2)
     child.removeAttributeNS("http://www.python.org", "abcattr")
     confirm(len(child.attributes) == 1)
 
     dom.unlink()
+
 
 def testRemoveAttributeNode():
     dom = Document()
@@ -284,6 +313,7 @@ def testRemoveAttributeNode():
 
     dom.unlink()
 
+
 def testChangeAttr():
     dom = parseString("<abc/>")
     el = dom.documentElement
@@ -295,33 +325,48 @@ def testChangeAttr():
     confirm(len(el.attributes) == 1)
     el.setAttribute("spam2", "bam")
     confirm(len(el.attributes) == 2)
-    el.attributes[ "spam2"] = "bam2"
+    el.attributes["spam2"] = "bam2"
     confirm(len(el.attributes) == 2)
     dom.unlink()
+
 
 def testGetAttrList():
     pass
 
-def testGetAttrValues(): pass
 
-def testGetAttrLength(): pass
+def testGetAttrValues():
+    pass
 
-def testGetAttribute(): pass
 
-def testGetAttributeNS(): pass
+def testGetAttrLength():
+    pass
 
-def testGetAttributeNode(): pass
+
+def testGetAttribute():
+    pass
+
+
+def testGetAttributeNS():
+    pass
+
+
+def testGetAttributeNode():
+    pass
+
 
 def testGetElementsByTagNameNS():
-    d="""<foo xmlns:minidom="http://pyxml.sf.net/minidom">
+    d = """<foo xmlns:minidom="http://pyxml.sf.net/minidom">
     <minidom:myelem/>
     </foo>"""
     dom = parseString(d)
-    elem = dom.getElementsByTagNameNS("http://pyxml.sf.net/minidom","myelem")
+    elem = dom.getElementsByTagNameNS("http://pyxml.sf.net/minidom", "myelem")
     confirm(len(elem) == 1)
     dom.unlink()
 
-def testGetEmptyNodeListFromElementsByTagNameNS(): pass
+
+def testGetEmptyNodeListFromElementsByTagNameNS():
+    pass
+
 
 def testElementReprAndStr():
     dom = Document()
@@ -332,6 +377,8 @@ def testElementReprAndStr():
     dom.unlink()
 
 # commented out until Fredrick's fix is checked in
+
+
 def _testElementReprAndStrUnicode():
     dom = Document()
     el = dom.appendChild(dom.createElement(u"abc"))
@@ -341,6 +388,8 @@ def _testElementReprAndStrUnicode():
     dom.unlink()
 
 # commented out until Fredrick's fix is checked in
+
+
 def _testElementReprAndStrUnicodeNS():
     dom = Document()
     el = dom.appendChild(
@@ -351,6 +400,7 @@ def _testElementReprAndStrUnicodeNS():
     confirm(string1.find("slash:abc") != -1)
     dom.unlink()
 
+
 def testAttributeRepr():
     dom = Document()
     el = dom.appendChild(dom.createElement(u"abc"))
@@ -358,7 +408,10 @@ def testAttributeRepr():
     confirm(str(node) == repr(node))
     dom.unlink()
 
-def testTextNodeRepr(): pass
+
+def testTextNodeRepr():
+    pass
+
 
 def testWriteXML():
     str = '<?xml version="1.0" ?>\n<a b="c"/>'
@@ -367,15 +420,26 @@ def testWriteXML():
     dom.unlink()
     confirm(str == domstr)
 
-def testProcessingInstruction(): pass
 
-def testProcessingInstructionRepr(): pass
+def testProcessingInstruction():
+    pass
 
-def testTextRepr(): pass
 
-def testWriteText(): pass
+def testProcessingInstructionRepr():
+    pass
 
-def testDocumentElement(): pass
+
+def testTextRepr():
+    pass
+
+
+def testWriteText():
+    pass
+
+
+def testDocumentElement():
+    pass
+
 
 def testTooManyDocumentElements():
     doc = parseString("<doc/>")
@@ -390,69 +454,116 @@ def testTooManyDocumentElements():
     elem.unlink()
     doc.unlink()
 
-def testCreateElementNS(): pass
 
-def testCreateAttributeNS(): pass
+def testCreateElementNS():
+    pass
 
-def testParse(): pass
 
-def testParseString(): pass
+def testCreateAttributeNS():
+    pass
 
-def testComment(): pass
 
-def testAttrListItem(): pass
+def testParse():
+    pass
 
-def testAttrListItems(): pass
 
-def testAttrListItemNS(): pass
+def testParseString():
+    pass
 
-def testAttrListKeys(): pass
 
-def testAttrListKeysNS(): pass
+def testComment():
+    pass
 
-def testAttrListValues(): pass
 
-def testAttrListLength(): pass
+def testAttrListItem():
+    pass
 
-def testAttrList__getitem__(): pass
 
-def testAttrList__setitem__(): pass
+def testAttrListItems():
+    pass
 
-def testSetAttrValueandNodeValue(): pass
 
-def testParseElement(): pass
+def testAttrListItemNS():
+    pass
 
-def testParseAttributes(): pass
 
-def testParseElementNamespaces(): pass
+def testAttrListKeys():
+    pass
 
-def testParseAttributeNamespaces(): pass
 
-def testParseProcessingInstructions(): pass
+def testAttrListKeysNS():
+    pass
 
-def testChildNodes(): pass
 
-def testFirstChild(): pass
+def testAttrListValues():
+    pass
 
-def testHasChildNodes(): pass
+
+def testAttrListLength():
+    pass
+
+
+def testAttrList__getitem__():
+    pass
+
+
+def testAttrList__setitem__():
+    pass
+
+
+def testSetAttrValueandNodeValue():
+    pass
+
+
+def testParseElement():
+    pass
+
+
+def testParseAttributes():
+    pass
+
+
+def testParseElementNamespaces():
+    pass
+
+
+def testParseAttributeNamespaces():
+    pass
+
+
+def testParseProcessingInstructions():
+    pass
+
+
+def testChildNodes():
+    pass
+
+
+def testFirstChild():
+    pass
+
+
+def testHasChildNodes():
+    pass
+
 
 def testCloneElementShallow():
     dom, clone = _setupCloneElement(0)
-    confirm(len(clone.childNodes) == 0
-            and clone.childNodes.length == 0
-            and clone.parentNode is None
-            and clone.toxml() == '<doc attr="value"/>'
-            , "testCloneElementShallow")
+    confirm(len(clone.childNodes) == 0 and
+            clone.childNodes.length == 0 and
+            clone.parentNode is None and
+            clone.toxml() == '<doc attr="value"/>', "testCloneElementShallow")
     dom.unlink()
+
 
 def testCloneElementDeep():
     dom, clone = _setupCloneElement(1)
-    confirm(len(clone.childNodes) == 1
-            and clone.childNodes.length == 1
-            and clone.parentNode is None
-            and clone.toxml() == '<doc attr="value"><foo/></doc>'
-            , "testCloneElementDeep")
+    confirm(len(clone.childNodes) == 1 and
+            clone.childNodes.length == 1 and
+            clone.parentNode is None and
+            clone.toxml() == '<doc attr="value"><foo/></doc>', "testCloneElementDeep")
     dom.unlink()
+
 
 def _setupCloneElement(deep):
     dom = parseString("<doc attr='value'><foo/></doc>")
@@ -466,6 +577,7 @@ def _setupCloneElement(deep):
     root.setAttribute("added", "VALUE")
     return dom, clone
 
+
 def _testCloneElementCopiesAttributes(e1, e2, test):
     attrs1 = e1.attributes
     attrs2 = e2.attributes
@@ -477,59 +589,70 @@ def _testCloneElementCopiesAttributes(e1, e2, test):
     for i in range(len(keys1)):
         a1 = attrs1.item(i)
         a2 = attrs2.item(i)
-        confirm(a1 is not a2
-                and a1.value == a2.value
-                and a1.nodeValue == a2.nodeValue
-                and a1.namespaceURI == a2.namespaceURI
-                and a1.localName == a2.localName
-                , "clone of attribute node has proper attribute values")
+        confirm(a1 is not a2 and
+                a1.value == a2.value and
+                a1.nodeValue == a2.nodeValue and
+                a1.namespaceURI == a2.namespaceURI and
+                a1.localName == a2.localName, "clone of attribute node has proper attribute values")
         confirm(a2.ownerElement is e2,
                 "clone of attribute node correctly owned")
 
 
-def testCloneDocumentShallow(): pass
+def testCloneDocumentShallow():
+    pass
 
-def testCloneDocumentDeep(): pass
 
-def testCloneAttributeShallow(): pass
+def testCloneDocumentDeep():
+    pass
 
-def testCloneAttributeDeep(): pass
 
-def testClonePIShallow(): pass
+def testCloneAttributeShallow():
+    pass
 
-def testClonePIDeep(): pass
+
+def testCloneAttributeDeep():
+    pass
+
+
+def testClonePIShallow():
+    pass
+
+
+def testClonePIDeep():
+    pass
+
 
 def testNormalize():
     doc = parseString("<doc/>")
     root = doc.documentElement
     root.appendChild(doc.createTextNode("first"))
     root.appendChild(doc.createTextNode("second"))
-    confirm(len(root.childNodes) == 2
-            and root.childNodes.length == 2, "testNormalize -- preparation")
+    confirm(len(root.childNodes) == 2 and
+            root.childNodes.length == 2, "testNormalize -- preparation")
     doc.normalize()
-    confirm(len(root.childNodes) == 1
-            and root.childNodes.length == 1
-            and root.firstChild is root.lastChild
-            and root.firstChild.data == "firstsecond"
-            , "testNormalize -- result")
+    confirm(len(root.childNodes) == 1 and
+            root.childNodes.length == 1 and
+            root.firstChild is root.lastChild and
+            root.firstChild.data == "firstsecond", "testNormalize -- result")
     doc.unlink()
 
     doc = parseString("<doc/>")
     root = doc.documentElement
     root.appendChild(doc.createTextNode(""))
     doc.normalize()
-    confirm(len(root.childNodes) == 0
-            and root.childNodes.length == 0,
+    confirm(len(root.childNodes) == 0 and
+            root.childNodes.length == 0,
             "testNormalize -- single empty node removed")
     doc.unlink()
 
+
 def testNormalizedAfterLoad():
     """
-    Introduced this test on jython because 
-    1. Cpython guarantees, by the use of xml.dom.expatbuilder, 
+    Introduced this test on jython because
+    1. Cpython guarantees, by the use of xml.dom.expatbuilder,
        that all text nodes are normalized after loading.
-    2. Jython has no expat, and thus uses xml.dom.pulldom.parse 
-       (which uses any java SAX2 compliant parser), and which makes 
+    2. Jython has no expat, and thus uses xml.dom.pulldom.parse
+       (which uses any java SAX2 compliant parser), and which makes
        no guarantees about text node normalization.
     Thus we have to check if text nodes are normalized after a parse.
     See this bug for further information
@@ -537,14 +660,17 @@ def testNormalizedAfterLoad():
     http://bugs.jython.org/issue1614
     """
     num_lines = 2
-    # Up to 16K lines should be enough to guarantee failure without normalization
+    # Up to 16K lines should be enough to guarantee failure without
+    # normalization
     while num_lines <= 2**14:
-        doc_content = "\n".join( ("Line %d" % i for i in xrange(num_lines)) )
+        doc_content = "\n".join(("Line %d" % i for i in xrange(num_lines)))
         doc_text = "<document>%s</document>" % doc_content
         dom = parseString(doc_text)
-        node_content = dom.getElementsByTagName("document")[0].childNodes[0].nodeValue
+        node_content = dom.getElementsByTagName(
+            "document")[0].childNodes[0].nodeValue
         confirm(node_content == doc_content, "testNormalizedAfterLoad")
         num_lines *= 2
+
 
 def testSiblings():
     doc = parseString("<doc><?pi?>text?<elm/></doc>")
@@ -559,6 +685,7 @@ def testSiblings():
             elm.previousSibling is text, "testSiblings")
 
     doc.unlink()
+
 
 def testParents():
     doc = parseString("<doc><elm1><elm2/><elm2><elm3/></elm2></elm1></doc>")
@@ -575,17 +702,19 @@ def testParents():
 
     doc.unlink()
 
+
 def testNodeListItem():
     doc = parseString("<doc><e/><e/></doc>")
     children = doc.childNodes
     docelem = children[0]
-    confirm(children[0] is children.item(0)
-            and children.item(1) is None
-            and docelem.childNodes.item(0) is docelem.childNodes[0]
-            and docelem.childNodes.item(1) is docelem.childNodes[1]
-            and docelem.childNodes.item(0).childNodes.item(0) is None,
+    confirm(children[0] is children.item(0) and
+            children.item(1) is None and
+            docelem.childNodes.item(0) is docelem.childNodes[0] and
+            docelem.childNodes.item(1) is docelem.childNodes[1] and
+            docelem.childNodes.item(0).childNodes.item(0) is None,
             "test NodeList.item()")
     doc.unlink()
+
 
 def testSAX2DOM():
     from xml.dom import pulldom
@@ -625,8 +754,8 @@ def testSAX2DOM():
 
 # --- MAIN PROGRAM
 
-names = globals().keys()
-names.sort()
+
+names = sorted(globals().keys())
 
 failed = []
 
@@ -657,12 +786,12 @@ for name in names:
         try:
             func()
             check_allnodes()
-        except:
+        except BaseException:
             failed.append(name)
             print "Test Failed: ", name
             sys.stdout.flush()
             traceback.print_exception(*sys.exc_info())
-            print `sys.exc_info()[1]`
+            print repr(sys.exc_info()[1])
             Node.allnodes = {}
 
 if failed:

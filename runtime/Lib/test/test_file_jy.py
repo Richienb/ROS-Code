@@ -7,6 +7,7 @@ import os
 import unittest
 from test import test_support
 
+
 class FileTestCase(unittest.TestCase):
 
     def tearDown(self):
@@ -37,18 +38,23 @@ class FileTestCase(unittest.TestCase):
         testfnu = unicode(test_support.TESTFN)
         try:
             open(testfnu)
-        except IOError, e:
+        except IOError as e:
             self.assertTrue(isinstance(e.filename, unicode))
             self.assertEqual(e.filename, testfnu)
         else:
             self.assertTrue(False)
 
-    @unittest.skipUnless(hasattr(os, 'chmod'), 'chmod() support required for this test')
+    @unittest.skipUnless(
+        hasattr(
+            os,
+            'chmod'),
+        'chmod() support required for this test')
     def test_issue2081(self):
         f = open(test_support.TESTFN, 'wb')
         f.close()
         os.chmod(test_support.TESTFN, 200)      # write-only
-        f = open(test_support.TESTFN, 'w')      # should succeed, raised IOError (permission denied) prior to fix
+        # should succeed, raised IOError (permission denied) prior to fix
+        f = open(test_support.TESTFN, 'w')
         f.close()
 
 

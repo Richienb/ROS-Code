@@ -28,13 +28,15 @@ seekable stream object.
 """
 from warnings import warn
 warn("the multifile module has been deprecated since Python 2.5",
-        DeprecationWarning, stacklevel=2)
+     DeprecationWarning, stacklevel=2)
 del warn
 
-__all__ = ["MultiFile","Error"]
+__all__ = ["MultiFile", "Error"]
+
 
 class Error(Exception):
     pass
+
 
 class MultiFile:
 
@@ -64,10 +66,10 @@ class MultiFile:
                 if self.level > 0:
                     pos = pos + self.lastpos
                 else:
-                    raise Error, "can't use whence=2 yet"
+                    raise Error("can't use whence=2 yet")
         if not 0 <= pos <= here or \
-                        self.level > 0 and pos > self.lastpos:
-            raise Error, 'bad MultiFile.seek() call'
+                self.level > 0 and pos > self.lastpos:
+            raise Error('bad MultiFile.seek() call')
         self.fp.seek(pos + self.start)
         self.level = 0
         self.last = 0
@@ -81,7 +83,7 @@ class MultiFile:
             self.level = len(self.stack)
             self.last = (self.level > 0)
             if self.last:
-                raise Error, 'sudden EOF in MultiFile.readline()'
+                raise Error('sudden EOF in MultiFile.readline()')
             return ''
         assert self.level == 0
         # Fast check to see if this is just data
@@ -104,24 +106,26 @@ class MultiFile:
         # We only get here if we see a section divider or EOM line
         if self.seekable:
             self.lastpos = self.tell() - len(line)
-        self.level = i+1
+        self.level = i + 1
         if self.level > 1:
-            raise Error,'Missing endmarker in MultiFile.readline()'
+            raise Error('Missing endmarker in MultiFile.readline()')
         return ''
 
     def readlines(self):
         list = []
-        while 1:
+        while True:
             line = self.readline()
-            if not line: break
+            if not line:
+                break
             list.append(line)
         return list
 
-    def read(self): # Note: no size argument -- read until EOF only!
+    def read(self):  # Note: no size argument -- read until EOF only!
         return ''.join(self.readlines())
 
     def next(self):
-        while self.readline(): pass
+        while self.readline():
+            pass
         if self.level > 1 or self.last:
             return 0
         self.level = 0
@@ -132,7 +136,7 @@ class MultiFile:
 
     def push(self, sep):
         if self.level > 0:
-            raise Error, 'bad MultiFile.push() call'
+            raise Error('bad MultiFile.push() call')
         self.stack.append(sep)
         if self.seekable:
             self.posstack.append(self.start)
@@ -140,7 +144,7 @@ class MultiFile:
 
     def pop(self):
         if self.stack == []:
-            raise Error, 'bad MultiFile.pop() call'
+            raise Error('bad MultiFile.pop() call')
         if self.level <= 1:
             self.last = 0
         else:

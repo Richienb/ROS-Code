@@ -11,6 +11,7 @@ def _f(a):
     print a
     return 1
 
+
 dis_f = """\
  %-4d         0 LOAD_FAST                0 (a)
               3 PRINT_ITEM
@@ -18,14 +19,15 @@ dis_f = """\
 
  %-4d         5 LOAD_CONST               1 (1)
               8 RETURN_VALUE
-"""%(_f.func_code.co_firstlineno + 1,
-     _f.func_code.co_firstlineno + 2)
+""" % (_f.func_code.co_firstlineno + 1,
+       _f.func_code.co_firstlineno + 2)
 
 
 def bug708901():
     for res in range(1,
                      10):
         pass
+
 
 dis_bug708901 = """\
  %-4d         0 SETUP_LOOP              23 (to 26)
@@ -42,15 +44,16 @@ dis_bug708901 = """\
         >>   25 POP_BLOCK
         >>   26 LOAD_CONST               0 (None)
              29 RETURN_VALUE
-"""%(bug708901.func_code.co_firstlineno + 1,
-     bug708901.func_code.co_firstlineno + 2,
-     bug708901.func_code.co_firstlineno + 3)
+""" % (bug708901.func_code.co_firstlineno + 1,
+       bug708901.func_code.co_firstlineno + 2,
+       bug708901.func_code.co_firstlineno + 3)
 
 
 def bug1333982(x=[]):
     assert 0, ([s for s in x] +
-              1)
+               1)
     pass
+
 
 dis_bug1333982 = """\
  %-4d         0 LOAD_CONST               1 (0)
@@ -72,9 +75,9 @@ dis_bug1333982 = """\
 
  %-4d   >>   41 LOAD_CONST               0 (None)
              44 RETURN_VALUE
-"""%(bug1333982.func_code.co_firstlineno + 1,
-     bug1333982.func_code.co_firstlineno + 2,
-     bug1333982.func_code.co_firstlineno + 3)
+""" % (bug1333982.func_code.co_firstlineno + 1,
+       bug1333982.func_code.co_firstlineno + 2,
+       bug1333982.func_code.co_firstlineno + 3)
 
 _BIG_LINENO_FORMAT = """\
 %3d           0 LOAD_GLOBAL              0 (spam)
@@ -82,6 +85,7 @@ _BIG_LINENO_FORMAT = """\
               4 LOAD_CONST               0 (None)
               7 RETURN_VALUE
 """
+
 
 class DisTests(unittest.TestCase):
     def do_disassembly_test(self, func, expected):
@@ -142,6 +146,7 @@ class DisTests(unittest.TestCase):
         for i in xrange(300, 5000, 10):
             expected = _BIG_LINENO_FORMAT % (i + 2)
             self.do_disassembly_test(func(i), expected)
+
 
 def test_main():
     run_unittest(DisTests)

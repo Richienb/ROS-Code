@@ -11,10 +11,12 @@ errors.
 
 from compiler import ast, walk
 
+
 def check(tree, multi=None):
     v = SyntaxErrorChecker(multi)
     walk(tree, v)
     return v.errors
+
 
 class SyntaxErrorChecker:
     """A visitor to find syntax errors in the AST."""
@@ -34,13 +36,13 @@ class SyntaxErrorChecker:
         if self.multi is not None:
             print "%s:%s: %s" % (node.filename, node.lineno, msg)
         else:
-            raise SyntaxError, "%s (%s:%s)" % (msg, node.filename, node.lineno)
+            raise SyntaxError("%s (%s:%s)" % (msg, node.filename, node.lineno))
 
     def visitAssign(self, node):
         # the transformer module handles many of these
         pass
-##        for target in node.nodes:
-##            if isinstance(target, ast.AssList):
-##                if target.lineno is None:
+# for target in node.nodes:
+# if isinstance(target, ast.AssList):
+# if target.lineno is None:
 ##                    target.lineno = node.lineno
 ##                self.error(target, "can't assign to list comprehension")

@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from test import test_support
 
+
 class SysTest(unittest.TestCase):
 
     def test_platform(self):
@@ -23,9 +24,9 @@ class SysTest(unittest.TestCase):
 
     def test_tuple_args(self):
         "Exceptions raised unpacking tuple args have right line number"
-        def tuple_args( (x,y) ): pass
+        def tuple_args((x, y)): pass
         try:
-            tuple_args( 10 )
+            tuple_args(10)
         except TypeError:
             tb = sys.exc_info()[2]
             if tb.tb_lineno == 0:
@@ -96,7 +97,7 @@ def exec_code_separately(function, sharing=False):
 
 def set_globally():
     import sys
-    import test.sys_jy_test_module # used as a probe
+    import test.sys_jy_test_module  # used as a probe
 
     # can't use 'foo', test_with wants to have that undefined
     sys.builtins['test_sys_jy_foo'] = 42
@@ -106,6 +107,7 @@ def set_shadow():
     import sys
     sys.builtins['fum'] = 24
 
+
 class ShadowingTest(unittest.TestCase):
 
     def setUp(self):
@@ -113,25 +115,33 @@ class ShadowingTest(unittest.TestCase):
         exec_code_separately(set_shadow)
 
     def test_super_globals(self):
-        import sys, __builtin__
+        import sys
+        import __builtin__
 
         def get_sym(sym):
             return sys.builtins.get(sym)
+
         def get_sym_attr(sym):
             return hasattr(__builtin__, sym)
 
-        self.assertEqual(test_sys_jy_foo, 42, "should be able to install a new builtin ('super global')")
+        self.assertEqual(
+            test_sys_jy_foo,
+            42,
+            "should be able to install a new builtin ('super global')")
         self.assertEqual(get_sym('test_sys_jy_foo'), 42)
         self.assertTrue(get_sym_attr('test_sys_jy_foo'))
 
         def is_fum_there(): fum
-        self.assertRaises(NameError, is_fum_there) # shadowed global ('fum') should not be visible
+        # shadowed global ('fum') should not be visible
+        self.assertRaises(NameError, is_fum_there)
         self.assertEqual(get_sym('fum'), None)
         self.assertTrue(not(get_sym_attr('fum')))
 
     def test_sys_modules_per_instance(self):
         import sys
-        self.assertTrue('sys_jy_test_module' not in sys.modules, "sys.modules should be per PySystemState instance")
+        self.assertTrue(
+            'sys_jy_test_module' not in sys.modules,
+            "sys.modules should be per PySystemState instance")
 
 
 class SyspathResourceTest(unittest.TestCase):
@@ -179,14 +189,15 @@ class SyspathUnicodeTest(unittest.TestCase):
                 self.assertTrue(os.path.exists(moduleFile))
                 sys.path.append(moduleDir)
                 __import__(module)
-                moduleClassFile = '%s/%s$py.class' % (moduleDir, module) 
+                moduleClassFile = '%s/%s$py.class' % (moduleDir, module)
                 self.assertTrue(os.path.exists(moduleClassFile))
                 os.remove(moduleClassFile)
             finally:
                 os.remove(moduleFile)
         finally:
             os.rmdir(moduleDir)
-        self.assertFalse(os.path.exists(moduleDir))        
+        self.assertFalse(os.path.exists(moduleDir))
+
 
 class SysEncodingTest(unittest.TestCase):
 
@@ -194,11 +205,13 @@ class SysEncodingTest(unittest.TestCase):
     # values related to encoding and error policy.
 
     def test_ioencoding(self):  # adapted from CPython v2.7 test_sys
-        import subprocess, os
+        import subprocess
+        import os
         env = dict(os.environ)
 
         def check(code, encoding=None, errors=None):
-            # Execute with encoding and errors optionally set via Java properties
+            # Execute with encoding and errors optionally set via Java
+            # properties
             command = [sys.executable]
             if (encoding):
                 command.append('-Dpython.io.encoding={}'.format(encoding))
@@ -206,8 +219,8 @@ class SysEncodingTest(unittest.TestCase):
                 command.append('-Dpython.io.errors={}'.format(errors))
             command.append('-c')
             command.append('print unichr({:#x})'.format(code))
-            #print "\n   ", " ".join(command), " ... ",
-            p = subprocess.Popen(command, stdout = subprocess.PIPE, env=env)
+            # print "\n   ", " ".join(command), " ... ",
+            p = subprocess.Popen(command, stdout=subprocess.PIPE, env=env)
             return p.stdout.read().strip()
 
         env.pop("PYTHONIOENCODING", None)
@@ -221,10 +234,10 @@ class SysEncodingTest(unittest.TestCase):
         # cp424: 4a
         # utf-8: c2 a2
 
-        self.assertEqual(check(0xa2, "iso-8859-1"), "¢") # same as this file
+        self.assertEqual(check(0xa2, "iso-8859-1"), "¢")  # same as this file
 
         # self.assertEqual(check(0xa2, "ascii"), "") # and an error message
-        self.assertEqual(check(0xa2, "ascii", "ignore"),"")
+        self.assertEqual(check(0xa2, "ascii", "ignore"), "")
         self.assertEqual(check(0xa2, "ascii", "replace"), "?")
         self.assertEqual(check(0xa2, "ascii", "backslashreplace"), r"\xa2")
         self.assertEqual(check(0xa2, "ascii", "xmlcharrefreplace"), "&#162;")
@@ -241,6 +254,7 @@ class SysEncodingTest(unittest.TestCase):
         self.assertEqual(check(0xa2, None, "backslashreplace"), r"\xa2")
         self.assertEqual(check(0xa2, "cp850"), "\xbd")
 
+
 class SysArgvTest(unittest.TestCase):
 
     @unittest.skipIf(os._name == "nt", "FIXME should work on Windows")
@@ -250,11 +264,12 @@ class SysArgvTest(unittest.TestCase):
         with test_support.temp_cwd(name=u"tempcwd-%s" % zhongwen):
             p = subprocess.Popen(
                 [sys.executable, '-c',
-                 'import sys;' \
+                 'import sys;'
                  'sys.stdout.write(sys.argv[1].encode("utf-8"))',
                  zhongwen],
                 stdout=subprocess.PIPE)
             self.assertEqual(p.stdout.read().decode("utf-8"), zhongwen)
+
 
 class InteractivePromptTest(unittest.TestCase):
     # TODO ps1, ps2 being defined for interactive usage should be
@@ -264,8 +279,8 @@ class InteractivePromptTest(unittest.TestCase):
     def test_prompts_not_defined_if_noninteractive(self):
         p = subprocess.Popen(
             [sys.executable, '-c',
-             'import sys;' \
-             'print hasattr(sys, "ps1");' \
+             'import sys;'
+             'print hasattr(sys, "ps1");'
              'print hasattr(sys, "ps2");'],
             stdout=subprocess.PIPE)
         self.assertEqual(p.stdout.read(),
@@ -290,6 +305,7 @@ def test_main():
         SysArgvTest,
         InteractivePromptTest
     )
+
 
 if __name__ == "__main__":
     test_main()

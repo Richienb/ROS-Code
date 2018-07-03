@@ -38,7 +38,11 @@ class ThreadingTestCase(unittest.TestCase):
             time.sleep(1)
             activeCount = threading.activeCount()
             polls -= 1
-        self.assertTrue(activeCount <= activeBefore, 'activeCount should to be <= %s, instead of %s' % (activeBefore, activeCount))
+        self.assertTrue(
+            activeCount <= activeBefore,
+            'activeCount should to be <= %s, instead of %s' %
+            (activeBefore,
+             activeCount))
 
     def _sleep(self, n):
         time.sleep(random.random())
@@ -54,7 +58,7 @@ class ThreadingTestCase(unittest.TestCase):
 
 
 class TwistedTestCase(unittest.TestCase):
-    
+
     def test_needs_underscored_versions(self):
         self.assertEqual(threading.Lock, threading._Lock)
         self.assertEqual(threading.RLock, threading._RLock)
@@ -71,7 +75,7 @@ class JavaIntegrationTestCase(unittest.TestCase):
                 while not JThread.currentThread().isInterrupted():
                     try:
                         cv.wait()
-                    except InterruptedException, e:
+                    except InterruptedException as e:
                         break
 
         num_threads = 5
@@ -80,7 +84,7 @@ class JavaIntegrationTestCase(unittest.TestCase):
             Thread(
                 name="thread #%d" % i,
                 target=wait_until_interrupted,
-                args=(unfair_condition,)) 
+                args=(unfair_condition,))
             for i in xrange(num_threads)]
 
         for thread in threads:
@@ -92,7 +96,7 @@ class JavaIntegrationTestCase(unittest.TestCase):
 
         joined_threads = 0
         for thread in threads:
-            thread.join(1.) # timeout just in case so we don't stall regrtest
+            thread.join(1.)  # timeout just in case so we don't stall regrtest
             joined_threads += 1
         self.assertEqual(joined_threads, num_threads)
 
@@ -102,15 +106,21 @@ class ReprTestCase(unittest.TestCase):
     def test_condition(self):
         l = Lock()
         c = Condition(l)
-        self.assertEqual(repr(c), "<_threading.Condition(<_threading.Lock owner=None locked=False>), 0")
+        self.assertEqual(
+            repr(c),
+            "<_threading.Condition(<_threading.Lock owner=None locked=False>), 0")
         l.acquire()
-        self.assertEqual(repr(c), "<_threading.Condition(<_threading.Lock owner='MainThread' locked=True>), 0")
-    
+        self.assertEqual(
+            repr(c),
+            "<_threading.Condition(<_threading.Lock owner='MainThread' locked=True>), 0")
+
     def test_lock(self):
         l = Lock()
         self.assertEqual(repr(l), "<_threading.Lock owner=None locked=False>")
         r.acquire()
-        self.assertEqual(repr(r), "<_threading.RLock owner='MainThread' locked=True>")
+        self.assertEqual(
+            repr(r),
+            "<_threading.RLock owner='MainThread' locked=True>")
         r.release()
         self.assertEqual(repr(r), "<_threading.RLock owner=None locked=False>")
 
@@ -118,10 +128,15 @@ class ReprTestCase(unittest.TestCase):
         r = RLock()
         self.assertEqual(repr(r), "<_threading.RLock owner=None count=0>")
         r.acquire()
-        self.assertEqual(repr(r), "<_threading.RLock owner='MainThread' count=1>")
+        self.assertEqual(
+            repr(r),
+            "<_threading.RLock owner='MainThread' count=1>")
         r.acquire()
-        self.assertEqual(repr(r), "<_threading.RLock owner='MainThread' count=2>")
-        r.release(); r.release()
+        self.assertEqual(
+            repr(r),
+            "<_threading.RLock owner='MainThread' count=2>")
+        r.release()
+        r.release()
         self.assertEqual(repr(r), "<_threading.RLock owner=None count=0>")
 
 

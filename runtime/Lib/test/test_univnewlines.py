@@ -1,7 +1,8 @@
 # Tests universal newline support for both reading and parsing files.
 
 # NOTE: this file tests the new `io` library backported from Python 3.x.
-# Similar tests for the builtin file object can be found in test_univnewlines2k.py.
+# Similar tests for the builtin file object can be found in
+# test_univnewlines2k.py.
 
 from __future__ import print_function
 from __future__ import unicode_literals
@@ -22,11 +23,11 @@ FATX = 'x' * (2**14)
 DATA_TEMPLATE = [
     "line1=1",
     "line2='this is a very long line designed to go past any default " +
-        "buffer limits that exist in io.py but we also want to test " +
-        "the uncommon case, naturally.'",
+    "buffer limits that exist in io.py but we also want to test " +
+    "the uncommon case, naturally.'",
     "def line3():pass",
     "line4 = '%s'" % FATX,
-    ]
+]
 
 DATA_LF = "\n".join(DATA_TEMPLATE) + "\n"
 DATA_CR = "\r".join(DATA_TEMPLATE) + "\r"
@@ -36,6 +37,7 @@ DATA_CRLF = "\r\n".join(DATA_TEMPLATE) + "\r\n"
 # before end-of-file.
 DATA_MIXED = "\n".join(DATA_TEMPLATE) + "\r"
 DATA_SPLIT = [x + "\n" for x in DATA_TEMPLATE]
+
 
 class TestGenericUnivNewlines(unittest.TestCase):
     # use a class variable DATA to define the data to write to the file
@@ -53,7 +55,7 @@ class TestGenericUnivNewlines(unittest.TestCase):
     def tearDown(self):
         try:
             os.unlink(support.TESTFN)
-        except:
+        except BaseException:
             pass
 
     def test_read(self):
@@ -93,9 +95,11 @@ class TestCRNewlines(TestGenericUnivNewlines):
     NEWLINE = '\r'
     DATA = DATA_CR
 
+
 class TestLFNewlines(TestGenericUnivNewlines):
     NEWLINE = '\n'
     DATA = DATA_LF
+
 
 class TestCRLFNewlines(TestGenericUnivNewlines):
     NEWLINE = '\r\n'
@@ -107,6 +111,7 @@ class TestCRLFNewlines(TestGenericUnivNewlines):
             data = fp.readline()
             pos = fp.tell()
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))
+
 
 class TestMixedNewlines(TestGenericUnivNewlines):
     NEWLINE = ('\r', '\n')
@@ -124,12 +129,14 @@ def test_main():
         class CTest(test):
             open = io.open
         CTest.__name__ = str("C" + test.__name__)
+
         class PyTest(test):
             open = staticmethod(pyio.open)
         PyTest.__name__ = str("Py" + test.__name__)
         tests.append(CTest)
         tests.append(PyTest)
     support.run_unittest(*tests)
+
 
 if __name__ == '__main__':
     test_main()

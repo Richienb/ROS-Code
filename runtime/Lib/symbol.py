@@ -9,7 +9,7 @@
 #
 #    ./python Lib/symbol.py
 
-#--start constants--
+# --start constants--
 single_input = 256
 file_input = 257
 eval_input = 258
@@ -95,11 +95,11 @@ comp_if = 337
 testlist1 = 338
 encoding_decl = 339
 yield_expr = 340
-#--end constants--
+# --end constants--
 
 sym_name = {}
 for _name, _value in globals().items():
-    if type(_value) is type(0):
+    if isinstance(_value, type(0)):
         sym_name[_value] = _name
 
 
@@ -109,6 +109,7 @@ def main():
     if len(sys.argv) == 1:
         sys.argv = sys.argv + ["Include/graminit.h", "Lib/symbol.py"]
     token.main()
+
 
 if __name__ == "__main__":
     main()

@@ -54,7 +54,8 @@ f.lock(mode [, len [, start [, whence]]])
 """
 import warnings
 warnings.warn("The posixfile module is deprecated; "
-                "fcntl.lockf() provides better locking", DeprecationWarning, 2)
+              "fcntl.lockf() provides better locking", DeprecationWarning, 2)
+
 
 class _posixfile_:
     """File wrapper class that provides extra POSIX file routines."""
@@ -67,8 +68,8 @@ class _posixfile_:
     def __repr__(self):
         file = self._file_
         return "<%s posixfile '%s', mode '%s' at %s>" % \
-                (self.states[file.closed], file.name, file.mode, \
-                 hex(id(self))[2:])
+            (self.states[file.closed], file.name, file.mode,
+             hex(id(self))[2:])
 
     #
     # Initialization routines
@@ -80,8 +81,8 @@ class _posixfile_:
     def fileopen(self, file):
         import types
         if repr(type(file)) != "<type 'file'>":
-            raise TypeError, 'posixfile.fileopen() arg must be file object'
-        self._file_  = file
+            raise TypeError('posixfile.fileopen() arg must be file object')
+        self._file_ = file
         # Copy basic file methods
         for maybemethod in dir(file):
             if not maybemethod.startswith('_'):
@@ -100,7 +101,7 @@ class _posixfile_:
         import posix
 
         if not hasattr(posix, 'fdopen'):
-            raise AttributeError, 'dup() method unavailable'
+            raise AttributeError('dup() method unavailable')
 
         return posix.fdopen(posix.dup(self._file_.fileno()), self._file_.mode)
 
@@ -108,31 +109,38 @@ class _posixfile_:
         import posix
 
         if not hasattr(posix, 'fdopen'):
-            raise AttributeError, 'dup() method unavailable'
+            raise AttributeError('dup() method unavailable')
 
         posix.dup2(self._file_.fileno(), fd)
         return posix.fdopen(fd, self._file_.mode)
 
     def flags(self, *which):
-        import fcntl, os
+        import fcntl
+        import os
 
         if which:
             if len(which) > 1:
-                raise TypeError, 'Too many arguments'
+                raise TypeError('Too many arguments')
             which = which[0]
-        else: which = '?'
+        else:
+            which = '?'
 
         l_flags = 0
-        if 'n' in which: l_flags = l_flags | os.O_NDELAY
-        if 'a' in which: l_flags = l_flags | os.O_APPEND
-        if 's' in which: l_flags = l_flags | os.O_SYNC
+        if 'n' in which:
+            l_flags = l_flags | os.O_NDELAY
+        if 'a' in which:
+            l_flags = l_flags | os.O_APPEND
+        if 's' in which:
+            l_flags = l_flags | os.O_SYNC
 
         file = self._file_
 
         if '=' not in which:
             cur_fl = fcntl.fcntl(file.fileno(), fcntl.F_GETFL, 0)
-            if '!' in which: l_flags = cur_fl & ~ l_flags
-            else: l_flags = cur_fl | l_flags
+            if '!' in which:
+                l_flags = cur_fl & ~ l_flags
+            else:
+                l_flags = cur_fl | l_flags
 
         l_flags = fcntl.fcntl(file.fileno(), fcntl.F_SETFL, l_flags)
 
@@ -143,24 +151,35 @@ class _posixfile_:
         if '?' in which:
             which = ''                  # Return current flags
             l_flags = fcntl.fcntl(file.fileno(), fcntl.F_GETFL, 0)
-            if os.O_APPEND & l_flags: which = which + 'a'
+            if os.O_APPEND & l_flags:
+                which = which + 'a'
             if fcntl.fcntl(file.fileno(), fcntl.F_GETFD, 0) & 1:
                 which = which + 'c'
-            if os.O_NDELAY & l_flags: which = which + 'n'
-            if os.O_SYNC & l_flags: which = which + 's'
+            if os.O_NDELAY & l_flags:
+                which = which + 'n'
+            if os.O_SYNC & l_flags:
+                which = which + 's'
             return which
 
     def lock(self, how, *args):
-        import struct, fcntl
+        import struct
+        import fcntl
 
-        if 'w' in how: l_type = fcntl.F_WRLCK
-        elif 'r' in how: l_type = fcntl.F_RDLCK
-        elif 'u' in how: l_type = fcntl.F_UNLCK
-        else: raise TypeError, 'no type of lock specified'
+        if 'w' in how:
+            l_type = fcntl.F_WRLCK
+        elif 'r' in how:
+            l_type = fcntl.F_RDLCK
+        elif 'u' in how:
+            l_type = fcntl.F_UNLCK
+        else:
+            raise TypeError('no type of lock specified')
 
-        if '|' in how: cmd = fcntl.F_SETLKW
-        elif '?' in how: cmd = fcntl.F_GETLK
-        else: cmd = fcntl.F_SETLK
+        if '|' in how:
+            cmd = fcntl.F_SETLKW
+        elif '?' in how:
+            cmd = fcntl.F_GETLK
+        else:
+            cmd = fcntl.F_SETLK
 
         l_whence = 0
         l_start = 0
@@ -173,24 +192,25 @@ class _posixfile_:
         elif len(args) == 3:
             l_len, l_start, l_whence = args
         elif len(args) > 3:
-            raise TypeError, 'too many arguments'
+            raise TypeError('too many arguments')
 
         # Hack by davem@magnet.com to get locking to go on freebsd;
         # additions for AIX by Vladimir.Marangozov@imag.fr
-        import sys, os
+        import sys
+        import os
         if sys.platform in ('netbsd1',
                             'openbsd2',
                             'freebsd2', 'freebsd3', 'freebsd4', 'freebsd5',
                             'freebsd6', 'freebsd7', 'freebsd8',
                             'bsdos2', 'bsdos3', 'bsdos4'):
-            flock = struct.pack('lxxxxlxxxxlhh', \
-                  l_start, l_len, os.getpid(), l_type, l_whence)
+            flock = struct.pack('lxxxxlxxxxlhh',
+                                l_start, l_len, os.getpid(), l_type, l_whence)
         elif sys.platform in ('aix3', 'aix4'):
-            flock = struct.pack('hhlllii', \
-                  l_type, l_whence, l_start, l_len, 0, 0, 0)
+            flock = struct.pack('hhlllii',
+                                l_type, l_whence, l_start, l_len, 0, 0, 0)
         else:
-            flock = struct.pack('hhllhh', \
-                  l_type, l_whence, l_start, l_len, 0, 0)
+            flock = struct.pack('hhllhh',
+                                l_type, l_whence, l_start, l_len, 0, 0)
 
         flock = fcntl.fcntl(self._file_.fileno(), cmd, flock)
 
@@ -217,13 +237,16 @@ class _posixfile_:
                 else:
                     return 'w', l_len, l_start, l_whence, l_pid
 
+
 def open(name, mode='r', bufsize=-1):
     """Public routine to open a file as a posixfile object."""
     return _posixfile_().open(name, mode, bufsize)
 
+
 def fileopen(file):
     """Public routine to get a posixfile object from a Python file object."""
     return _posixfile_().fileopen(file)
+
 
 #
 # Constants

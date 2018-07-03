@@ -10,17 +10,18 @@ import os
 
 __all__ = ["getline", "clearcache", "checkcache"]
 
+
 def getline(filename, lineno, module_globals=None):
     lines = getlines(filename, module_globals)
     if 1 <= lineno <= len(lines):
-        return lines[lineno-1]
+        return lines[lineno - 1]
     else:
         return ''
 
 
 # The cache
 
-cache = {} # The cache
+cache = {}  # The cache
 
 
 def clearcache():
@@ -99,7 +100,7 @@ def updatecache(filename, module_globals=None):
                         return []
                     cache[filename] = (
                         len(data), None,
-                        [line+'\n' for line in data.splitlines()], fullname
+                        [line + '\n' for line in data.splitlines()], fullname
                     )
                     return cache[filename][2]
 

@@ -39,12 +39,13 @@ def read_sound_file(path):
     data = audioop.ulaw2lin(data, 2)
     return (data, rate, 16, nchannels)
 
+
 class OSSAudioDevTests(unittest.TestCase):
 
     def play_sound_file(self, data, rate, ssize, nchannels):
         try:
             dsp = ossaudiodev.open('w')
-        except IOError, msg:
+        except IOError as msg:
             if msg.args[0] in (errno.EACCES, errno.ENOENT,
                                errno.ENODEV, errno.EBUSY):
                 raise unittest.SkipTest(msg)
@@ -72,7 +73,7 @@ class OSSAudioDevTests(unittest.TestCase):
                 self.fail("dsp.%s not read-only" % attr)
 
         # Compute expected running time of sound sample (in seconds).
-        expected_time = float(len(data)) / (ssize//8) / nchannels / rate
+        expected_time = float(len(data)) / (ssize // 8) / nchannels / rate
 
         # set parameters based on .au file headers
         dsp.setparameters(AFMT_S16_NE, nchannels, rate)
@@ -83,7 +84,8 @@ class OSSAudioDevTests(unittest.TestCase):
         t2 = time.time()
         elapsed_time = t2 - t1
 
-        percent_diff = (abs(elapsed_time - expected_time) / expected_time) * 100
+        percent_diff = (abs(elapsed_time - expected_time) /
+                        expected_time) * 100
         self.assertTrue(percent_diff <= 10.0,
                         "elapsed time > 10% off of expected time")
 
@@ -101,7 +103,7 @@ class OSSAudioDevTests(unittest.TestCase):
             (fmt, channels, rate) = config
             if (dsp.setfmt(fmt) == fmt and
                 dsp.channels(channels) == channels and
-                dsp.speed(rate) == rate):
+                    dsp.speed(rate) == rate):
                 break
         else:
             raise RuntimeError("unable to set audio sampling parameters: "
@@ -129,15 +131,15 @@ class OSSAudioDevTests(unittest.TestCase):
         for config in [(fmt, 300, rate),       # ridiculous nchannels
                        (fmt, -5, rate),        # impossible nchannels
                        (fmt, channels, -50),   # impossible rate
-                      ]:
+                       ]:
             (fmt, channels, rate) = config
             result = dsp.setparameters(fmt, channels, rate, False)
             self.assertNotEqual(result, config,
-                             "unexpectedly got requested configuration")
+                                "unexpectedly got requested configuration")
 
             try:
                 result = dsp.setparameters(fmt, channels, rate, True)
-            except ossaudiodev.OSSAudioError, err:
+            except ossaudiodev.OSSAudioError as err:
                 pass
             else:
                 self.fail("expected OSSAudioError")
@@ -153,7 +155,7 @@ class OSSAudioDevTests(unittest.TestCase):
 
             # Disabled because it fails under Linux 2.6 with ALSA's OSS
             # emulation layer.
-            #self.set_bad_parameters(dsp)
+            # self.set_bad_parameters(dsp)
         finally:
             dsp.close()
             self.assertTrue(dsp.closed)
@@ -162,13 +164,14 @@ class OSSAudioDevTests(unittest.TestCase):
 def test_main():
     try:
         dsp = ossaudiodev.open('w')
-    except (ossaudiodev.error, IOError), msg:
+    except (ossaudiodev.error, IOError) as msg:
         if msg.args[0] in (errno.EACCES, errno.ENOENT,
                            errno.ENODEV, errno.EBUSY):
             raise unittest.SkipTest(msg)
         raise
     dsp.close()
     test_support.run_unittest(__name__)
+
 
 if __name__ == "__main__":
     test_main()

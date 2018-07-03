@@ -11,8 +11,10 @@ from test import test_support
 class C:
     def __str__(self):
         raise Exception("E")
+
     def __repr__(self):
         raise Exception("S")
+
 
 class ExceptionsTestCase(unittest.TestCase):
 
@@ -22,7 +24,7 @@ class ExceptionsTestCase(unittest.TestCase):
         self.assertEquals(str(KeyError('')), "''")
         self.assertEquals(str(KeyError('', '')), "('', '')")
 
-    #From bugtests/test076.py
+    # From bugtests/test076.py
     def test_raise_no_arg(self):
         r = None
         try:
@@ -30,7 +32,7 @@ class ExceptionsTestCase(unittest.TestCase):
                 raise RuntimeError("dummy")
             except RuntimeError:
                 raise
-        except RuntimeError, e:
+        except RuntimeError as e:
             r = str(e)
 
         self.assertEquals(r, "dummy")
@@ -39,7 +41,7 @@ class ExceptionsTestCase(unittest.TestCase):
         try:
             c = C()
             str(c)
-        except Exception, e:
+        except Exception as e:
             assert e.args[0] == "E"
             return
         unittest.fail("if __str__ raises an exception, re-raise")
@@ -61,24 +63,27 @@ class ExceptionsTestCase(unittest.TestCase):
         e = RuntimeError(u"Drink \u2615")  # coffee emoji
         # Can take the repr of any object
         self.assertEqual(repr(e), "RuntimeError(u'Drink \u2615',)")
-        # Cannot of course turn a non-ascii Unicode object into a str, even if it's an exception object
+        # Cannot of course turn a non-ascii Unicode object into a str, even if
+        # it's an exception object
         with self.assertRaises(UnicodeEncodeError) as cm:
             str(e)
         self.assertEqual(
             str(cm.exception),
             "'ascii' codec can't encode character u'\u2615' in position 6: ordinal not in range(128)")
-        # But the exception hook, via Py#displayException, does not fail when attempting to __str__ the exception args
+        # But the exception hook, via Py#displayException, does not fail when
+        # attempting to __str__ the exception args
         with test_support.captured_stderr() as s:
             sys.excepthook(RuntimeError, u"Drink \u2615", None)
-        self.assertEqual(s.getvalue(), "RuntimeError\n")  
+        self.assertEqual(s.getvalue(), "RuntimeError\n")
         # It is fine with ascii values, of course
         with test_support.captured_stderr() as s:
             sys.excepthook(RuntimeError, u"Drink java", None)
-        self.assertEqual(s.getvalue(), "RuntimeError: Drink java\n")  
+        self.assertEqual(s.getvalue(), "RuntimeError: Drink java\n")
 
 
 def test_main():
     test_support.run_unittest(ExceptionsTestCase)
+
 
 if __name__ == '__main__':
     test_main()

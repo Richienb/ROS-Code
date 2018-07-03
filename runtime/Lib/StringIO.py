@@ -35,9 +35,11 @@ except ImportError:
 
 __all__ = ["StringIO"]
 
+
 def _complain_ifclosed(closed):
     if closed:
-        raise ValueError, "I/O operation on closed file"
+        raise ValueError("I/O operation on closed file")
+
 
 class StringIO:
     """class StringIO([buffer])
@@ -51,7 +53,8 @@ class StringIO:
     cannot be interpreted as 7-bit ASCII (that use the 8th bit) will cause
     a UnicodeError to be raised when getvalue() is called.
     """
-    def __init__(self, buf = ''):
+
+    def __init__(self, buf=''):
         # Force self.buf to be a string or unicode
         if not isinstance(buf, basestring):
             buf = str(buf)
@@ -92,7 +95,7 @@ class StringIO:
         _complain_ifclosed(self.closed)
         return False
 
-    def seek(self, pos, mode = 0):
+    def seek(self, pos, mode=0):
         """Set the file's current position.
 
         The mode argument is optional and defaults to 0 (absolute file
@@ -116,7 +119,7 @@ class StringIO:
         _complain_ifclosed(self.closed)
         return self.pos
 
-    def read(self, n = -1):
+    def read(self, n=-1):
         """Read at most size bytes from the file
         (less if the read hits EOF before obtaining size bytes).
 
@@ -131,7 +134,7 @@ class StringIO:
         if n is None or n < 0:
             newpos = self.len
         else:
-            newpos = min(self.pos+n, self.len)
+            newpos = min(self.pos + n, self.len)
         r = self.buf[self.pos:newpos]
         self.pos = newpos
         return r
@@ -157,7 +160,7 @@ class StringIO:
         if i < 0:
             newpos = self.len
         else:
-            newpos = i+1
+            newpos = i + 1
         if length is not None and length >= 0:
             if self.pos + length < newpos:
                 newpos = self.pos + length
@@ -165,7 +168,7 @@ class StringIO:
         self.pos = newpos
         return r
 
-    def readlines(self, sizehint = 0):
+    def readlines(self, sizehint=0):
         """Read until EOF using readline() and return a list containing the
         lines thus read.
 
@@ -211,7 +214,8 @@ class StringIO:
         There is no return value.
         """
         _complain_ifclosed(self.closed)
-        if not s: return
+        if not s:
+            return
         # Force s to be a string or unicode
         if not isinstance(s, basestring):
             s = str(s)
@@ -222,7 +226,7 @@ class StringIO:
             self.len = self.pos = spos + len(s)
             return
         if spos > slen:
-            self.buflist.append('\0'*(spos - slen))
+            self.buflist.append('\0' * (spos - slen))
             slen = spos
         newpos = spos + len(s)
         if spos < slen:
@@ -288,7 +292,7 @@ def test():
         f.write(line)
     f.writelines(lines[-2:])
     if f.getvalue() != text:
-        raise RuntimeError, 'write failed'
+        raise RuntimeError('write failed')
     length = f.tell()
     print 'File length =', length
     f.seek(len(lines[0]))
@@ -301,24 +305,25 @@ def test():
     f.seek(-len(line), 1)
     line2 = f.read(len(line))
     if line != line2:
-        raise RuntimeError, 'bad result after seek back'
+        raise RuntimeError('bad result after seek back')
     f.seek(len(line2), 1)
     list = f.readlines()
     line = list[-1]
     f.seek(f.tell() - len(line))
     line2 = f.read()
     if line != line2:
-        raise RuntimeError, 'bad result after seek back from EOF'
+        raise RuntimeError('bad result after seek back from EOF')
     print 'Read', len(list), 'more lines'
     print 'File length =', f.tell()
     if f.tell() != length:
-        raise RuntimeError, 'bad length'
-    f.truncate(length/2)
+        raise RuntimeError('bad length')
+    f.truncate(length / 2)
     f.seek(0, 2)
     print 'Truncated length =', f.tell()
-    if f.tell() != length/2:
-        raise RuntimeError, 'truncate did not adjust length'
+    if f.tell() != length / 2:
+        raise RuntimeError('truncate did not adjust length')
     f.close()
+
 
 if __name__ == '__main__':
     test()

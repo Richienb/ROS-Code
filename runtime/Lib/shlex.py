@@ -18,8 +18,10 @@ except ImportError:
 
 __all__ = ["shlex", "split"]
 
+
 class shlex:
     "A lexical analyzer class for simple shell-like syntaxes."
+
     def __init__(self, instream=None, infile=None, posix=False):
         if isinstance(instream, basestring):
             instream = StringIO(instream)
@@ -169,7 +171,7 @@ class shlex:
                     if self.debug >= 2:
                         print "shlex: I see EOF in quotes state"
                     # XXX what error should be raised here?
-                    raise ValueError, "No closing quotation"
+                    raise ValueError("No closing quotation")
                 if nextchar == self.state:
                     if not self.posix:
                         self.token = self.token + nextchar
@@ -178,7 +180,7 @@ class shlex:
                     else:
                         self.state = 'a'
                 elif self.posix and nextchar in self.escape and \
-                     self.state in self.escapedquotes:
+                        self.state in self.escapedquotes:
                     escapedstate = self.state
                     self.state = nextchar
                 else:
@@ -188,7 +190,7 @@ class shlex:
                     if self.debug >= 2:
                         print "shlex: I see EOF in escape state"
                     # XXX what error should be raised here?
-                    raise ValueError, "No escaped character"
+                    raise ValueError("No escaped character")
                 # In posix shells, only the quote itself or the escape
                 # character may be escaped within quotes.
                 if escapedstate in self.quotes and \
@@ -223,7 +225,7 @@ class shlex:
                     escapedstate = 'a'
                     self.state = nextchar
                 elif nextchar in self.wordchars or nextchar in self.quotes \
-                    or self.whitespace_split:
+                        or self.whitespace_split:
                     self.token = self.token + nextchar
                 else:
                     self.pushback.appendleft(nextchar)
@@ -271,6 +273,7 @@ class shlex:
             raise StopIteration
         return token
 
+
 def split(s, comments=False, posix=True):
     lex = shlex(s, posix=posix)
     lex.whitespace_split = True
@@ -278,13 +281,14 @@ def split(s, comments=False, posix=True):
         lex.commenters = ''
     return list(lex)
 
+
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         lexer = shlex()
     else:
         file = sys.argv[1]
         lexer = shlex(open(file), file)
-    while 1:
+    while True:
         tt = lexer.get_token()
         if tt:
             print "Token: " + repr(tt)

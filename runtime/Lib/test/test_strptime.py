@@ -10,10 +10,16 @@ from datetime import date as datetime_date
 
 import _strptime
 
+
 class getlang_Tests(unittest.TestCase):
     """Test _getlang"""
+
     def test_basic(self):
-        self.assertEqual(_strptime._getlang(), locale.getlocale(locale.LC_TIME))
+        self.assertEqual(
+            _strptime._getlang(),
+            locale.getlocale(
+                locale.LC_TIME))
+
 
 class LocaleTime_Tests(unittest.TestCase):
     """Tests for _strptime.LocaleTime.
@@ -55,18 +61,25 @@ class LocaleTime_Tests(unittest.TestCase):
         # within the tuple
         self.compare_against_time(self.LT_ins.f_month, '%B', 1,
                                   "Testing against full month name failed")
-        self.compare_against_time(self.LT_ins.a_month, '%b', 1,
-                                  "Testing against abbreviated month name failed")
+        self.compare_against_time(
+            self.LT_ins.a_month,
+            '%b',
+            1,
+            "Testing against abbreviated month name failed")
 
     def test_am_pm(self):
         # Make sure AM/PM representation done properly
         strftime_output = time.strftime("%p", self.time_tuple).lower()
         self.assertIn(strftime_output, self.LT_ins.am_pm,
                       "AM/PM representation not in tuple")
-        if self.time_tuple[3] < 12: position = 0
-        else: position = 1
-        self.assertEqual(self.LT_ins.am_pm[position], strftime_output,
-                         "AM/PM representation in the wrong position within the tuple")
+        if self.time_tuple[3] < 12:
+            position = 0
+        else:
+            position = 1
+        self.assertEqual(
+            self.LT_ins.am_pm[position],
+            strftime_output,
+            "AM/PM representation in the wrong position within the tuple")
 
     def test_timezone(self):
         # Make sure timezone is correct
@@ -101,7 +114,8 @@ class LocaleTime_Tests(unittest.TestCase):
 
     def test_lang(self):
         # Make sure lang is set to what _getlang() returns
-        # Assuming locale has not changed between now and when self.LT_ins was created
+        # Assuming locale has not changed between now and when self.LT_ins was
+        # created
         self.assertEqual(self.LT_ins.lang, _strptime._getlang())
 
 
@@ -116,15 +130,21 @@ class TimeRETests(unittest.TestCase):
     def test_pattern(self):
         # Test TimeRE.pattern
         pattern_string = self.time_re.pattern(r"%a %A %d")
-        self.assertTrue(pattern_string.find(self.locale_time.a_weekday[2]) != -1,
-                        "did not find abbreviated weekday in pattern string '%s'" %
-                         pattern_string)
-        self.assertTrue(pattern_string.find(self.locale_time.f_weekday[4]) != -1,
-                        "did not find full weekday in pattern string '%s'" %
-                         pattern_string)
+        self.assertTrue(
+            pattern_string.find(
+                self.locale_time.a_weekday[2]) != -
+            1,
+            "did not find abbreviated weekday in pattern string '%s'" %
+            pattern_string)
+        self.assertTrue(
+            pattern_string.find(
+                self.locale_time.f_weekday[4]) != -
+            1,
+            "did not find full weekday in pattern string '%s'" %
+            pattern_string)
         self.assertTrue(pattern_string.find(self.time_re['d']) != -1,
                         "did not find 'd' directive pattern string '%s'" %
-                         pattern_string)
+                        pattern_string)
 
     def test_pattern_escaping(self):
         # Make sure any characters in the format string that might be taken as
@@ -136,37 +156,60 @@ class TimeRETests(unittest.TestCase):
 
     def test_compile(self):
         # Check that compiled regex is correct
-        found = self.time_re.compile(r"%A").match(self.locale_time.f_weekday[6])
-        self.assertTrue(found and found.group('A') == self.locale_time.f_weekday[6],
-                        "re object for '%A' failed")
+        found = self.time_re.compile(r"%A").match(
+            self.locale_time.f_weekday[6])
+        self.assertTrue(
+            found and found.group('A') == self.locale_time.f_weekday[6],
+            "re object for '%A' failed")
         compiled = self.time_re.compile(r"%a %b")
         found = compiled.match("%s %s" % (self.locale_time.a_weekday[4],
-                               self.locale_time.a_month[4]))
-        self.assertTrue(found,
-            "Match failed with '%s' regex and '%s' string" %
-             (compiled.pattern, "%s %s" % (self.locale_time.a_weekday[4],
-                                           self.locale_time.a_month[4])))
+                                          self.locale_time.a_month[4]))
+        self.assertTrue(
+            found, "Match failed with '%s' regex and '%s' string" %
+            (compiled.pattern, "%s %s" %
+             (self.locale_time.a_weekday[4], self.locale_time.a_month[4])))
         self.assertTrue(found.group('a') == self.locale_time.a_weekday[4] and
-                         found.group('b') == self.locale_time.a_month[4],
+                        found.group('b') == self.locale_time.a_month[4],
                         "re object couldn't find the abbreviated weekday month in "
-                         "'%s' using '%s'; group 'a' = '%s', group 'b' = %s'" %
-                         (found.string, found.re.pattern, found.group('a'),
-                          found.group('b')))
-        for directive in ('a','A','b','B','c','d','H','I','j','m','M','p','S',
-                          'U','w','W','x','X','y','Y','Z','%'):
+                        "'%s' using '%s'; group 'a' = '%s', group 'b' = %s'" %
+                        (found.string, found.re.pattern, found.group('a'),
+                         found.group('b')))
+        for directive in (
+            'a',
+            'A',
+            'b',
+            'B',
+            'c',
+            'd',
+            'H',
+            'I',
+            'j',
+            'm',
+            'M',
+            'p',
+            'S',
+            'U',
+            'w',
+            'W',
+            'x',
+            'X',
+            'y',
+            'Y',
+            'Z',
+                '%'):
             compiled = self.time_re.compile("%" + directive)
             found = compiled.match(time.strftime("%" + directive))
             self.assertTrue(found, "Matching failed on '%s' using '%s' regex" %
-                                    (time.strftime("%" + directive),
-                                     compiled.pattern))
+                            (time.strftime("%" + directive),
+                             compiled.pattern))
 
     def test_blankpattern(self):
         # Make sure when tuple or something has no values no regex is generated.
         # Fixes bug #661354
         test_locale = _strptime.LocaleTime()
         test_locale.timezone = (frozenset(), frozenset())
-        self.assertEqual(_strptime.TimeRE(test_locale).pattern("%Z"), '',
-                         "with timezone == ('',''), TimeRE().pattern('%Z') != ''")
+        self.assertEqual(_strptime.TimeRE(test_locale).pattern(
+            "%Z"), '', "with timezone == ('',''), TimeRE().pattern('%Z') != ''")
 
     def test_matching_with_escapes(self):
         # Make sure a format that requires escaping of characters works
@@ -180,7 +223,7 @@ class TimeRETests(unittest.TestCase):
         # Discovered by bug #1039270 .
         locale_time = _strptime.LocaleTime()
         locale_time.timezone = (frozenset(("utc", "gmt",
-                                            "Tokyo (standard time)")),
+                                           "Tokyo (standard time)")),
                                 frozenset("Tokyo (daylight time)"))
         time_re = _strptime.TimeRE(locale_time)
         self.assertTrue(time_re.compile("%Z").match("Tokyo (standard time)"),
@@ -205,16 +248,19 @@ class StrptimeTests(unittest.TestCase):
 
     def test_ValueError(self):
         # Make sure ValueError is raised when match fails or format is bad
-        self.assertRaises(ValueError, _strptime._strptime_time, data_string="%d",
-                          format="%A")
+        self.assertRaises(
+            ValueError,
+            _strptime._strptime_time,
+            data_string="%d",
+            format="%A")
         for bad_format in ("%", "% ", "%e"):
             try:
                 _strptime._strptime_time("2005", bad_format)
             except ValueError:
                 continue
-            except Exception, err:
+            except Exception as err:
                 self.fail("'%s' raised %s, not ValueError" %
-                            (bad_format, err.__class__.__name__))
+                          (bad_format, err.__class__.__name__))
             else:
                 self.fail("'%s' did not raise ValueError" % bad_format)
 
@@ -228,14 +274,15 @@ class StrptimeTests(unittest.TestCase):
         strp_output = _strptime._strptime_time(strf_output, "%" + directive)
         self.assertTrue(strp_output[position] == self.time_tuple[position],
                         "testing of '%s' directive failed; '%s' -> %s != %s" %
-                         (directive, strf_output, strp_output[position],
-                          self.time_tuple[position]))
+                        (directive, strf_output, strp_output[position],
+                         self.time_tuple[position]))
 
     def test_year(self):
         # Test that the year is handled properly
         for directive in ('y', 'Y'):
             self.helper(directive, 0)
-        # Must also make sure %y values are correct for bounds set by Open Group
+        # Must also make sure %y values are correct for bounds set by Open
+        # Group
         for century, bounds in ((1900, ('69', '99')), (2000, ('00', '68'))):
             for bound in bounds:
                 strp_output = _strptime._strptime_time(bound, '%y')
@@ -258,9 +305,12 @@ class StrptimeTests(unittest.TestCase):
         self.helper('H', 3)
         strf_output = time.strftime("%I %p", self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%I %p")
-        self.assertTrue(strp_output[3] == self.time_tuple[3],
-                        "testing of '%%I %%p' directive failed; '%s' -> %s != %s" %
-                         (strf_output, strp_output[3], self.time_tuple[3]))
+        self.assertTrue(
+            strp_output[3] == self.time_tuple[3],
+            "testing of '%%I %%p' directive failed; '%s' -> %s != %s" %
+            (strf_output,
+             strp_output[3],
+             self.time_tuple[3]))
 
     def test_minute(self):
         # Test minute directives
@@ -280,7 +330,7 @@ class StrptimeTests(unittest.TestCase):
     def test_weekday(self):
         # Test weekday directives
         for directive in ('A', 'a', 'w'):
-            self.helper(directive,6)
+            self.helper(directive, 6)
 
     def test_julian(self):
         # Test julian directives
@@ -296,17 +346,17 @@ class StrptimeTests(unittest.TestCase):
         strp_output = _strptime._strptime_time("GMT", "%Z")
         self.assertEqual(strp_output.tm_isdst, 0)
         time_tuple = time.localtime()
-        strf_output = time.strftime("%Z")  #UTC does not have a timezone
+        strf_output = time.strftime("%Z")  # UTC does not have a timezone
         strp_output = _strptime._strptime_time(strf_output, "%Z")
         locale_time = _strptime.LocaleTime()
         if time.tzname[0] != time.tzname[1] or not time.daylight:
             self.assertTrue(strp_output[8] == time_tuple[8],
                             "timezone check failed; '%s' -> %s != %s" %
-                             (strf_output, strp_output[8], time_tuple[8]))
+                            (strf_output, strp_output[8], time_tuple[8]))
         else:
             self.assertTrue(strp_output[8] == -1,
                             "LocaleTime().timezone has duplicate values and "
-                             "time.daylight but timezone value not set to -1")
+                            "time.daylight but timezone value not set to -1")
 
     def test_bad_timezone(self):
         # Explicitly test possibility of bad timezone;
@@ -320,10 +370,10 @@ class StrptimeTests(unittest.TestCase):
             time.tzname = (tz_name, tz_name)
             time.daylight = 1
             tz_value = _strptime._strptime_time(tz_name, "%Z")[8]
-            self.assertEqual(tz_value, -1,
-                    "%s lead to a timezone value of %s instead of -1 when "
-                    "time.daylight set to %s and passing in %s" %
-                    (time.tzname, tz_value, time.daylight, tz_name))
+            self.assertEqual(
+                tz_value, -1, "%s lead to a timezone value of %s instead of -1 when "
+                "time.daylight set to %s and passing in %s" %
+                (time.tzname, tz_value, time.daylight, tz_name))
         finally:
             time.tzname = original_tzname
             time.daylight = original_daylight
@@ -335,12 +385,12 @@ class StrptimeTests(unittest.TestCase):
 
     def test_date(self):
         # Test %x directive
-        for position in range(0,3):
+        for position in range(0, 3):
             self.helper('x', position)
 
     def test_time(self):
         # Test %X directive
-        for position in range(3,6):
+        for position in range(3, 6):
             self.helper('X', position)
 
     def test_percent(self):
@@ -348,7 +398,7 @@ class StrptimeTests(unittest.TestCase):
         strf_output = time.strftime("%m %% %Y", self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%m %% %Y")
         self.assertTrue(strp_output[0] == self.time_tuple[0] and
-                         strp_output[1] == self.time_tuple[1],
+                        strp_output[1] == self.time_tuple[1],
                         "handling of percent sign failed")
 
     def test_caseinsensitive(self):
@@ -358,8 +408,11 @@ class StrptimeTests(unittest.TestCase):
                         "strptime does not handle ALL-CAPS names properly")
         self.assertTrue(_strptime._strptime_time(strf_output.lower(), "%B"),
                         "strptime does not handle lowercase names properly")
-        self.assertTrue(_strptime._strptime_time(strf_output.capitalize(), "%B"),
-                        "strptime does not handle capword names properly")
+        self.assertTrue(
+            _strptime._strptime_time(
+                strf_output.capitalize(),
+                "%B"),
+            "strptime does not handle capword names properly")
 
     def test_defaults(self):
         # Default return value should be (1900, 1, 1, 0, 0, 0, 0, 1, 0)
@@ -383,8 +436,9 @@ class StrptimeTests(unittest.TestCase):
 
     def test_mar1_comes_after_feb29_even_when_omitting_the_year(self):
         self.assertLess(
-                time.strptime("Feb 29", "%b %d"),
-                time.strptime("Mar 1", "%b %d"))
+            time.strptime("Feb 29", "%b %d"),
+            time.strptime("Mar 1", "%b %d"))
+
 
 class Strptime12AMPMTests(unittest.TestCase):
     """Test a _strptime regression in '%I %p' at 12 noon (12 PM)"""
@@ -406,6 +460,7 @@ class JulianTests(unittest.TestCase):
             # use 2004, since it is a leap year, we have 366 days
             eq(_strptime._strptime_time('%d 2004' % i, '%j %Y')[7], i)
 
+
 class CalculationTests(unittest.TestCase):
     """Test that strptime() fills in missing info correctly"""
 
@@ -415,34 +470,43 @@ class CalculationTests(unittest.TestCase):
     def test_julian_calculation(self):
         # Make sure that when Julian is missing that it is calculated
         format_string = "%Y %m %d %H %M %S %w %Z"
-        result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
-                                    format_string)
+        result = _strptime._strptime_time(
+            time.strftime(
+                format_string,
+                self.time_tuple),
+            format_string)
         self.assertTrue(result.tm_yday == self.time_tuple.tm_yday,
                         "Calculation of tm_yday failed; %s != %s" %
-                         (result.tm_yday, self.time_tuple.tm_yday))
+                        (result.tm_yday, self.time_tuple.tm_yday))
 
     def test_gregorian_calculation(self):
         # Test that Gregorian date can be calculated from Julian day
         format_string = "%Y %H %M %S %w %j %Z"
-        result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
-                                    format_string)
+        result = _strptime._strptime_time(
+            time.strftime(
+                format_string,
+                self.time_tuple),
+            format_string)
         self.assertTrue(result.tm_year == self.time_tuple.tm_year and
-                         result.tm_mon == self.time_tuple.tm_mon and
-                         result.tm_mday == self.time_tuple.tm_mday,
+                        result.tm_mon == self.time_tuple.tm_mon and
+                        result.tm_mday == self.time_tuple.tm_mday,
                         "Calculation of Gregorian date failed;"
-                         "%s-%s-%s != %s-%s-%s" %
-                         (result.tm_year, result.tm_mon, result.tm_mday,
-                          self.time_tuple.tm_year, self.time_tuple.tm_mon,
-                          self.time_tuple.tm_mday))
+                        "%s-%s-%s != %s-%s-%s" %
+                        (result.tm_year, result.tm_mon, result.tm_mday,
+                         self.time_tuple.tm_year, self.time_tuple.tm_mon,
+                         self.time_tuple.tm_mday))
 
     def test_day_of_week_calculation(self):
         # Test that the day of the week is calculated as needed
         format_string = "%Y %m %d %H %S %j %Z"
-        result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
-                                    format_string)
+        result = _strptime._strptime_time(
+            time.strftime(
+                format_string,
+                self.time_tuple),
+            format_string)
         self.assertTrue(result.tm_wday == self.time_tuple.tm_wday,
                         "Calculation of day of the week failed;"
-                         "%s != %s" % (result.tm_wday, self.time_tuple.tm_wday))
+                        "%s != %s" % (result.tm_wday, self.time_tuple.tm_wday))
 
     def test_week_of_year_and_day_of_week_calculation(self):
         # Should be able to infer date if given year, week of year (%U or %W)
@@ -452,12 +516,16 @@ class CalculationTests(unittest.TestCase):
                 format_string = "%%Y %%%s %%w" % directive
                 dt_date = datetime_date(*ymd_tuple)
                 strp_input = dt_date.strftime(format_string)
-                strp_output = _strptime._strptime_time(strp_input, format_string)
+                strp_output = _strptime._strptime_time(
+                    strp_input, format_string)
                 self.assertTrue(strp_output[:3] == ymd_tuple,
-                        "%s(%s) test failed w/ '%s': %s != %s (%s != %s)" %
-                            (test_reason, directive, strp_input,
-                                strp_output[:3], ymd_tuple,
-                                strp_output[7], dt_date.timetuple()[7]))
+                                "%s(%s) test failed w/ '%s': %s != %s (%s != %s)" % (test_reason,
+                                                                                     directive,
+                                                                                     strp_input,
+                                                                                     strp_output[:3],
+                                                                                     ymd_tuple,
+                                                                                     strp_output[7],
+                                                                                     dt_date.timetuple()[7]))
         test_helper((1901, 1, 3), "week 0")
         test_helper((1901, 1, 8), "common case")
         test_helper((1901, 1, 13), "day on Sunday")
@@ -473,14 +541,14 @@ class CalculationTests(unittest.TestCase):
         test_helper((1978, 10, 23), "randomly chosen date")
         test_helper((2004, 12, 18), "randomly chosen date")
         test_helper((1978, 10, 23), "year starting and ending on Monday while "
-                                        "date not on Sunday or Monday")
+                    "date not on Sunday or Monday")
         test_helper((1917, 12, 17), "year starting and ending on Monday with "
-                                        "a Monday not at the beginning or end "
-                                        "of the year")
+                    "a Monday not at the beginning or end "
+                    "of the year")
         test_helper((1917, 12, 31), "Dec 31 on Monday with year starting and "
-                                        "ending on Monday")
-        test_helper((2007, 01, 07), "First Sunday of 2007")
-        test_helper((2007, 01, 14), "Second Sunday of 2007")
+                    "ending on Monday")
+        test_helper((2007, 0o1, 0o7), "First Sunday of 2007")
+        test_helper((2007, 0o1, 14), "Second Sunday of 2007")
         test_helper((2006, 12, 31), "Last Sunday of 2006")
         test_helper((2006, 12, 24), "Second to last Sunday of 2006")
 

@@ -91,17 +91,17 @@ class TestFileIOSignalInterrupt(unittest.TestCase):
 
         # Start a subprocess to call our read method while handling a signal.
         self._process = subprocess.Popen(
-                [sys.executable, '-u', '-c',
-                 'import io, signal, sys ;'
-                 'signal.signal(signal.SIGINT, '
-                               'lambda s, f: sys.stderr.write("$\\n")) ;'
-                 + infile_setup_code + ' ;' +
-                 'sys.stderr.write("Worm Sign!\\n") ;'
-                 + read_and_verify_code + ' ;' +
-                 'infile.close()'
-                ],
-                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE)
+            [sys.executable, '-u', '-c',
+             'import io, signal, sys ;'
+             'signal.signal(signal.SIGINT, '
+             'lambda s, f: sys.stderr.write("$\\n")) ;' +
+             infile_setup_code + ' ;' +
+             'sys.stderr.write("Worm Sign!\\n") ;' +
+             read_and_verify_code + ' ;' +
+             'infile.close()'
+             ],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
 
         # Wait for the signal handler to be installed.
         worm_sign = self._process.stderr.read(len(b'Worm Sign!\n'))
@@ -138,48 +138,48 @@ class TestFileIOSignalInterrupt(unittest.TestCase):
         stdout, stderr = self._process.communicate(input=b'\n')
         if self._process.returncode:
             self.fail_with_process_info(
-                    'exited rc=%d' % self._process.returncode,
-                    stdout, stderr, communicate=False)
+                'exited rc=%d' % self._process.returncode,
+                stdout, stderr, communicate=False)
         # PASS!
 
     # String format for the read_and_verify_code used by read methods.
     _READING_CODE_TEMPLATE = (
-            'got = infile.{read_method_name}() ;'
-            'expected = {expected!r} ;'
-            'assert got == expected, ('
-                    '"{read_method_name} returned wrong data.\\n"'
-                    '"got data %r\\nexpected %r" % (got, expected))'
-            )
+        'got = infile.{read_method_name}() ;'
+        'expected = {expected!r} ;'
+        'assert got == expected, ('
+        '"{read_method_name} returned wrong data.\\n"'
+        '"got data %r\\nexpected %r" % (got, expected))'
+    )
 
     def test_readline(self):
         """readline() must handle signals and not lose data."""
         self._test_reading(
-                data_to_write=b'hello, world!',
-                read_and_verify_code=self._READING_CODE_TEMPLATE.format(
-                        read_method_name='readline',
-                        expected=b'hello, world!\n'))
+            data_to_write=b'hello, world!',
+            read_and_verify_code=self._READING_CODE_TEMPLATE.format(
+                read_method_name='readline',
+                expected=b'hello, world!\n'))
 
     def test_readlines(self):
         """readlines() must handle signals and not lose data."""
         self._test_reading(
-                data_to_write=b'hello\nworld!',
-                read_and_verify_code=self._READING_CODE_TEMPLATE.format(
-                        read_method_name='readlines',
-                        expected=[b'hello\n', b'world!\n']))
+            data_to_write=b'hello\nworld!',
+            read_and_verify_code=self._READING_CODE_TEMPLATE.format(
+                read_method_name='readlines',
+                expected=[b'hello\n', b'world!\n']))
 
     def test_readall(self):
         """readall() must handle signals and not lose data."""
         self._test_reading(
-                data_to_write=b'hello\nworld!',
-                read_and_verify_code=self._READING_CODE_TEMPLATE.format(
-                        read_method_name='readall',
-                        expected=b'hello\nworld!\n'))
+            data_to_write=b'hello\nworld!',
+            read_and_verify_code=self._READING_CODE_TEMPLATE.format(
+                read_method_name='readall',
+                expected=b'hello\nworld!\n'))
         # read() is the same thing as readall().
         self._test_reading(
-                data_to_write=b'hello\nworld!',
-                read_and_verify_code=self._READING_CODE_TEMPLATE.format(
-                        read_method_name='read',
-                        expected=b'hello\nworld!\n'))
+            data_to_write=b'hello\nworld!',
+            read_and_verify_code=self._READING_CODE_TEMPLATE.format(
+                read_method_name='read',
+                expected=b'hello\nworld!\n'))
 
 
 class TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
@@ -191,10 +191,10 @@ class TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
     def test_readall(self):
         """BufferedReader.read() must handle signals and not lose data."""
         self._test_reading(
-                data_to_write=b'hello\nworld!',
-                read_and_verify_code=self._READING_CODE_TEMPLATE.format(
-                        read_method_name='read',
-                        expected=b'hello\nworld!\n'))
+            data_to_write=b'hello\nworld!',
+            read_and_verify_code=self._READING_CODE_TEMPLATE.format(
+                read_method_name='read',
+                expected=b'hello\nworld!\n'))
 
 
 class TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
@@ -206,32 +206,32 @@ class TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
     def test_readline(self):
         """readline() must handle signals and not lose data."""
         self._test_reading(
-                data_to_write=b'hello, world!',
-                read_and_verify_code=self._READING_CODE_TEMPLATE.format(
-                        read_method_name='readline',
-                        expected='hello, world!\n'))
+            data_to_write=b'hello, world!',
+            read_and_verify_code=self._READING_CODE_TEMPLATE.format(
+                read_method_name='readline',
+                expected='hello, world!\n'))
 
     def test_readlines(self):
         """readlines() must handle signals and not lose data."""
         self._test_reading(
-                data_to_write=b'hello\r\nworld!',
-                read_and_verify_code=self._READING_CODE_TEMPLATE.format(
-                        read_method_name='readlines',
-                        expected=['hello\n', 'world!\n']))
+            data_to_write=b'hello\r\nworld!',
+            read_and_verify_code=self._READING_CODE_TEMPLATE.format(
+                read_method_name='readlines',
+                expected=['hello\n', 'world!\n']))
 
     def test_readall(self):
         """read() must handle signals and not lose data."""
         self._test_reading(
-                data_to_write=b'hello\nworld!',
-                read_and_verify_code=self._READING_CODE_TEMPLATE.format(
-                        read_method_name='read',
-                        expected="hello\nworld!\n"))
+            data_to_write=b'hello\nworld!',
+            read_and_verify_code=self._READING_CODE_TEMPLATE.format(
+                read_method_name='read',
+                expected="hello\nworld!\n"))
 
 
 def test_main():
     test_cases = [
-            tc for tc in globals().values()
-            if isinstance(tc, type) and issubclass(tc, unittest.TestCase)]
+        tc for tc in globals().values()
+        if isinstance(tc, type) and issubclass(tc, unittest.TestCase)]
     run_unittest(*test_cases)
 
 

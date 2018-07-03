@@ -298,6 +298,7 @@ class TestMissingSSL(EnsurepipMixin, unittest.TestCase):
 
 # Basic testing of the main functions and their argument parsing
 
+
 EXPECTED_VERSION_OUTPUT = "pip " + ensurepip._PIP_VERSION
 
 

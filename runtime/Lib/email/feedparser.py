@@ -39,7 +39,6 @@ NL = '\n'
 NeedMoreData = object()
 
 
-
 class BufferedSubFile(object):
     """A file-ish object that can have new data loaded into it.
 
@@ -48,6 +47,7 @@ class BufferedSubFile(object):
     (i.e. empty string) is returned instead.  This lets the parser adhere to a
     simple abstraction -- it parses until EOF closes the current message.
     """
+
     def __init__(self):
         # The last partial line pushed into this object.
         self._partial = ''
@@ -104,16 +104,16 @@ class BufferedSubFile(object):
         # data after the final RE.  In the case of a NL/CR terminated string,
         # this is the empty string.
         self._partial = parts.pop()
-        #GAN 29Mar09  bugs 1555570, 1721862  Confusion at 8K boundary ending with \r:
+        # GAN 29Mar09  bugs 1555570, 1721862  Confusion at 8K boundary ending with \r:
         # is there a \n to follow later?
         if not self._partial and parts and parts[-1].endswith('\r'):
-            self._partial = parts.pop(-2)+parts.pop()
+            self._partial = parts.pop(-2) + parts.pop()
         # parts is a list of strings, alternating between the line contents
         # and the eol character(s).  Gather up a list of lines after
         # re-attaching the newlines.
         lines = []
         for i in range(len(parts) // 2):
-            lines.append(parts[i*2] + parts[i*2+1])
+            lines.append(parts[i * 2] + parts[i * 2 + 1])
         self.pushlines(lines)
 
     def pushlines(self, lines):
@@ -133,7 +133,6 @@ class BufferedSubFile(object):
         return line
 
 
-
 class FeedParser:
     """A feed-style parser of email."""
 
@@ -170,7 +169,7 @@ class FeedParser:
         assert not self._msgstack
         # Look for final set of defects
         if root.get_content_maintype() == 'multipart' \
-               and not root.is_multipart():
+                and not root.is_multipart():
             root.defects.append(errors.MultipartInvariantViolationDefect())
         return root
 
@@ -477,7 +476,7 @@ class FeedParser:
                 self._cur.defects.append(defect)
                 continue
             lastheader = line[:i]
-            lastvalue = [line[i+1:].lstrip()]
+            lastvalue = [line[i + 1:].lstrip()]
         # Done with all the lines, so handle the last header.
         if lastheader:
             # XXX reconsider the joining of folded lines

@@ -101,8 +101,10 @@ class CoreTestCase(support.EnvironGuard, unittest.TestCase):
         wanted = "options (after parsing config files):\n"
         self.assertEqual(stdout.readlines()[0], wanted)
 
+
 def test_suite():
     return unittest.makeSuite(CoreTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

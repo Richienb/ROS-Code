@@ -21,13 +21,13 @@ class MacPathTestCase(unittest.TestCase):
     def test_split(self):
         split = macpath.split
         self.assertEqual(split("foo:bar"),
-                          ('foo:', 'bar'))
+                         ('foo:', 'bar'))
         self.assertEqual(split("conky:mountpoint:foo:bar"),
-                          ('conky:mountpoint:foo', 'bar'))
+                         ('conky:mountpoint:foo', 'bar'))
 
         self.assertEqual(split(":"), ('', ''))
         self.assertEqual(split(":conky:mountpoint:"),
-                          (':conky:mountpoint', ''))
+                         (':conky:mountpoint', ''))
 
     def test_splitext(self):
         splitext = macpath.splitext
@@ -44,6 +44,7 @@ class MacPathTestCase(unittest.TestCase):
         for path in (u'', u'.', u'/', u'\\', u':', u'///foo/.//bar//'):
             self.assertIsInstance(macpath.normpath(path), unicode,
                                   'normpath() returned str instead of unicode')
+
 
 class MacCommonTest(test_genericpath.CommonTest):
     pathmodule = macpath

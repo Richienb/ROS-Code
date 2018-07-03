@@ -7,7 +7,8 @@ This should generate Barry's example, modulo some quotes and newlines.
 
 """
 
-import unittest, StringIO
+import unittest
+import StringIO
 from test.test_support import run_unittest, import_module
 
 import_module("MimeWriter", deprecated=True)
@@ -52,32 +53,32 @@ __kp__.__setup__(500)
 '''
 
 SIMPLE_METADATA = [
-        ("Interpreter", "python"),
-        ("Interpreter-Version", "1.3"),
-        ("Owner-Name", "Barry Warsaw"),
-        ("Owner-Rendezvous", "bwarsaw@cnri.reston.va.us"),
-        ("Home-KSS", "kss.cnri.reston.va.us"),
-        ("Identifier", "hdl://cnri.kss/my_first_knowbot"),
-        ("Launch-Date", "Mon Feb 12 16:39:03 EST 1996"),
-        ]
+    ("Interpreter", "python"),
+    ("Interpreter-Version", "1.3"),
+    ("Owner-Name", "Barry Warsaw"),
+    ("Owner-Rendezvous", "bwarsaw@cnri.reston.va.us"),
+    ("Home-KSS", "kss.cnri.reston.va.us"),
+    ("Identifier", "hdl://cnri.kss/my_first_knowbot"),
+    ("Launch-Date", "Mon Feb 12 16:39:03 EST 1996"),
+]
 
 COMPLEX_METADATA = [
-        ("Metadata-Type", "complex"),
-        ("Metadata-Key", "connection"),
-        ("Access", "read-only"),
-        ("Connection-Description", "Barry's Big Bass Business"),
-        ("Connection-Id", "B4"),
-        ("Connection-Direction", "client"),
-        ]
+    ("Metadata-Type", "complex"),
+    ("Metadata-Key", "connection"),
+    ("Access", "read-only"),
+    ("Connection-Description", "Barry's Big Bass Business"),
+    ("Connection-Id", "B4"),
+    ("Connection-Direction", "client"),
+]
 
 EXTERNAL_METADATA = [
-        ("Metadata-Type", "complex"),
-        ("Metadata-Key", "generic-interface"),
-        ("Access", "read-only"),
-        ("Connection-Description", "Generic Interface for All Knowbots"),
-        ("Connection-Id", "generic-kp"),
-        ("Connection-Direction", "client"),
-        ]
+    ("Metadata-Type", "complex"),
+    ("Metadata-Key", "generic-interface"),
+    ("Access", "read-only"),
+    ("Connection-Description", "Generic Interface for All Knowbots"),
+    ("Connection-Id", "generic-kp"),
+    ("Connection-Direction", "client"),
+]
 
 
 OUTPUT = '''\
@@ -192,6 +193,7 @@ __kp__.__setup__(500)
 --801spam999--
 '''
 
+
 class MimewriterTest(unittest.TestCase):
 
     def test(self):
@@ -285,8 +287,10 @@ class MimewriterTest(unittest.TestCase):
 
         self.assertEqual(buf.getvalue(), OUTPUT)
 
+
 def test_main():
     run_unittest(MimewriterTest)
+
 
 if __name__ == '__main__':
     test_main()

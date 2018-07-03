@@ -1,9 +1,12 @@
 import sys
+import atexit
+import atexit
 import unittest
 import StringIO
 import atexit
 from imp import reload
 from test import test_support
+
 
 class TestCase(unittest.TestCase):
     def setUp(self):
@@ -28,7 +31,7 @@ class TestCase(unittest.TestCase):
                          "h4 (4,) {'kw': 'abc'}\nh4 () {}\nh1\n")
 
     def test_badargs(self):
-        atexit.register(lambda: 1, 0, 0, (x for x in (1,2)), 0, 0)
+        atexit.register(lambda: 1, 0, 0, (x for x in (1, 2)), 0, 0)
         self.assertRaises(TypeError, atexit._run_exitfuncs)
 
     def test_order(self):
@@ -41,13 +44,13 @@ class TestCase(unittest.TestCase):
     def test_sys_override(self):
         # be sure a preset sys.exitfunc is handled properly
         exfunc = sys.exitfunc
-        sys.exitfunc = self.h1
+        atexit.register(self.h1)
         reload(atexit)
         try:
             atexit.register(self.h2)
             atexit._run_exitfuncs()
         finally:
-            sys.exitfunc = exfunc
+            atexit.register(exfunc)
         self.assertEqual(self.subst_io.getvalue(), "h2\nh1\n")
 
     def test_raise(self):
@@ -55,7 +58,7 @@ class TestCase(unittest.TestCase):
         atexit.register(self.raise2)
         self.assertRaises(TypeError, atexit._run_exitfuncs)
 
-    ### helpers
+    # helpers
     def h1(self):
         print "h1"
 
@@ -73,6 +76,7 @@ class TestCase(unittest.TestCase):
 
     def raise2(self):
         raise SystemError
+
 
 def test_main():
     test_support.run_unittest(TestCase)

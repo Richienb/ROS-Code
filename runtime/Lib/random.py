@@ -48,15 +48,35 @@ from os import urandom as _urandom
 from binascii import hexlify as _hexlify
 import hashlib as _hashlib
 
-__all__ = ["Random","seed","random","uniform","randint","choice","sample",
-           "randrange","shuffle","normalvariate","lognormvariate",
-           "expovariate","vonmisesvariate","gammavariate","triangular",
-           "gauss","betavariate","paretovariate","weibullvariate",
-           "getstate","setstate","jumpahead", "WichmannHill", "getrandbits",
-           "SystemRandom"]
+__all__ = [
+    "Random",
+    "seed",
+    "random",
+    "uniform",
+    "randint",
+    "choice",
+    "sample",
+    "randrange",
+    "shuffle",
+    "normalvariate",
+    "lognormvariate",
+    "expovariate",
+    "vonmisesvariate",
+    "gammavariate",
+    "triangular",
+    "gauss",
+    "betavariate",
+    "paretovariate",
+    "weibullvariate",
+    "getstate",
+    "setstate",
+    "jumpahead",
+    "WichmannHill",
+    "getrandbits",
+    "SystemRandom"]
 
-NV_MAGICCONST = 4 * _exp(-0.5)/_sqrt(2.0)
-TWOPI = 2.0*_pi
+NV_MAGICCONST = 4 * _exp(-0.5) / _sqrt(2.0)
+TWOPI = 2.0 * _pi
 LOG4 = _log(4.0)
 SG_MAGICCONST = 1.0 + _log(4.5)
 BPF = 53        # Number of bits in a float
@@ -68,6 +88,7 @@ RECIP_BPF = 2**-BPF
 # the Mersenne Twister  and os.urandom() core generators.
 
 import _random
+
 
 class Random(_random.Random):
     """Random number generator base class used by bound module functions.
@@ -111,7 +132,7 @@ class Random(_random.Random):
                 a = long(_hexlify(_urandom(16)), 16)
             except NotImplementedError:
                 import time
-                a = long(time.time() * 256) # use fractional seconds
+                a = long(time.time() * 256)  # use fractional seconds
 
         super(Random, self).seed(a)
         self.gauss_next = None
@@ -133,9 +154,9 @@ class Random(_random.Random):
             #   really unsigned 32-bit ints, so we convert negative ints from
             #   version 2 to positive longs for version 3.
             try:
-                internalstate = tuple( long(x) % (2**32) for x in internalstate )
-            except ValueError, e:
-                raise TypeError, e
+                internalstate = tuple(long(x) % (2**32) for x in internalstate)
+            except ValueError as e:
+                raise TypeError(e)
             super(Random, self).setstate(internalstate)
         else:
             raise ValueError("state with version %s passed to "
@@ -154,12 +175,12 @@ class Random(_random.Random):
         n = int(_hashlib.new('sha512', s).hexdigest(), 16)
         super(Random, self).jumpahead(n)
 
-## ---- Methods below this point do not need to be overridden when
-## ---- subclassing for the purpose of using a different core generator.
+# ---- Methods below this point do not need to be overridden when
+# ---- subclassing for the purpose of using a different core generator.
 
-## -------------------- pickle support  -------------------
+# -------------------- pickle support  -------------------
 
-    def __getstate__(self): # for pickle
+    def __getstate__(self):  # for pickle
         return self.getstate()
 
     def __setstate__(self, state):  # for pickle
@@ -168,10 +189,10 @@ class Random(_random.Random):
     def __reduce__(self):
         return self.__class__, (), self.getstate()
 
-## -------------------- integer methods  -------------------
+# -------------------- integer methods  -------------------
 
     def randrange(self, start, stop=None, step=1, int=int, default=None,
-                  maxwidth=1L<<BPF):
+                  maxwidth=1 << BPF):
         """Choose a random item from range(start, stop[, step]).
 
         This fixes the problem with randint() which includes the
@@ -183,18 +204,18 @@ class Random(_random.Random):
         # common case while still doing adequate error checking.
         istart = int(start)
         if istart != start:
-            raise ValueError, "non-integer arg 1 for randrange()"
+            raise ValueError("non-integer arg 1 for randrange()")
         if stop is default:
             if istart > 0:
                 if istart >= maxwidth:
                     return self._randbelow(istart)
                 return int(self.random() * istart)
-            raise ValueError, "empty range for randrange()"
+            raise ValueError("empty range for randrange()")
 
         # stop argument supplied.
         istop = int(stop)
         if istop != stop:
-            raise ValueError, "non-integer stop for randrange()"
+            raise ValueError("non-integer stop for randrange()")
         width = istop - istart
         if step == 1 and width > 0:
             # Note that
@@ -212,35 +233,37 @@ class Random(_random.Random):
 
             if width >= maxwidth:
                 return int(istart + self._randbelow(width))
-            return int(istart + int(self.random()*width))
+            return int(istart + int(self.random() * width))
         if step == 1:
-            raise ValueError, "empty range for randrange() (%d,%d, %d)" % (istart, istop, width)
+            raise ValueError(
+                "empty range for randrange() (%d,%d, %d)" %
+                (istart, istop, width))
 
         # Non-unit step argument supplied.
         istep = int(step)
         if istep != step:
-            raise ValueError, "non-integer step for randrange()"
+            raise ValueError("non-integer step for randrange()")
         if istep > 0:
             n = (width + istep - 1) // istep
         elif istep < 0:
             n = (width + istep + 1) // istep
         else:
-            raise ValueError, "zero step for randrange()"
+            raise ValueError("zero step for randrange()")
 
         if n <= 0:
-            raise ValueError, "empty range for randrange()"
+            raise ValueError("empty range for randrange()")
 
         if n >= maxwidth:
-            return istart + istep*self._randbelow(n)
-        return istart + istep*int(self.random() * n)
+            return istart + istep * self._randbelow(n)
+        return istart + istep * int(self.random() * n)
 
     def randint(self, a, b):
         """Return random integer in range [a, b], including both end points.
         """
 
-        return self.randrange(a, b+1)
+        return self.randrange(a, b + 1)
 
-    def _randbelow(self, n, _log=_log, int=int, _maxwidth=1L<<BPF,
+    def _randbelow(self, n, _log=_log, int=int, _maxwidth=1 << BPF,
                    _Method=_MethodType, _BuiltinMethod=_BuiltinMethodType):
         """Return a random int in the range [0,n)
 
@@ -256,22 +279,27 @@ class Random(_random.Random):
             # Only call self.getrandbits if the original random() builtin method
             # has not been overridden or if a new getrandbits() was supplied.
             # This assures that the two methods correspond.
-            if type(self.random) is _BuiltinMethod or type(getrandbits) is _Method:
-                k = int(1.00001 + _log(n-1, 2.0))   # 2**k > n-1 > 2**(k-2)
+            if isinstance(
+                    self.random,
+                    _BuiltinMethod) or isinstance(
+                    getrandbits,
+                    _Method):
+                k = int(1.00001 + _log(n - 1, 2.0))   # 2**k > n-1 > 2**(k-2)
                 r = getrandbits(k)
                 while r >= n:
                     r = getrandbits(k)
                 return r
         if n >= _maxwidth:
             _warn("Underlying random() generator does not supply \n"
-                "enough bits to choose from a population range this large")
+                  "enough bits to choose from a population range this large")
         return int(self.random() * n)
 
-## -------------------- sequence methods  -------------------
+# -------------------- sequence methods  -------------------
 
     def choice(self, seq):
         """Choose a random element from a non-empty sequence."""
-        return seq[int(self.random() * len(seq))]  # raises IndexError if seq is empty
+        return seq[int(self.random() * len(seq))
+                   ]  # raises IndexError if seq is empty
 
     def shuffle(self, x, random=None, int=int):
         """x, random=random.random -> shuffle list x in place; return None.
@@ -284,7 +312,7 @@ class Random(_random.Random):
             random = self.random
         for i in reversed(xrange(1, len(x))):
             # pick an element in x[:i+1] with which to exchange x[i]
-            j = int(random() * (i+1))
+            j = int(random() * (i + 1))
             x[i], x[j] = x[j], x[i]
 
     def sample(self, population, k):
@@ -323,15 +351,16 @@ class Random(_random.Random):
         result = [None] * k
         setsize = 21        # size of a small set minus size of an empty list
         if k > 5:
-            setsize += 4 ** _ceil(_log(k * 3, 4)) # table size for big sets
+            setsize += 4 ** _ceil(_log(k * 3, 4))  # table size for big sets
         if n <= setsize or hasattr(population, "keys"):
             # An n-length list is smaller than a k-length set, or this is a
             # mapping type so the other algorithm wouldn't work.
             pool = list(population)
             for i in xrange(k):         # invariant:  non-selected at [0,n-i)
-                j = _int(random() * (n-i))
+                j = _int(random() * (n - i))
                 result[i] = pool[j]
-                pool[j] = pool[n-i-1]   # move non-selected item into vacancy
+                # move non-selected item into vacancy
+                pool[j] = pool[n - i - 1]
         else:
             try:
                 selected = set()
@@ -348,15 +377,15 @@ class Random(_random.Random):
                 return self.sample(tuple(population), k)
         return result
 
-## -------------------- real-valued distributions  -------------------
+# -------------------- real-valued distributions  -------------------
 
-## -------------------- uniform distribution -------------------
+# -------------------- uniform distribution -------------------
 
     def uniform(self, a, b):
         "Get a random number in the range [a, b) or [a, b] depending on rounding."
-        return a + (b-a) * self.random()
+        return a + (b - a) * self.random()
 
-## -------------------- triangular --------------------
+# -------------------- triangular --------------------
 
     def triangular(self, low=0.0, high=1.0, mode=None):
         """Triangular distribution.
@@ -375,7 +404,7 @@ class Random(_random.Random):
             low, high = high, low
         return low + (high - low) * (u * c) ** 0.5
 
-## -------------------- normal distribution --------------------
+# -------------------- normal distribution --------------------
 
     def normalvariate(self, mu, sigma):
         """Normal distribution.
@@ -391,16 +420,16 @@ class Random(_random.Random):
         # Math Software, 3, (1977), pp257-260.
 
         random = self.random
-        while 1:
+        while True:
             u1 = random()
             u2 = 1.0 - random()
-            z = NV_MAGICCONST*(u1-0.5)/u2
-            zz = z*z/4.0
+            z = NV_MAGICCONST * (u1 - 0.5) / u2
+            zz = z * z / 4.0
             if zz <= -_log(u2):
                 break
-        return mu + z*sigma
+        return mu + z * sigma
 
-## -------------------- lognormal distribution --------------------
+# -------------------- lognormal distribution --------------------
 
     def lognormvariate(self, mu, sigma):
         """Log normal distribution.
@@ -412,7 +441,7 @@ class Random(_random.Random):
         """
         return _exp(self.normalvariate(mu, sigma))
 
-## -------------------- exponential distribution --------------------
+# -------------------- exponential distribution --------------------
 
     def expovariate(self, lambd):
         """Exponential distribution.
@@ -429,9 +458,9 @@ class Random(_random.Random):
 
         # we use 1-random() instead of random() to preclude the
         # possibility of taking the log of zero.
-        return -_log(1.0 - self.random())/lambd
+        return -_log(1.0 - self.random()) / lambd
 
-## -------------------- von Mises distribution --------------------
+# -------------------- von Mises distribution --------------------
 
     def vonmisesvariate(self, mu, kappa):
         """Circular data distribution.
@@ -460,7 +489,7 @@ class Random(_random.Random):
         s = 0.5 / kappa
         r = s + _sqrt(1.0 + s * s)
 
-        while 1:
+        while True:
             u1 = random()
             z = _cos(_pi * u1)
 
@@ -479,7 +508,7 @@ class Random(_random.Random):
 
         return theta
 
-## -------------------- gamma distribution --------------------
+# -------------------- gamma distribution --------------------
 
     def gammavariate(self, alpha, beta):
         """Gamma distribution.  Not the gamma function!
@@ -499,7 +528,7 @@ class Random(_random.Random):
         # Warning: a few older sources define the gamma distribution in terms
         # of alpha > -1.0
         if alpha <= 0.0 or beta <= 0.0:
-            raise ValueError, 'gammavariate: alpha and beta must be > 0.0'
+            raise ValueError('gammavariate: alpha and beta must be > 0.0')
 
         random = self.random
         if alpha > 1.0:
@@ -512,16 +541,16 @@ class Random(_random.Random):
             bbb = alpha - LOG4
             ccc = alpha + ainv
 
-            while 1:
+            while True:
                 u1 = random()
                 if not 1e-7 < u1 < .9999999:
                     continue
                 u2 = 1.0 - random()
-                v = _log(u1/(1.0-u1))/ainv
-                x = alpha*_exp(v)
-                z = u1*u1*u2
-                r = bbb+ccc*v-x
-                if r + SG_MAGICCONST - 4.5*z >= 0.0 or r >= _log(z):
+                v = _log(u1 / (1.0 - u1)) / ainv
+                x = alpha * _exp(v)
+                z = u1 * u1 * u2
+                r = bbb + ccc * v - x
+                if r + SG_MAGICCONST - 4.5 * z >= 0.0 or r >= _log(z):
                     return x * beta
 
         elif alpha == 1.0:
@@ -535,14 +564,14 @@ class Random(_random.Random):
 
             # Uses ALGORITHM GS of Statistical Computing - Kennedy & Gentle
 
-            while 1:
+            while True:
                 u = random()
-                b = (_e + alpha)/_e
-                p = b*u
+                b = (_e + alpha) / _e
+                p = b * u
                 if p <= 1.0:
-                    x = p ** (1.0/alpha)
+                    x = p ** (1.0 / alpha)
                 else:
-                    x = -_log((b-p)/alpha)
+                    x = -_log((b - p) / alpha)
                 u1 = random()
                 if p > 1.0:
                     if u1 <= x ** (alpha - 1.0):
@@ -551,7 +580,7 @@ class Random(_random.Random):
                     break
             return x * beta
 
-## -------------------- Gauss (faster alternative) --------------------
+# -------------------- Gauss (faster alternative) --------------------
 
     def gauss(self, mu, sigma):
         """Gaussian distribution.
@@ -590,21 +619,21 @@ class Random(_random.Random):
             z = _cos(x2pi) * g2rad
             self.gauss_next = _sin(x2pi) * g2rad
 
-        return mu + z*sigma
+        return mu + z * sigma
 
-## -------------------- beta --------------------
-## See
-## http://mail.python.org/pipermail/python-bugs-list/2001-January/003752.html
-## for Ivan Frohne's insightful analysis of why the original implementation:
+# -------------------- beta --------------------
+# See
+# http://mail.python.org/pipermail/python-bugs-list/2001-January/003752.html
+# for Ivan Frohne's insightful analysis of why the original implementation:
 ##
-##    def betavariate(self, alpha, beta):
-##        # Discrete Event Simulation in C, pp 87-88.
+# def betavariate(self, alpha, beta):
+# Discrete Event Simulation in C, pp 87-88.
 ##
 ##        y = self.expovariate(alpha)
 ##        z = self.expovariate(1.0/beta)
-##        return z/(y+z)
+# return z/(y+z)
 ##
-## was dead wrong, and how it probably got that way.
+# was dead wrong, and how it probably got that way.
 
     def betavariate(self, alpha, beta):
         """Beta distribution.
@@ -622,16 +651,16 @@ class Random(_random.Random):
         else:
             return y / (y + self.gammavariate(beta, 1.))
 
-## -------------------- Pareto --------------------
+# -------------------- Pareto --------------------
 
     def paretovariate(self, alpha):
         """Pareto distribution.  alpha is the shape parameter."""
         # Jain, pg. 495
 
         u = 1.0 - self.random()
-        return 1.0 / pow(u, 1.0/alpha)
+        return 1.0 / pow(u, 1.0 / alpha)
 
-## -------------------- Weibull --------------------
+# -------------------- Weibull --------------------
 
     def weibullvariate(self, alpha, beta):
         """Weibull distribution.
@@ -642,9 +671,10 @@ class Random(_random.Random):
         # Jain, pg. 499; bug fix courtesy Bill Arms
 
         u = 1.0 - self.random()
-        return alpha * pow(-_log(u), 1.0/beta)
+        return alpha * pow(-_log(u), 1.0 / beta)
 
-## -------------------- Wichmann-Hill -------------------
+# -------------------- Wichmann-Hill -------------------
+
 
 class WichmannHill(Random):
 
@@ -669,7 +699,7 @@ class WichmannHill(Random):
                 a = long(_hexlify(_urandom(16)), 16)
             except NotImplementedError:
                 import time
-                a = long(time.time() * 256) # use fractional seconds
+                a = long(time.time() * 256)  # use fractional seconds
 
         if not isinstance(a, (int, long)):
             a = hash(a)
@@ -677,7 +707,7 @@ class WichmannHill(Random):
         a, x = divmod(a, 30268)
         a, y = divmod(a, 30306)
         a, z = divmod(a, 30322)
-        self._seed = int(x)+1, int(y)+1, int(z)+1
+        self._seed = int(x) + 1, int(y) + 1, int(z) + 1
 
         self.gauss_next = None
 
@@ -710,7 +740,7 @@ class WichmannHill(Random):
 
         # Note:  on a platform using IEEE-754 double arithmetic, this can
         # never return 0.0 (asserted by Tim; proof too long for a comment).
-        return (x/30269.0 + y/30307.0 + z/30323.0) % 1.0
+        return (x / 30269.0 + y / 30307.0 + z / 30323.0) % 1.0
 
     def getstate(self):
         """Return internal state; can be passed to setstate() later."""
@@ -762,7 +792,7 @@ class WichmannHill(Random):
             # Initialize from current time
             import time
             t = long(time.time() * 256)
-            t = int((t&0xffffff) ^ (t>>24))
+            t = int((t & 0xffffff) ^ (t >> 24))
             t, x = divmod(t, 256)
             t, y = divmod(t, 256)
             t, z = divmod(t, 256)
@@ -794,7 +824,8 @@ class WichmannHill(Random):
         z = (z + a) % 256 or 1
         self.__whseed(x, y, z)
 
-## --------------- Operating System Random Source  ------------------
+# --------------- Operating System Random Source  ------------------
+
 
 class SystemRandom(Random):
     """Alternate random number generator using sources provided
@@ -828,7 +859,8 @@ class SystemRandom(Random):
         raise NotImplementedError('System entropy source does not have state.')
     getstate = setstate = _notimplemented
 
-## -------------------- test program --------------------
+# -------------------- test program --------------------
+
 
 def _test_generator(n, func, args):
     import time
@@ -841,15 +873,15 @@ def _test_generator(n, func, args):
     for i in range(n):
         x = func(*args)
         total += x
-        sqsum = sqsum + x*x
+        sqsum = sqsum + x * x
         smallest = min(x, smallest)
         largest = max(x, largest)
     t1 = time.time()
-    print round(t1-t0, 3), 'sec,',
-    avg = total/n
-    stddev = _sqrt(sqsum/n - avg*avg)
+    print round(t1 - t0, 3), 'sec,',
+    avg = total / n
+    stddev = _sqrt(sqsum / n - avg * avg)
     print 'avg %g, stddev %g, min %g, max %g' % \
-              (avg, stddev, smallest, largest)
+        (avg, stddev, smallest, largest)
 
 
 def _test(N=2000):
@@ -868,13 +900,14 @@ def _test(N=2000):
     _test_generator(N, gammavariate, (200.0, 1.0))
     _test_generator(N, gauss, (0.0, 1.0))
     _test_generator(N, betavariate, (3.0, 3.0))
-    _test_generator(N, triangular, (0.0, 1.0, 1.0/3.0))
+    _test_generator(N, triangular, (0.0, 1.0, 1.0 / 3.0))
 
 # Create one instance, seeded from current time, and export its methods
 # as module-level functions.  The functions share state across all uses
-#(both in the user's code and in the Python libraries), but that's fine
+# (both in the user's code and in the Python libraries), but that's fine
 # for most programs and is easier for the casual user than making them
 # instantiate their own Random() instance.
+
 
 _inst = Random()
 seed = _inst.seed

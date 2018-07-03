@@ -27,11 +27,10 @@ class BaseTestCase(unittest.TestCase):
             result = "  %s\n" % repr(textin)
         return result
 
-
     def check(self, result, expect):
         self.assertEqual(result, expect,
-            'expected:\n%s\nbut got:\n%s' % (
-                self.show(expect), self.show(result)))
+                         'expected:\n%s\nbut got:\n%s' % (
+                             self.show(expect), self.show(result)))
 
     def check_wrap(self, text, width, expect, **kwargs):
         result = wrap(text, width, **kwargs)
@@ -151,7 +150,6 @@ What a mess!
                                    "paragraph."])
         self.check_wrap(text, 40, ["This is a short paragraph."])
 
-
     def test_wrap_short_1line(self):
         # Test endcases
 
@@ -160,7 +158,6 @@ What a mess!
         self.check_wrap(text, 30, ["This is a short line."])
         self.check_wrap(text, 30, ["(1) This is a short line."],
                         initial_indent="(1) ")
-
 
     def test_hyphenated(self):
         # Test breaking hyphenated words
@@ -250,8 +247,7 @@ What a mess!
                   "he", " ", "was", " ", "gone"]
         self.check_split(text, expect)
 
-
-    def test_unix_options (self):
+    def test_unix_options(self):
         # Test that Unix-style command-line options are wrapped correctly.
         # Both Optik (OptionParser) and Docutils rely on this behaviour!
 
@@ -285,7 +281,7 @@ What a mess!
                   "--dry-", "run", " ", "or", " ", "--dryrun"]
         self.check_split(text, expect)
 
-    def test_funky_hyphens (self):
+    def test_funky_hyphens(self):
         # Screwy edge cases cooked up by David Goodger.  All reported
         # in SF bug #596434.
         self.check_split("what the--hey!", ["what", " ", "the", "--", "hey!"])
@@ -319,7 +315,7 @@ What a mess!
         self.check_split("the ['wibble-wobble'] widget",
                          ['the', ' ', "['wibble-", "wobble']", ' ', 'widget'])
 
-    def test_funky_parens (self):
+    def test_funky_parens(self):
         # Second part of SF bug #596434: long option strings inside
         # parentheses.
         self.check_split("foo (--option) bar",
@@ -418,8 +414,24 @@ What a mess!
 
         result = self.wrapper._split(text)
         self.check(result,
-             ["Hello", " ", "there", " ", "--", " ", "you", " ", "goof-",
-              "ball,", " ", "use", " ", "the", " ", "-b", " ",  "option!"])
+                   ["Hello",
+                    " ",
+                    "there",
+                    " ",
+                    "--",
+                    " ",
+                    "you",
+                    " ",
+                    "goof-",
+                    "ball,",
+                    " ",
+                    "use",
+                    " ",
+                    "the",
+                    " ",
+                    "-b",
+                    " ",
+                    "option!"])
 
     def test_break_on_hyphens(self):
         # Ensure that the break_on_hyphens attributes work
@@ -458,14 +470,14 @@ How *do* you spell that odd word, anyways?
 
         # SF bug 797650.  Prevent an infinite loop by making sure that at
         # least one character gets split off on every pass.
-        self.check_wrap('-'*10+'hello', 10,
+        self.check_wrap('-' * 10 + 'hello', 10,
                         ['----------',
                          '               h',
                          '               e',
                          '               l',
                          '               l',
                          '               o'],
-                        subsequent_indent = ' '*15)
+                        subsequent_indent=' ' * 15)
 
         # bug 1146.  Prevent a long word to be wrongly wrapped when the
         # preceding word is exactly one character shorter than the width
@@ -505,7 +517,6 @@ class IndentTestCases(BaseTestCase):
 This paragraph will be filled, first without any indentation,
 and then with some (including a hanging indent).'''
 
-
     def test_fill(self):
         # Test the fill() method
 
@@ -516,7 +527,6 @@ some (including a hanging indent).'''
 
         result = fill(self.text, 40)
         self.check(result, expect)
-
 
     def test_initial_indent(self):
         # Test initial_indent parameter
@@ -530,7 +540,6 @@ some (including a hanging indent).'''
         expect = "\n".join(expect)
         result = fill(self.text, 40, initial_indent="     ")
         self.check(result, expect)
-
 
     def test_subsequent_indent(self):
         # Test subsequent_indent parameter
@@ -653,6 +662,7 @@ def test_main():
                               LongWordTestCase,
                               IndentTestCases,
                               DedentTestCase)
+
 
 if __name__ == '__main__':
     test_main()

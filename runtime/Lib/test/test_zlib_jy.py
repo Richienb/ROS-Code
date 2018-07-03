@@ -7,6 +7,7 @@ import zlib
 from array import array
 from test import test_support
 
+
 class ArrayTestCase(unittest.TestCase):
 
     def test_array(self):
@@ -16,9 +17,10 @@ class ArrayTestCase(unittest.TestCase):
         def compress(value):
             co = zlib.compressobj()
             return co.compress(value) + co.flush()
+
         def decompress(value):
             dco = zlib.decompressobj()
-            return dco.decompress(value) +  dco.flush()
+            return dco.decompress(value) + dco.flush()
         self._test_array(compress, decompress)
 
     def _test_array(self, compress, decompress):

@@ -54,7 +54,7 @@ s = m.getbodytext(0)    # text of message's body, not decoded
 """
 from warnings import warnpy3k
 warnpy3k("the mhlib module has been removed in Python 3.0; use the mailbox "
-            "module instead", stacklevel=2)
+         "module instead", stacklevel=2)
 del warnpy3k
 
 # XXX To do, functionality:
@@ -71,7 +71,7 @@ del warnpy3k
 MH_PROFILE = '~/.mh_profile'
 PATH = '~/Mail'
 MH_SEQUENCES = '.mh_sequences'
-FOLDER_PROTECT = 0700
+FOLDER_PROTECT = 0o700
 
 
 # Imported modules
@@ -84,9 +84,10 @@ import multifile
 import shutil
 from bisect import bisect
 
-__all__ = ["MH","Error","Folder","Message"]
+__all__ = ["MH", "Error", "Folder", "Message"]
 
 # Exported constants
+
 
 class Error(Exception):
     pass
@@ -99,16 +100,20 @@ class MH:
     If either is omitted or empty a default is used; the default
     directory is taken from the MH profile if it is specified there."""
 
-    def __init__(self, path = None, profile = None):
+    def __init__(self, path=None, profile=None):
         """Constructor."""
-        if profile is None: profile = MH_PROFILE
+        if profile is None:
+            profile = MH_PROFILE
         self.profile = os.path.expanduser(profile)
-        if path is None: path = self.getprofile('Path')
-        if not path: path = PATH
+        if path is None:
+            path = self.getprofile('Path')
+        if not path:
+            path = PATH
         if not os.path.isabs(path) and path[0] != '~':
             path = os.path.join('~', path)
         path = os.path.expanduser(path)
-        if not os.path.isdir(path): raise Error, 'MH() path not found'
+        if not os.path.isdir(path):
+            raise Error, 'MH() path not found'
         self.path = path
 
     def __repr__(self):
@@ -130,8 +135,9 @@ class MH:
     def getcontext(self):
         """Return the name of the current folder."""
         context = pickline(os.path.join(self.getpath(), 'context'),
-                  'Current-Folder')
-        if not context: context = 'inbox'
+                           'Current-Folder')
+        if not context:
+            context = 'inbox'
         return context
 
     def setcontext(self, context):
@@ -191,14 +197,15 @@ class MH:
         subfolders = []
         subnames = os.listdir(fullname)
         for subname in subnames:
-            if subname[0] == ',' or isnumeric(subname): continue
+            if subname[0] == ',' or isnumeric(subname):
+                continue
             fullsubname = os.path.join(fullname, subname)
             if os.path.isdir(fullsubname):
                 name_subname = os.path.join(name, subname)
                 subfolders.append(name_subname)
                 if not os.path.islink(fullsubname):
                     subsubfolders = self.listallsubfolders(
-                              name_subname)
+                        name_subname)
                     subfolders = subfolders + subsubfolders
                 # Stop looking for subfolders when
                 # we've seen them all
@@ -231,13 +238,16 @@ class MH:
                 os.unlink(fullsubname)
             except os.error:
                 self.error('%s not deleted, continuing...' %
-                          fullsubname)
+                           fullsubname)
         os.rmdir(fullname)
 
 
 numericprog = re.compile('^[1-9][0-9]*$')
+
+
 def isnumeric(str):
     return numericprog.match(str) is not None
+
 
 class Folder:
     """Class representing a particular folder."""
@@ -286,8 +296,7 @@ class Folder:
         for name in os.listdir(self.getfullname()):
             if match(name):
                 append(name)
-        messages = map(int, messages)
-        messages.sort()
+        messages = sorted(map(int, messages))
         if messages:
             self.last = messages[-1]
         else:
@@ -302,13 +311,14 @@ class Folder:
             f = open(fullname, 'r')
         except IOError:
             return sequences
-        while 1:
+        while True:
             line = f.readline()
-            if not line: break
+            if not line:
+                break
             fields = line.split(':')
             if len(fields) != 2:
                 self.error('bad sequence in %s: %s' %
-                          (fullname, line.strip()))
+                           (fullname, line.strip()))
             key = fields[0].strip()
             value = IntSet(fields[1].strip(), ' ').tolist()
             sequences[key] = value
@@ -321,7 +331,8 @@ class Folder:
         for key, seq in sequences.iteritems():
             s = IntSet('', ' ')
             s.fromlist(seq)
-            if not f: f = open(fullname, 'w')
+            if not f:
+                f = open(fullname, 'w')
             f.write('%s: %s\n' % (key, s.tostring()))
         if not f:
             try:
@@ -362,7 +373,7 @@ class Folder:
         # Test for X:Y before X-Y because 'seq:-n' matches both
         i = seq.find(':')
         if i >= 0:
-            head, dir, tail = seq[:i], '', seq[i+1:]
+            head, dir, tail = seq[:i], '', seq[i + 1:]
             if tail[:1] in '-+':
                 dir, tail = tail[:1], tail[1:]
             if not isnumeric(tail):
@@ -374,9 +385,9 @@ class Folder:
                 count = len(all)
             try:
                 anchor = self._parseindex(head, all)
-            except Error, msg:
+            except Error as msg:
                 seqs = self.getsequences()
-                if not head in seqs:
+                if head not in seqs:
                     if not msg:
                         msg = "bad message list %s" % seq
                     raise Error, msg, sys.exc_info()[2]
@@ -393,16 +404,16 @@ class Folder:
                         dir = '-'
                 if dir == '-':
                     i = bisect(all, anchor)
-                    return all[max(0, i-count):i]
+                    return all[max(0, i - count):i]
                 else:
-                    i = bisect(all, anchor-1)
-                    return all[i:i+count]
+                    i = bisect(all, anchor - 1)
+                    return all[i:i + count]
         # Test for X-Y next
         i = seq.find('-')
         if i >= 0:
             begin = self._parseindex(seq[:i], all)
-            end = self._parseindex(seq[i+1:], all)
-            i = bisect(all, begin-1)
+            end = self._parseindex(seq[i + 1:], all)
+            i = bisect(all, begin - 1)
             j = bisect(all, end)
             r = all[i:j]
             if not r:
@@ -411,9 +422,9 @@ class Folder:
         # Neither X:Y nor X-Y; must be a number or a (pseudo-)sequence
         try:
             n = self._parseindex(seq, all)
-        except Error, msg:
+        except Error as msg:
             seqs = self.getsequences()
-            if not seq in seqs:
+            if seq not in seqs:
                 if not msg:
                     msg = "bad message list %s" % seq
                 raise Error, msg
@@ -433,7 +444,7 @@ class Folder:
             try:
                 return int(seq)
             except (OverflowError, ValueError):
-                return sys.maxint
+                return sys.maxsize
         if seq in ('cur', '.'):
             return self.getcurrent()
         if seq == 'first':
@@ -449,11 +460,11 @@ class Folder:
                 raise Error, "no next message"
         if seq == 'prev':
             n = self.getcurrent()
-            i = bisect(all, n-1)
+            i = bisect(all, n - 1)
             if i == 0:
                 raise Error, "no prev message"
             try:
-                return all[i-1]
+                return all[i - 1]
             except IndexError:
                 raise Error, "no prev message"
         raise Error, None
@@ -475,7 +486,7 @@ class Folder:
                 pass
             try:
                 os.rename(path, commapath)
-            except os.error, msg:
+            except os.error as msg:
                 errors.append(msg)
             else:
                 deleted.append(n)
@@ -503,7 +514,7 @@ class Folder:
                 try:
                     shutil.copy2(path, topath)
                     os.unlink(path)
-                except (IOError, os.error), msg:
+                except (IOError, os.error) as msg:
                     errors.append(msg)
                     try:
                         os.unlink(topath)
@@ -610,10 +621,10 @@ class Folder:
         except os.error:
             pass
         ok = 0
-        BUFSIZE = 16*1024
+        BUFSIZE = 16 * 1024
         try:
             f = open(path, "w")
-            while 1:
+            while True:
                 buf = txt.read(BUFSIZE)
                 if not buf:
                     break
@@ -649,7 +660,7 @@ class Folder:
     def getlast(self):
         """Return the last message number."""
         if not hasattr(self, 'last'):
-            self.listmessages() # Set self.last
+            self.listmessages()  # Set self.last
         return self.last
 
     def setlast(self, last):
@@ -660,9 +671,10 @@ class Folder:
         else:
             self.last = last
 
+
 class Message(mimetools.Message):
 
-    def __init__(self, f, n, fp = None):
+    def __init__(self, f, n, fp=None):
         """Constructor."""
         self.folder = f
         self.number = n
@@ -675,7 +687,7 @@ class Message(mimetools.Message):
         """String representation."""
         return 'Message(%s, %s)' % (repr(self.folder), self.number)
 
-    def getheadertext(self, pred = None):
+    def getheadertext(self, pred=None):
         """Return the message's header text as a string.  If an
         argument is specified, it is used as a filter predicate to
         decide which headers to return (its argument is the header
@@ -689,10 +701,11 @@ class Message(mimetools.Message):
                 i = line.find(':')
                 if i > 0:
                     hit = pred(line[:i].lower())
-            if hit: headers.append(line)
+            if hit:
+                headers.append(line)
         return ''.join(headers)
 
-    def getbodytext(self, decode = 1):
+    def getbodytext(self, decode=1):
         """Return the message's body text as string.  This undoes a
         Content-Transfer-Encoding, but does not interpret other MIME
         features (e.g. multipart messages).  To suppress decoding,
@@ -747,21 +760,21 @@ class SubMessage(Message):
         else:
             self.body = Message.getbodytext(self)
         self.bodyencoded = Message.getbodytext(self, decode=0)
-            # XXX If this is big, should remember file pointers
+        # XXX If this is big, should remember file pointers
 
     def __repr__(self):
         """String representation."""
         f, n, fp = self.folder, self.number, self.fp
         return 'SubMessage(%s, %s, %s)' % (f, n, fp)
 
-    def getbodytext(self, decode = 1):
+    def getbodytext(self, decode=1):
         if not decode:
             return self.bodyencoded
-        if type(self.body) == type(''):
+        if isinstance(self.body, type('')):
             return self.body
 
     def getbodyparts(self):
-        if type(self.body) == type([]):
+        if isinstance(self.body, type([])):
             return self.body
 
     def getbody(self):
@@ -791,11 +804,12 @@ class IntSet:
     #
     # XXX There are currently no operations to remove set elements.
 
-    def __init__(self, data = None, sep = ',', rng = '-'):
+    def __init__(self, data=None, sep=',', rng='-'):
         self.pairs = []
         self.sep = sep
         self.rng = rng
-        if data: self.fromstring(data)
+        if data:
+            self.fromstring(data)
 
     def reset(self):
         self.pairs = []
@@ -813,26 +827,30 @@ class IntSet:
         self.pairs.sort()
         i = 1
         while i < len(self.pairs):
-            alo, ahi = self.pairs[i-1]
+            alo, ahi = self.pairs[i - 1]
             blo, bhi = self.pairs[i]
-            if ahi >= blo-1:
-                self.pairs[i-1:i+1] = [(alo, max(ahi, bhi))]
+            if ahi >= blo - 1:
+                self.pairs[i - 1:i + 1] = [(alo, max(ahi, bhi))]
             else:
-                i = i+1
+                i = i + 1
 
     def tostring(self):
         s = ''
         for lo, hi in self.pairs:
-            if lo == hi: t = repr(lo)
-            else: t = repr(lo) + self.rng + repr(hi)
-            if s: s = s + (self.sep + t)
-            else: s = t
+            if lo == hi:
+                t = repr(lo)
+            else:
+                t = repr(lo) + self.rng + repr(hi)
+            if s:
+                s = s + (self.sep + t)
+            else:
+                s = t
         return s
 
     def tolist(self):
         l = []
         for lo, hi in self.pairs:
-            m = range(lo, hi+1)
+            m = range(lo, hi + 1)
             l = l + m
         return l
 
@@ -853,36 +871,38 @@ class IntSet:
 
     def contains(self, x):
         for lo, hi in self.pairs:
-            if lo <= x <= hi: return True
+            if lo <= x <= hi:
+                return True
         return False
 
     def append(self, x):
         for i in range(len(self.pairs)):
             lo, hi = self.pairs[i]
-            if x < lo: # Need to insert before
-                if x+1 == lo:
+            if x < lo:  # Need to insert before
+                if x + 1 == lo:
                     self.pairs[i] = (x, hi)
                 else:
                     self.pairs.insert(i, (x, x))
-                if i > 0 and x-1 == self.pairs[i-1][1]:
+                if i > 0 and x - 1 == self.pairs[i - 1][1]:
                     # Merge with previous
-                    self.pairs[i-1:i+1] = [
-                            (self.pairs[i-1][0],
-                             self.pairs[i][1])
-                          ]
+                    self.pairs[i - 1:i + 1] = [
+                        (self.pairs[i - 1][0],
+                         self.pairs[i][1])
+                    ]
                 return
-            if x <= hi: # Already in set
+            if x <= hi:  # Already in set
                 return
         i = len(self.pairs) - 1
         if i >= 0:
             lo, hi = self.pairs[i]
-            if x-1 == hi:
+            if x - 1 == hi:
                 self.pairs[i] = lo, x
                 return
         self.pairs.append((x, x))
 
     def addpair(self, xlo, xhi):
-        if xlo > xhi: return
+        if xlo > xhi:
+            return
         self.pairs.append((xlo, xhi))
         self.normalize()
 
@@ -905,19 +925,20 @@ class IntSet:
 
 # Subroutines to read/write entries in .mh_profile and .mh_sequences
 
-def pickline(file, key, casefold = 1):
+def pickline(file, key, casefold=1):
     try:
         f = open(file, 'r')
     except IOError:
         return None
     pat = re.escape(key) + ':'
     prog = re.compile(pat, casefold and re.IGNORECASE)
-    while 1:
+    while True:
         line = f.readline()
-        if not line: break
+        if not line:
+            break
         if prog.match(line):
-            text = line[len(key)+1:]
-            while 1:
+            text = line[len(key) + 1:]
+            while True:
                 line = f.readline()
                 if not line or not line[0].isspace():
                     break
@@ -925,7 +946,8 @@ def pickline(file, key, casefold = 1):
             return text.strip()
     return None
 
-def updateline(file, key, value, casefold = 1):
+
+def updateline(file, key, value, casefold=1):
     try:
         f = open(file, 'r')
         lines = f.readlines()
@@ -963,13 +985,16 @@ def test():
     global mh, f
     os.system('rm -rf $HOME/Mail/@test')
     mh = MH()
-    def do(s): print s; print eval(s)
+
+    def do(s): print s
+    print eval(s)
     do('mh.listfolders()')
     do('mh.listallfolders()')
     testfolders = ['@test', '@test/test1', '@test/test2',
                    '@test/test1/test11', '@test/test1/test12',
                    '@test/test1/test11/test111']
-    for t in testfolders: do('mh.makefolder(%r)' % (t,))
+    for t in testfolders:
+        do('mh.makefolder(%r)' % (t,))
     do('mh.listsubfolders(\'@test\')')
     do('mh.listallsubfolders(\'@test\')')
     f = mh.openfolder('@test')
@@ -981,7 +1006,8 @@ def test():
     print seqs
     f.putsequences(seqs)
     do('f.getsequences()')
-    for t in reversed(testfolders): do('mh.deletefolder(%r)' % (t,))
+    for t in reversed(testfolders):
+        do('mh.deletefolder(%r)' % (t,))
     do('mh.getcontext()')
     context = mh.getcontext()
     f = mh.openfolder(context)
@@ -993,7 +1019,7 @@ def test():
                 'all'):
         try:
             do('f.parsesequence(%r)' % (seq,))
-        except Error, msg:
+        except Error as msg:
             print "Error:", msg
         stuff = os.popen("pick %r 2>/dev/null" % (seq,)).read()
         list = map(int, stuff.split())

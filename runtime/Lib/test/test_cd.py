@@ -6,9 +6,30 @@ from test.test_support import verbose, import_module
 
 cd = import_module('cd')
 
-cdattrs = ['BLOCKSIZE', 'CDROM', 'DATASIZE', 'ERROR', 'NODISC', 'PAUSED', 'PLAYING', 'READY',
-           'STILL', '__doc__', '__name__', 'atime', 'audio', 'catalog', 'control', 'createparser', 'error',
-           'ident', 'index', 'msftoframe', 'open', 'pnum', 'ptime']
+cdattrs = [
+    'BLOCKSIZE',
+    'CDROM',
+    'DATASIZE',
+    'ERROR',
+    'NODISC',
+    'PAUSED',
+    'PLAYING',
+    'READY',
+    'STILL',
+    '__doc__',
+    '__name__',
+    'atime',
+    'audio',
+    'catalog',
+    'control',
+    'createparser',
+    'error',
+    'ident',
+    'index',
+    'msftoframe',
+    'open',
+    'pnum',
+    'ptime']
 
 
 # This is a very inobtrusive test for the existence of the cd module and all its
@@ -23,7 +44,6 @@ def test_main():
         if verbose:
             print 'touching: ', attr
         getattr(cd, attr)
-
 
 
 if __name__ == '__main__':

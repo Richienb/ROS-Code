@@ -6,6 +6,7 @@ from test.test_support import run_unittest
 from distutils.errors import DistutilsPlatformError, DistutilsByteCompileError
 from distutils.util import byte_compile
 
+
 class UtilTestCase(unittest.TestCase):
 
     def test_dont_write_bytecode(self):
@@ -18,8 +19,10 @@ class UtilTestCase(unittest.TestCase):
         finally:
             sys.dont_write_bytecode = old_dont_write_bytecode
 
+
 def test_suite():
     return unittest.makeSuite(UtilTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

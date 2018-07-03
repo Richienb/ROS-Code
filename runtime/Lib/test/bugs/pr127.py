@@ -2,6 +2,7 @@ class foo:
     def bar():
         return 'bar'
 
+
 try:
     foo.bar()
 except TypeError:

@@ -14,6 +14,7 @@ c_heapq = test_support.import_fresh_module('heapq', fresh=['_heapq'])
 func_names = ['heapify', 'heappop', 'heappush', 'heappushpop',
               'heapreplace', '_nlargest', '_nsmallest']
 
+
 class TestModules(TestCase):
     def test_py_functions(self):
         for fname in func_names:
@@ -43,8 +44,7 @@ class TestHeap(TestCase):
             item = self.module.heappop(heap)
             self.check_invariant(heap)
             results.append(item)
-        data_sorted = data[:]
-        data_sorted.sort()
+        data_sorted = sorted(data[:])
         self.assertEqual(data_sorted, results)
         # 2) Check that the invariant holds for a sorted array
         self.check_invariant(results)
@@ -59,8 +59,8 @@ class TestHeap(TestCase):
     def check_invariant(self, heap):
         # Check the heap invariant.
         for pos, item in enumerate(heap):
-            if pos: # pos 0 has no parent
-                parentpos = (pos-1) >> 1
+            if pos:  # pos 0 has no parent
+                parentpos = (pos - 1) >> 1
                 self.assertTrue(heap[parentpos] <= item)
 
     def test_heapify(self):
@@ -84,7 +84,7 @@ class TestHeap(TestCase):
     def heapiter(self, heap):
         # An iterator returning a heap's elements, smallest-first.
         try:
-            while 1:
+            while True:
                 yield self.module.heappop(heap)
         except IndexError:
             pass
@@ -127,11 +127,11 @@ class TestHeap(TestCase):
         self.assertEqual(type(h[0]), int)
         self.assertEqual(type(x), float)
 
-        h = [10];
+        h = [10]
         x = self.module.heappushpop(h, 9)
         self.assertEqual((h, x), ([10], 9))
 
-        h = [10];
+        h = [10]
         x = self.module.heappushpop(h, 11)
         self.assertEqual((h, x), ([11], 10))
 
@@ -153,9 +153,16 @@ class TestHeap(TestCase):
     def test_merge(self):
         inputs = []
         for i in xrange(random.randrange(5)):
-            row = sorted(random.randrange(1000) for j in range(random.randrange(10)))
+            row = sorted(random.randrange(1000)
+                         for j in range(random.randrange(10)))
             inputs.append(row)
-        self.assertEqual(sorted(chain(*inputs)), list(self.module.merge(*inputs)))
+        self.assertEqual(
+            sorted(
+                chain(
+                    *inputs)),
+            list(
+                self.module.merge(
+                    *inputs)))
         self.assertEqual(list(self.module.merge()), [])
 
     def test_merge_stability(self):
@@ -175,15 +182,18 @@ class TestHeap(TestCase):
 
     def test_nsmallest(self):
         data = [(random.randrange(2000), i) for i in range(1000)]
-        for f in (None, lambda x:  x[0] * 547 % 2000):
+        for f in (None, lambda x: x[0] * 547 % 2000):
             for n in (0, 1, 2, 10, 100, 400, 999, 1000, 1100):
-                self.assertEqual(self.module.nsmallest(n, data), sorted(data)[:n])
+                self.assertEqual(
+                    self.module.nsmallest(
+                        n, data), sorted(data)[
+                        :n])
                 self.assertEqual(self.module.nsmallest(n, data, key=f),
                                  sorted(data, key=f)[:n])
 
     def test_nlargest(self):
         data = [(random.randrange(2000), i) for i in range(1000)]
-        for f in (None, lambda x:  x[0] * 547 % 2000):
+        for f in (None, lambda x: x[0] * 547 % 2000):
             for n in (0, 1, 2, 10, 100, 400, 999, 1000, 1100):
                 self.assertEqual(self.module.nlargest(n, data),
                                  sorted(data, reverse=True)[:n])
@@ -196,14 +206,18 @@ class TestHeap(TestCase):
             data = map(comp, data)
             self.module.heapify(data)
             return [self.module.heappop(data).x for i in range(len(data))]
+
         class LT:
             def __init__(self, x):
                 self.x = x
+
             def __lt__(self, other):
                 return self.x > other.x
+
         class LE:
             def __init__(self, x):
                 self.x = x
+
             def __le__(self, other):
                 return self.x >= other.x
         data = [random.random() for i in range(100)]
@@ -221,99 +235,135 @@ class TestHeapC(TestHeap):
     module = c_heapq
 
 
-#==============================================================================
+# ==============================================================================
 
 class LenOnly:
     "Dummy sequence class defining __len__ but not __getitem__."
+
     def __len__(self):
         return 10
 
+
 class GetOnly:
     "Dummy sequence class defining __getitem__ but not __len__."
+
     def __getitem__(self, ndx):
         return 10
 
+
 class CmpErr:
     "Dummy element that always raises an error during comparison"
+
     def __cmp__(self, other):
         raise ZeroDivisionError
+
 
 def R(seqn):
     'Regular generator'
     for i in seqn:
         yield i
 
+
 class G:
     'Sequence using __getitem__'
+
     def __init__(self, seqn):
         self.seqn = seqn
+
     def __getitem__(self, i):
         return self.seqn[i]
 
+
 class I:
     'Sequence using iterator protocol'
+
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
+
     def __iter__(self):
         return self
+
     def next(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        if self.i >= len(self.seqn):
+            raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
 
+
 class Ig:
     'Sequence using iterator protocol defined with a generator'
+
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
+
     def __iter__(self):
         for val in self.seqn:
             yield val
 
+
 class X:
     'Missing __getitem__ and __iter__'
+
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
+
     def next(self):
-        if self.i >= len(self.seqn): raise StopIteration
+        if self.i >= len(self.seqn):
+            raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
         return v
 
+
 class N:
     'Iterator missing next()'
+
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
+
     def __iter__(self):
         return self
+
 
 class E:
     'Test propagation of exceptions'
+
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
+
     def __iter__(self):
         return self
+
     def next(self):
         3 // 0
 
+
 class S:
     'Test immediate stop'
+
     def __init__(self, seqn):
         pass
+
     def __iter__(self):
         return self
+
     def next(self):
         raise StopIteration
 
+
 from itertools import chain, imap
+
+
 def L(seqn):
     'Test multiple tiers of iterators'
-    return chain(imap(lambda x:x, R(Ig(G(seqn)))))
+    return chain(imap(lambda x: x, R(Ig(G(seqn)))))
+
 
 class SideEffectLT:
     def __init__(self, value, heap):
@@ -360,12 +410,14 @@ class TestErrorHandling(TestCase):
 
     def test_iterable_args(self):
         for f in (self.module.nlargest, self.module.nsmallest):
-            for s in ("123", "", range(1000), ('do', 1.2), xrange(2000,2200,5)):
+            for s in (
+                "123", "", range(1000), ('do', 1.2), xrange(
+                    2000, 2200, 5)):
                 for g in (G, I, Ig, L, R):
                     with test_support.check_py3k_warnings(
                             ("comparing unequal types not supported",
                              DeprecationWarning), quiet=True):
-                        self.assertEqual(f(2, g(s)), f(2,s))
+                        self.assertEqual(f(2, g(s)), f(2, s))
                 self.assertEqual(f(2, S(s)), [])
                 self.assertRaises(TypeError, f, 2, X(s))
                 self.assertRaises(TypeError, f, 2, N(s))
@@ -397,7 +449,7 @@ class TestErrorHandlingC(TestErrorHandling):
     module = c_heapq
 
 
-#==============================================================================
+# ==============================================================================
 
 
 def test_main(verbose=None):
@@ -414,6 +466,7 @@ def test_main(verbose=None):
             gc.collect()
             counts[i] = sys.gettotalrefcount()
         print counts
+
 
 if __name__ == "__main__":
     test_main(verbose=True)

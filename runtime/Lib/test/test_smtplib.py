@@ -18,6 +18,7 @@ except ImportError:
 
 HOST = test_support.HOST
 
+
 def server(evt, buf, serv):
     serv.listen(5)
     evt.set()
@@ -39,6 +40,7 @@ def server(evt, buf, serv):
     finally:
         serv.close()
         evt.set()
+
 
 @unittest.skipUnless(threading, 'Threading required for this test.')
 class GeneralTests(unittest.TestCase):
@@ -134,6 +136,7 @@ def debugging_server(serv, serv_evt, client_evt):
         asyncore.close_all()
         serv_evt.set()
 
+
 MSG_BEGIN = '---------- MESSAGE FOLLOWS ----------\n'
 MSG_END = '------------ END MESSAGE ------------\n'
 
@@ -143,6 +146,8 @@ MSG_END = '------------ END MESSAGE ------------\n'
 # test server times out, causing the test to fail.
 
 # Test behavior of smtpd.DebuggingServer
+
+
 @unittest.skipUnless(threading, 'Threading required for this test.')
 class DebuggingServerTests(unittest.TestCase):
 
@@ -179,31 +184,51 @@ class DebuggingServerTests(unittest.TestCase):
 
     def testBasic(self):
         # connect
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=3)
         smtp.quit()
 
     def testNOOP(self):
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=3)
         expected = (250, 'Ok')
         self.assertEqual(smtp.noop(), expected)
         smtp.quit()
 
     def testRSET(self):
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=3)
         expected = (250, 'Ok')
         self.assertEqual(smtp.rset(), expected)
         smtp.quit()
 
     def testNotImplemented(self):
         # EHLO isn't implemented in DebuggingServer
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=3)
         expected = (502, 'Error: command "EHLO" not implemented')
         self.assertEqual(smtp.ehlo(), expected)
         smtp.quit()
 
     def testVRFY(self):
         # VRFY isn't implemented in DebuggingServer
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=3)
         expected = (502, 'Error: command "VRFY" not implemented')
         self.assertEqual(smtp.vrfy('nobody@nowhere.com'), expected)
         self.assertEqual(smtp.verify('nobody@nowhere.com'), expected)
@@ -212,21 +237,33 @@ class DebuggingServerTests(unittest.TestCase):
     def testSecondHELO(self):
         # check that a second HELO returns a message that it's a duplicate
         # (this behavior is specific to smtpd.SMTPChannel)
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=3)
         smtp.helo()
         expected = (503, 'Duplicate HELO/EHLO')
         self.assertEqual(smtp.helo(), expected)
         smtp.quit()
 
     def testHELP(self):
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=3)
         self.assertEqual(smtp.help(), 'Error: command "HELP" not implemented')
         smtp.quit()
 
     def testSend(self):
         # connect and send mail
         m = 'A test message'
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=3)
         smtp.sendmail('John', 'Sally', m)
         # XXX(nnorwitz): this test is flaky and dies with a bad file descriptor
         # in asyncore.  This sleep might help, but should really be fixed
@@ -289,13 +326,13 @@ class BadHELOServerTests(unittest.TestCase):
 
     def testFailingHELO(self):
         self.assertRaises(smtplib.SMTPConnectError, smtplib.SMTP,
-                            HOST, self.port, 'localhost', 3)
+                          HOST, self.port, 'localhost', 3)
 
 
-sim_users = {'Mr.A@somewhere.com':'John A',
-             'Ms.B@somewhere.com':'Sally B',
-             'Mrs.C@somewhereesle.com':'Ruth C',
-            }
+sim_users = {'Mr.A@somewhere.com': 'John A',
+             'Ms.B@somewhere.com': 'Sally B',
+             'Mrs.C@somewhereesle.com': 'Ruth C',
+             }
 
 sim_auth = ('Mr.A@somewhere.com', 'somepassword')
 sim_cram_md5_challenge = ('PENCeUxFREJoU0NnbmhNWitOMjNGNn'
@@ -305,19 +342,21 @@ sim_auth_credentials = {
     'plain': 'AE1yLkFAc29tZXdoZXJlLmNvbQBzb21lcGFzc3dvcmQ=',
     'cram-md5': ('TXIUQUBZB21LD2HLCMUUY29TIDG4OWQ0MJ'
                  'KWZGQ4ODNMNDA4NTGXMDRLZWMYZJDMODG1'),
-    }
+}
 sim_auth_login_password = 'C29TZXBHC3N3B3JK'
 
-sim_lists = {'list-1':['Mr.A@somewhere.com','Mrs.C@somewhereesle.com'],
-             'list-2':['Ms.B@somewhere.com',],
-            }
+sim_lists = {'list-1': ['Mr.A@somewhere.com', 'Mrs.C@somewhereesle.com'],
+             'list-2': ['Ms.B@somewhere.com', ],
+             }
 
 # Simulated SMTP channel & server
+
+
 class SimSMTPChannel(smtpd.SMTPChannel):
 
     def __init__(self, extra_features, *args, **kw):
         self._extrafeatures = ''.join(
-            [ "250-{0}\r\n".format(x) for x in extra_features ])
+            ["250-{0}\r\n".format(x) for x in extra_features])
         smtpd.SMTPChannel.__init__(self, *args, **kw)
 
     def smtp_EHLO(self, arg):
@@ -343,14 +382,16 @@ class SimSMTPChannel(smtpd.SMTPChannel):
             for n, user_email in enumerate(user_list):
                 quoted_addr = smtplib.quoteaddr(user_email)
                 if n < len(user_list) - 1:
-                    self.push('250-%s %s' % (sim_users[user_email], quoted_addr))
+                    self.push('250-%s %s' %
+                              (sim_users[user_email], quoted_addr))
                 else:
-                    self.push('250 %s %s' % (sim_users[user_email], quoted_addr))
+                    self.push('250 %s %s' %
+                              (sim_users[user_email], quoted_addr))
         else:
             self.push('550 No access for you!')
 
     def smtp_AUTH(self, arg):
-        if arg.strip().lower()=='cram-md5':
+        if arg.strip().lower() == 'cram-md5':
             self.push('334 {0}'.format(sim_cram_md5_challenge))
             return
         mech, auth = arg.split()
@@ -358,9 +399,9 @@ class SimSMTPChannel(smtpd.SMTPChannel):
         if mech not in sim_auth_credentials:
             self.push('504 auth type unimplemented')
             return
-        if mech == 'plain' and auth==sim_auth_credentials['plain']:
+        if mech == 'plain' and auth == sim_auth_credentials['plain']:
             self.push('235 plain auth ok')
-        elif mech=='login' and auth==sim_auth_credentials['login']:
+        elif mech == 'login' and auth == sim_auth_credentials['login']:
             self.push('334 Password:')
         else:
             self.push('550 No access for you!')
@@ -421,17 +462,25 @@ class SMTPSimTests(unittest.TestCase):
 
     def testBasic(self):
         # smoke test
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=15)
         smtp.quit()
 
     def testEHLO(self):
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=15)
 
         # no features should be present before the EHLO
         self.assertEqual(smtp.esmtp_features, {})
 
         # features expected from the test server
-        expected_features = {'expn':'',
+        expected_features = {'expn': '',
                              'size': '20000000',
                              'starttls': '',
                              'deliverby': '',
@@ -446,7 +495,11 @@ class SMTPSimTests(unittest.TestCase):
         smtp.quit()
 
     def testVRFY(self):
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=15)
 
         for email, name in sim_users.items():
             expected_known = (250, '%s %s' % (name, smtplib.quoteaddr(email)))
@@ -458,7 +511,11 @@ class SMTPSimTests(unittest.TestCase):
         smtp.quit()
 
     def testEXPN(self):
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=15)
 
         for listname, members in sim_lists.items():
             users = []
@@ -474,10 +531,18 @@ class SMTPSimTests(unittest.TestCase):
 
     def testAUTH_PLAIN(self):
         self.serv.add_feature("AUTH PLAIN")
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=15)
 
         expected_auth_ok = (235, b'plain auth ok')
-        self.assertEqual(smtp.login(sim_auth[0], sim_auth[1]), expected_auth_ok)
+        self.assertEqual(
+            smtp.login(
+                sim_auth[0],
+                sim_auth[1]),
+            expected_auth_ok)
 
     # SimSMTPChannel doesn't fully support LOGIN or CRAM-MD5 auth because they
     # require a synchronous read to obtain the credentials...so instead smtpd
@@ -489,29 +554,40 @@ class SMTPSimTests(unittest.TestCase):
 
     def testAUTH_LOGIN(self):
         self.serv.add_feature("AUTH LOGIN")
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
-        try: smtp.login(sim_auth[0], sim_auth[1])
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=15)
+        try:
+            smtp.login(sim_auth[0], sim_auth[1])
         except smtplib.SMTPAuthenticationError as err:
             if sim_auth_login_password not in str(err):
                 raise "expected encoded password not found in error message"
 
     def testAUTH_CRAM_MD5(self):
         self.serv.add_feature("AUTH CRAM-MD5")
-        smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
+        smtp = smtplib.SMTP(
+            HOST,
+            self.port,
+            local_hostname='localhost',
+            timeout=15)
 
-        try: smtp.login(sim_auth[0], sim_auth[1])
+        try:
+            smtp.login(sim_auth[0], sim_auth[1])
         except smtplib.SMTPAuthenticationError as err:
             if sim_auth_credentials['cram-md5'] not in str(err):
                 raise "expected encoded credentials not found in error message"
 
-    #TODO: add tests for correct AUTH method fallback now that the
-    #test infrastructure can support it.
+    # TODO: add tests for correct AUTH method fallback now that the
+    # test infrastructure can support it.
 
 
 def test_main(verbose=None):
     test_support.run_unittest(GeneralTests, DebuggingServerTests,
                               NonConnectingTests,
                               BadHELOServerTests, SMTPSimTests)
+
 
 if __name__ == '__main__':
     test_main()

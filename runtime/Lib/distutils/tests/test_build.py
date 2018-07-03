@@ -8,6 +8,7 @@ from distutils.command.build import build
 from distutils.tests import support
 from sysconfig import get_platform
 
+
 class BuildTestCase(support.TempdirManager,
                     support.LoggingSilencer,
                     unittest.TestCase):
@@ -42,14 +43,16 @@ class BuildTestCase(support.TempdirManager,
         self.assertEqual(cmd.build_temp, wanted)
 
         # build_scripts is build/scripts-x.x
-        wanted = os.path.join(cmd.build_base, 'scripts-' +  sys.version[0:3])
+        wanted = os.path.join(cmd.build_base, 'scripts-' + sys.version[0:3])
         self.assertEqual(cmd.build_scripts, wanted)
 
         # executable is os.path.normpath(sys.executable)
         self.assertEqual(cmd.executable, os.path.normpath(sys.executable))
 
+
 def test_suite():
     return unittest.makeSuite(BuildTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

@@ -32,10 +32,10 @@ are strings, not numbers, since they are rarely used for calculations.
 import re
 import socket
 
-__all__ = ["NNTP","NNTPReplyError","NNTPTemporaryError",
-           "NNTPPermanentError","NNTPProtocolError","NNTPDataError",
-           "error_reply","error_temp","error_perm","error_proto",
-           "error_data",]
+__all__ = ["NNTP", "NNTPReplyError", "NNTPTemporaryError",
+           "NNTPPermanentError", "NNTPProtocolError", "NNTPDataError",
+           "error_reply", "error_temp", "error_perm", "error_proto",
+           "error_data", ]
 
 # maximal line length when calling readline(). This is to prevent
 # reading arbitrary length lines. RFC 3977 limits NNTP line length to
@@ -47,6 +47,7 @@ _MAXLINE = 2048
 # Exceptions raised when an error or invalid response is received
 class NNTPError(Exception):
     """Base class for all nntplib exceptions"""
+
     def __init__(self, *args):
         Exception.__init__(self, *args)
         try:
@@ -54,25 +55,31 @@ class NNTPError(Exception):
         except IndexError:
             self.response = 'No response given'
 
+
 class NNTPReplyError(NNTPError):
     """Unexpected [123]xx reply"""
     pass
+
 
 class NNTPTemporaryError(NNTPError):
     """4xx errors"""
     pass
 
+
 class NNTPPermanentError(NNTPError):
     """5xx errors"""
     pass
+
 
 class NNTPProtocolError(NNTPError):
     """Response does not begin with [1-5]"""
     pass
 
+
 class NNTPDataError(NNTPError):
     """Error in response data"""
     pass
+
 
 # for backwards compatibility
 error_reply = NNTPReplyError
@@ -80,7 +87,6 @@ error_temp = NNTPTemporaryError
 error_perm = NNTPPermanentError
 error_proto = NNTPProtocolError
 error_data = NNTPDataError
-
 
 
 # Standard port used by NNTP servers
@@ -93,7 +99,6 @@ LONGRESP = ['100', '215', '220', '221', '222', '224', '230', '231', '282']
 
 # Line terminators (we always output CRLF, but accept any of CRLF, CR, LF)
 CRLF = '\r\n'
-
 
 
 # The class itself
@@ -133,7 +138,7 @@ class NNTP:
             except NNTPPermanentError:
                 # error 500, probably 'not implemented'
                 pass
-            except NNTPTemporaryError, e:
+            except NNTPTemporaryError as e:
                 if user and e.response[:3] == '480':
                     # Need authorization before 'mode reader'
                     readermode_afterauth = 1
@@ -153,13 +158,13 @@ class NNTP:
             pass
         # Perform NNRP authentication if needed.
         if user:
-            resp = self.shortcmd('authinfo user '+user)
+            resp = self.shortcmd('authinfo user ' + user)
             if resp[:3] == '381':
                 if not password:
                     raise NNTPReplyError(resp)
                 else:
                     resp = self.shortcmd(
-                            'authinfo pass '+password)
+                        'authinfo pass ' + password)
                     if resp[:3] != '281':
                         raise NNTPPermanentError(resp)
             if readermode_afterauth:
@@ -168,7 +173,6 @@ class NNTP:
                 except NNTPPermanentError:
                     # error 500, probably 'not implemented'
                     pass
-
 
     # Get the welcome message from the server
     # (this is read and squirreled away by __init__()).
@@ -181,7 +185,8 @@ class NNTP:
         If the response code is 200, posting is allowed;
         if it 201, posting is not allowed."""
 
-        if self.debugging: print '*welcome*', repr(self.welcome)
+        if self.debugging:
+            print '*welcome*', repr(self.welcome)
         return self.welcome
 
     def set_debuglevel(self, level):
@@ -196,12 +201,14 @@ class NNTP:
     def putline(self, line):
         """Internal: send one line to the server, appending CRLF."""
         line = line + CRLF
-        if self.debugging > 1: print '*put*', repr(line)
+        if self.debugging > 1:
+            print '*put*', repr(line)
         self.sock.sendall(line)
 
     def putcmd(self, line):
         """Internal: send one command to the server (through putline())."""
-        if self.debugging: print '*cmd*', repr(line)
+        if self.debugging:
+            print '*cmd*', repr(line)
         self.putline(line)
 
     def getline(self):
@@ -212,16 +219,20 @@ class NNTP:
             raise NNTPDataError('line too long')
         if self.debugging > 1:
             print '*get*', repr(line)
-        if not line: raise EOFError
-        if line[-2:] == CRLF: line = line[:-2]
-        elif line[-1:] in CRLF: line = line[:-1]
+        if not line:
+            raise EOFError
+        if line[-2:] == CRLF:
+            line = line[:-2]
+        elif line[-1:] in CRLF:
+            line = line[:-1]
         return line
 
     def getresp(self):
         """Internal: get a response from the server.
         Raise various errors if the response indicates an error."""
         resp = self.getline()
-        if self.debugging: print '*resp*', repr(resp)
+        if self.debugging:
+            print '*resp*', repr(resp)
         c = resp[:1]
         if c == '4':
             raise NNTPTemporaryError(resp)
@@ -245,7 +256,7 @@ class NNTP:
             if resp[:3] not in LONGRESP:
                 raise NNTPReplyError(resp)
             list = []
-            while 1:
+            while True:
                 line = self.getline()
                 if line == '.':
                     break
@@ -306,7 +317,6 @@ class NNTP:
         return resp, list
 
     def description(self, group):
-
         """Get a description for a single group.  If more than one
         group matches ('group' is a pattern), return the first.  If no
         group matches, return an empty string.
@@ -372,7 +382,7 @@ class NNTP:
         - resp: server response if successful
         - list: list of strings"""
 
-        return self.longcmd('HELP',file)
+        return self.longcmd('HELP', file)
 
     def statparse(self, resp):
         """Internal: parse the response of a STAT, NEXT or LAST command."""
@@ -499,7 +509,7 @@ class NNTP:
                                     elem[7]))
             except IndexError:
                 raise NNTPDataError(line)
-        return resp,xover_lines
+        return resp, xover_lines
 
     def xgtitle(self, group, file=None):
         """Process an XGTITLE command (optional server extension) Arguments:
@@ -517,7 +527,7 @@ class NNTP:
                 lines.append(match.group(1, 2))
         return resp, lines
 
-    def xpath(self,id):
+    def xpath(self, id):
         """Process an XPATH command (optional server extension) Arguments:
         - id: Message id of article
         Returns:
@@ -534,7 +544,7 @@ class NNTP:
         else:
             return resp, path
 
-    def date (self):
+    def date(self):
         """Process the DATE command. Arguments:
         None
         Returns:
@@ -554,7 +564,6 @@ class NNTP:
             raise NNTPDataError(resp)
         return resp, date, time
 
-
     def post(self, f):
         """Process a POST command.  Arguments:
         - f: file containing the article
@@ -565,7 +574,7 @@ class NNTP:
         # Raises error_??? if posting is not allowed
         if resp[0] != '3':
             raise NNTPReplyError(resp)
-        while 1:
+        while True:
             line = f.readline()
             if not line:
                 break
@@ -589,7 +598,7 @@ class NNTP:
         # Raises error_??? if the server already has it
         if resp[0] != '3':
             raise NNTPReplyError(resp)
-        while 1:
+        while True:
             line = f.readline()
             if not line:
                 break

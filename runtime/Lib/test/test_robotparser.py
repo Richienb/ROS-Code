@@ -1,6 +1,9 @@
-import unittest, StringIO, robotparser
+import unittest
+import StringIO
+import robotparser
 from test import test_support
 from urllib2 import urlopen, HTTPError
+
 
 class RobotTestCase(unittest.TestCase):
     def __init__(self, index, parser, url, good, agent):
@@ -28,7 +31,9 @@ class RobotTestCase(unittest.TestCase):
     def __str__(self):
         return self.str
 
+
 tests = unittest.TestSuite()
+
 
 def RobotTest(index, robots_txt, good_urls, bad_urls,
               agent="test_robotparser"):
@@ -43,6 +48,7 @@ def RobotTest(index, robots_txt, good_urls, bad_urls,
 
 # Examples from http://www.robotstxt.org/wc/norobots.html (fetched 2002)
 
+
 # 1.
 doc = """
 User-agent: *
@@ -51,8 +57,8 @@ Disallow: /tmp/ # these will soon disappear
 Disallow: /foo.html
 """
 
-good = ['/','/test.html']
-bad = ['/cyberworld/map/index.html','/tmp/xxx','/foo.html']
+good = ['/', '/test.html']
+bad = ['/cyberworld/map/index.html', '/tmp/xxx', '/foo.html']
 
 RobotTest(1, doc, good, bad)
 
@@ -69,7 +75,7 @@ Disallow:
 
 """
 
-good = ['/','/test.html',('cybermapper','/cyberworld/map/index.html')]
+good = ['/', '/test.html', ('cybermapper', '/cyberworld/map/index.html')]
 bad = ['/cyberworld/map/index.html']
 
 RobotTest(2, doc, good, bad)
@@ -82,7 +88,7 @@ Disallow: /
 """
 
 good = []
-bad = ['/cyberworld/map/index.html','/','/tmp/']
+bad = ['/cyberworld/map/index.html', '/', '/tmp/']
 
 RobotTest(3, doc, good, bad)
 
@@ -97,9 +103,9 @@ Disallow: /a%2fb.html
 Disallow: /%7ejoe/index.html
 """
 
-good = [] # XFAIL '/a/b.html'
-bad = ['/tmp','/tmp.html','/tmp/a.html',
-       '/a%3cd.html','/a%3Cd.html','/a%2fb.html',
+good = []  # XFAIL '/a/b.html'
+bad = ['/tmp', '/tmp.html', '/tmp/a.html',
+       '/a%3cd.html', '/a%3Cd.html', '/a%2fb.html',
        '/~joe/index.html'
        ]
 
@@ -115,9 +121,9 @@ Disallow: /a/b.html
 Disallow: /%7ejoe/index.html
 """
 
-good = ['/tmp',] # XFAIL: '/a%2fb.html'
-bad = ['/tmp/','/tmp/a.html',
-       '/a%3cd.html','/a%3Cd.html',"/a/b.html",
+good = ['/tmp', ]  # XFAIL: '/a%2fb.html'
+bad = ['/tmp/', '/tmp/a.html',
+       '/a%3cd.html', '/a%3Cd.html', "/a/b.html",
        '/%7Ejoe/index.html']
 
 RobotTest(6, doc, good, bad)
@@ -131,11 +137,12 @@ Disallow: /.
 """
 
 good = ['/foo.html']
-bad = [] # Bug report says "/" should be denied, but that is not in the RFC
+bad = []  # Bug report says "/" should be denied, but that is not in the RFC
 
 RobotTest(7, doc, good, bad)
 
-# From Google: http://www.google.com/support/webmasters/bin/answer.py?hl=en&answer=40364
+# From Google:
+# http://www.google.com/support/webmasters/bin/answer.py?hl=en&answer=40364
 
 # 8.
 doc = """
@@ -271,6 +278,7 @@ def test_main():
     test_support.run_unittest(tests)
     test_support.run_unittest(NetworkTestCase)
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     test_support.verbose = 1
     test_main()

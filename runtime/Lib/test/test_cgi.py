@@ -5,11 +5,13 @@ import sys
 import tempfile
 import unittest
 
+
 class HackedSysModule:
     # The regression test will have real values in sys.argv, which
     # will completely confuse the test of the cgi module
     argv = []
     stdin = sys.stdin
+
 
 cgi.sys = HackedSysModule()
 
@@ -17,6 +19,7 @@ try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
+
 
 class ComparableException:
     def __init__(self, err):
@@ -36,6 +39,7 @@ class ComparableException:
     def __getattr__(self, attr):
         return getattr(self.err, attr)
 
+
 def do_test(buf, method):
     env = {}
     if method == "GET":
@@ -48,11 +52,12 @@ def do_test(buf, method):
         env['CONTENT_TYPE'] = 'application/x-www-form-urlencoded'
         env['CONTENT_LENGTH'] = str(len(buf))
     else:
-        raise ValueError, "unknown method: %s" % method
+        raise ValueError("unknown method: %s" % method)
     try:
         return cgi.parse(fp, env, strict_parsing=1)
-    except StandardError, err:
+    except Exception as err:
         return ComparableException(err)
+
 
 parse_strict_test_cases = [
     ("", ValueError("bad query field: ''")),
@@ -99,13 +104,16 @@ parse_strict_test_cases = [
       'group_id': ['5470'],
       'set': ['custom'],
       })
-    ]
+]
+
 
 def first_elts(list):
-    return map(lambda x:x[0], list)
+    return map(lambda x: x[0], list)
+
 
 def first_second_elts(list):
-    return map(lambda p:(p[0], p[1][0]), list)
+    return map(lambda p: (p[0], p[1][0]), list)
+
 
 def gen_result(data, environ):
     fake_stdin = StringIO(data)
@@ -118,12 +126,17 @@ def gen_result(data, environ):
 
     return result
 
+
 class CgiTests(unittest.TestCase):
 
     def test_escape(self):
         self.assertEqual("test &amp; string", cgi.escape("test & string"))
         self.assertEqual("&lt;test string&gt;", cgi.escape("<test string>"))
-        self.assertEqual("&quot;test string&quot;", cgi.escape('"test string"', True))
+        self.assertEqual(
+            "&quot;test string&quot;",
+            cgi.escape(
+                '"test string"',
+                True))
 
     def test_strict(self):
         for orig, expect in parse_strict_test_cases:
@@ -143,17 +156,25 @@ class CgiTests(unittest.TestCase):
                 self.assertItemsEqual(expect.keys(), fcd.keys())
                 self.assertItemsEqual(expect.values(), fcd.values())
                 self.assertItemsEqual(expect.items(), fcd.items())
-                self.assertEqual(fcd.get("nonexistent field", "default"), "default")
+                self.assertEqual(
+                    fcd.get(
+                        "nonexistent field",
+                        "default"),
+                    "default")
                 self.assertEqual(len(sd), len(fs))
                 self.assertItemsEqual(sd.keys(), fs.keys())
-                self.assertEqual(fs.getvalue("nonexistent field", "default"), "default")
+                self.assertEqual(
+                    fs.getvalue(
+                        "nonexistent field",
+                        "default"),
+                    "default")
                 # test individual fields
                 for key in expect.keys():
                     expect_val = expect[key]
-                    self.assertTrue(fcd.has_key(key))
+                    self.assertTrue(key in fcd)
                     self.assertItemsEqual(fcd[key], expect[key])
                     self.assertEqual(fcd.get(key, "default"), fcd[key])
-                    self.assertTrue(fs.has_key(key))
+                    self.assertTrue(key in fs)
                     if len(expect_val) > 1:
                         single_value = 0
                     else:
@@ -170,9 +191,10 @@ class CgiTests(unittest.TestCase):
                     self.assertItemsEqual(sd.getlist(key), expect_val)
                     if single_value:
                         self.assertItemsEqual(sd.values(),
-                                                first_elts(expect.values()))
-                        self.assertItemsEqual(sd.items(),
-                                                first_second_elts(expect.items()))
+                                              first_elts(expect.values()))
+                        self.assertItemsEqual(
+                            sd.items(), first_second_elts(
+                                expect.items()))
 
     def test_weird_formcontentdict(self):
         # Test the weird FormContentDict classes
@@ -191,7 +213,9 @@ class CgiTests(unittest.TestCase):
         cgi.logfp = StringIO()
         cgi.initlog("%s", "Testing initlog 1")
         cgi.log("%s", "Testing log 2")
-        self.assertEqual(cgi.logfp.getvalue(), "Testing initlog 1\nTesting log 2\n")
+        self.assertEqual(
+            cgi.logfp.getvalue(),
+            "Testing initlog 1\nTesting log 2\n")
         if os.path.exists("/dev/null"):
             cgi.logfp = None
             cgi.logfile = "/dev/null"
@@ -225,7 +249,7 @@ class CgiTests(unittest.TestCase):
         f = TestReadlineFile(tempfile.TemporaryFile())
         f.write('x' * 256 * 1024)
         f.seek(0)
-        env = {'REQUEST_METHOD':'PUT'}
+        env = {'REQUEST_METHOD': 'PUT'}
         fs = cgi.FieldStorage(fp=f, environ=env)
         # if we're not chunking properly, readline is only called twice
         # (by read_binary); if we are chunking properly, it will be called 5 times
@@ -233,8 +257,11 @@ class CgiTests(unittest.TestCase):
         self.assertTrue(f.numcalls > 2)
 
     def test_fieldstorage_multipart(self):
-        #Test basic FieldStorage multipart parsing
-        env = {'REQUEST_METHOD':'POST', 'CONTENT_TYPE':'multipart/form-data; boundary=---------------------------721837373350705526688164684', 'CONTENT_LENGTH':'558'}
+        # Test basic FieldStorage multipart parsing
+        env = {
+            'REQUEST_METHOD': 'POST',
+            'CONTENT_TYPE': 'multipart/form-data; boundary=---------------------------721837373350705526688164684',
+            'CONTENT_LENGTH': '558'}
         postdata = """-----------------------------721837373350705526688164684
 Content-Disposition: form-data; name="id"
 
@@ -257,10 +284,10 @@ Content-Disposition: form-data; name="submit"
 """
         fs = cgi.FieldStorage(fp=StringIO(postdata), environ=env)
         self.assertEqual(len(fs.list), 4)
-        expect = [{'name':'id', 'filename':None, 'value':'1234'},
-                  {'name':'title', 'filename':None, 'value':''},
-                  {'name':'file', 'filename':'test.txt','value':'Testing 123.\n'},
-                  {'name':'submit', 'filename':None, 'value':' Add '}]
+        expect = [{'name': 'id', 'filename': None, 'value': '1234'},
+                  {'name': 'title', 'filename': None, 'value': ''},
+                  {'name': 'file', 'filename': 'test.txt', 'value': 'Testing 123.\n'},
+                  {'name': 'submit', 'filename': None, 'value': ' Add '}]
         for x in range(len(fs.list)):
             for k, exp in expect[x].items():
                 got = getattr(fs.list[x], k)
@@ -272,13 +299,14 @@ Content-Disposition: form-data; name="submit"
         'key3': 'value3',
         'key4': 'value4'
     }
+
     def testQSAndUrlEncode(self):
         data = "key2=value2x&key3=value3&key4=value4"
         environ = {
-            'CONTENT_LENGTH':   str(len(data)),
-            'CONTENT_TYPE':     'application/x-www-form-urlencoded',
-            'QUERY_STRING':     'key1=value1&key2=value2y',
-            'REQUEST_METHOD':   'POST',
+            'CONTENT_LENGTH': str(len(data)),
+            'CONTENT_TYPE': 'application/x-www-form-urlencoded',
+            'QUERY_STRING': 'key1=value1&key2=value2y',
+            'REQUEST_METHOD': 'POST',
         }
         v = gen_result(data, environ)
         self.assertEqual(self._qs_result, v)
@@ -300,10 +328,10 @@ value4
 ---123--
 """
         environ = {
-            'CONTENT_LENGTH':   str(len(data)),
-            'CONTENT_TYPE':     'multipart/form-data; boundary=-123',
-            'QUERY_STRING':     'key1=value1&key2=value2x',
-            'REQUEST_METHOD':   'POST',
+            'CONTENT_LENGTH': str(len(data)),
+            'CONTENT_TYPE': 'multipart/form-data; boundary=-123',
+            'QUERY_STRING': 'key1=value1&key2=value2x',
+            'REQUEST_METHOD': 'POST',
         }
         v = gen_result(data, environ)
         self.assertEqual(self._qs_result, v)
@@ -331,10 +359,10 @@ this is the content of the fake file
 ---123--
 """
         environ = {
-            'CONTENT_LENGTH':   str(len(data)),
-            'CONTENT_TYPE':     'multipart/form-data; boundary=-123',
-            'QUERY_STRING':     'key1=value1&key2=value2x',
-            'REQUEST_METHOD':   'POST',
+            'CONTENT_LENGTH': str(len(data)),
+            'CONTENT_TYPE': 'multipart/form-data; boundary=-123',
+            'QUERY_STRING': 'key1=value1&key2=value2x',
+            'REQUEST_METHOD': 'POST',
         }
         result = self._qs_result.copy()
         result.update({
@@ -389,6 +417,7 @@ this is the content of the fake file
 
 def test_main():
     run_unittest(CgiTests)
+
 
 if __name__ == '__main__':
     test_main()

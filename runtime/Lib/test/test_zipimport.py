@@ -25,19 +25,22 @@ import StringIO
 from traceback import extract_tb, extract_stack, print_tb
 raise_src = 'def do_raise(): raise TypeError\n'
 
+
 def make_pyc(co, mtime):
     data = marshal.dumps(co)
-    if type(mtime) is type(0.0):
+    if isinstance(mtime, type(0.0)):
         # Mac mtimes need a bit of special casing
         if mtime < 0x7fffffff:
             mtime = int(mtime)
         else:
-            mtime = int(-0x100000000L + long(mtime))
+            mtime = int(-0x100000000 + long(mtime))
     pyc = imp.get_magic() + struct.pack("<i", int(mtime)) + data
     return pyc
 
+
 def module_path_to_dotted_name(path):
     return path.replace(os.sep, '.')
+
 
 NOW = time.time()
 test_pyc = make_pyc(test_co, NOW)
@@ -99,7 +102,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             if expected_ext:
                 file = mod.get_file()
                 self.assertEqual(file, os.path.join(TEMP_ZIP,
-                                 *modules) + expected_ext)
+                                                    *modules) + expected_ext)
         finally:
             z.close()
             os.remove(TEMP_ZIP)
@@ -178,7 +181,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     def testBadMTime(self):
         t3 = ord(test_pyc[7])
         t3 ^= 0x02  # flip the second bit -- not the first as that one
-                    # isn't stored in the .py's mtime in the zip archive.
+        # isn't stored in the .py's mtime in the zip archive.
         badtime_pyc = test_pyc[:7] + chr(t3) + test_pyc[8:]
         files = {TESTMOD + ".py": (NOW, test_src),
                  TESTMOD + pyc_ext: (NOW, badtime_pyc)}
@@ -230,7 +233,8 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             self.assertEqual(zi.get_source(TESTPACK), None)
             self.assertEqual(zi.get_source(mod_path), None)
             self.assertEqual(zi.get_filename(mod_path), mod.__file__)
-            # To pass in the module name instead of the path, we must use the right importer
+            # To pass in the module name instead of the path, we must use the
+            # right importer
             loader = mod.__loader__
             self.assertEqual(loader.get_source(mod_name), None)
             self.assertEqual(loader.get_filename(mod_name), mod.__file__)
@@ -264,8 +268,18 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             mod = zi.load_module(TESTPACK2)
             self.assertEqual(zi.get_filename(TESTPACK2), mod.__file__)
 
-            self.assertEqual(zi.is_package(TESTPACK2 + os.sep + '__init__'), False)
-            self.assertEqual(zi.is_package(TESTPACK2 + os.sep + TESTMOD), False)
+            self.assertEqual(
+                zi.is_package(
+                    TESTPACK2 +
+                    os.sep +
+                    '__init__'),
+                False)
+            self.assertEqual(
+                zi.is_package(
+                    TESTPACK2 +
+                    os.sep +
+                    TESTMOD),
+                False)
 
             mod_path = TESTPACK2 + os.sep + TESTMOD
             mod_name = module_path_to_dotted_name(mod_path)
@@ -274,7 +288,8 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             self.assertEqual(zi.get_source(TESTPACK2), None)
             self.assertEqual(zi.get_source(mod_path), None)
             self.assertEqual(zi.get_filename(mod_path), mod.__file__)
-            # To pass in the module name instead of the path, we must use the right importer
+            # To pass in the module name instead of the path, we must use the
+            # right importer
             loader = mod.__loader__
             self.assertEqual(loader.get_source(mod_name), None)
             self.assertEqual(loader.get_filename(mod_name), mod.__file__)
@@ -313,7 +328,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # stuff at the beginning of the file
         files = {TESTMOD + ".py": (NOW, test_src)}
         self.doTest(".py", files, TESTMOD,
-                    stuff="Some Stuff"*31)
+                    stuff="Some Stuff" * 31)
 
     def assertModuleSource(self, module):
         self.assertEqual(inspect.getsource(module), test_src)
@@ -343,7 +358,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             )
         finally:
             doctest.master = old_master
-        self.assertEqual(log,[True])
+        self.assertEqual(log, [True])
 
     def testDoctestFile(self):
         self.runDoctest(self.doDoctestFile)
@@ -354,7 +369,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             'xyz.txt', package=module, module_relative=True,
             globs=locals()
         ).run()
-        self.assertEqual(log,[True])
+        self.assertEqual(log, [True])
 
     def testDoctestSuite(self):
         self.runDoctest(self.doDoctestSuite)
@@ -362,13 +377,13 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     def doTraceback(self, module):
         try:
             module.do_raise()
-        except:
+        except BaseException:
             tb = sys.exc_info()[2].tb_next
 
-            f,lno,n,line = extract_tb(tb, 1)[0]
+            f, lno, n, line = extract_tb(tb, 1)[0]
             self.assertEqual(line, raise_src.strip())
 
-            f,lno,n,line = extract_stack(tb.tb_frame, 1)[0]
+            f, lno, n, line = extract_stack(tb.tb_frame, 1)[0]
             self.assertEqual(line, raise_src.strip())
 
             s = StringIO.StringIO()
@@ -419,7 +434,7 @@ class BadFileZipImportTestCase(unittest.TestCase):
         finally:
             # If we leave "the read-only bit" set on Windows, nothing can
             # delete TESTMOD, and later tests suffer bogus failures.
-            os.chmod(TESTMOD, 0666)
+            os.chmod(TESTMOD, 0o666)
             test_support.unlink(TESTMOD)
 
     def testNotZipFile(self):
@@ -461,12 +476,13 @@ class BadFileZipImportTestCase(unittest.TestCase):
 def test_main():
     try:
         test_support.run_unittest(
-              UncompressedZipImportTestCase,
-              CompressedZipImportTestCase,
-              BadFileZipImportTestCase,
-            )
+            UncompressedZipImportTestCase,
+            CompressedZipImportTestCase,
+            BadFileZipImportTestCase,
+        )
     finally:
         test_support.unlink(TESTMOD)
+
 
 if __name__ == "__main__":
     test_main()

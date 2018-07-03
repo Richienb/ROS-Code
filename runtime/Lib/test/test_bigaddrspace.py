@@ -30,15 +30,16 @@ class StrTest(unittest.TestCase):
             self.fail("should have raised OverflowError")
         self.assertEqual(len(x), MAX_Py_ssize_t)
 
-    ### the following test is pending a patch
+    # the following test is pending a patch
     #   (http://mail.python.org/pipermail/python-dev/2006-July/067774.html)
-    #@bigaddrspacetest
-    #def test_repeat(self):
+    # @bigaddrspacetest
+    # def test_repeat(self):
     #    self.assertRaises(OverflowError, operator.mul, 'x', MAX_Py_ssize_t + 1)
 
 
 def test_main():
     test_support.run_unittest(StrTest)
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

@@ -11,7 +11,8 @@ sharedlibs = [
     ('/lib/libc.so.6', 'getpid'),
     ('/usr/bin/cygwin1.dll', 'getpid'),
     ('/usr/lib/libc.dylib', 'getpid'),
-    ]
+]
+
 
 def test_main():
     for s, func in sharedlibs:
@@ -19,7 +20,7 @@ def test_main():
             if verbose:
                 print 'trying to open:', s,
             l = dl.open(s)
-        except dl.error, err:
+        except dl.error as err:
             if verbose:
                 print 'failed', repr(str(err))
             pass

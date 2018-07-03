@@ -18,6 +18,7 @@ from test import test_support
 if sys.flags.optimize >= 2:
     raise unittest.SkipTest("Cannot test docstrings with -O2")
 
+
 class C(object):
     u"""Class C.
 
@@ -108,6 +109,7 @@ class C(object):
         """
         return val
 
+
 def test_main():
     from test import test_doctest2
     EXPECTED = 19
@@ -115,6 +117,7 @@ def test_main():
     if t != EXPECTED:
         raise test_support.TestFailed("expected %d tests to run, not %d" %
                                       (EXPECTED, t))
+
 
 # Pollute the namespace with a bunch of imported functions and classes,
 # to make sure they don't get tested.

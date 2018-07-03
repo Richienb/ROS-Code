@@ -6,6 +6,7 @@ type without holding a strong reference to it.  Probably works with
 super.__getattribute__() too, which uses the same kind of code.
 """
 
+
 class MyKey(object):
     def __hash__(self):
         return hash('mykey')
@@ -24,8 +25,10 @@ class MyKey(object):
 class Base(object):
     mykey = 'from Base'
 
+
 class Base2(object):
     mykey = 'from Base2'
+
 
 # you can't add a non-string key to X.__dict__, but it can be
 # there from the beginning :-)

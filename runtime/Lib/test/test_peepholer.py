@@ -3,6 +3,7 @@ import sys
 from cStringIO import StringIO
 import unittest
 
+
 def disassemble(func):
     f = StringIO()
     tmp = sys.stdout
@@ -13,8 +14,10 @@ def disassemble(func):
     f.close()
     return result
 
+
 def dis_single(line):
     return disassemble(compile(line, '', 'single'))
+
 
 class TestTranforms(unittest.TestCase):
 
@@ -34,7 +37,7 @@ class TestTranforms(unittest.TestCase):
             ('not a in b', '(not in)',),
             ('not a is not b', '(is)',),
             ('not a not in b', '(in)',),
-            ):
+        ):
             asm = dis_single(line)
             self.assertIn(elem, asm)
 
@@ -48,6 +51,7 @@ class TestTranforms(unittest.TestCase):
             self.assertNotIn(elem, asm)
         for elem in ('LOAD_CONST', '(None)'):
             self.assertIn(elem, asm)
+
         def f():
             'Adding a docstring made this test fail in Py2.5.0'
             return None
@@ -57,7 +61,7 @@ class TestTranforms(unittest.TestCase):
     def test_while_one(self):
         # Skip over:  LOAD_CONST trueconst  POP_JUMP_IF_FALSE xx
         def f():
-            while 1:
+            while True:
                 pass
             return list
         asm = disassemble(f)
@@ -71,7 +75,7 @@ class TestTranforms(unittest.TestCase):
             ('a, = a,', 'LOAD_CONST',),
             ('a, b = a, b', 'ROT_TWO',),
             ('a, b, c = a, b, c', 'ROT_THREE',),
-            ):
+        ):
             asm = dis_single(line)
             self.assertIn(elem, asm)
             self.assertNotIn('BUILD_TUPLE', asm)
@@ -84,7 +88,7 @@ class TestTranforms(unittest.TestCase):
             ('a,b,c = 1,2,3', '((1, 2, 3))'),
             ('(None, 1, None)', '((None, 1, None))'),
             ('((1, 2), 3, 4)', '(((1, 2), 3, 4))'),
-            ):
+        ):
             asm = dis_single(line)
             self.assertIn(elem, asm)
             self.assertNotIn('BUILD_TUPLE', asm)
@@ -123,7 +127,7 @@ class TestTranforms(unittest.TestCase):
             ('a = 13 & 7', '(5)'),                  # binary and
             ('a = 13 ^ 7', '(10)'),                 # binary xor
             ('a = 13 | 7', '(15)'),                 # binary or
-            ):
+        ):
             asm = dis_single(line)
             self.assertIn(elem, asm, asm)
             self.assertNotIn('BINARY_', asm)
@@ -154,7 +158,6 @@ class TestTranforms(unittest.TestCase):
         self.assertIn('BINARY_SUBSCR', asm)
         asm = dis_single('u"\U00012345abcdef"[3]')
         self.assertIn('BINARY_SUBSCR', asm)
-
 
     def test_folding_of_unaryops_on_constants(self):
         for line, elem in (
@@ -196,12 +199,15 @@ class TestTranforms(unittest.TestCase):
     def test_elim_jump_after_return1(self):
         # Eliminate dead code: jumps immediately after returns can't be reached
         def f(cond1, cond2):
-            if cond1: return 1
-            if cond2: return 2
-            while 1:
+            if cond1:
+                return 1
+            if cond2:
+                return 2
+            while True:
                 return 3
-            while 1:
-                if cond1: return 4
+            while True:
+                if cond1:
+                    return 4
                 return 5
             return 6
         asm = disassemble(f)
@@ -212,8 +218,9 @@ class TestTranforms(unittest.TestCase):
     def test_elim_jump_after_return2(self):
         # Eliminate dead code: jumps immediately after returns can't be reached
         def f(cond1, cond2):
-            while 1:
-                if cond1: return 4
+            while True:
+                if cond1:
+                    return 4
         asm = disassemble(f)
         self.assertNotIn('JUMP_FORWARD', asm)
         # There should be one jump for the while loop.
@@ -239,6 +246,7 @@ def test_main(verbose=None):
                 gc.collect()
                 counts[i] = sys.gettotalrefcount()
             print counts
+
 
 if __name__ == "__main__":
     test_main(verbose=True)

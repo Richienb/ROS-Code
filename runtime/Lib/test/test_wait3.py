@@ -17,6 +17,7 @@ try:
 except AttributeError:
     raise unittest.SkipTest, "os.wait3 not defined -- skipping test_wait3"
 
+
 class Wait3Test(ForkWait):
     def wait_impl(self, cpid):
         for i in range(10):
@@ -28,12 +29,16 @@ class Wait3Test(ForkWait):
             time.sleep(1.0)
 
         self.assertEqual(spid, cpid)
-        self.assertEqual(status, 0, "cause = %d, exit = %d" % (status&0xff, status>>8))
+        self.assertEqual(
+            status, 0, "cause = %d, exit = %d" %
+            (status & 0xff, status >> 8))
         self.assertTrue(rusage)
+
 
 def test_main():
     run_unittest(Wait3Test)
     reap_children()
+
 
 if __name__ == "__main__":
     test_main()

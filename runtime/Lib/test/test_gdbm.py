@@ -6,6 +6,7 @@ gdbm = import_module('gdbm')
 
 filename = TESTFN
 
+
 class TestGdbm(unittest.TestCase):
 
     def setUp(self):
@@ -23,7 +24,7 @@ class TestGdbm(unittest.TestCase):
         self.g['12345678910'] = '019237410982340912840198242'
         key_set = set(self.g.keys())
         self.assertEqual(key_set, frozenset(['a', '12345678910']))
-        self.assertTrue(self.g.has_key('a'))
+        self.assertTrue('a' in self.g)
         key = self.g.firstkey()
         while key:
             self.assertIn(key, key_set)
@@ -40,7 +41,9 @@ class TestGdbm(unittest.TestCase):
         self.g.close()
         self.assertRaises(gdbm.error, lambda: self.g['a'])
         # try pass an invalid open flag
-        self.assertRaises(gdbm.error, lambda: gdbm.open(filename, 'rx').close())
+        self.assertRaises(
+            gdbm.error, lambda: gdbm.open(
+                filename, 'rx').close())
 
     def test_flags(self):
         # Test the flag parameter open() by trying all supported flag modes.
@@ -77,6 +80,7 @@ class TestGdbm(unittest.TestCase):
 
 def test_main():
     run_unittest(TestGdbm)
+
 
 if __name__ == '__main__':
     test_main()

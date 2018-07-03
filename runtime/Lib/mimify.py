@@ -31,18 +31,23 @@ import re
 
 import warnings
 warnings.warn("the mimify module is deprecated; use the email package instead",
-                DeprecationWarning, 2)
+              DeprecationWarning, 2)
 
-__all__ = ["mimify","unmimify","mime_encode_header","mime_decode_header"]
+__all__ = ["mimify", "unmimify", "mime_encode_header", "mime_decode_header"]
 
 qp = re.compile('^content-transfer-encoding:\\s*quoted-printable', re.I)
 base64_re = re.compile('^content-transfer-encoding:\\s*base64', re.I)
-mp = re.compile('^content-type:.*multipart/.*boundary="?([^;"\n]*)', re.I|re.S)
-chrset = re.compile('^(content-type:.*charset=")(us-ascii|iso-8859-[0-9]+)(".*)', re.I|re.S)
+mp = re.compile(
+    '^content-type:.*multipart/.*boundary="?([^;"\n]*)',
+    re.I | re.S)
+chrset = re.compile(
+    '^(content-type:.*charset=")(us-ascii|iso-8859-[0-9]+)(".*)',
+    re.I | re.S)
 he = re.compile('^-*\n')
 mime_code = re.compile('=([0-9a-f][0-9a-f])', re.I)
 mime_head = re.compile('=\\?iso-8859-1\\?q\\?([^? \t\n]+)\\?=', re.I)
 repl = re.compile('^subject:\\s+re: ', re.I)
+
 
 class File:
     """A simple fake file object that knows about limited read-ahead and
@@ -68,6 +73,7 @@ class File:
                 return ''
         return line
 
+
 class HeaderFile:
     def __init__(self, file):
         self.file = file
@@ -83,7 +89,7 @@ class HeaderFile:
             return line
         if he.match(line):
             return line
-        while 1:
+        while True:
             self.peek = self.file.readline()
             if len(self.peek) == 0 or \
                (self.peek[0] != ' ' and self.peek[0] != '\t'):
@@ -91,24 +97,26 @@ class HeaderFile:
             line = line + self.peek
             self.peek = None
 
+
 def mime_decode(line):
     """Decode a single line of quoted-printable text to 8bit."""
     newline = ''
     pos = 0
-    while 1:
+    while True:
         res = mime_code.search(line, pos)
         if res is None:
             break
         newline = newline + line[pos:res.start(0)] + \
-                  chr(int(res.group(1), 16))
+            chr(int(res.group(1), 16))
         pos = res.end(0)
     return newline + line[pos:]
+
 
 def mime_decode_header(line):
     """Decode a header line to 8bit."""
     newline = ''
     pos = 0
-    while 1:
+    while True:
         res = mime_head.search(line, pos)
         if res is None:
             break
@@ -119,7 +127,8 @@ def mime_decode_header(line):
         pos = res.end(0)
     return newline + line[pos:]
 
-def unmimify_part(ifile, ofile, decode_base64 = 0):
+
+def unmimify_part(ifile, ofile, decode_base64=0):
     """Convert a quoted-printable part of a MIME mail message to 8bit."""
     multipart = None
     quoted_printable = 0
@@ -132,7 +141,7 @@ def unmimify_part(ifile, ofile, decode_base64 = 0):
 
     # read header
     hfile = HeaderFile(ifile)
-    while 1:
+    while True:
         line = hfile.readline()
         if not line:
             return
@@ -161,7 +170,7 @@ def unmimify_part(ifile, ofile, decode_base64 = 0):
         is_repl = 0
 
     # read body
-    while 1:
+    while True:
         line = ifile.readline()
         if not line:
             return
@@ -171,7 +180,7 @@ def unmimify_part(ifile, ofile, decode_base64 = 0):
             pref = prefix
         else:
             pref = ''
-##              if is_repl and len(line) >= 4 and line[:4] == QUOTE+'--' and line[-3:] != '--\n':
+# if is_repl and len(line) >= 4 and line[:4] == QUOTE+'--' and line[-3:] != '--\n':
 ##                      multipart = line[:-1]
         while multipart:
             if line == multipart + '--\n':
@@ -204,17 +213,18 @@ def unmimify_part(ifile, ofile, decode_base64 = 0):
         if line:
             ofile.write(pref + line)
 
-def unmimify(infile, outfile, decode_base64 = 0):
+
+def unmimify(infile, outfile, decode_base64=0):
     """Convert quoted-printable parts of a MIME mail message to 8bit."""
-    if type(infile) == type(''):
+    if isinstance(infile, type('')):
         ifile = open(infile)
-        if type(outfile) == type('') and infile == outfile:
+        if isinstance(outfile, type('')) and infile == outfile:
             import os
             d, f = os.path.split(infile)
             os.rename(infile, os.path.join(d, ',' + f))
     else:
         ifile = infile
-    if type(outfile) == type(''):
+    if isinstance(outfile, type('')):
         ofile = open(outfile, 'w')
     else:
         ofile = outfile
@@ -222,8 +232,10 @@ def unmimify(infile, outfile, decode_base64 = 0):
     unmimify_part(nifile, ofile, decode_base64)
     ofile.flush()
 
-mime_char = re.compile('[=\177-\377]') # quote these chars in body
-mime_header_char = re.compile('[=?\177-\377]') # quote these in header
+
+mime_char = re.compile('[=\177-\377]')  # quote these chars in body
+mime_header_char = re.compile('[=?\177-\377]')  # quote these in header
+
 
 def mime_encode(line, header):
     """Code a single line as quoted-printable.
@@ -238,32 +250,35 @@ def mime_encode(line, header):
         # quote 'From ' at the start of a line for stupid mailers
         newline = ('=%02x' % ord('F')).upper()
         pos = 1
-    while 1:
+    while True:
         res = reg.search(line, pos)
         if res is None:
             break
         newline = newline + line[pos:res.start(0)] + \
-                  ('=%02x' % ord(res.group(0))).upper()
+            ('=%02x' % ord(res.group(0))).upper()
         pos = res.end(0)
     line = newline + line[pos:]
 
     newline = ''
     while len(line) >= 75:
         i = 73
-        while line[i] == '=' or line[i-1] == '=':
+        while line[i] == '=' or line[i - 1] == '=':
             i = i - 1
         i = i + 1
         newline = newline + line[:i] + '=\n'
         line = line[i:]
     return newline + line
 
-mime_header = re.compile('([ \t(]|^)([-a-zA-Z0-9_+]*[\177-\377][-a-zA-Z0-9_+\177-\377]*)(?=[ \t)]|\n)')
+
+mime_header = re.compile(
+    '([ \t(]|^)([-a-zA-Z0-9_+]*[\177-\377][-a-zA-Z0-9_+\177-\377]*)(?=[ \t)]|\n)')
+
 
 def mime_encode_header(line):
     """Code a single header line as quoted-printable."""
     newline = ''
     pos = 0
-    while 1:
+    while True:
         res = mime_header.search(line, pos)
         if res is None:
             break
@@ -273,9 +288,11 @@ def mime_encode_header(line):
         pos = res.end(0)
     return newline + line[pos:]
 
+
 mv = re.compile('^mime-version:', re.I)
 cte = re.compile('^content-transfer-encoding:', re.I)
 iso_char = re.compile('[\177-\377]')
+
 
 def mimify_part(ifile, ofile, is_mime):
     """Convert an 8bit part of a MIME mail message to quoted-printable."""
@@ -289,7 +306,7 @@ def mimify_part(ifile, ofile, is_mime):
     message_end = ''
     # read header
     hfile = HeaderFile(ifile)
-    while 1:
+    while True:
         line = hfile.readline()
         if not line:
             break
@@ -312,7 +329,7 @@ def mimify_part(ifile, ofile, is_mime):
         header.append(line)
 
     # read body
-    while 1:
+    while True:
         line = ifile.readline()
         if not line:
             break
@@ -387,7 +404,7 @@ def mimify_part(ifile, ofile, is_mime):
     while multipart:
         if line == multipart + '--\n':
             # read bit after the end of the last part
-            while 1:
+            while True:
                 line = ifile.readline()
                 if not line:
                     return
@@ -404,7 +421,7 @@ def mimify_part(ifile, ofile, is_mime):
             ofile.write(line)
             continue
         # unexpectedly no multipart separator--copy rest of file
-        while 1:
+        while True:
             line = ifile.readline()
             if not line:
                 return
@@ -412,23 +429,25 @@ def mimify_part(ifile, ofile, is_mime):
                 line = mime_encode(line, 0)
             ofile.write(line)
 
+
 def mimify(infile, outfile):
     """Convert 8bit parts of a MIME mail message to quoted-printable."""
-    if type(infile) == type(''):
+    if isinstance(infile, type('')):
         ifile = open(infile)
-        if type(outfile) == type('') and infile == outfile:
+        if isinstance(outfile, type('')) and infile == outfile:
             import os
             d, f = os.path.split(infile)
             os.rename(infile, os.path.join(d, ',' + f))
     else:
         ifile = infile
-    if type(outfile) == type(''):
+    if isinstance(outfile, type('')):
         ofile = open(outfile, 'w')
     else:
         ofile = outfile
     nifile = File(ifile, None)
     mimify_part(nifile, ofile, 0)
     ofile.flush()
+
 
 import sys
 if __name__ == '__main__' or (len(sys.argv) > 0 and sys.argv[0] == 'mimify'):

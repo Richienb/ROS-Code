@@ -1,13 +1,15 @@
 import unittest
 from test import test_support
 
-# xxx - forces a skip in the case we haven't built ctypes_test module in ant (which is not yet a task as of now)
+# xxx - forces a skip in the case we haven't built ctypes_test module in
+# ant (which is not yet a task as of now)
 
 try:
     import _rawffi
     _rawffi.CDLL("ctypes_test")
-except:
+except BaseException:
     raise ImportError
+
 
 class RawFFITestCase(unittest.TestCase):
 
@@ -27,7 +29,7 @@ class RawFFITestCase(unittest.TestCase):
         import _rawffi
         libc = _rawffi.get_libc()
         func = libc.ptr('rand', [], 'i')
-        assert libc.ptr('rand', [], 'i') is func # caching
+        assert libc.ptr('rand', [], 'i') is func  # caching
         assert libc.ptr('rand', [], 'l') is not func
         assert isinstance(func, _rawffi.FuncPtr)
         self.assertRaises(AttributeError, getattr, libc, "xxx")
@@ -44,13 +46,15 @@ class RawFFITestCase(unittest.TestCase):
         res = short_add(arg1, arg2)
         assert res[0] == 3
         # this does not apply to this version of memory allocation
-        #arg1.free()
-        #arg2.free()
+        # arg1.free()
+        # arg2.free()
+
 
 def test_main():
     tests = [RawFFITestCase,
              ]
     test_support.run_unittest(*tests)
+
 
 if __name__ == '__main__':
     test_main()

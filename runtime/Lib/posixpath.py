@@ -25,13 +25,45 @@ except NameError:
     class _unicode(object):
         pass
 
-__all__ = ["normcase","isabs","join","splitdrive","split","splitext",
-           "basename","dirname","commonprefix","getsize","getmtime",
-           "getatime","getctime","islink","exists","lexists","isdir","isfile",
-           "ismount","walk","expanduser","expandvars","normpath","abspath",
-           "samefile","sameopenfile","samestat",
-           "curdir","pardir","sep","pathsep","defpath","altsep","extsep",
-           "devnull","realpath","supports_unicode_filenames","relpath"]
+__all__ = [
+    "normcase",
+    "isabs",
+    "join",
+    "splitdrive",
+    "split",
+    "splitext",
+    "basename",
+    "dirname",
+    "commonprefix",
+    "getsize",
+    "getmtime",
+    "getatime",
+    "getctime",
+    "islink",
+    "exists",
+    "lexists",
+    "isdir",
+    "isfile",
+    "ismount",
+    "walk",
+    "expanduser",
+    "expandvars",
+    "normpath",
+    "abspath",
+    "samefile",
+    "sameopenfile",
+    "samestat",
+    "curdir",
+    "pardir",
+    "sep",
+    "pathsep",
+    "defpath",
+    "altsep",
+    "extsep",
+    "devnull",
+    "realpath",
+    "supports_unicode_filenames",
+    "relpath"]
 
 # strings representing various path-related bits and pieces
 curdir = '.'
@@ -47,6 +79,7 @@ devnull = '/dev/null'
 # On MS-DOS this may also turn slashes into backslashes; however, other
 # normalizations (such as optimizing '../' away) are not allowed
 # (another function should be defined to do that).
+
 
 def normcase(s):
     """Normalize case of pathname.  Has no effect under Posix"""
@@ -75,7 +108,7 @@ def join(a, *p):
         if b.startswith('/'):
             path = b
         elif path == '' or path.endswith('/'):
-            path +=  b
+            path += b
         else:
             path += '/' + b
     return path
@@ -91,7 +124,7 @@ def split(p):
     everything after the final slash.  Either part may be empty."""
     i = p.rfind('/') + 1
     head, tail = p[:i], p[i:]
-    if head and head != '/'*len(head):
+    if head and head != '/' * len(head):
         head = head.rstrip('/')
     return head, tail
 
@@ -103,10 +136,13 @@ def split(p):
 
 def splitext(p):
     return genericpath._splitext(p, sep, altsep, extsep)
+
+
 splitext.__doc__ = genericpath._splitext.__doc__
 
 # Split a pathname into a drive specification and the rest of the
 # path.  Useful on DOS/Windows/NT; on Unix, the drive is always empty.
+
 
 def splitdrive(p):
     """Split a pathname into drive and path. On Posix, drive is always
@@ -128,7 +164,7 @@ def dirname(p):
     """Returns the directory component of a pathname"""
     i = p.rfind('/') + 1
     head = p[:i]
-    if head and head != '/'*len(head):
+    if head and head != '/' * len(head):
         head = head.rstrip('/')
     return head
 
@@ -145,6 +181,7 @@ def islink(path):
     return stat.S_ISLNK(st.st_mode)
 
 # Being true for dangling symbolic links is also useful.
+
 
 def lexists(path):
     """Test whether a path exists.  Returns True for broken symbolic links"""
@@ -180,7 +217,7 @@ def sameopenfile(fp1, fp2):
 def samestat(s1, s2):
     """Test whether two stat buffers reference the same file"""
     return s1.st_ino == s2.st_ino and \
-           s1.st_dev == s2.st_dev
+        s1.st_dev == s2.st_dev
 
 
 # Is a path a mount point?
@@ -195,7 +232,7 @@ def ismount(path):
         s1 = os.lstat(path)
         s2 = os.lstat(join(path, '..'))
     except os.error:
-        return False # It doesn't exist -- so not a mount point :-)
+        return False  # It doesn't exist -- so not a mount point :-)
     dev1 = s1.st_dev
     dev2 = s2.st_dev
     if dev1 != dev2:
@@ -286,6 +323,7 @@ def expanduser(path):
 
 _varprog = None
 
+
 def expandvars(path):
     """Expand shell variables of form $var and ${var}.  Unknown variables
     are left unchanged."""
@@ -328,7 +366,7 @@ def normpath(path):
     # POSIX allows one or two initial slashes, but treats three or more
     # as single slash.
     if (initial_slashes and
-        path.startswith('//') and not path.startswith('///')):
+            path.startswith('//') and not path.startswith('///')):
         initial_slashes = 2
     comps = path.split('/')
     new_comps = []
@@ -336,14 +374,14 @@ def normpath(path):
         if comp in ('', '.'):
             continue
         if (comp != '..' or (not initial_slashes and not new_comps) or
-             (new_comps and new_comps[-1] == '..')):
+                (new_comps and new_comps[-1] == '..')):
             new_comps.append(comp)
         elif new_comps:
             new_comps.pop()
     comps = new_comps
     path = slash.join(comps)
     if initial_slashes:
-        path = slash*initial_slashes + path
+        path = slash * initial_slashes + path
     return path or dot
 
 
@@ -369,6 +407,8 @@ symbolic links encountered in the path."""
 
 # Join two paths, normalizing ang eliminating any symbolic links
 # encountered in the second path.
+
+
 def _joinrealpath(path, rest, seen):
     if isabs(rest):
         rest = rest[1:]
@@ -402,16 +442,17 @@ def _joinrealpath(path, rest, seen):
             # The symlink is not resolved, so we must have a symlink loop.
             # Return already resolved part + rest of the path unchanged.
             return join(newpath, rest), False
-        seen[newpath] = None # not resolved symlink
+        seen[newpath] = None  # not resolved symlink
         path, ok = _joinrealpath(path, os.readlink(newpath), seen)
         if not ok:
             return join(path, rest), False
-        seen[newpath] = path # resolved symlink
+        seen[newpath] = path  # resolved symlink
 
     return path, True
 
 
 supports_unicode_filenames = (sys.platform == 'darwin')
+
 
 def relpath(path, start=curdir):
     """Return a relative version of a path"""
@@ -425,7 +466,7 @@ def relpath(path, start=curdir):
     # Work out how much of the filepath is shared by start and path.
     i = len(commonprefix([start_list, path_list]))
 
-    rel_list = [pardir] * (len(start_list)-i) + path_list[i:]
+    rel_list = [pardir] * (len(start_list) - i) + path_list[i:]
     if not rel_list:
         return curdir
     return join(*rel_list)

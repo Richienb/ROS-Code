@@ -87,17 +87,18 @@ class HotShotTestCase(unittest.TestCase):
         def f():
             y = 2
             x = 1
+
         def g():
             f()
         f_lineno = f.func_code.co_firstlineno
         g_lineno = g.func_code.co_firstlineno
         events = [(ENTER, ("test_hotshot", g_lineno, "g")),
-                  (LINE,  ("test_hotshot", g_lineno+1, "g")),
+                  (LINE, ("test_hotshot", g_lineno + 1, "g")),
                   (ENTER, ("test_hotshot", f_lineno, "f")),
-                  (LINE,  ("test_hotshot", f_lineno+1, "f")),
-                  (LINE,  ("test_hotshot", f_lineno+2, "f")),
-                  (EXIT,  ("test_hotshot", f_lineno, "f")),
-                  (EXIT,  ("test_hotshot", g_lineno, "g")),
+                  (LINE, ("test_hotshot", f_lineno + 1, "f")),
+                  (LINE, ("test_hotshot", f_lineno + 2, "f")),
+                  (EXIT, ("test_hotshot", f_lineno, "f")),
+                  (EXIT, ("test_hotshot", g_lineno, "g")),
                   ]
         self.run_test(g, events, self.new_profiler(lineevents=1))
 

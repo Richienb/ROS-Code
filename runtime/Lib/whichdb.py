@@ -14,6 +14,7 @@ except ImportError:
     # dbm test
     _dbmerror = IOError
 
+
 def whichdb(filename):
     """Guess which db package to use to open a db file.
 
@@ -111,6 +112,7 @@ def whichdb(filename):
 
     # Unknown
     return ""
+
 
 if __name__ == "__main__":
     for filename in sys.argv[1:]:

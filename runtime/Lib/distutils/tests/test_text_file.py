@@ -12,6 +12,7 @@ line 3 \\
   continues on next line
 """
 
+
 class TextFileTestCase(support.TempdirManager, unittest.TestCase):
 
     def test_class(self):
@@ -100,8 +101,10 @@ class TextFileTestCase(support.TempdirManager, unittest.TestCase):
         finally:
             in_file.close()
 
+
 def test_suite():
     return unittest.makeSuite(TextFileTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

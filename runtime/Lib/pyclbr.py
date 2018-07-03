@@ -50,8 +50,11 @@ __all__ = ["readmodule", "readmodule_ex", "Class", "Function"]
 _modules = {}                           # cache of modules we've seen
 
 # each Python class is represented by an instance of this class
+
+
 class Class:
     '''Class to represent a Python class.'''
+
     def __init__(self, module, name, super, file, lineno):
         self.module = module
         self.name = name
@@ -65,13 +68,16 @@ class Class:
     def _addmethod(self, name, lineno):
         self.methods[name] = lineno
 
+
 class Function:
     '''Class to represent a top-level Python function'''
+
     def __init__(self, module, name, file, lineno):
         self.module = module
         self.name = name
         self.file = file
         self.lineno = lineno
+
 
 def readmodule(module, path=None):
     '''Backwards compatible interface.
@@ -85,6 +91,7 @@ def readmodule(module, path=None):
             res[key] = value
     return res
 
+
 def readmodule_ex(module, path=None):
     '''Read a module file and return a dictionary of classes.
 
@@ -93,6 +100,7 @@ def readmodule_ex(module, path=None):
     found in the module.
     '''
     return _readmodule(module, path or [])
+
 
 def _readmodule(module, path, inpackage=None):
     '''Do the hard work for readmodule[_ex].
@@ -124,11 +132,11 @@ def _readmodule(module, path, inpackage=None):
     i = module.rfind('.')
     if i >= 0:
         package = module[:i]
-        submodule = module[i+1:]
+        submodule = module[i + 1:]
         parent = _readmodule(package, path, inpackage)
         if inpackage is not None:
             package = "%s.%s" % (inpackage, package)
-        if not '__path__' in parent:
+        if '__path__' not in parent:
             raise ImportError('No package named {}'.format(package))
         return _readmodule(submodule, parent['__path__'], package)
 
@@ -148,7 +156,7 @@ def _readmodule(module, path, inpackage=None):
         f.close()
         return dict
 
-    stack = [] # stack of (class, indent) pairs
+    stack = []  # stack of (class, indent) pairs
 
     g = tokenize.generate_tokens(f.readline)
     try:
@@ -165,7 +173,7 @@ def _readmodule(module, path, inpackage=None):
                     del stack[-1]
                 tokentype, meth_name, start = g.next()[0:3]
                 if tokentype != NAME:
-                    continue # Syntax error
+                    continue  # Syntax error
                 if stack:
                     cur_class = stack[-1][0]
                     if isinstance(cur_class, Class):
@@ -176,7 +184,7 @@ def _readmodule(module, path, inpackage=None):
                     # it's a function
                     dict[meth_name] = Function(fullmodule, meth_name,
                                                fname, lineno)
-                stack.append((None, thisindent)) # Marker for nested fns
+                stack.append((None, thisindent))  # Marker for nested fns
             elif token == 'class':
                 lineno, thisindent = start
                 # close previous nested classes and defs
@@ -184,15 +192,15 @@ def _readmodule(module, path, inpackage=None):
                     del stack[-1]
                 tokentype, class_name, start = g.next()[0:3]
                 if tokentype != NAME:
-                    continue # Syntax error
+                    continue  # Syntax error
                 # parse what follows the class name
                 tokentype, token, start = g.next()[0:3]
                 inherit = None
                 if token == '(':
-                    names = [] # List of superclasses
+                    names = []  # List of superclasses
                     # there's a list of superclasses
                     level = 1
-                    super = [] # Tokens making up current superclass
+                    super = []  # Tokens making up current superclass
                     while True:
                         tokentype, token, start = g.next()[0:3]
                         if token in (')', ',') and level == 1:
@@ -244,7 +252,7 @@ def _readmodule(module, path, inpackage=None):
                                 _readmodule(mod, path, inpackage)
                             except ImportError:
                                 _readmodule(mod, [])
-                    except:
+                    except BaseException:
                         # If we can't find or parse the imported module,
                         # too bad -- don't die here.
                         pass
@@ -256,7 +264,7 @@ def _readmodule(module, path, inpackage=None):
                 try:
                     # Recursively read the imported module
                     d = _readmodule(mod, path, inpackage)
-                except:
+                except BaseException:
                     # If we can't find or parse the imported module,
                     # too bad -- don't die here.
                     continue
@@ -275,6 +283,7 @@ def _readmodule(module, path, inpackage=None):
 
     f.close()
     return dict
+
 
 def _getnamelist(g):
     # Helper to get a comma-separated list of dotted names plus 'as'
@@ -296,6 +305,7 @@ def _getnamelist(g):
             break
     return names
 
+
 def _getname(g):
     # Helper to get a dotted name, return a pair (name, token) where
     # name is the dotted name, or None if there was no dotted name,
@@ -314,6 +324,7 @@ def _getname(g):
             break
         parts.append(token)
     return (".".join(parts), token)
+
 
 def _main():
     # Main program for testing.
@@ -339,6 +350,7 @@ def _main():
                     print "  def", name, lineno
         elif isinstance(obj, Function):
             print "def", obj.name, obj.lineno
+
 
 if __name__ == "__main__":
     _main()

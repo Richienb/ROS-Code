@@ -9,7 +9,7 @@ class StrTest(
     string_tests.MixinStrUnicodeUserStringTest,
     string_tests.MixinStrUserStringTest,
     string_tests.MixinStrUnicodeTest,
-    ):
+):
 
     type2test = str
 
@@ -20,7 +20,7 @@ class StrTest(
     def test_basic_creation(self):
         self.assertEqual(str(''), '')
         self.assertEqual(str(0), '0')
-        self.assertEqual(str(0L), '0')
+        self.assertEqual(str(0), '0')
         self.assertEqual(str(()), '()')
         self.assertEqual(str([]), '[]')
         self.assertEqual(str({}), '{}')
@@ -71,22 +71,26 @@ class StrTest(
         class Foo7(unicode):
             def __str__(self):
                 return "foos"
+
             def __unicode__(self):
                 return u"foou"
 
         class Foo8(str):
             def __new__(cls, content=""):
-                return str.__new__(cls, 2*content)
+                return str.__new__(cls, 2 * content)
+
             def __str__(self):
                 return self
 
         class Foo9(str):
             def __str__(self):
                 return "string"
+
             def __unicode__(self):
                 return "not unicode"
 
-        self.assertTrue(str(Foo0()).startswith("<")) # this is different from __unicode__
+        # this is different from __unicode__
+        self.assertTrue(str(Foo0()).startswith("<"))
         self.assertEqual(str(Foo1()), "foo")
         self.assertEqual(str(Foo2()), "foo")
         self.assertEqual(str(Foo3()), "foo")
@@ -102,9 +106,9 @@ class StrTest(
         # This test only affects 32-bit platforms because expandtabs can only take
         # an int as the max value, not a 64-bit C long.  If expandtabs is changed
         # to take a 64-bit long, this test should apply to all platforms.
-        if sys.maxint > (1 << 32) or struct.calcsize('P') != 4:
+        if sys.maxsize > (1 << 32) or struct.calcsize('P') != 4:
             return
-        self.assertRaises(OverflowError, 't\tt\t'.expandtabs, sys.maxint)
+        self.assertRaises(OverflowError, 't\tt\t'.expandtabs, sys.maxsize)
 
     def test__format__(self):
         def test(value, format, expected):
@@ -164,12 +168,14 @@ class StrTest(
         class C:
             def __init__(self, x=100):
                 self._x = x
+
             def __format__(self, spec):
                 return spec
 
         class D:
             def __init__(self, x):
                 self.x = x
+
             def __format__(self, spec):
                 return str(self.x)
 
@@ -177,6 +183,7 @@ class StrTest(
         class E:
             def __init__(self, x):
                 self.x = x
+
             def __str__(self):
                 return 'E(' + self.x + ')'
 
@@ -184,6 +191,7 @@ class StrTest(
         class F:
             def __init__(self, x):
                 self.x = x
+
             def __repr__(self):
                 return 'F(' + self.x + ')'
 
@@ -191,8 +199,10 @@ class StrTest(
         class G:
             def __init__(self, x):
                 self.x = x
+
             def __str__(self):
                 return "string is " + self.x
+
             def __format__(self, format_spec):
                 if format_spec == 'd':
                     return 'G(' + self.x + ')'
@@ -210,7 +220,6 @@ class StrTest(
         class J(int):
             def __format__(self, format_spec):
                 return int.__format__(self * 2, format_spec)
-
 
         self.assertEqual(''.format(), '')
         self.assertEqual('abc'.format(), 'abc')
@@ -236,9 +245,9 @@ class StrTest(
         self.assertEqual('}}x{{'.format(), '}x{')
 
         # weird field names
-        self.assertEqual("{0[foo-bar]}".format({'foo-bar':'baz'}), 'baz')
-        self.assertEqual("{0[foo bar]}".format({'foo bar':'baz'}), 'baz')
-        self.assertEqual("{0[ ]}".format({' ':3}), '3')
+        self.assertEqual("{0[foo-bar]}".format({'foo-bar': 'baz'}), 'baz')
+        self.assertEqual("{0[foo bar]}".format({'foo bar': 'baz'}), 'baz')
+        self.assertEqual("{0[ ]}".format({' ': 3}), '3')
 
         self.assertEqual('{foo._x}'.format(foo=C(20)), '20')
         self.assertEqual('{1}{0}'.format(D(10), D(20)), '2010')
@@ -299,7 +308,7 @@ class StrTest(
             self.assertEqual('{0:^10s}'.format(E('data')), ' E(data)  ')
             self.assertEqual('{0:>15s}'.format(G('data')), ' string is data')
 
-        #FIXME: not supported in Jython yet:
+        # FIXME: not supported in Jython yet:
         if not test_support.is_jython:
             self.assertEqual("{0:date: %Y-%m-%d}".format(I(year=2007,
                                                            month=8,
@@ -309,16 +318,29 @@ class StrTest(
             # test deriving from a builtin type and overriding __format__
             self.assertEqual("{0}".format(J(10)), "20")
 
-
         # string format specifiers
         self.assertEqual('{0:}'.format('a'), 'a')
 
         # computed format specifiers
         self.assertEqual("{0:.{1}}".format('hello world', 5), 'hello')
         self.assertEqual("{0:.{1}s}".format('hello world', 5), 'hello')
-        self.assertEqual("{0:.{precision}s}".format('hello world', precision=5), 'hello')
-        self.assertEqual("{0:{width}.{precision}s}".format('hello world', width=10, precision=5), 'hello     ')
-        self.assertEqual("{0:{width}.{precision}s}".format('hello world', width='10', precision='5'), 'hello     ')
+        self.assertEqual(
+            "{0:.{precision}s}".format(
+                'hello world',
+                precision=5),
+            'hello')
+        self.assertEqual(
+            "{0:{width}.{precision}s}".format(
+                'hello world',
+                width=10,
+                precision=5),
+            'hello     ')
+        self.assertEqual(
+            "{0:{width}.{precision}s}".format(
+                'hello world',
+                width='10',
+                precision='5'),
+            'hello     ')
 
         # test various errors
         self.assertRaises(ValueError, '{'.format)
@@ -329,7 +351,7 @@ class StrTest(
         self.assertRaises(ValueError, '}a'.format)
         self.assertRaises(IndexError, '{0}'.format)
         self.assertRaises(IndexError, '{1}'.format, 'abc')
-        self.assertRaises(KeyError,   '{x}'.format)
+        self.assertRaises(KeyError, '{x}'.format)
         self.assertRaises(ValueError, "}{".format)
         self.assertRaises(ValueError, "{".format)
         self.assertRaises(ValueError, "}".format)
@@ -339,15 +361,15 @@ class StrTest(
         self.assertRaises(ValueError, "{0.}".format, 0)
         self.assertRaises(IndexError, "{0[}".format)
         self.assertRaises(ValueError, "{0[}".format, [])
-        self.assertRaises(KeyError,   "{0]}".format)
+        self.assertRaises(KeyError, "{0]}".format)
         self.assertRaises(ValueError, "{0.[]}".format, 0)
         self.assertRaises(ValueError, "{0..foo}".format, 0)
         self.assertRaises(ValueError, "{0[0}".format, 0)
         self.assertRaises(ValueError, "{0[0:foo}".format, 0)
-        self.assertRaises(KeyError,   "{c]}".format)
+        self.assertRaises(KeyError, "{c]}".format)
         self.assertRaises(ValueError, "{{ {{{0}}".format, 0)
         self.assertRaises(ValueError, "{0}}".format, 0)
-        self.assertRaises(KeyError,   "{foo}".format, bar=3)
+        self.assertRaises(KeyError, "{foo}".format, bar=3)
         self.assertRaises(ValueError, "{0!x}".format, 3)
         self.assertRaises(ValueError, "{0!}".format, 0)
         self.assertRaises(ValueError, "{0!rs}".format, 0)
@@ -377,6 +399,7 @@ class StrTest(
         class C:
             def __init__(self, x=100):
                 self._x = x
+
             def __format__(self, spec):
                 return spec
 
@@ -385,7 +408,7 @@ class StrTest(
         self.assertEqual('{!r}'.format('s'), "'s'")
         self.assertEqual('{._x}'.format(C(10)), '10')
         self.assertEqual('{[1]}'.format([1, 2]), '2')
-        self.assertEqual('{[a]}'.format({'a':4, 'b':2}), '4')
+        self.assertEqual('{[a]}'.format({'a': 4, 'b': 2}), '4')
         self.assertEqual('a{}b{}c'.format(0, 1), 'a0b1c')
 
         self.assertEqual('a{:{}}b'.format('x', '^10'), 'a    x     b')
@@ -413,10 +436,12 @@ class StrTest(
                          'abcde'.encode(encoding='ascii', errors='ignore'))
         self.assertEqual('Andr\202 x'.decode('ascii', 'ignore'),
                          'Andr\202 x'.decode('ascii', errors='ignore'))
-        self.assertEqual('Andr\202 x'.decode('ascii', 'replace'),
-                         'Andr\202 x'.decode(encoding='ascii', errors='replace'))
+        self.assertEqual(
+            'Andr\202 x'.decode(
+                'ascii', 'replace'), 'Andr\202 x'.decode(
+                encoding='ascii', errors='replace'))
 
-    #FIXME: not working in Jython.
+    # FIXME: not working in Jython.
     if not test_support.is_jython:
         def test_startswith_endswith_errors(self):
             with self.assertRaises(UnicodeDecodeError):
@@ -431,8 +456,10 @@ class StrTest(
                 self.assertIn('str', exc)
                 self.assertIn('tuple', exc)
 
+
 def test_main():
     test_support.run_unittest(StrTest)
+
 
 if __name__ == "__main__":
     test_main()

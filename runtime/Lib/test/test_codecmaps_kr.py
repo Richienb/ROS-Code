@@ -8,6 +8,7 @@ from test import test_support
 from test import test_multibytecodec_support
 import unittest
 
+
 class TestCP949Map(test_multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'cp949'
@@ -37,8 +38,10 @@ class TestJOHABMap(test_multibytecodec_support.TestBase_Mapping,
     pass_enctest = [('\\', u'\u20a9')]
     pass_dectest = [('\\', u'\u20a9')]
 
+
 def test_main():
     test_support.run_unittest(__name__)
+
 
 if __name__ == "__main__":
     test_main()

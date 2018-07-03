@@ -6,6 +6,7 @@ from test import test_support
 # function, which can't be verified from Python.  If the METH_XXX decl
 # for a C function changes, these tests may not cover the right paths.
 
+
 class CFunctionCalls(unittest.TestCase):
 
     def test_varargs0(self):
@@ -13,25 +14,25 @@ class CFunctionCalls(unittest.TestCase):
 
     def test_varargs1(self):
         with test_support.check_py3k_warnings():
-            {}.has_key(0)
+            0 in {}
 
     def test_varargs2(self):
         self.assertRaises(TypeError, {}.has_key, 0, 1)
 
     def test_varargs0_ext(self):
         try:
-            {}.has_key(*())
+            *() in {}
         except TypeError:
             pass
 
     def test_varargs1_ext(self):
         with test_support.check_py3k_warnings():
-            {}.has_key(*(0,))
+            *(0,) in {}
 
     def test_varargs2_ext(self):
         try:
             with test_support.check_py3k_warnings():
-                {}.has_key(*(1, 2))
+                *(1, 2) in {}
         except TypeError:
             pass
         else:

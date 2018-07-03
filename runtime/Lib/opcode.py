@@ -9,7 +9,7 @@ __all__ = ["cmp_op", "hasconst", "hasname", "hasjrel", "hasjabs",
            "HAVE_ARGUMENT", "EXTENDED_ARG"]
 
 cmp_op = ('<', '<=', '==', '!=', '>', '>=', 'in', 'not in', 'is',
-        'is not', 'exception match', 'BAD')
+          'is not', 'exception match', 'BAD')
 
 hasconst = []
 hasname = []
@@ -21,20 +21,25 @@ hasfree = []
 
 opmap = {}
 opname = [''] * 256
-for op in range(256): opname[op] = '<%r>' % (op,)
+for op in range(256):
+    opname[op] = '<%r>' % (op,)
 del op
+
 
 def def_op(name, op):
     opname[op] = name
     opmap[name] = op
 
+
 def name_op(name, op):
     def_op(name, op)
     hasname.append(op)
 
+
 def jrel_op(name, op):
     def_op(name, op)
     hasjrel.append(op)
+
 
 def jabs_op(name, op):
     def_op(name, op)
@@ -42,6 +47,7 @@ def jabs_op(name, op):
 
 # Instruction opcodes for compiled code
 # Blank lines correspond to available opcodes
+
 
 def_op('STOP_CODE', 0)
 def_op('POP_TOP', 1)
@@ -146,7 +152,8 @@ hascompare.append(107)
 name_op('IMPORT_NAME', 108)     # Index in name list
 name_op('IMPORT_FROM', 109)     # Index in name list
 jrel_op('JUMP_FORWARD', 110)    # Number of bytes to skip
-jabs_op('JUMP_IF_FALSE_OR_POP', 111) # Target byte offset from beginning of code
+# Target byte offset from beginning of code
+jabs_op('JUMP_IF_FALSE_OR_POP', 111)
 jabs_op('JUMP_IF_TRUE_OR_POP', 112)  # ""
 jabs_op('JUMP_ABSOLUTE', 113)        # ""
 jabs_op('POP_JUMP_IF_FALSE', 114)    # ""

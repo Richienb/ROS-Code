@@ -5,7 +5,9 @@ modules in setup scripts."""
 
 __revision__ = "$Id$"
 
-import os, string, sys
+import os
+import string
+import sys
 from types import *
 
 try:
@@ -22,6 +24,7 @@ except ImportError:
 # Also, putting this in build_ext.py means every setup script would have to
 # import that large-ish module (indirectly, through distutils.core) in
 # order to do anything.
+
 
 class Extension:
     """Just a collection of attributes that describes an extension
@@ -87,26 +90,26 @@ class Extension:
 
     # When adding arguments to this constructor, be sure to update
     # setup_keywords in core.py.
-    def __init__ (self, name, sources,
-                  include_dirs=None,
-                  define_macros=None,
-                  undef_macros=None,
-                  library_dirs=None,
-                  libraries=None,
-                  runtime_library_dirs=None,
-                  extra_objects=None,
-                  extra_compile_args=None,
-                  extra_link_args=None,
-                  export_symbols=None,
-                  swig_opts = None,
-                  depends=None,
-                  language=None,
-                  **kw                      # To catch unknown keywords
+    def __init__(self, name, sources,
+                 include_dirs=None,
+                 define_macros=None,
+                 undef_macros=None,
+                 library_dirs=None,
+                 libraries=None,
+                 runtime_library_dirs=None,
+                 extra_objects=None,
+                 extra_compile_args=None,
+                 extra_link_args=None,
+                 export_symbols=None,
+                 swig_opts=None,
+                 depends=None,
+                 language=None,
+                 **kw                      # To catch unknown keywords
                  ):
-        assert type(name) is StringType, "'name' must be a string"
-        assert (type(sources) is ListType and
-                map(type, sources) == [StringType]*len(sources)), \
-                "'sources' must be a list of strings"
+        assert isinstance(name, StringType), "'name' must be a string"
+        assert (isinstance(sources, ListType) and
+                map(type, sources) == [StringType] * len(sources)), \
+            "'sources' must be a list of strings"
 
         self.name = name
         self.sources = sources
@@ -126,7 +129,8 @@ class Extension:
 
         # If there are unknown keyword options, warn about them
         if len(kw):
-            L = kw.keys() ; L.sort()
+            L = kw.keys()
+            L.sort()
             L = map(repr, L)
             msg = "Unknown Extension options: " + string.join(L, ', ')
             if warnings is not None:
@@ -136,9 +140,9 @@ class Extension:
 # class Extension
 
 
-def read_setup_file (filename):
+def read_setup_file(filename):
     from distutils.sysconfig import \
-         parse_makefile, expand_makefile_vars, _variable_rx
+        parse_makefile, expand_makefile_vars, _variable_rx
     from distutils.text_file import TextFile
     from distutils.util import split_quoted
 
@@ -153,7 +157,7 @@ def read_setup_file (filename):
     try:
         extensions = []
 
-        while 1:
+        while True:
             line = file.readline()
             if line is None:                # eof
                 break
@@ -164,10 +168,10 @@ def read_setup_file (filename):
                     file.warn("'%s' lines not handled yet" % line)
                     continue
 
-            #print "original line: " + line
+            # print "original line: " + line
             line = expand_makefile_vars(line, vars)
             words = split_quoted(line)
-            #print "expanded line: " + line
+            # print "expanded line: " + line
 
             # NB. this parses a slightly different syntax than the old
             # makesetup script: here, there must be exactly one extension per
@@ -186,9 +190,17 @@ def read_setup_file (filename):
                     continue
 
                 suffix = os.path.splitext(word)[1]
-                switch = word[0:2] ; value = word[2:]
+                switch = word[0:2]
+                value = word[2:]
 
-                if suffix in (".c", ".cc", ".cpp", ".cxx", ".c++", ".m", ".mm"):
+                if suffix in (
+                    ".c",
+                    ".cc",
+                    ".cpp",
+                    ".cxx",
+                    ".c++",
+                    ".m",
+                        ".mm"):
                     # hmm, should we do something about C vs. C++ sources?
                     # or leave it up to the CCompiler implementation to
                     # worry about?
@@ -201,7 +213,7 @@ def read_setup_file (filename):
                         ext.define_macros.append((value, None))
                     else:                   # "-DFOO=blah"
                         ext.define_macros.append((value[0:equals],
-                                                  value[equals+2:]))
+                                                  value[equals + 2:]))
                 elif switch == "-U":
                     ext.undef_macros.append(value)
                 elif switch == "-C":        # only here 'cause makesetup has it!
@@ -241,12 +253,12 @@ def read_setup_file (filename):
     finally:
         file.close()
 
-        #print "module:", module
-        #print "source files:", source_files
-        #print "cpp args:", cpp_args
-        #print "lib args:", library_args
+        # print "module:", module
+        # print "source files:", source_files
+        # print "cpp args:", cpp_args
+        # print "lib args:", library_args
 
-        #extensions[module] = { 'sources': source_files,
+        # extensions[module] = { 'sources': source_files,
         #                       'cpp_args': cpp_args,
         #                       'lib_args': library_args }
 

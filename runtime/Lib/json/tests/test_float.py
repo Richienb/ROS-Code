@@ -11,7 +11,7 @@ class TestFloat(object):
             self.assertEqual(self.loads(unicode(self.dumps(num))), num)
 
     def test_ints(self):
-        for num in [1, 1L, 1<<32, 1<<64]:
+        for num in [1, 1, 1 << 32, 1 << 64]:
             self.assertEqual(self.dumps(num), str(num))
             self.assertEqual(int(self.dumps(num)), num)
             self.assertEqual(self.loads(self.dumps(num)), num)
@@ -33,5 +33,9 @@ class TestFloat(object):
             self.assertRaises(ValueError, self.dumps, [val], allow_nan=False)
 
 
-class TestPyFloat(TestFloat, PyTest): pass
-class TestCFloat(TestFloat, CTest): pass
+class TestPyFloat(TestFloat, PyTest):
+    pass
+
+
+class TestCFloat(TestFloat, CTest):
+    pass

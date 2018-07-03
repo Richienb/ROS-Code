@@ -1,9 +1,11 @@
 import unittest
 from test import test_support
 
+
 class Empty:
     def __repr__(self):
         return '<Empty>'
+
 
 class Coerce:
     def __init__(self, arg):
@@ -18,8 +20,9 @@ class Coerce:
         else:
             return self.arg, other
 
+
 class Cmp:
-    def __init__(self,arg):
+    def __init__(self, arg):
         self.arg = arg
 
     def __repr__(self):
@@ -28,8 +31,9 @@ class Cmp:
     def __cmp__(self, other):
         return cmp(self.arg, other)
 
+
 class ComparisonTest(unittest.TestCase):
-    set1 = [2, 2.0, 2L, 2+0j, Coerce(2), Cmp(2.0)]
+    set1 = [2, 2.0, 2, 2 + 0j, Coerce(2), Cmp(2.0)]
     set2 = [[1], (3,), None, Empty()]
     candidates = set1 + set2
 
@@ -45,14 +49,16 @@ class ComparisonTest(unittest.TestCase):
         # Ensure default comparison compares id() of args
         L = []
         for i in range(10):
-            L.insert(len(L)//2, Empty())
+            L.insert(len(L) // 2, Empty())
         for a in L:
             for b in L:
                 self.assertEqual(cmp(a, b), cmp(id(a), id(b)),
                                  'a=%r, b=%r' % (a, b))
 
+
 def test_main():
     test_support.run_unittest(ComparisonTest)
+
 
 if __name__ == '__main__':
     test_main()

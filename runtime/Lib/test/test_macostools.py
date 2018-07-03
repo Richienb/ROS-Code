@@ -6,11 +6,12 @@ import sys
 from test import test_support
 
 MacOS = test_support.import_module('MacOS')
-#The following modules should exist if MacOS exists.
+# The following modules should exist if MacOS exists.
 import Carbon.File
 import macostools
 
 TESTFN2 = test_support.TESTFN + '2'
+
 
 class TestMacostools(unittest.TestCase):
 
@@ -51,18 +52,21 @@ class TestMacostools(unittest.TestCase):
                                           DeprecationWarning), quiet=True):
             macostools.touched(test_support.TESTFN)
 
-    if sys.maxint < 2**32:
+    if sys.maxsize < 2**32:
         def test_copy(self):
             test_support.unlink(TESTFN2)
             macostools.copy(test_support.TESTFN, TESTFN2)
             self.assertEqual(self.compareData(), '')
 
-    if sys.maxint < 2**32:
+    if sys.maxsize < 2**32:
         def test_mkalias(self):
             test_support.unlink(TESTFN2)
             macostools.mkalias(test_support.TESTFN, TESTFN2)
             fss, _, _ = Carbon.File.ResolveAliasFile(TESTFN2, 0)
-            self.assertEqual(fss.as_pathname(), os.path.realpath(test_support.TESTFN))
+            self.assertEqual(
+                fss.as_pathname(),
+                os.path.realpath(
+                    test_support.TESTFN))
 
         def test_mkalias_relative(self):
             test_support.unlink(TESTFN2)
@@ -74,7 +78,10 @@ class TestMacostools(unittest.TestCase):
                 return
             macostools.mkalias(test_support.TESTFN, TESTFN2, sys.prefix)
             fss, _, _ = Carbon.File.ResolveAliasFile(TESTFN2, 0)
-            self.assertEqual(fss.as_pathname(), os.path.realpath(test_support.TESTFN))
+            self.assertEqual(
+                fss.as_pathname(),
+                os.path.realpath(
+                    test_support.TESTFN))
 
 
 def test_main():

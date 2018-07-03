@@ -21,6 +21,7 @@ from distutils import log
 
 LANG_EXT = {'c': '.c', 'c++': '.cxx'}
 
+
 class config(Command):
 
     description = "prepare to build"
@@ -45,8 +46,7 @@ class config(Command):
          "show every action (compile, link, run, ...) taken"),
         ('dump-source', None,
          "dump generated source files before attempting to compile them"),
-        ]
-
+    ]
 
     # The three standard command methods: since the "config" command
     # does nothing by default, these are empty.
@@ -85,7 +85,6 @@ class config(Command):
     def run(self):
         pass
 
-
     # Utility methods for actual "config" commands.  The interfaces are
     # loosely based on Autoconf macros of similar names.  Sub-classes
     # may use these freely.
@@ -107,7 +106,6 @@ class config(Command):
                 self.compiler.set_libraries(self.libraries)
             if self.library_dirs:
                 self.compiler.set_library_dirs(self.library_dirs)
-
 
     def _gen_temp_sourcefile(self, body, headers, lang):
         filename = "_configtest" + LANG_EXT[lang]
@@ -164,7 +162,6 @@ class config(Command):
             except OSError:
                 pass
 
-
     # XXX these ignore the dry-run flag: what to do, what to do? even if
     # you want a dry-run build, you still need some sort of configuration
     # info.  My inclination is to make it up to the real config command to
@@ -210,7 +207,7 @@ class config(Command):
 
         file = open(out)
         match = 0
-        while 1:
+        while True:
             line = file.readline()
             if line == '':
                 break
@@ -277,14 +274,12 @@ class config(Command):
         self._clean()
         return ok
 
-
     # -- High-level methods --------------------------------------------
     # (these are the ones that are actually likely to be useful
     # when implementing a real-world config command!)
 
     def check_func(self, func, headers=None, include_dirs=None,
                    libraries=None, library_dirs=None, decl=0, call=0):
-
         """Determine if function 'func' is available by constructing a
         source file that refers to 'func', and compiles and links it.
         If everything succeeds, returns true; otherwise returns false.
@@ -329,7 +324,7 @@ class config(Command):
         self._check_compiler()
         return self.try_link("int main (void) { }",
                              headers, include_dirs,
-                             [library]+other_libraries, library_dirs)
+                             [library] + other_libraries, library_dirs)
 
     def check_header(self, header, include_dirs=None, library_dirs=None,
                      lang="c"):

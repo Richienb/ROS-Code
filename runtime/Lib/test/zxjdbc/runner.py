@@ -11,8 +11,12 @@ If no vendors are given, then all vendors will be tested.  If a
 vendor is given, then only that vendor will be tested.
 """
 
-import unittest, os
-import xmllib, __builtin__, re
+import unittest
+import os
+import xmllib
+import __builtin__
+import re
+
 
 def __imp__(module, attr=None):
     if attr:
@@ -22,6 +26,7 @@ def __imp__(module, attr=None):
         last = module.split(".")[-1]
         return __import__(module, globals(), locals(), last)
 
+
 class Factory:
     def __init__(self, classname, method):
         self.classname = classname
@@ -29,11 +34,13 @@ class Factory:
         self.arguments = []
         self.keywords = {}
 
+
 class Testcase:
     def __init__(self, frm, impt):
         self.frm = frm
         self.impt = impt
         self.ignore = []
+
 
 class Test:
     def __init__(self, name, os):
@@ -41,6 +48,7 @@ class Test:
         self.os = os
         self.factory = None
         self.tests = []
+
 
 class Vendor:
     def __init__(self, name, datahandler=None):
@@ -50,12 +58,14 @@ class Vendor:
         self.tests = []
         self.tables = {}
 
+
 class ConfigParser(xmllib.XMLParser):
     """
     A simple XML parser for the config file.
     """
+
     def __init__(self, **kw):
-        apply(xmllib.XMLParser.__init__, (self,), kw)
+        xmllib.XMLParser.__init__(*(self,), **kw)
         self.vendors = []
         self.table_stack = []
         self.re_var = re.compile(r"\${(.*?)}")
@@ -87,11 +97,11 @@ class ConfigParser(xmllib.XMLParser):
         return value
 
     def start_vendor(self, attrs):
-        if attrs.has_key('datahandler'):
+        if 'datahandler' in attrs:
             v = Vendor(attrs['name'], attrs['datahandler'])
         else:
             v = Vendor(attrs['name'])
-        if attrs.has_key('scroll'):
+        if 'scroll' in attrs:
             v.scroll = attrs['scroll']
         self.vendors.append(v)
 
@@ -107,15 +117,20 @@ class ConfigParser(xmllib.XMLParser):
 
     def start_argument(self, attrs):
         f = self.factory()
-        if attrs.has_key('type'):
-            f.arguments.append((attrs['name'], getattr(__builtin__, attrs['type'])(self.value(attrs['value']))))
+        if 'type' in attrs:
+            f.arguments.append(
+                (attrs['name'], getattr(
+                    __builtin__, attrs['type'])(
+                    self.value(
+                        attrs['value']))))
         else:
             f.arguments.append((attrs['name'], self.value(attrs['value'])))
 
     def start_keyword(self, attrs):
         f = self.factory()
-        if attrs.has_key('type'):
-            f.keywords[attrs['name']] = getattr(__builtin__, attrs['type'])(self.value(attrs['value']))
+        if 'type' in attrs:
+            f.keywords[attrs['name']] = getattr(
+                __builtin__, attrs['type'])(self.value(attrs['value']))
         else:
             f.keywords[attrs['name']] = self.value(attrs['value'])
 
@@ -138,11 +153,13 @@ class ConfigParser(xmllib.XMLParser):
             ref, tabname = self.table_stack[-1]
             self.vendor().tables[ref] = (tabname, data.strip())
 
+
 class SQLTestCase(unittest.TestCase):
     """
     Base testing class.  It contains the list of table and factory information
     to run any tests.
     """
+
     def __init__(self, name, vendor, factory):
         unittest.TestCase.__init__(self, name)
         self.vendor = vendor
@@ -154,15 +171,22 @@ class SQLTestCase(unittest.TestCase):
         return self.vendor.tables[name]
 
     def has_table(self, name):
-        return self.vendor.tables.has_key(name)
+        return name in self.vendor.tables
+
 
 def make_suite(vendor, testcase, factory, mask=None):
     clz = __imp__(testcase.frm, testcase.impt)
-    caseNames = filter(lambda x, i=testcase.ignore: x not in i, unittest.getTestCaseNames(clz, "test"))
+    caseNames = filter(
+        lambda x,
+        i=testcase.ignore: x not in i,
+        unittest.getTestCaseNames(
+            clz,
+            "test"))
     if mask is not None:
         caseNames = filter(lambda x, mask=mask: x == mask, caseNames)
     tests = [clz(caseName, vendor, factory) for caseName in caseNames]
     return unittest.TestSuite(tests)
+
 
 def test(vendors, include=None, mask=None):
     for vendor in vendors:
@@ -172,18 +196,21 @@ def test(vendors, include=None, mask=None):
             for test in vendor.tests:
                 if not test.os or test.os == os.name:
                     for testcase in test.tests:
-                        suite = make_suite(vendor, testcase, test.factory, mask)
+                        suite = make_suite(
+                            vendor, testcase, test.factory, mask)
                         unittest.TextTestRunner().run(suite)
         else:
             print
             print "skipping [%s]" % (vendor.name)
 
+
 if __name__ == '__main__':
-    import sys, getopt
+    import sys
+    import getopt
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "t:", [])
-    except getopt.error, msg:
+    except getopt.error as msg:
         print "%s -t [testmask] <vendor>[,<vendor>]"
         sys.exit(0)
 

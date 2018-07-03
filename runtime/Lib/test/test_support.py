@@ -48,11 +48,14 @@ __all__ = ["Error", "TestFailed", "ResourceDenied", "import_module",
            "import_fresh_module", "threading_cleanup", "reap_children",
            "strip_python_stderr"]
 
+
 class Error(Exception):
     """Base class for regression test exceptions."""
 
+
 class TestFailed(Error):
     """Test failed."""
+
 
 class ResourceDenied(unittest.SkipTest):
     """Test skipped because it requested a disallowed resource.
@@ -61,6 +64,7 @@ class ResourceDenied(unittest.SkipTest):
     has not be enabled.  It is used to distinguish between expected
     and unexpected skips.
     """
+
 
 @contextlib.contextmanager
 def _ignore_deprecated_imports(ignore=True):
@@ -86,7 +90,7 @@ def import_module(name, deprecated=False):
     with _ignore_deprecated_imports(deprecated):
         try:
             return importlib.import_module(name)
-        except ImportError, msg:
+        except ImportError as msg:
             raise unittest.SkipTest(str(msg))
 
 
@@ -102,6 +106,7 @@ def _save_and_remove_module(name, orig_modules):
         if modname == name or modname.startswith(name + '.'):
             orig_modules[modname] = sys.modules[modname]
             del sys.modules[modname]
+
 
 def _save_and_block_module(name, orig_modules):
     """Helper function to save and block a module in sys.modules
@@ -169,25 +174,30 @@ verbose = 1              # Flag set to 0 by regrtest.py
 use_resources = None     # Flag set to [] by regrtest.py
 junit_xml_dir = None     # Option set by regrtest.py
 max_memuse = 0           # Disable bigmem tests (they will still be run with
-                         # small sizes, to make sure they work.)
+# small sizes, to make sure they work.)
 real_max_memuse = 0
 
 # _original_stdout is meant to hold stdout at the time regrtest began.
 # This may be "the real" stdout, or IDLE's emulation of stdout, or whatever.
 # The point is to have some flavor of stdout the user can actually see.
 _original_stdout = None
+
+
 def record_original_stdout(stdout):
     global _original_stdout
     _original_stdout = stdout
 
+
 def get_original_stdout():
     return _original_stdout or sys.stdout
+
 
 def unload(name):
     try:
         del sys.modules[name]
     except KeyError:
         pass
+
 
 if sys.platform.startswith("win") or (os.name == "java" and os._name == "nt"):
     def _waitfor(func, pathname, waitall=False):
@@ -246,11 +256,13 @@ else:
     _rmdir = os.rmdir
     _rmtree = shutil.rmtree
 
+
 def unlink(filename):
     try:
         _unlink(filename)
     except OSError:
         pass
+
 
 def rmdir(dirname):
     try:
@@ -260,13 +272,15 @@ def rmdir(dirname):
         if error.errno != errno.ENOENT:
             raise
 
+
 def rmtree(path):
     try:
         _rmtree(path)
-    except OSError, e:
+    except OSError as e:
         # Unix returns ENOENT, Windows returns ESRCH.
         if e.errno not in (errno.ENOENT, errno.ESRCH):
             raise
+
 
 def forget(modname):
     '''"Forget" a module was ever imported by removing it from sys.modules and
@@ -279,10 +293,12 @@ def forget(modname):
         # is exited) but there is a .pyo file.
         unlink(os.path.join(dirname, modname + os.extsep + 'pyo'))
 
+
 def is_resource_enabled(resource):
     """Test whether a resource is enabled.  Known resources are set by
     regrtest.py."""
     return use_resources is not None and resource in use_resources
+
 
 def requires(resource, msg=None):
     """Raise ResourceDenied if the specified resource is not available.
@@ -298,7 +314,9 @@ def requires(resource, msg=None):
             msg = "Use of the `%s' resource not enabled" % resource
         raise ResourceDenied(msg)
 
+
 HOST = 'localhost'
+
 
 def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     """Returns an unused port that should be suitable for binding.  This is
@@ -360,6 +378,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     del tempsock
     return port
 
+
 def bind_port(sock, host=HOST):
     """Bind the socket to a free port and return the port number.  Relies on
     ephemeral ports in order to ensure we are using an unbound port.  This is
@@ -391,11 +410,11 @@ def bind_port(sock, host=HOST):
     elif sock.family == socket.AF_INET and sock.type == socket.SOCK_STREAM:
         if hasattr(socket, 'SO_REUSEADDR'):
             if sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR) == 1:
-                raise TestFailed("tests should never set the SO_REUSEADDR "   \
+                raise TestFailed("tests should never set the SO_REUSEADDR "
                                  "socket option on TCP/IP sockets!")
         if hasattr(socket, 'SO_REUSEPORT'):
             if sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT) == 1:
-                raise TestFailed("tests should never set the SO_REUSEPORT "   \
+                raise TestFailed("tests should never set the SO_REUSEPORT "
                                  "socket option on TCP/IP sockets!")
         if hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
@@ -404,23 +423,26 @@ def bind_port(sock, host=HOST):
     port = sock.getsockname()[1]
     return port
 
+
 FUZZ = 1e-6
 
-def fcmp(x, y): # fuzzy comparison function
+
+def fcmp(x, y):  # fuzzy comparison function
     if isinstance(x, float) or isinstance(y, float):
         try:
             fuzz = (abs(x) + abs(y)) * FUZZ
-            if abs(x-y) <= fuzz:
+            if abs(x - y) <= fuzz:
                 return 0
-        except:
+        except BaseException:
             pass
-    elif type(x) == type(y) and isinstance(x, (tuple, list)):
+    elif isinstance(x, type(y)) and isinstance(x, (tuple, list)):
         for i in range(min(len(x), len(y))):
             outcome = fcmp(x[i], y[i])
             if outcome != 0:
                 return outcome
         return (len(x) > len(y)) - (len(x) < len(y))
     return (x > y) - (x < y)
+
 
 try:
     unicode
@@ -474,11 +496,12 @@ else:
         # This test really only makes sense on Windows NT platforms
         # which have special Unicode support in posixmodule.
         if (not hasattr(sys, "getwindowsversion") or
-                sys.getwindowsversion()[3] < 2): #  0=win32s or 1=9x/ME
+                sys.getwindowsversion()[3] < 2):  # 0=win32s or 1=9x/ME
             TESTFN_UNICODE_UNENCODEABLE = None
         else:
             # Japanese characters (I think - from bug 846133)
-            TESTFN_UNICODE_UNENCODEABLE = eval('u"@test-\u5171\u6709\u3055\u308c\u308b"')
+            TESTFN_UNICODE_UNENCODEABLE = eval(
+                'u"@test-\u5171\u6709\u3055\u308c\u308b"')
             try:
                 # XXX - Note - should be using TESTFN_ENCODING here - but for
                 # Windows, "mbcs" currently always operates as if in
@@ -490,9 +513,9 @@ else:
                 pass
             else:
                 print \
-                'WARNING: The filename %r CAN be encoded by the filesystem.  ' \
-                'Unicode filename tests may not be effective' \
-                % TESTFN_UNICODE_UNENCODEABLE
+                    'WARNING: The filename %r CAN be encoded by the filesystem.  ' \
+                    'Unicode filename tests may not be effective' \
+                    % TESTFN_UNICODE_UNENCODEABLE
 
 # Make sure we can write to TESTFN, try in /tmp if we can't
 fp = None
@@ -505,8 +528,8 @@ except IOError:
         TESTFN = TMP_TESTFN
         del TMP_TESTFN
     except IOError:
-        print ('WARNING: tests will fail, unable to write to: %s or %s' %
-                (TESTFN, TMP_TESTFN))
+        print('WARNING: tests will fail, unable to write to: %s or %s' %
+              (TESTFN, TMP_TESTFN))
 if fp is not None:
     fp.close()
     unlink(TESTFN)
@@ -514,10 +537,11 @@ del fp
 
 # Disambiguate TESTFN for parallel testing, while letting it remain a valid
 # module name.
-TESTFN = "{}_{}_tmp".format(TESTFN, "1") #XXX "1" is a dummy for os.getpid()
+TESTFN = "{}_{}_tmp".format(TESTFN, "1")  # XXX "1" is a dummy for os.getpid()
 
 # Save the initial cwd
 SAVEDCWD = os.getcwd()
+
 
 @contextlib.contextmanager
 def temp_cwd(name='tempcwd', quiet=False):
@@ -556,7 +580,6 @@ def temp_cwd(name='tempcwd', quiet=False):
             rmtree(name)
 
 
-
 def findfile(file, here=__file__, subdir=None):
     """Try to find a file on sys.path and the working directory.  If it is not
     found the argument passed to the function is returned (this does not
@@ -569,8 +592,10 @@ def findfile(file, here=__file__, subdir=None):
     path = [os.path.dirname(here)] + path
     for dn in path:
         fn = os.path.join(dn, file)
-        if os.path.exists(fn): return fn
+        if os.path.exists(fn):
+            return fn
     return file
+
 
 def verify(condition, reason='test failed'):
     """Verify that condition is true. If not, raise TestFailed.
@@ -581,6 +606,7 @@ def verify(condition, reason='test failed'):
 
     if not condition:
         raise TestFailed(reason)
+
 
 def vereq(a, b):
     """Raise TestFailed if a == b is false.
@@ -596,13 +622,14 @@ def vereq(a, b):
     if not (a == b):
         raise TestFailed("%r == %r" % (a, b))
 
+
 def sortdict(dict):
     "Like repr(dict), but in sorted order."
-    items = dict.items()
-    items.sort()
+    items = sorted(dict.items())
     reprpairs = ["%r: %r" % pair for pair in items]
     withcommas = ", ".join(reprpairs)
     return "{%s}" % withcommas
+
 
 def make_bad_fd():
     """
@@ -616,6 +643,7 @@ def make_bad_fd():
         file.close()
         unlink(TESTFN)
 
+
 def check_syntax_error(testcase, statement):
     try:
         compile(statement, '<test string>', 'exec')
@@ -624,10 +652,12 @@ def check_syntax_error(testcase, statement):
     else:
         testcase.fail('Missing SyntaxError: "%s"' % statement)
 
-def open_urlresource(url, check=None):
-    import urlparse, urllib2
 
-    filename = urlparse.urlparse(url)[2].split('/')[-1] # '/': it's URL!
+def open_urlresource(url, check=None):
+    import urlparse
+    import urllib2
+
+    filename = urlparse.urlparse(url)[2].split('/')[-1]  # '/': it's URL!
 
     fn = os.path.join(os.path.dirname(__file__), "data", filename)
 
@@ -670,6 +700,7 @@ class WarningsRecorder(object):
     """Convenience wrapper for the warnings list returned on
        entry to the warnings.catch_warnings() context manager.
     """
+
     def __init__(self, warnings_list):
         self._warnings = warnings_list
         self._last = 0
@@ -715,7 +746,7 @@ def _filterwarnings(filters, quiet=False):
             message = str(exc)
             # Filter out the matching messages
             if (re.match(msg, message, re.I) and
-                issubclass(exc.__class__, cat)):
+                    issubclass(exc.__class__, cat)):
                 seen = True
                 reraise.remove(exc)
         if not seen and not quiet:
@@ -914,7 +945,7 @@ def transient_internet(resource_name, timeout=30.0, errnos=()):
         n = getattr(err, 'errno', None)
         if (isinstance(err, socket.timeout) or
             (isinstance(err, socket.gaierror) and n in gai_errnos) or
-            n in captured_errnos):
+                n in captured_errnos):
             if not verbose:
                 sys.stderr.write(denied.args[0] + "\n")
             raise denied
@@ -946,7 +977,6 @@ def transient_internet(resource_name, timeout=30.0, errnos=()):
         socket.setdefaulttimeout(old_timeout)
 
 
-
 @contextlib.contextmanager
 def captured_output(stream_name):
     """Run the 'with' statement body using a StringIO object in place of a
@@ -965,14 +995,18 @@ def captured_output(stream_name):
     finally:
         setattr(sys, stream_name, orig_stdout)
 
+
 def captured_stdout():
     return captured_output("stdout")
+
 
 def captured_stderr():
     return captured_output("stderr")
 
+
 def captured_stdin():
     return captured_output("stdin")
+
 
 def gc_collect():
     """Force as many objects as possible to be collected.
@@ -996,29 +1030,32 @@ if hasattr(sys, "gettotalrefcount"):
     _header = '2P' + _header
 _vheader = _header + 'P'
 
+
 def calcobjsize(fmt):
     return struct.calcsize(_header + fmt + '0P')
+
 
 def calcvobjsize(fmt):
     return struct.calcsize(_vheader + fmt + '0P')
 
 
-_TPFLAGS_HAVE_GC = 1<<14
-_TPFLAGS_HEAPTYPE = 1<<9
+_TPFLAGS_HAVE_GC = 1 << 14
+_TPFLAGS_HEAPTYPE = 1 << 9
+
 
 def check_sizeof(test, o, size):
     result = sys.getsizeof(o)
     # add GC header size
-    if (_testcapi and\
-        (type(o) == type) and (o.__flags__ & _TPFLAGS_HEAPTYPE) or\
-        ((type(o) != type) and (type(o).__flags__ & _TPFLAGS_HAVE_GC))):
+    if (_testcapi and
+        (isinstance(o, type)) and (o.__flags__ & _TPFLAGS_HEAPTYPE) or
+            ((not isinstance(o, type)) and (type(o).__flags__ & _TPFLAGS_HAVE_GC))):
         size += _testcapi.SIZEOF_PYGC_HEAD
     msg = 'wrong size for %s: got %d, expected %d' \
-            % (type(o), result, size)
+        % (type(o), result, size)
     test.assertEqual(result, size, msg)
 
 
-#=======================================================================
+# =======================================================================
 # Decorator for running a function in a different locale, correctly resetting
 # it afterwards.
 
@@ -1032,7 +1069,7 @@ def run_with_locale(catstr, *locales):
             except AttributeError:
                 # if the test author gives us an invalid category string
                 raise
-            except:
+            except BaseException:
                 # cannot retrieve original locale, so do nothing
                 locale = orig_locale = None
             else:
@@ -1040,7 +1077,7 @@ def run_with_locale(catstr, *locales):
                     try:
                         locale.setlocale(category, loc)
                         break
-                    except:
+                    except BaseException:
                         pass
 
             # now run the function, resetting the locale on exceptions
@@ -1054,17 +1091,20 @@ def run_with_locale(catstr, *locales):
         return inner
     return decorator
 
-#=======================================================================
-# Big-memory-test support. Separate from 'resources' because memory use should be configurable.
+# =======================================================================
+# Big-memory-test support. Separate from 'resources' because memory use
+# should be configurable.
+
 
 # Some handy shorthands. Note that these are used for byte-limits as well
 # as size-limits, in the various bigmem tests
-_1M = 1024*1024
+_1M = 1024 * 1024
 _1G = 1024 * _1M
 _2G = 2 * _1G
 _4G = 4 * _1G
 
 MAX_Py_ssize_t = sys.maxsize
+
 
 def set_memlimit(limit):
     global max_memuse
@@ -1073,7 +1113,7 @@ def set_memlimit(limit):
         'k': 1024,
         'm': _1M,
         'g': _1G,
-        't': 1024*_1G,
+        't': 1024 * _1G,
     }
     m = re.match(r'(\d+(\.\d+)?) (K|M|G|T)b?$', limit,
                  re.IGNORECASE | re.VERBOSE)
@@ -1087,7 +1127,8 @@ def set_memlimit(limit):
         raise ValueError('Memory limit %r too low to be useful' % (limit,))
     max_memuse = memlimit
 
-def bigmemtest(minsize, memuse, overhead=5*_1M):
+
+def bigmemtest(minsize, memuse, overhead=5 * _1M):
     """Decorator for bigmem tests.
 
     'minsize' is the minimum useful size for the test (in arbitrary,
@@ -1126,7 +1167,8 @@ def bigmemtest(minsize, memuse, overhead=5*_1M):
         return wrapper
     return decorator
 
-def precisionbigmemtest(size, memuse, overhead=5*_1M, dry_run=True):
+
+def precisionbigmemtest(size, memuse, overhead=5 * _1M, dry_run=True):
     def decorator(f):
         def wrapper(self):
             if not real_max_memuse:
@@ -1134,8 +1176,8 @@ def precisionbigmemtest(size, memuse, overhead=5*_1M, dry_run=True):
             else:
                 maxsize = size
 
-            if ((real_max_memuse or not dry_run)
-                and real_max_memuse < maxsize * memuse):
+            if ((real_max_memuse or not dry_run) and
+                    real_max_memuse < maxsize * memuse):
                 if verbose:
                     sys.stderr.write("Skipping %s because of memory "
                                      "constraint\n" % (f.__name__,))
@@ -1148,8 +1190,10 @@ def precisionbigmemtest(size, memuse, overhead=5*_1M, dry_run=True):
         return wrapper
     return decorator
 
+
 def bigaddrspacetest(f):
     """Decorator for tests that fill the address space."""
+
     def wrapper(self):
         if max_memuse < MAX_Py_ssize_t:
             if verbose:
@@ -1159,8 +1203,9 @@ def bigaddrspacetest(f):
             return f(self)
     return wrapper
 
-#=======================================================================
+# =======================================================================
 # unittest integration.
+
 
 class BasicTestRunner:
     def run(self, test):
@@ -1172,17 +1217,20 @@ class BasicTestRunner:
 def _id(obj):
     return obj
 
+
 def requires_resource(resource):
     if is_resource_enabled(resource):
         return _id
     else:
         return unittest.skip("resource {0!r} is not enabled".format(resource))
 
+
 def cpython_only(test):
     """
     Decorator for tests only applicable on CPython.
     """
     return impl_detail(cpython=True)(test)
+
 
 def impl_detail(msg=None, **guards):
     if check_impl_detail(**guards):
@@ -1197,6 +1245,7 @@ def impl_detail(msg=None, **guards):
         msg = msg.format(' or '.join(guardnames))
     return unittest.skip(msg)
 
+
 def _parse_guards(guards):
     # Returns a tuple ({platform_name: run_me}, default_value)
     if not guards:
@@ -1207,6 +1256,8 @@ def _parse_guards(guards):
 
 # Use the following check to guard CPython's implementation-specific tests --
 # or to run them only on the implementation(s) guarded by the arguments.
+
+
 def check_impl_detail(**guards):
     """This function returns True or False depending on the host platform.
        Examples:
@@ -1216,8 +1267,6 @@ def check_impl_detail(**guards):
     """
     guards, default = _parse_guards(guards)
     return guards.get(platform.python_implementation().lower(), default)
-
-
 
 
 def _run_suite(suite):
@@ -1233,11 +1282,12 @@ def _run_suite(suite):
         suite.addTest(test)
         try:
             _run_suite(suite, testclass)
-        except TestFailed, e:
+        except TestFailed as e:
             if not failed:
                 failed = e
     if failed:
         raise failed
+
 
 def _run_suite(suite, testclass=None):
     if junit_xml_dir:
@@ -1277,8 +1327,9 @@ def run_unittest(*classes):
             suite.addTest(unittest.makeSuite(cls))
     _run_suite(suite)
 
-#=======================================================================
+# =======================================================================
 # Check for the presence of docstrings.
+
 
 HAVE_DOCSTRINGS = (check_impl_detail(cpython=False) or
                    sys.platform == 'win32' or
@@ -1288,7 +1339,7 @@ requires_docstrings = unittest.skipUnless(HAVE_DOCSTRINGS,
                                           "test requires docstrings")
 
 
-#=======================================================================
+# =======================================================================
 # doctest driver.
 
 def run_doctest(module, verbosity=None):
@@ -1320,12 +1371,14 @@ def run_doctest(module, verbosity=None):
         print 'doctest (%s) ... %d tests with zero failures' % (module.__name__, t)
     return f, t
 
-#=======================================================================
+# =======================================================================
 # Threading support to prevent reporting refleaks when running regrtest.py -R
+
 
 def threading_setup():
     import threading
     return len(threading._active), 0
+
 
 def threading_cleanup(num_active, num_limbo):
     import threading
@@ -1336,6 +1389,7 @@ def threading_cleanup(num_active, num_limbo):
     while len(threading._active) != num_active and count < _MAX_COUNT:
         count += 1
         time.sleep(0.1)
+
 
 def reap_threads(func):
     """Use this function when threads are being used.  This will
@@ -1354,6 +1408,7 @@ def reap_threads(func):
             threading_cleanup(*key)
     return decorator
 
+
 def reap_children():
     """Use this function at the end of test_main() whenever sub-processes
     are started.  This will help ensure that no extra children (zombies)
@@ -1371,8 +1426,9 @@ def reap_children():
                 pid, status = os.waitpid(any_process, os.WNOHANG)
                 if pid == 0:
                     break
-            except:
+            except BaseException:
                 break
+
 
 @contextlib.contextmanager
 def swap_attr(obj, attr, new_val):
@@ -1401,6 +1457,7 @@ def swap_attr(obj, attr, new_val):
         finally:
             delattr(obj, attr)
 
+
 def py3k_bytes(b):
     """Emulate the py3k bytes() constructor.
 
@@ -1415,6 +1472,7 @@ def py3k_bytes(b):
             return b"".join(chr(x) for x in b)
         except TypeError:
             return bytes(b)
+
 
 def args_from_interpreter_flags():
     """Return a list of command-line arguments reproducing the current
@@ -1436,6 +1494,7 @@ def args_from_interpreter_flags():
             args.append('-' + opt * v)
     return args
 
+
 def strip_python_stderr(stderr):
     """Strip the stderr of a Python process from potential debug output
     emitted by the interpreter.
@@ -1445,6 +1504,7 @@ def strip_python_stderr(stderr):
     """
     stderr = re.sub(br"\[\d+ refs\]\r?\n?$", b"", stderr).strip()
     return stderr
+
 
 def retry(exceptions, tries=6, delay=3, backoff=1.2):
     # modified from https://wiki.python.org/moin/PythonDecoratorLibrary#Retry

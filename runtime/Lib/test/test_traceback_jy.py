@@ -11,6 +11,7 @@ if test_support.is_jython:
     from java.awt import EventQueue
     from java.lang import Runnable
 
+
 class TracebackTestCase(unittest.TestCase):
 
     def test_tb_across_threads(self):
@@ -60,6 +61,7 @@ class TracebackTestCase(unittest.TestCase):
             self.assertEquals(6, tb.tb_next.tb_lineno)
         else:
             self.fail("Should've raised a NameError")
+
 
 try:
     raise Exception('foo')

@@ -3,11 +3,15 @@
 
 import gc
 
+
 def leak():
     class T(type):
         pass
+
     class U(type):
         __metaclass__ = T
     U.__class__ = U
     del U
-    gc.collect(); gc.collect(); gc.collect()
+    gc.collect()
+    gc.collect()
+    gc.collect()

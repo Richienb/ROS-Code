@@ -6,6 +6,7 @@ from test import test_support
 # Skip this test if aetools does not exist.
 test_support.import_module('aetools')
 
+
 class TestScriptpackages(unittest.TestCase):
 
     def _test_scriptpackage(self, package, testobject=1):
@@ -42,6 +43,7 @@ class TestScriptpackages(unittest.TestCase):
 
     def test_CodeWarrior(self):
         self._test_scriptpackage('CodeWarrior')
+
 
 def test_main():
     test_support.run_unittest(TestScriptpackages)

@@ -18,6 +18,7 @@ StringType = type('')
 #
 # Differences only occur for unreasonable n and d.    <.2 wink>)
 
+
 class FpformatTest(unittest.TestCase):
 
     def checkFix(self, n, digits):
@@ -42,20 +43,20 @@ class FpformatTest(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_basic_cases(self):
-        self.assertEqual(fix(100.0/3, 3), '33.333')
-        self.assertEqual(sci(100.0/3, 3), '3.333e+001')
+        self.assertEqual(fix(100.0 / 3, 3), '33.333')
+        self.assertEqual(sci(100.0 / 3, 3), '3.333e+001')
 
     def test_reasonable_values(self):
         for d in range(7):
-            for val in (1000.0/3, 1000, 1000.0, .002, 1.0/3, 1e10):
-                for realVal in (val, 1.0/val, -val, -1.0/val):
+            for val in (1000.0 / 3, 1000, 1000.0, .002, 1.0 / 3, 1e10):
+                for realVal in (val, 1.0 / val, -val, -1.0 / val):
                     self.checkFix(realVal, d)
                     self.checkSci(realVal, d)
 
     def test_failing_values(self):
         # Now for 'unreasonable n and d'
-        self.assertEqual(fix(1.0, 1000), '1.'+('0'*1000))
-        self.assertEqual(sci("1"+('0'*1000), 0), '1e+1000')
+        self.assertEqual(fix(1.0, 1000), '1.' + ('0' * 1000))
+        self.assertEqual(sci("1" + ('0' * 1000), 0), '1e+1000')
 
         # This behavior is inconsistent.  sci raises an exception; fix doesn't.
         yacht = "Throatwobbler Mangrove"

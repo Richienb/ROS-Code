@@ -27,6 +27,7 @@ SAMPLE_XML_NS = """
 </body>
 """
 
+
 def sanity():
     """
     Import sanity.
@@ -36,9 +37,11 @@ def sanity():
     >>> from xml.etree import ElementPath
     """
 
+
 def check_method(method):
     if not hasattr(method, '__call__'):
         print method, "not callable"
+
 
 def serialize(ET, elem, encoding=None):
     import StringIO
@@ -50,11 +53,14 @@ def serialize(ET, elem, encoding=None):
         tree.write(file)
     return file.getvalue()
 
+
 def summarize(elem):
     return elem.tag
 
+
 def summarize_list(seq):
     return map(summarize, seq)
+
 
 def interface():
     """
@@ -104,6 +110,7 @@ def interface():
     >>> serialize(ET, element) # 6
     '<tag key="value" />'
     """
+
 
 def find():
     """
@@ -173,6 +180,7 @@ def find():
     >>> summarize_list(elem.findall(".//{http://effbot.org/ns}tag"))
     ['{http://effbot.org/ns}tag', '{http://effbot.org/ns}tag', '{http://effbot.org/ns}tag']
     """
+
 
 def parseliteral():
     r"""
@@ -283,6 +291,7 @@ XINCLUDE["default.xml"] = """\
 </document>
 """
 
+
 def xinclude_loader(href, parse="xml", encoding=None):
     try:
         data = XINCLUDE[href]
@@ -292,6 +301,7 @@ def xinclude_loader(href, parse="xml", encoding=None):
         from xml.etree.ElementTree import XML
         return XML(data)
     return data
+
 
 def xinclude():
     r"""
@@ -347,9 +357,11 @@ def xinclude():
 
     """
 
+
 def test_main():
     from test import test_xml_etree
     test_support.run_doctest(test_xml_etree, verbosity=True)
+
 
 if __name__ == '__main__':
     test_main()

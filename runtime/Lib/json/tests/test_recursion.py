@@ -46,6 +46,7 @@ class TestRecursion(object):
     def test_defaultrecursion(self):
         class RecursiveJSONEncoder(self.json.JSONEncoder):
             recurse = False
+
             def default(self, o):
                 if o is JSONTestObject:
                     if self.recurse:
@@ -63,7 +64,6 @@ class TestRecursion(object):
             pass
         else:
             self.fail("didn't raise ValueError on default recursion")
-
 
     def test_highly_nested_objects_decoding(self):
         # test that loading highly-nested objects doesn't segfault when C
@@ -87,7 +87,7 @@ class TestRecursion(object):
         # See #12051
         l, d = [], {}
         for x in xrange(100000):
-            l, d = [l], {'k':d}
+            l, d = [l], {'k': d}
         with self.assertRaises(RuntimeError):
             self.dumps(l)
         with self.assertRaises(RuntimeError):
@@ -108,5 +108,9 @@ class TestRecursion(object):
         self.assertIn(type(cm.exception), [RuntimeError, ValueError])
 
 
-class TestPyRecursion(TestRecursion, PyTest): pass
-class TestCRecursion(TestRecursion, CTest): pass
+class TestPyRecursion(TestRecursion, PyTest):
+    pass
+
+
+class TestCRecursion(TestRecursion, CTest):
+    pass

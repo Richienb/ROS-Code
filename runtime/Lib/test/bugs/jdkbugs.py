@@ -6,5 +6,5 @@ try:
     except KeyError:
         # no bug
         print 'Your JVM seems to be working'
-except:
+except BaseException:
     print 'Your JVM seems broken'

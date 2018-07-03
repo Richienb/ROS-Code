@@ -17,9 +17,11 @@ __all__ = ["filter", "fnmatch", "fnmatchcase", "translate"]
 _cache = {}
 _MAXCACHE = 100
 
+
 def _purge():
     """Clear the pattern cache"""
     _cache.clear()
+
 
 def fnmatch(name, pat):
     """Test whether FILENAME matches PATTERN.
@@ -42,17 +44,19 @@ def fnmatch(name, pat):
     pat = os.path.normcase(pat)
     return fnmatchcase(name, pat)
 
+
 def filter(names, pat):
     """Return the subset of the list NAMES that match PAT"""
-    import os,posixpath
-    result=[]
-    pat=os.path.normcase(pat)
-    if not pat in _cache:
+    import os
+    import posixpath
+    result = []
+    pat = os.path.normcase(pat)
+    if pat not in _cache:
         res = translate(pat)
         if len(_cache) >= _MAXCACHE:
             _cache.clear()
         _cache[pat] = re.compile(res)
-    match=_cache[pat].match
+    match = _cache[pat].match
     if os.path is posixpath:
         # normcase on posix is NOP. Optimize it away from the loop.
         for name in names:
@@ -64,6 +68,7 @@ def filter(names, pat):
                 result.append(name)
     return result
 
+
 def fnmatchcase(name, pat):
     """Test whether FILENAME matches PATTERN, including case.
 
@@ -71,12 +76,13 @@ def fnmatchcase(name, pat):
     its arguments.
     """
 
-    if not pat in _cache:
+    if pat not in _cache:
         res = translate(pat)
         if len(_cache) >= _MAXCACHE:
             _cache.clear()
         _cache[pat] = re.compile(res)
     return _cache[pat].match(name) is not None
+
 
 def translate(pat):
     """Translate a shell PATTERN to a regular expression.
@@ -88,7 +94,7 @@ def translate(pat):
     res = ''
     while i < n:
         c = pat[i]
-        i = i+1
+        i = i + 1
         if c == '*':
             res = res + '.*'
         elif c == '?':
@@ -96,16 +102,16 @@ def translate(pat):
         elif c == '[':
             j = i
             if j < n and pat[j] == '!':
-                j = j+1
+                j = j + 1
             if j < n and pat[j] == ']':
-                j = j+1
+                j = j + 1
             while j < n and pat[j] != ']':
-                j = j+1
+                j = j + 1
             if j >= n:
                 res = res + '\\['
             else:
-                stuff = pat[i:j].replace('\\','\\\\')
-                i = j+1
+                stuff = pat[i:j].replace('\\', '\\\\')
+                i = j + 1
                 if stuff[0] == '!':
                     stuff = '^' + stuff[1:]
                 elif stuff[0] == '^':

@@ -13,10 +13,12 @@ __all__ = ["listdir", "opendir", "annotate", "reset"]
 
 cache = {}
 
+
 def reset():
     """Reset the cache completely."""
     global cache
     cache = {}
+
 
 def listdir(path):
     """List directory contents, using cache."""
@@ -27,12 +29,13 @@ def listdir(path):
         cached_mtime, list = -1, []
     mtime = os.stat(path).st_mtime
     if mtime != cached_mtime:
-        list = os.listdir(path)
-        list.sort()
+        list = sorted(os.listdir(path))
     cache[path] = mtime, list
     return list
 
-opendir = listdir # XXX backward compatibility
+
+opendir = listdir  # XXX backward compatibility
+
 
 def annotate(head, list):
     """Add '/' suffixes to directories."""

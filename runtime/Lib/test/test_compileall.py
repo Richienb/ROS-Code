@@ -60,17 +60,18 @@ class CompileallTests(unittest.TestCase):
         for fn in (self.bc_path, self.bc_path2):
             try:
                 os.unlink(fn)
-            except:
+            except BaseException:
                 pass
         compileall.compile_file(self.source_path, force=False, quiet=True)
-        self.assertTrue(os.path.isfile(self.bc_path) \
-                        and not os.path.isfile(self.bc_path2))
+        self.assertTrue(os.path.isfile(self.bc_path) and
+                        not os.path.isfile(self.bc_path2))
         os.unlink(self.bc_path)
         compileall.compile_dir(self.directory, force=False, quiet=True)
-        self.assertTrue(os.path.isfile(self.bc_path) \
-                        and os.path.isfile(self.bc_path2))
+        self.assertTrue(os.path.isfile(self.bc_path) and
+                        os.path.isfile(self.bc_path2))
         os.unlink(self.bc_path)
         os.unlink(self.bc_path2)
+
 
 def test_main():
     test_support.run_unittest(CompileallTests)

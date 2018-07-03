@@ -7,9 +7,9 @@ from test import test_support
 # which doesn't exist.  This test takes over 30 minutes to run in general
 # and requires more disk space than most of the buildbots.
 test_support.requires(
-        'extralargefile',
-        'test requires loads of disk-space bytes and a long time to run'
-    )
+    'extralargefile',
+    'test requires loads of disk-space bytes and a long time to run'
+)
 
 # We can test part of the module without zlib.
 try:
@@ -17,7 +17,9 @@ try:
 except ImportError:
     zlib = None
 
-import zipfile, os, unittest
+import zipfile
+import os
+import unittest
 import time
 import sys
 
@@ -29,6 +31,7 @@ TESTFN2 = TESTFN + "2"
 
 # How much time in seconds can pass before we print a 'Still working' message.
 _PRINT_WORKING_MSG_INTERVAL = 5 * 60
+
 
 class TestsWithSourceFile(unittest.TestCase):
     def setUp(self):
@@ -49,7 +52,7 @@ class TestsWithSourceFile(unittest.TestCase):
 
         # It will contain enough copies of self.data to reach about 6GB of
         # raw data to store.
-        filecount = 6*1024**3 // len(self.data)
+        filecount = 6 * 1024**3 // len(self.data)
 
         next_time = time.time() + _PRINT_WORKING_MSG_INTERVAL
         for num in range(filecount):
@@ -58,8 +61,8 @@ class TestsWithSourceFile(unittest.TestCase):
             if next_time <= time.time():
                 next_time = time.time() + _PRINT_WORKING_MSG_INTERVAL
                 print >>sys.__stdout__, (
-                   '  zipTest still writing %d of %d, be patient...' %
-                   (num, filecount))
+                    '  zipTest still writing %d of %d, be patient...' %
+                    (num, filecount))
                 sys.__stdout__.flush()
         zipfp.close()
 
@@ -71,8 +74,8 @@ class TestsWithSourceFile(unittest.TestCase):
             if next_time <= time.time():
                 next_time = time.time() + _PRINT_WORKING_MSG_INTERVAL
                 print >>sys.__stdout__, (
-                   '  zipTest still reading %d of %d, be patient...' %
-                   (num, filecount))
+                    '  zipTest still reading %d of %d, be patient...' %
+                    (num, filecount))
                 sys.__stdout__.flush()
         zipfp.close()
 
@@ -101,7 +104,7 @@ class OtherTests(unittest.TestCase):
         # and that the resulting archive can be read properly by ZipFile
         zipf = zipfile.ZipFile(TESTFN, mode="w")
         zipf.debug = 100
-        numfiles = (1 << 16) * 3/2
+        numfiles = (1 << 16) * 3 / 2
         for i in xrange(numfiles):
             zipf.writestr("foo%08d" % i, "%d" % (i**3 % 57))
         self.assertEqual(len(zipf.namelist()), numfiles)
@@ -117,8 +120,10 @@ class OtherTests(unittest.TestCase):
         test_support.unlink(TESTFN)
         test_support.unlink(TESTFN2)
 
+
 def test_main():
     run_unittest(TestsWithSourceFile, OtherTests)
+
 
 if __name__ == "__main__":
     test_main()

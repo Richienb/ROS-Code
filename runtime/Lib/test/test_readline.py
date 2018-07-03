@@ -11,6 +11,7 @@ from test.test_support import run_unittest, import_module
 # Skip tests if there is no readline module
 readline = import_module('readline')
 
+
 class TestHistoryManipulation (unittest.TestCase):
 
     @unittest.skipIf(not hasattr(readline, 'clear_history'),
@@ -42,6 +43,7 @@ class TestHistoryManipulation (unittest.TestCase):
 
 def test_main():
     run_unittest(TestHistoryManipulation)
+
 
 if __name__ == "__main__":
     test_main()

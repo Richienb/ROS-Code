@@ -24,9 +24,9 @@ class PdbTestCase(unittest.TestCase):
         cmd = [sys.executable, '-m', 'pdb', filename]
         stdout = stderr = None
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                                   stdin=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT,
-                                   )
+                                stdin=subprocess.PIPE,
+                                stderr=subprocess.STDOUT,
+                                )
         stdout, stderr = proc.communicate(commands)
         proc.stdout.close()
         proc.stdin.close()
@@ -86,6 +86,7 @@ class PdbTestInput(object):
 def write(x):
     print x
 
+
 def test_pdb_displayhook():
     """This tests the custom displayhook for pdb.
 
@@ -113,6 +114,7 @@ def test_pdb_displayhook():
     4
     (Pdb) continue
     """
+
 
 def test_pdb_breakpoint_commands():
     """Test basic commands related to breakpoints.
@@ -337,6 +339,7 @@ def test_pdb_continue_in_bottomframe():
     4
     """
 
+
 class ModuleInitTester(unittest.TestCase):
 
     def test_filename_correct(self):
@@ -353,12 +356,12 @@ class ModuleInitTester(unittest.TestCase):
         with open(test_fn, 'w') as f:
             f.write(code)
         self.addCleanup(os.remove, test_fn)
-        cmd = [sys.executable, '-m', 'pdb', test_fn,]
+        cmd = [sys.executable, '-m', 'pdb', test_fn, ]
         proc = subprocess.Popen(cmd,
-            stdout=subprocess.PIPE,
-            stdin=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            )
+                                stdout=subprocess.PIPE,
+                                stdin=subprocess.PIPE,
+                                stderr=subprocess.STDOUT,
+                                )
         stdout, stderr = proc.communicate('quit\n')
         self.assertIn(code, stdout, "pdb munged the filename")
 
@@ -369,6 +372,7 @@ def test_main():
     test_support.run_unittest(
         PdbTestCase,
         ModuleInitTester)
+
 
 if __name__ == '__main__':
     test_main()

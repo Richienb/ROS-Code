@@ -9,11 +9,13 @@ import unittest
 
 PORT = None
 
+
 def make_request_and_skipIf(condition, reason):
     # If we skip the test, we have to make a request because the
     # the server created in setUp blocks expecting one to come in.
     if not condition:
         return lambda func: func
+
     def decorator(func):
         def make_request_and_skip(self):
             self.client.request("GET", "/")
@@ -55,7 +57,7 @@ def server(evt, numrequests):
             return x + y
 
         serv.register_function(add)
-        serv.register_function(lambda x, y: x-y)
+        serv.register_function(lambda x, y: x - y)
 
         while numrequests > 0:
             serv.handle_request()
@@ -66,6 +68,7 @@ def server(evt, numrequests):
         serv.server_close()
         PORT = None
         evt.set()
+
 
 class DocXMLRPCHTTPGETServer(unittest.TestCase):
     def setUp(self):
@@ -127,7 +130,7 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
                       response.read())
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                             "Docstrings are omitted with -O2 and above")
     def test_autolinking(self):
         """Test that the server correctly automatically wraps references to
         PEPS and RFCs with links, and that it linkifies text starting with
@@ -151,7 +154,7 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
              'http://google.com</a>.</tt></dd></dl>'), response.read())
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                             "Docstrings are omitted with -O2 and above")
     def test_system_methods(self):
         """Test the precense of three consecutive system.* methods.
 
@@ -194,8 +197,10 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.assertIn("""Try&nbsp;self.<strong>add</strong>,&nbsp;too.""",
                       response.read())
 
+
 def test_main():
     test_support.run_unittest(DocXMLRPCHTTPGETServer)
+
 
 if __name__ == '__main__':
     test_main()

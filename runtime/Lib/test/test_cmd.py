@@ -12,6 +12,7 @@ import re
 import unittest
 import StringIO
 
+
 class samplecmdclass(cmd.Cmd):
     """
     Instance the sampleclass:
@@ -162,7 +163,7 @@ class samplecmdclass(cmd.Cmd):
         except ValueError:
             print "*** arguments should be numbers"
             return
-        print l[0]+l[1]
+        print l[0] + l[1]
 
     def help_add(self):
         print "help text for add"
@@ -182,13 +183,11 @@ class TestAlternateInput(unittest.TestCase):
         def do_EOF(self, args):
             return True
 
-
     class simplecmd2(simplecmd):
 
         def do_EOF(self, args):
             print >>self.stdout, '*** Unknown syntax: EOF'
             return True
-
 
     def test_file_with_missing_final_nl(self):
         input = StringIO.StringIO("print test\nprint test2")
@@ -197,10 +196,9 @@ class TestAlternateInput(unittest.TestCase):
         cmd.use_rawinput = False
         cmd.cmdloop()
         self.assertMultiLineEqual(output.getvalue(),
-            ("(Cmd) test\n"
-             "(Cmd) test2\n"
-             "(Cmd) "))
-
+                                  ("(Cmd) test\n"
+                                   "(Cmd) test2\n"
+                                   "(Cmd) "))
 
     def test_input_reset_at_EOF(self):
         input = StringIO.StringIO("print test\nprint test2")
@@ -209,18 +207,18 @@ class TestAlternateInput(unittest.TestCase):
         cmd.use_rawinput = False
         cmd.cmdloop()
         self.assertMultiLineEqual(output.getvalue(),
-            ("(Cmd) test\n"
-             "(Cmd) test2\n"
-             "(Cmd) *** Unknown syntax: EOF\n"))
+                                  ("(Cmd) test\n"
+                                   "(Cmd) test2\n"
+                                   "(Cmd) *** Unknown syntax: EOF\n"))
         input = StringIO.StringIO("print \n\n")
         output = StringIO.StringIO()
         cmd.stdin = input
         cmd.stdout = output
         cmd.cmdloop()
         self.assertMultiLineEqual(output.getvalue(),
-            ("(Cmd) \n"
-             "(Cmd) \n"
-             "(Cmd) *** Unknown syntax: EOF\n"))
+                                  ("(Cmd) \n"
+                                   "(Cmd) \n"
+                                   "(Cmd) *** Unknown syntax: EOF\n"))
 
 
 def test_main(verbose=None):
@@ -228,14 +226,16 @@ def test_main(verbose=None):
     test_support.run_doctest(test_cmd, verbose)
     test_support.run_unittest(TestAlternateInput)
 
+
 def test_coverage(coverdir):
     trace = test_support.import_module('trace')
-    tracer=trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix,],
-                        trace=0, count=1)
+    tracer = trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix, ],
+                         trace=0, count=1)
     tracer.run('reload(cmd);test_main()')
-    r=tracer.results()
+    r = tracer.results()
     print "Writing coverage results..."
     r.write_results(show_missing=True, summary=True, coverdir=coverdir)
+
 
 if __name__ == "__main__":
     if "-c" in sys.argv:

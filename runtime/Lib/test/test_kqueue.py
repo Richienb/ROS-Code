@@ -12,6 +12,7 @@ from test import test_support
 if not hasattr(select, "kqueue"):
     raise unittest.SkipTest("test works only on BSD")
 
+
 class TestKQueue(unittest.TestCase):
     def test_create_queue(self):
         kq = select.kqueue()
@@ -89,11 +90,11 @@ class TestKQueue(unittest.TestCase):
         client.setblocking(False)
         try:
             client.connect(('127.0.0.1', serverSocket.getsockname()[1]))
-        except socket.error, e:
+        except socket.error as e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
         else:
             #raise AssertionError("Connect should have raised EINPROGRESS")
-            pass # FreeBSD doesn't raise an exception here
+            pass  # FreeBSD doesn't raise an exception here
         server, addr = serverSocket.accept()
 
         if sys.platform.startswith("darwin"):
@@ -122,8 +123,7 @@ class TestKQueue(unittest.TestCase):
         kq2.control([ev], 0)
 
         events = kq.control(None, 4, 1)
-        events = [(e.ident, e.filter, e.flags) for e in events]
-        events.sort()
+        events = sorted([(e.ident, e.filter, e.flags) for e in events])
         self.assertEqual(events, [
             (client.fileno(), select.KQ_FILTER_WRITE, flags),
             (server.fileno(), select.KQ_FILTER_WRITE, flags)])
@@ -178,8 +178,14 @@ class TestKQueue(unittest.TestCase):
         a, b = socket.socketpair()
 
         a.send(b'foo')
-        event1 = select.kevent(a, select.KQ_FILTER_READ, select.KQ_EV_ADD | select.KQ_EV_ENABLE)
-        event2 = select.kevent(b, select.KQ_FILTER_READ, select.KQ_EV_ADD | select.KQ_EV_ENABLE)
+        event1 = select.kevent(
+            a,
+            select.KQ_FILTER_READ,
+            select.KQ_EV_ADD | select.KQ_EV_ENABLE)
+        event2 = select.kevent(
+            b,
+            select.KQ_FILTER_READ,
+            select.KQ_EV_ADD | select.KQ_EV_ENABLE)
         r = kq.control([event1, event2], 1, 1)
         self.assertTrue(r)
         self.assertFalse(r[0].flags & select.KQ_EV_ERROR)
@@ -189,8 +195,10 @@ class TestKQueue(unittest.TestCase):
         b.close()
         kq.close()
 
+
 def test_main():
     test_support.run_unittest(TestKQueue)
+
 
 if __name__ == "__main__":
     test_main()

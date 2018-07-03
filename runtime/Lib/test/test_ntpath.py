@@ -9,8 +9,8 @@ def tester(fn, wantResult):
     fn = fn.replace("\\", "\\\\")
     gotResult = eval(fn)
     if wantResult != gotResult:
-        raise TestFailed, "%s should return: %s but returned: %s" \
-              %(str(fn), str(wantResult), str(gotResult))
+        raise TestFailed("%s should return: %s but returned: %s"
+                         % (str(fn), str(wantResult), str(gotResult)))
 
 
 class TestNtpath(unittest.TestCase):
@@ -48,7 +48,8 @@ class TestNtpath(unittest.TestCase):
                ('\\\\conky\\mountpoint', ''))
 
         tester('ntpath.split("c:/")', ('c:/', ''))
-        tester('ntpath.split("//conky/mountpoint/")', ('//conky/mountpoint', ''))
+        tester('ntpath.split("//conky/mountpoint/")',
+               ('//conky/mountpoint', ''))
 
     def test_isabs(self):
         tester('ntpath.isabs("c:\\")', 1)
@@ -57,10 +58,12 @@ class TestNtpath(unittest.TestCase):
         tester('ntpath.isabs("\\foo\\bar")', 1)
 
     def test_commonprefix(self):
-        tester('ntpath.commonprefix(["/home/swenson/spam", "/home/swen/spam"])',
-               "/home/swen")
-        tester('ntpath.commonprefix(["\\home\\swen\\spam", "\\home\\swen\\eggs"])',
-               "\\home\\swen\\")
+        tester(
+            'ntpath.commonprefix(["/home/swenson/spam", "/home/swen/spam"])',
+            "/home/swen")
+        tester(
+            'ntpath.commonprefix(["\\home\\swen\\spam", "\\home\\swen\\eggs"])',
+            "\\home\\swen\\")
         tester('ntpath.commonprefix(["/home/swen/spam", "/home/swen/spam"])',
                "/home/swen/spam")
 
@@ -121,7 +124,9 @@ class TestNtpath(unittest.TestCase):
         tester("ntpath.normpath('../.././..')", r'..\..\..')
         tester("ntpath.normpath('K:../.././..')", r'K:..\..\..')
         tester("ntpath.normpath('C:////a/b')", r'C:\a\b')
-        tester("ntpath.normpath('//machine/share//a/b')", r'\\machine\share\a\b')
+        tester(
+            "ntpath.normpath('//machine/share//a/b')",
+            r'\\machine\share\a\b')
 
         tester("ntpath.normpath('\\\\.\\NUL')", r'\\.\NUL')
         tester("ntpath.normpath('\\\\?\\D:/XY\\Z')", r'\\?\D:/XY\Z')
@@ -173,12 +178,16 @@ class TestNtpath(unittest.TestCase):
         tester('ntpath.relpath(os.path.abspath("a"))', 'a')
         tester('ntpath.relpath("a/b")', 'a\\b')
         tester('ntpath.relpath("../a/b")', '..\\a\\b')
-        tester('ntpath.relpath("a", "../b")', '..\\'+currentdir+'\\a')
-        tester('ntpath.relpath("a/b", "../c")', '..\\'+currentdir+'\\a\\b')
+        tester('ntpath.relpath("a", "../b")', '..\\' + currentdir + '\\a')
+        tester('ntpath.relpath("a/b", "../c")', '..\\' + currentdir + '\\a\\b')
         tester('ntpath.relpath("a", "b/c")', '..\\..\\a')
-        tester('ntpath.relpath("//conky/mountpoint/a", "//conky/mountpoint/b/c")', '..\\..\\a')
+        tester(
+            'ntpath.relpath("//conky/mountpoint/a", "//conky/mountpoint/b/c")',
+            '..\\..\\a')
         tester('ntpath.relpath("a", "a")', '.')
-        tester('ntpath.relpath("/foo/bar/bat", "/x/y/z")', '..\\..\\..\\foo\\bar\\bat')
+        tester(
+            'ntpath.relpath("/foo/bar/bat", "/x/y/z")',
+            '..\\..\\..\\foo\\bar\\bat')
         tester('ntpath.relpath("/foo/bar/bat", "/foo/bar")', 'bat')
         tester('ntpath.relpath("/foo/bar/bat", "/")', 'foo\\bar\\bat')
         tester('ntpath.relpath("/", "/foo/bar/bat")', '..\\..\\..')

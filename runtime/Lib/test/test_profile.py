@@ -36,7 +36,7 @@ class ProfileTest(unittest.TestCase):
         results = self.do_profiling()
         self.assertEqual(results[0], 1000)
         for i, method in enumerate(self.methodnames):
-            self.assertEqual(results[i+1], self.expected_output[method],
+            self.assertEqual(results[i + 1], self.expected_output[method],
                              "Stats.%s output for %s doesn't fit expectation!" %
                              (method, self.profilerclass.__name__))
 
@@ -56,8 +56,12 @@ class ProfileTest(unittest.TestCase):
             stats = pstats.Stats(prof, stream=s)
             stats.print_stats()
             res = s.getvalue()
-            self.assertIn(self.expected_list_sort_output, res,
-                "Profiling {0!r} didn't report list.sort:\n{1}".format(stmt, res))
+            self.assertIn(
+                self.expected_list_sort_output,
+                res,
+                "Profiling {0!r} didn't report list.sort:\n{1}".format(
+                    stmt,
+                    res))
 
 
 def regenerate_expected_output(filename, cls):
@@ -76,12 +80,13 @@ def regenerate_expected_output(filename, cls):
         f.writelines(newfile)
         for i, method in enumerate(cls.methodnames):
             f.write('%s.expected_output[%r] = """\\\n%s"""\n' % (
-                cls.__name__, method, results[i+1]))
+                cls.__name__, method, results[i + 1]))
         f.write('\nif __name__ == "__main__":\n    main()\n')
 
 
 def test_main():
     run_unittest(ProfileTest)
+
 
 def main():
     if '-r' not in sys.argv:
@@ -91,7 +96,7 @@ def main():
 
 
 # Don't remove this comment. Everything below it is auto-generated.
-#--cut--------------------------------------------------------------------------
+# --cut--------------------------------------------------------------------------
 ProfileTest.expected_output['print_stats'] = """\
          127 function calls (107 primitive calls) in 999.749 seconds
 

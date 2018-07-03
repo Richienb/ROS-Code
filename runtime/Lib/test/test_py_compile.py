@@ -7,6 +7,7 @@ import unittest
 
 from test import test_support
 
+
 class PyCompileTests(unittest.TestCase):
 
     def setUp(self):
@@ -47,8 +48,10 @@ class PyCompileTests(unittest.TestCase):
                            os.path.relpath(self.pyc_path))
         self.assertTrue(os.path.exists(self.pyc_path))
 
+
 def test_main():
     test_support.run_unittest(PyCompileTests)
+
 
 if __name__ == "__main__":
     test_main()

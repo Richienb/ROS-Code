@@ -6,8 +6,10 @@ import tempfile
 
 from test import test_support
 
-try: set
-except NameError: from sets import Set as set
+try:
+    set
+except NameError:
+    from sets import Set as set
 
 import modulefinder
 
@@ -203,11 +205,13 @@ a/module.py
                                 from . import bar
 """]
 
+
 def open_file(path):
-    ##print "#", os.path.abspath(path)
+    # print "#", os.path.abspath(path)
     dirname = os.path.dirname(path)
     distutils.dir_util.mkpath(dirname)
     return open(path, "w")
+
 
 def create_package(source):
     ofi = None
@@ -223,6 +227,7 @@ def create_package(source):
         if ofi:
             ofi.close()
 
+
 class ModuleFinderTest(unittest.TestCase):
     def _do_test(self, info, report=False):
         import_this, modules, missing, maybe_missing, source = info
@@ -232,15 +237,15 @@ class ModuleFinderTest(unittest.TestCase):
             mf.import_hook(import_this)
             if report:
                 mf.report()
-##                # This wouldn't work in general when executed several times:
+# This wouldn't work in general when executed several times:
 ##                opath = sys.path[:]
 ##                sys.path = TEST_PATH
-##                try:
-##                    __import__(import_this)
-##                except:
+# try:
+# __import__(import_this)
+# except:
 ##                    import traceback; traceback.print_exc()
 ##                sys.path = opath
-##                return
+# return
             modules = set(modules)
             found = set(mf.modules.keys())
             more = list(found - modules)
@@ -278,9 +283,11 @@ class ModuleFinderTest(unittest.TestCase):
         def test_relative_imports_3(self):
             self._do_test(relative_import_test_3)
 
+
 def test_main():
     distutils.log.set_threshold(distutils.log.WARN)
     test_support.run_unittest(ModuleFinderTest)
+
 
 if __name__ == "__main__":
     unittest.main()

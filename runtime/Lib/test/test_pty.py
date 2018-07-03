@@ -1,6 +1,6 @@
 from test.test_support import verbose, run_unittest, import_module
 
-#Skip these tests if either fcntl or termios is not available
+# Skip these tests if either fcntl or termios is not available
 fcntl = import_module('fcntl')
 import_module('termios')
 
@@ -89,7 +89,7 @@ class PtyTest(unittest.TestCase):
         try:
             s1 = os.read(master_fd, 1024)
             self.assertEqual('', s1)
-        except OSError, e:
+        except OSError as e:
             if e.errno != errno.EAGAIN:
                 raise
         # Restore the original flags.
@@ -109,7 +109,6 @@ class PtyTest(unittest.TestCase):
 
         os.close(slave_fd)
         os.close(master_fd)
-
 
     def test_fork(self):
         debug("calling pty.fork()")
@@ -133,7 +132,7 @@ class PtyTest(unittest.TestCase):
                 # Have pty, but not setsid()?
                 debug("No setsid() available?")
                 pass
-            except:
+            except BaseException:
                 # We don't want this error to propagate, escaping the call to
                 # os._exit() and causing very peculiar behavior in the calling
                 # regrtest.py !
@@ -167,28 +166,31 @@ class PtyTest(unittest.TestCase):
 
             ##line = os.read(master_fd, 80)
             ##lines = line.replace('\r\n', '\n').split('\n')
-            ##if False and lines != ['In child, calling os.setsid()',
-            ##             'Good: OSError was raised.', '']:
+            # if False and lines != ['In child, calling os.setsid()',
+            # 'Good: OSError was raised.', '']:
             ##    raise TestFailed("Unexpected output from child: %r" % line)
 
             (pid, status) = os.waitpid(pid, 0)
             res = status >> 8
-            debug("Child (%d) exited with status %d (%d)." % (pid, res, status))
+            debug(
+                "Child (%d) exited with status %d (%d)." %
+                (pid, res, status))
             if res == 1:
                 self.fail("Child raised an unexpected exception in os.setsid()")
             elif res == 2:
                 self.fail("pty.fork() failed to make child a session leader.")
             elif res == 3:
-                self.fail("Child spawned by pty.fork() did not have a tty as stdout")
+                self.fail(
+                    "Child spawned by pty.fork() did not have a tty as stdout")
             elif res != 4:
                 self.fail("pty.fork() failed for unknown reasons.")
 
             ##debug("Reading from master_fd now that the child has exited")
-            ##try:
+            # try:
             ##    s1 = os.read(master_fd, 1024)
-            ##except os.error:
-            ##    pass
-            ##else:
+            # except os.error:
+            # pass
+            # else:
             ##    raise TestFailed("Read from master_fd did not raise exception")
 
         os.close(master_fd)
@@ -214,7 +216,7 @@ class SmallPtyTests(unittest.TestCase):
         for fd in self.fds:
             try:
                 os.close(fd)
-            except:
+            except BaseException:
                 pass
 
     def _pipe(self):
@@ -284,6 +286,7 @@ class SmallPtyTests(unittest.TestCase):
 
 def test_main(verbose=None):
     run_unittest(SmallPtyTests, PtyTest)
+
 
 if __name__ == "__main__":
     test_main()

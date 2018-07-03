@@ -18,9 +18,9 @@ def _open_with_retry(func, host, *args, **kwargs):
     for i in range(3):
         try:
             return func(host, *args, **kwargs)
-        except IOError, last_exc:
+        except IOError as last_exc:
             continue
-        except:
+        except BaseException:
             raise
     raise last_exc
 
@@ -38,6 +38,7 @@ class URLTimeoutTest(unittest.TestCase):
     def testURLread(self):
         f = _open_with_retry(urllib.urlopen, "http://www.python.org/")
         x = f.read()
+
 
 class urlopenNetworkTests(unittest.TestCase):
     """Tests urllib.urlopen using the network.
@@ -117,7 +118,9 @@ class urlopenNetworkTests(unittest.TestCase):
             open_url.close()
         self.assertEqual(code, 404)
 
-    @unittest.skipIf(test_support.is_jython, "Sockets cannot be used as file descriptors")
+    @unittest.skipIf(
+        test_support.is_jython,
+        "Sockets cannot be used as file descriptors")
     def test_fileno(self):
         if (sys.platform in ('win32',) or
                 not hasattr(os, 'fdopen')):
@@ -130,7 +133,7 @@ class urlopenNetworkTests(unittest.TestCase):
         FILE = os.fdopen(fd)
         try:
             self.assertTrue(FILE.read(), "reading from file created using fd "
-                                      "returned by fileno failed")
+                            "returned by fileno failed")
         finally:
             FILE.close()
 
@@ -144,7 +147,9 @@ class urlopenNetworkTests(unittest.TestCase):
             pass
         else:
             # This happens with some overzealous DNS providers such as OpenDNS
-            self.skipTest("%r should not resolve for test to work" % bogus_domain)
+            self.skipTest(
+                "%r should not resolve for test to work" %
+                bogus_domain)
         self.assertRaises(IOError,
                           # SF patch 809915:  In Sep 2003, VeriSign started
                           # highjacking invalid .com and .net addresses to
@@ -155,6 +160,7 @@ class urlopenNetworkTests(unittest.TestCase):
                           # urllib.urlopen, "http://www.sadflkjsasadf.com/")
                           urllib.urlopen, "http://sadflkjsasf.i.nvali.d/")
 
+
 class urlretrieveNetworkTests(unittest.TestCase):
     """Tests urllib.urlretrieve using the network."""
 
@@ -163,21 +169,25 @@ class urlretrieveNetworkTests(unittest.TestCase):
 
     def test_basic(self):
         # Test basic functionality.
-        file_location,info = self.urlretrieve("http://www.python.org/")
-        self.assertTrue(os.path.exists(file_location), "file location returned by"
-                        " urlretrieve is not a valid path")
+        file_location, info = self.urlretrieve("http://www.python.org/")
+        self.assertTrue(
+            os.path.exists(file_location),
+            "file location returned by"
+            " urlretrieve is not a valid path")
         FILE = file(file_location)
         try:
-            self.assertTrue(FILE.read(), "reading from the file location returned"
-                         " by urlretrieve failed")
+            self.assertTrue(
+                FILE.read(),
+                "reading from the file location returned"
+                " by urlretrieve failed")
         finally:
             FILE.close()
             os.unlink(file_location)
 
     def test_specified_path(self):
         # Make sure that specifying the location of the file to write to works.
-        file_location,info = self.urlretrieve("http://www.python.org/",
-                                              test_support.TESTFN)
+        file_location, info = self.urlretrieve("http://www.python.org/",
+                                               test_support.TESTFN)
         self.assertEqual(file_location, test_support.TESTFN)
         self.assertTrue(os.path.exists(file_location))
         FILE = file(file_location)
@@ -206,7 +216,6 @@ class urlretrieveNetworkTests(unittest.TestCase):
             self.fail('Date value not in %r format', dateformat)
 
 
-
 def test_main():
     test_support.requires('network')
     with test_support.check_py3k_warnings(
@@ -214,6 +223,7 @@ def test_main():
         test_support.run_unittest(URLTimeoutTest,
                                   urlopenNetworkTests,
                                   urlretrieveNetworkTests)
+
 
 if __name__ == "__main__":
     test_main()

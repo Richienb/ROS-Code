@@ -6,6 +6,7 @@ from test import test_support
 
 from stringprep import *
 
+
 class StringprepTests(unittest.TestCase):
     def test(self):
         self.assertTrue(in_table_a1(u"\u0221"))
@@ -89,8 +90,10 @@ class StringprepTests(unittest.TestCase):
         #     h.update(data)
         #     print p, h.hexdigest()
 
+
 def test_main():
     test_support.run_unittest(StringprepTests)
+
 
 if __name__ == '__main__':
     test_main()

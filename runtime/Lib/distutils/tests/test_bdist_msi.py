@@ -21,5 +21,6 @@ class BDistMSITestCase(support.TempdirManager,
 def test_suite():
     return unittest.makeSuite(BDistMSITestCase)
 
+
 if __name__ == '__main__':
     run_unittest(test_suite())

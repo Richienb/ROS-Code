@@ -15,6 +15,7 @@ from distutils.core import PyPIRCCommand
 from distutils.spawn import spawn
 from distutils import log
 
+
 class upload(PyPIRCCommand):
 
     description = "upload binary package to PyPI"
@@ -23,7 +24,7 @@ class upload(PyPIRCCommand):
         ('sign', 's',
          'sign files to upload using gpg'),
         ('identity=', 'i', 'GPG identity used to sign files'),
-        ]
+    ]
 
     boolean_options = PyPIRCCommand.boolean_options + ['sign']
 
@@ -55,7 +56,8 @@ class upload(PyPIRCCommand):
 
     def run(self):
         if not self.distribution.dist_files:
-            raise DistutilsOptionError("No dist file created in earlier command")
+            raise DistutilsOptionError(
+                "No dist file created in earlier command")
         for command, pyversion, filename in self.distribution.dist_files:
             self.upload_file(command, pyversion, filename)
 
@@ -79,7 +81,7 @@ class upload(PyPIRCCommand):
 
         # Fill in the data - send all the meta-data in case we need to
         # register a new release
-        f = open(filename,'rb')
+        f = open(filename, 'rb')
         try:
             content = f.read()
         finally:
@@ -95,13 +97,13 @@ class upload(PyPIRCCommand):
             'version': meta.get_version(),
 
             # file content
-            'content': (os.path.basename(filename),content),
+            'content': (os.path.basename(filename), content),
             'filetype': command,
             'pyversion': pyversion,
             'md5_digest': md5(content).hexdigest(),
 
             # additional meta-data
-            'metadata_version' : '1.0',
+            'metadata_version': '1.0',
             'summary': meta.get_description(),
             'home_page': meta.get_url(),
             'author': meta.get_contact(),
@@ -116,7 +118,7 @@ class upload(PyPIRCCommand):
             'provides': meta.get_provides(),
             'requires': meta.get_requires(),
             'obsoletes': meta.get_obsoletes(),
-            }
+        }
         comment = ''
         if command == 'bdist_rpm':
             dist, version, id = platform.dist()
@@ -128,7 +130,7 @@ class upload(PyPIRCCommand):
 
         if self.sign:
             data['gpg_signature'] = (os.path.basename(filename) + ".asc",
-                                     open(filename+".asc").read())
+                                     open(filename + ".asc").read())
 
         # set up the authentication
         auth = "Basic " + standard_b64encode(self.username + ":" +
@@ -151,7 +153,7 @@ class upload(PyPIRCCommand):
                     fn = ""
 
                 body.write(sep_boundary)
-                body.write('\nContent-Disposition: form-data; name="%s"'%key)
+                body.write('\nContent-Disposition: form-data; name="%s"' % key)
                 body.write(fn)
                 body.write("\n\n")
                 body.write(value)
@@ -161,11 +163,13 @@ class upload(PyPIRCCommand):
         body.write("\n")
         body = body.getvalue()
 
-        self.announce("Submitting %s to %s" % (filename, self.repository), log.INFO)
+        self.announce(
+            "Submitting %s to %s" %
+            (filename, self.repository), log.INFO)
 
         # build the Request
         headers = {'Content-type':
-                        'multipart/form-data; boundary=%s' % boundary,
+                   'multipart/form-data; boundary=%s' % boundary,
                    'Content-length': str(len(body)),
                    'Authorization': auth}
 
@@ -179,10 +183,10 @@ class upload(PyPIRCCommand):
             if self.show_response:
                 msg = '\n'.join(('-' * 75, r.read(), '-' * 75))
                 self.announce(msg, log.INFO)
-        except socket.error, e:
+        except socket.error as e:
             self.announce(str(e), log.ERROR)
             return
-        except HTTPError, e:
+        except HTTPError as e:
             status = e.code
             reason = e.msg
 

@@ -78,7 +78,7 @@ import socket
 import asyncore
 import asynchat
 
-__all__ = ["SMTPServer","DebuggingServer","PureProxy","MailmanProxy"]
+__all__ = ["SMTPServer", "DebuggingServer", "PureProxy", "MailmanProxy"]
 
 program = sys.argv[0]
 __version__ = 'Python SMTP proxy version 0.2'
@@ -86,6 +86,7 @@ __version__ = 'Python SMTP proxy version 0.2'
 
 class Devnull:
     def write(self, msg): pass
+
     def flush(self): pass
 
 
@@ -120,7 +121,7 @@ class SMTPChannel(asynchat.async_chat):
         self.__fqdn = socket.getfqdn()
         try:
             self.__peer = conn.getpeername()
-        except socket.error, err:
+        except socket.error as err:
             # a race condition  may occur if the other end is closing
             # before we can get the peername
             self.close()
@@ -155,7 +156,7 @@ class SMTPChannel(asynchat.async_chat):
                 arg = None
             else:
                 command = line[:i].upper()
-                arg = line[i+1:].strip()
+                arg = line[i + 1:].strip()
             method = getattr(self, 'smtp_' + command, None)
             if not method:
                 self.push('502 Error: command "%s" not implemented' % command)
@@ -284,15 +285,15 @@ class SMTPServer(asyncore.dispatcher):
             self.set_reuse_addr()
             self.bind(localaddr)
             self.listen(5)
-        except:
+        except BaseException:
             # cleanup asyncore.socket_map before raising
             self.close()
             raise
         else:
             print >> DEBUGSTREAM, \
-                  '%s started at %s\n\tLocal addr: %s\n\tRemote addr:%s' % (
-                self.__class__.__name__, time.ctime(time.time()),
-                localaddr, remoteaddr)
+                '%s started at %s\n\tLocal addr: %s\n\tRemote addr:%s' % (
+                    self.__class__.__name__, time.ctime(time.time()),
+                    localaddr, remoteaddr)
 
     def handle_accept(self):
         pair = self.accept()
@@ -367,10 +368,10 @@ class PureProxy(SMTPServer):
                 refused = s.sendmail(mailfrom, rcpttos, data)
             finally:
                 s.quit()
-        except smtplib.SMTPRecipientsRefused, e:
+        except smtplib.SMTPRecipientsRefused as e:
             print >> DEBUGSTREAM, 'got SMTPRecipientsRefused'
             refused = e.recipients
-        except (socket.error, smtplib.SMTPException), e:
+        except (socket.error, smtplib.SMTPException) as e:
             print >> DEBUGSTREAM, 'got', e.__class__
             # All recipients were refused.  If the exception had an associated
             # error code, use it.  Otherwise,fake it with a non-triggering
@@ -471,7 +472,7 @@ def parseargs():
         opts, args = getopt.getopt(
             sys.argv[1:], 'nVhc:d',
             ['class=', 'nosetuid', 'version', 'help', 'debug'])
-    except getopt.error, e:
+    except getopt.error as e:
         usage(1, e)
 
     options = Options()
@@ -507,7 +508,7 @@ def parseargs():
         usage(1, 'Bad local spec: %s' % localspec)
     options.localhost = localspec[:i]
     try:
-        options.localport = int(localspec[i+1:])
+        options.localport = int(localspec[i + 1:])
     except ValueError:
         usage(1, 'Bad local port: %s' % localspec)
     i = remotespec.find(':')
@@ -515,7 +516,7 @@ def parseargs():
         usage(1, 'Bad remote spec: %s' % remotespec)
     options.remotehost = remotespec[:i]
     try:
-        options.remoteport = int(remotespec[i+1:])
+        options.remoteport = int(remotespec[i + 1:])
     except ValueError:
         usage(1, 'Bad remote port: %s' % remotespec)
     return options
@@ -528,7 +529,7 @@ if __name__ == '__main__':
     if "." in classname:
         lastdot = classname.rfind(".")
         mod = __import__(classname[:lastdot], globals(), locals(), [""])
-        classname = classname[lastdot+1:]
+        classname = classname[lastdot + 1:]
     else:
         import __main__ as mod
     class_ = getattr(mod, classname)
@@ -539,15 +540,16 @@ if __name__ == '__main__':
             import pwd
         except ImportError:
             print >> sys.stderr, \
-                  'Cannot import module "pwd"; try running with -n option.'
+                'Cannot import module "pwd"; try running with -n option.'
             sys.exit(1)
         nobody = pwd.getpwnam('nobody')[2]
         try:
             os.setuid(nobody)
-        except OSError, e:
-            if e.errno != errno.EPERM: raise
+        except OSError as e:
+            if e.errno != errno.EPERM:
+                raise
             print >> sys.stderr, \
-                  'Cannot setuid "nobody"; try running with -n option.'
+                'Cannot setuid "nobody"; try running with -n option.'
             sys.exit(1)
     try:
         asyncore.loop()

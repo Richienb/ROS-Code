@@ -56,7 +56,7 @@ class FileListTestCase(support.LoggingSilencer,
             (r'foo\\*', r'foo\\\\[^%(sep)s]*\Z(?ms)'),
             (r'foo\\\*', r'foo\\\\\\[^%(sep)s]*\Z(?ms)'),
             ('foo????', r'foo[^%(sep)s][^%(sep)s][^%(sep)s][^%(sep)s]\Z(?ms)'),
-            (r'foo\\??', r'foo\\\\[^%(sep)s][^%(sep)s]\Z(?ms)')):
+                (r'foo\\??', r'foo\\\\[^%(sep)s][^%(sep)s]\Z(?ms)')):
             regex = regex % {'sep': sep}
             self.assertEqual(glob_to_re(glob), regex)
 
@@ -80,7 +80,7 @@ class FileListTestCase(support.LoggingSilencer,
                               l('dir/dir2/graft2'),
                               l('dir3/ok'),
                               l('dir3/sub/ok.txt'),
-                             ]
+                              ]
 
         for line in MANIFEST_IN.split('\n'):
             if line.strip() == '':
@@ -96,7 +96,7 @@ class FileListTestCase(support.LoggingSilencer,
                   l('f/o/f.oo'),
                   l('dir/graft-one'),
                   l('dir/dir2/graft2'),
-                 ]
+                  ]
 
         self.assertEqual(file_list.files, wanted)
 
@@ -294,6 +294,7 @@ class FileListTestCase(support.LoggingSilencer,
 
 def test_suite():
     return unittest.makeSuite(FileListTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

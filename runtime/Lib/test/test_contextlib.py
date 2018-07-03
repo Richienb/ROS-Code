@@ -15,6 +15,7 @@ class ContextManagerTestCase(unittest.TestCase):
 
     def test_contextmanager_plain(self):
         state = []
+
         @contextmanager
         def woohoo():
             state.append(1)
@@ -28,6 +29,7 @@ class ContextManagerTestCase(unittest.TestCase):
 
     def test_contextmanager_finally(self):
         state = []
+
         @contextmanager
         def woohoo():
             state.append(1)
@@ -57,7 +59,7 @@ class ContextManagerTestCase(unittest.TestCase):
         def whoo():
             try:
                 yield
-            except:
+            except BaseException:
                 yield
         ctx = whoo()
         ctx.__enter__()
@@ -67,12 +69,13 @@ class ContextManagerTestCase(unittest.TestCase):
 
     def test_contextmanager_except(self):
         state = []
+
         @contextmanager
         def woohoo():
             state.append(1)
             try:
                 yield 42
-            except ZeroDivisionError, e:
+            except ZeroDivisionError as e:
                 state.append(e.args[0])
                 self.assertEqual(state, [1, 42, 999])
         with woohoo() as x:
@@ -85,10 +88,11 @@ class ContextManagerTestCase(unittest.TestCase):
     def _create_contextmanager_attribs(self):
         def attribs(**kw):
             def decorate(func):
-                for k,v in kw.items():
-                    setattr(func,k,v)
+                for k, v in kw.items():
+                    setattr(func, k, v)
                 return func
             return decorate
+
         @contextmanager
         @attribs(foo='bar')
         def baz(spam):
@@ -97,7 +101,7 @@ class ContextManagerTestCase(unittest.TestCase):
 
     def test_contextmanager_attribs(self):
         baz = self._create_contextmanager_attribs()
-        self.assertEqual(baz.__name__,'baz')
+        self.assertEqual(baz.__name__, 'baz')
         self.assertEqual(baz.foo, 'bar')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
@@ -105,6 +109,7 @@ class ContextManagerTestCase(unittest.TestCase):
     def test_contextmanager_doc_attrib(self):
         baz = self._create_contextmanager_attribs()
         self.assertEqual(baz.__doc__, "Whee!")
+
 
 class NestedTestCase(unittest.TestCase):
 
@@ -114,9 +119,11 @@ class NestedTestCase(unittest.TestCase):
         @contextmanager
         def a():
             yield 1
+
         @contextmanager
         def b():
             yield 2
+
         @contextmanager
         def c():
             yield 3
@@ -127,6 +134,7 @@ class NestedTestCase(unittest.TestCase):
 
     def test_nested_cleanup(self):
         state = []
+
         @contextmanager
         def a():
             state.append(1)
@@ -134,6 +142,7 @@ class NestedTestCase(unittest.TestCase):
                 yield 2
             finally:
                 state.append(3)
+
         @contextmanager
         def b():
             state.append(4)
@@ -152,13 +161,15 @@ class NestedTestCase(unittest.TestCase):
         @contextmanager
         def a():
             yield 1
+
         class b(object):
             def __enter__(self):
                 return 2
+
             def __exit__(self, *exc_info):
                 try:
                     raise Exception()
-                except:
+                except BaseException:
                     pass
         with self.assertRaises(ZeroDivisionError):
             with nested(a(), b()) as (x, y):
@@ -169,11 +180,12 @@ class NestedTestCase(unittest.TestCase):
         @contextmanager
         def a():
             yield
+
         @contextmanager
         def b():
             try:
                 yield
-            except:
+            except BaseException:
                 # Swallow the exception
                 pass
         try:
@@ -211,13 +223,15 @@ class NestedTestCase(unittest.TestCase):
         def a():
             try:
                 yield
-            except:
+            except BaseException:
                 pass
+
         def foo():
             with nested(a(), a()):
                 return 1
             return 10
         self.assertEqual(foo(), 1)
+
 
 class ClosingTestCase(unittest.TestCase):
 
@@ -225,6 +239,7 @@ class ClosingTestCase(unittest.TestCase):
 
     def test_closing(self):
         state = []
+
         class C:
             def close(self):
                 state.append(1)
@@ -236,6 +251,7 @@ class ClosingTestCase(unittest.TestCase):
 
     def test_closing_error(self):
         state = []
+
         class C:
             def close(self):
                 state.append(1)
@@ -246,6 +262,7 @@ class ClosingTestCase(unittest.TestCase):
                 self.assertEqual(x, y)
                 1 // 0
         self.assertEqual(state, [1])
+
 
 class FileContextTestCase(unittest.TestCase):
 
@@ -266,6 +283,7 @@ class FileContextTestCase(unittest.TestCase):
             self.assertTrue(f.closed)
         finally:
             test_support.unlink(tfn)
+
 
 @unittest.skipUnless(threading, 'Threading required for this test.')
 class LockContextTestCase(unittest.TestCase):
@@ -291,12 +309,14 @@ class LockContextTestCase(unittest.TestCase):
 
     def testWithCondition(self):
         lock = threading.Condition()
+
         def locked():
             return lock._is_owned()
         self.boilerPlate(lock, locked)
 
     def testWithSemaphore(self):
         lock = threading.Semaphore()
+
         def locked():
             if lock.acquire(False):
                 lock.release()
@@ -307,6 +327,7 @@ class LockContextTestCase(unittest.TestCase):
 
     def testWithBoundedSemaphore(self):
         lock = threading.BoundedSemaphore()
+
         def locked():
             if lock.acquire(False):
                 lock.release()
@@ -316,11 +337,14 @@ class LockContextTestCase(unittest.TestCase):
         self.boilerPlate(lock, locked)
 
 # This is needed to make the test actually run under regrtest.py!
+
+
 def test_main():
     with test_support.check_warnings(("With-statements now directly support "
                                       "multiple context managers",
                                       DeprecationWarning)):
         test_support.run_unittest(__name__)
+
 
 if __name__ == "__main__":
     test_main()

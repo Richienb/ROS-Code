@@ -8,8 +8,9 @@ from _testcapi import _test_structmembersType, \
 import unittest
 from test import test_support
 
-ts=_test_structmembersType(False, 1, 2, 3, 4, 5, 6, 7, 8,
-                          9.99999, 10.1010101010, "hi")
+ts = _test_structmembersType(False, 1, 2, 3, 4, 5, 6, 7, 8,
+                             9.99999, 10.1010101010, "hi")
+
 
 class ReadWriteTests(unittest.TestCase):
 
@@ -62,7 +63,7 @@ class ReadWriteTests(unittest.TestCase):
         ts.T_ULONGLONG = ULLONG_MAX
         self.assertEqual(ts.T_ULONGLONG, ULLONG_MAX)
 
-        ## make sure these will accept a plain int as well as a long
+        # make sure these will accept a plain int as well as a long
         ts.T_LONGLONG = 3
         self.assertEqual(ts.T_LONGLONG, 3)
         ts.T_ULONGLONG = 4
@@ -78,31 +79,32 @@ class TestWarnings(unittest.TestCase):
 
     def test_byte_max(self):
         with test_support.check_warnings(('', RuntimeWarning)):
-            ts.T_BYTE = CHAR_MAX+1
+            ts.T_BYTE = CHAR_MAX + 1
 
     def test_byte_min(self):
         with test_support.check_warnings(('', RuntimeWarning)):
-            ts.T_BYTE = CHAR_MIN-1
+            ts.T_BYTE = CHAR_MIN - 1
 
     def test_ubyte_max(self):
         with test_support.check_warnings(('', RuntimeWarning)):
-            ts.T_UBYTE = UCHAR_MAX+1
+            ts.T_UBYTE = UCHAR_MAX + 1
 
     def test_short_max(self):
         with test_support.check_warnings(('', RuntimeWarning)):
-            ts.T_SHORT = SHRT_MAX+1
+            ts.T_SHORT = SHRT_MAX + 1
 
     def test_short_min(self):
         with test_support.check_warnings(('', RuntimeWarning)):
-            ts.T_SHORT = SHRT_MIN-1
+            ts.T_SHORT = SHRT_MIN - 1
 
     def test_ushort_max(self):
         with test_support.check_warnings(('', RuntimeWarning)):
-            ts.T_USHORT = USHRT_MAX+1
+            ts.T_USHORT = USHRT_MAX + 1
 
 
 def test_main(verbose=None):
     test_support.run_unittest(__name__)
+
 
 if __name__ == "__main__":
     test_main(verbose=True)

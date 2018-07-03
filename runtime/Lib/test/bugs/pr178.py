@@ -3,8 +3,10 @@
 
 from java.util import Date
 
+
 class Foo(Date):
     pass
+
 
 class Bar(Foo):
     pass

@@ -9,4 +9,5 @@ def f(x):
         return x + y
     return g
 
+
 result = f(2)(4)

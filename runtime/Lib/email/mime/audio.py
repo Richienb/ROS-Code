@@ -13,15 +13,16 @@ from email import encoders
 from email.mime.nonmultipart import MIMENonMultipart
 
 
-
-_sndhdr_MIMEmap = {'au'  : 'basic',
-                   'wav' :'x-wav',
-                   'aiff':'x-aiff',
-                   'aifc':'x-aiff',
+_sndhdr_MIMEmap = {'au': 'basic',
+                   'wav': 'x-wav',
+                   'aiff': 'x-aiff',
+                   'aifc': 'x-aiff',
                    }
 
 # There are others in sndhdr that don't have MIME types. :(
 # Additional ones to be added to sndhdr? midi, mp3, realaudio, wma??
+
+
 def _whatsnd(data):
     """Try to identify a sound file type.
 
@@ -38,7 +39,6 @@ def _whatsnd(data):
     return None
 
 
-
 class MIMEAudio(MIMENonMultipart):
     """Class for generating audio/* MIME documents."""
 

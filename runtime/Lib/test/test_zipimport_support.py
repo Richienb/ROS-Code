@@ -35,14 +35,18 @@ from test import (test_doctest, sample_doctest, sample_doctest_no_doctests,
                   sample_doctest_no_docstrings)
 from test.test_importhooks import ImportHooksBaseTestCase
 
-if is_jython and os._name=="nt":
+if is_jython and os._name == "nt":
     # Jython holds open zip/jar files placed on its sys.path. (Assume there
     # is a good reason for this.) Windows will not then allow the script
     # directory to be cleaned up on context exit, resulting in test failures
     # unrelated to the purpose of the test.
 
     # Replace test.script_helper.temp_dir with this copy.
-    import contextlib, tempfile, shutil, warnings
+    import contextlib
+    import tempfile
+    import shutil
+    import warnings
+
     @contextlib.contextmanager
     def temp_dir():
         dirname = os.path.realpath(tempfile.mkdtemp())
@@ -52,7 +56,8 @@ if is_jython and os._name=="nt":
             try:
                 shutil.rmtree(dirname)
             except OSError:
-                warnings.warn("Failed to remove "+dirname)
+                warnings.warn("Failed to remove " + dirname)
+
 
 def _run_object_doctest(obj, module):
     # Direct doctest output (normally just errors) to real stdout; doctest
@@ -72,13 +77,13 @@ def _run_object_doctest(obj, module):
             runner.run(example)
         f, t = runner.failures, runner.tries
         if f:
-            raise test.test_support.TestFailed("%d of %d doctests failed" % (f, t))
+            raise test.test_support.TestFailed(
+                "%d of %d doctests failed" % (f, t))
     finally:
         sys.stdout = save_stdout
     if verbose:
         print 'doctest (%s) ... %d tests with zero failures' % (module.__name__, t)
     return f, t
-
 
 
 class ZipSupportTests(ImportHooksBaseTestCase):
@@ -92,7 +97,6 @@ class ZipSupportTests(ImportHooksBaseTestCase):
         zipimport._zip_directory_cache.clear()
         ImportHooksBaseTestCase.setUp(self)
 
-
     def test_inspect_getsource_issue4223(self):
         test_src = "def foo(): pass\n"
         with temp_dir() as d:
@@ -100,7 +104,7 @@ class ZipSupportTests(ImportHooksBaseTestCase):
             name_in_zip = os.path.join('zip_pkg',
                                        os.path.basename(init_name))
             zip_name, run_name = make_zip_script(d, 'test_zip',
-                                                init_name, name_in_zip)
+                                                 init_name, name_in_zip)
             os.remove(init_name)
             sys.path.insert(0, zip_name)
             import zip_pkg
@@ -114,8 +118,8 @@ class ZipSupportTests(ImportHooksBaseTestCase):
         # everything still works correctly
         test_src = inspect.getsource(test_doctest)
         test_src = test_src.replace(
-                         "from test import test_doctest",
-                         "import test_zipped_doctest as test_doctest")
+            "from test import test_doctest",
+            "import test_zipped_doctest as test_doctest")
         test_src = test_src.replace("test.test_doctest",
                                     "test_zipped_doctest")
         test_src = test_src.replace("test.sample_doctest",
@@ -134,9 +138,9 @@ class ZipSupportTests(ImportHooksBaseTestCase):
 
         with temp_dir() as d:
             script_name = make_script(d, 'test_zipped_doctest',
-                                            test_src)
+                                      test_src)
             zip_name, run_name = make_zip_script(d, 'test_zip',
-                                                script_name)
+                                                 script_name)
             z = zipfile.ZipFile(zip_name, 'a')
             for mod_name, src in sample_sources.items():
                 z.writestr(mod_name + ".py", src)
@@ -201,8 +205,10 @@ class ZipSupportTests(ImportHooksBaseTestCase):
             # Needed for test_DocTestParser and test_debug
             deprecations = []
             if __debug__:
-                # Ignore all warnings about the use of class Tester in this module.
-                deprecations.append(("class Tester is deprecated", DeprecationWarning))
+                # Ignore all warnings about the use of class Tester in this
+                # module.
+                deprecations.append(
+                    ("class Tester is deprecated", DeprecationWarning))
             if sys.py3kwarning:
                 deprecations += [
                     ("backquote not supported", SyntaxWarning),
@@ -231,7 +237,7 @@ class ZipSupportTests(ImportHooksBaseTestCase):
                 print data
             self.assertIn(expected, data)
             zip_name, run_name = make_zip_script(d, "test_zip",
-                                                script_name, '__main__.py')
+                                                 script_name, '__main__.py')
             exit_code, data = run_python(zip_name)
             expected = pattern % (run_name, "__main__.Test")
             if verbose:
@@ -257,7 +263,7 @@ class ZipSupportTests(ImportHooksBaseTestCase):
             # See CPython Issue 14255 (back-ported for Jython)
             self.assertIn(os.path.normcase(script_name.encode('utf-8')), data)
             zip_name, run_name = make_zip_script(d, "test_zip",
-                                                script_name, '__main__.py')
+                                                 script_name, '__main__.py')
             p = spawn_python(zip_name)
             p.stdin.write('l\n')
             data = kill_python(p)
@@ -269,6 +275,7 @@ class ZipSupportTests(ImportHooksBaseTestCase):
 def test_main():
     test.test_support.run_unittest(ZipSupportTests)
     test.test_support.reap_children()
+
 
 if __name__ == '__main__':
     test_main()

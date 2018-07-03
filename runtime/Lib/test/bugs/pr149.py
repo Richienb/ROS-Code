@@ -2,6 +2,7 @@
 
 import java
 
+
 class Foo(java.io.Serializable):
     def init(self):
         pass

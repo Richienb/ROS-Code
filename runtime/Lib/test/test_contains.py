@@ -6,9 +6,11 @@ class base_set:
     def __init__(self, el):
         self.el = el
 
+
 class set(base_set):
     def __contains__(self, el):
         return self.el == el
+
 
 class seq(base_set):
     def __getitem__(self, n):
@@ -79,6 +81,7 @@ class TestContains(unittest.TestCase):
             works when the list is modified during the check.
             """
             aList = range(15)
+
             def __cmp__(self, other):
                 if other == 12:
                     self.aList.remove(12)
@@ -94,9 +97,10 @@ class TestContains(unittest.TestCase):
             This class raises an exception during comparison.  That in
             turn causes the comparison to fail with a TypeError.
             """
+
             def __cmp__(self, other):
                 if other == 4:
-                    raise RuntimeError, "gotcha"
+                    raise RuntimeError("gotcha")
 
         try:
             self.assertNotIn(Deviant2(), a)
@@ -106,6 +110,7 @@ class TestContains(unittest.TestCase):
 
 def test_main():
     run_unittest(TestContains)
+
 
 if __name__ == '__main__':
     test_main()

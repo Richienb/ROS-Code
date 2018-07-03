@@ -7,6 +7,7 @@ For now, tests just new or changed functionality.
 import unittest
 from test import test_support
 
+
 class BufferTests(unittest.TestCase):
 
     def test_extended_getslice(self):
@@ -26,6 +27,7 @@ def test_main():
     with test_support.check_py3k_warnings(("buffer.. not supported",
                                            DeprecationWarning)):
         test_support.run_unittest(BufferTests)
+
 
 if __name__ == "__main__":
     test_main()

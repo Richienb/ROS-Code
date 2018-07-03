@@ -54,9 +54,11 @@ class TestTimezone(unittest.TestCase):
         class GMT1(tzinfo):
             def utcoffset(self, dt):
                 return timedelta(hours=1)
+
             def dst(self, dt):
                 return timedelta(0)
-            def tzname(self,dt):
+
+            def tzname(self, dt):
                 return "Europe/Prague"
 
         self.assertTrue(hasattr(datetime, "__tojava__"))
@@ -75,9 +77,11 @@ class TestTimezone(unittest.TestCase):
         class Offset(tzinfo):
             def utcoffset(self, dt):
                 return timedelta(hours=1, minutes=15)
+
             def dst(self, dt):
                 return timedelta(seconds=-900)
-            def tzname(self,dt):
+
+            def tzname(self, dt):
                 return "Foo/Bar"
 
         self.assertTrue(hasattr(datetime, "__tojava__"))
@@ -102,21 +106,35 @@ class TestSQL(unittest.TestCase):
         x = datetime(2007, 1, 3)
         y = x.__tojava__(Timestamp)
         self.assertIsInstance(y, Timestamp)
-        self.assertEqual(y.getTime(), (x - datetime(1970, 1, 1)).total_seconds() * 1000)
+        self.assertEqual(
+            y.getTime(),
+            (x -
+             datetime(
+                 1970,
+                 1,
+                 1)).total_seconds() *
+            1000)
 
     def test_date(self):
         self.assertTrue(hasattr(date, "__tojava__"))
         x = date(2007, 1, 3)
         y = x.__tojava__(Date)
         self.assertIsInstance(y, Date)
-        self.assertEqual(y.getTime(), (x - date(1970, 1, 1)).total_seconds() * 1000)
+        self.assertEqual(
+            y.getTime(),
+            (x -
+             date(
+                 1970,
+                 1,
+                 1)).total_seconds() *
+            1000)
 
     def test_time(self):
         self.assertTrue(hasattr(time, "__tojava__"))
         x = time(1, 3)
         y = x.__tojava__(Time)
         self.assertIsInstance(y, Time)
-        epoch = y.getTime()/1000.
+        epoch = y.getTime() / 1000.
         self.assertEqual(epoch // 3600, 1)   # 1 hour
         self.assertEqual(epoch % 3600, 180)  # 3 minutes
 

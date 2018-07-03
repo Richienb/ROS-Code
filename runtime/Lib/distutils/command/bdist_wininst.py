@@ -17,51 +17,67 @@ from distutils.errors import DistutilsOptionError, DistutilsPlatformError
 from distutils import log
 from distutils.util import get_platform
 
+
 class bdist_wininst (Command):
 
     description = "create an executable installer for MS Windows"
 
-    user_options = [('bdist-dir=', None,
-                     "temporary directory for creating the distribution"),
-                    ('plat-name=', 'p',
-                     "platform name to embed in generated filenames "
-                     "(default: %s)" % get_platform()),
-                    ('keep-temp', 'k',
-                     "keep the pseudo-installation tree around after " +
-                     "creating the distribution archive"),
-                    ('target-version=', None,
-                     "require a specific python version" +
-                     " on the target system"),
-                    ('no-target-compile', 'c',
-                     "do not compile .py to .pyc on the target system"),
-                    ('no-target-optimize', 'o',
-                     "do not compile .py to .pyo (optimized)"
-                     "on the target system"),
-                    ('dist-dir=', 'd',
-                     "directory to put final built distributions in"),
-                    ('bitmap=', 'b',
-                     "bitmap to use for the installer instead of python-powered logo"),
-                    ('title=', 't',
-                     "title to display on the installer background instead of default"),
-                    ('skip-build', None,
-                     "skip rebuilding everything (for testing/debugging)"),
-                    ('install-script=', None,
-                     "basename of installation script to be run after"
-                     "installation or before deinstallation"),
-                    ('pre-install-script=', None,
-                     "Fully qualified filename of a script to be run before "
-                     "any files are installed.  This script need not be in the "
-                     "distribution"),
-                    ('user-access-control=', None,
-                     "specify Vista's UAC handling - 'none'/default=no "
-                     "handling, 'auto'=use UAC if target Python installed for "
-                     "all users, 'force'=always use UAC"),
-                   ]
+    user_options = [
+        ('bdist-dir=',
+         None,
+         "temporary directory for creating the distribution"),
+        ('plat-name=',
+         'p',
+         "platform name to embed in generated filenames "
+         "(default: %s)" %
+         get_platform()),
+        ('keep-temp',
+         'k',
+         "keep the pseudo-installation tree around after " +
+         "creating the distribution archive"),
+        ('target-version=',
+         None,
+         "require a specific python version" +
+         " on the target system"),
+        ('no-target-compile',
+         'c',
+         "do not compile .py to .pyc on the target system"),
+        ('no-target-optimize',
+         'o',
+         "do not compile .py to .pyo (optimized)"
+         "on the target system"),
+        ('dist-dir=',
+         'd',
+         "directory to put final built distributions in"),
+        ('bitmap=',
+         'b',
+         "bitmap to use for the installer instead of python-powered logo"),
+        ('title=',
+         't',
+         "title to display on the installer background instead of default"),
+        ('skip-build',
+         None,
+         "skip rebuilding everything (for testing/debugging)"),
+        ('install-script=',
+         None,
+         "basename of installation script to be run after"
+         "installation or before deinstallation"),
+        ('pre-install-script=',
+         None,
+         "Fully qualified filename of a script to be run before "
+         "any files are installed.  This script need not be in the "
+         "distribution"),
+        ('user-access-control=',
+         None,
+         "specify Vista's UAC handling - 'none'/default=no "
+         "handling, 'auto'=use UAC if target Python installed for "
+         "all users, 'force'=always use UAC"),
+    ]
 
     boolean_options = ['keep-temp', 'no-target-compile', 'no-target-optimize',
                        'skip-build']
 
-    def initialize_options (self):
+    def initialize_options(self):
         self.bdist_dir = None
         self.plat_name = None
         self.keep_temp = 0
@@ -78,8 +94,7 @@ class bdist_wininst (Command):
 
     # initialize_options()
 
-
-    def finalize_options (self):
+    def finalize_options(self):
         self.set_undefined_options('bdist', ('skip_build', 'skip_build'))
 
         if self.bdist_dir is None:
@@ -98,34 +113,34 @@ class bdist_wininst (Command):
         if not self.skip_build and self.distribution.has_ext_modules():
             short_version = get_python_version()
             if self.target_version and self.target_version != short_version:
-                raise DistutilsOptionError, \
-                      "target version can only be %s, or the '--skip-build'" \
-                      " option must be specified" % (short_version,)
+                raise DistutilsOptionError(
+                    "target version can only be %s, or the '--skip-build'"
+                    " option must be specified" %
+                    (short_version,))
             self.target_version = short_version
 
         self.set_undefined_options('bdist',
                                    ('dist_dir', 'dist_dir'),
                                    ('plat_name', 'plat_name'),
-                                  )
+                                   )
 
         if self.install_script:
             for script in self.distribution.scripts:
                 if self.install_script == os.path.basename(script):
                     break
             else:
-                raise DistutilsOptionError, \
-                      "install_script '%s' not found in scripts" % \
-                      self.install_script
+                raise DistutilsOptionError(
+                    "install_script '%s' not found in scripts" %
+                    self.install_script)
     # finalize_options()
 
-
-    def run (self):
+    def run(self):
         if (sys.platform != "win32" and
             (self.distribution.has_ext_modules() or
              self.distribution.has_c_libraries())):
-            raise DistutilsPlatformError \
-                  ("distribution contains extensions and/or C libraries; "
-                   "must be compiled on a Windows 32 platform")
+            raise DistutilsPlatformError(
+                "distribution contains extensions and/or C libraries; "
+                "must be compiled on a Windows 32 platform")
 
         if not self.skip_build:
             self.run_command('build')
@@ -191,8 +206,8 @@ class bdist_wininst (Command):
             pyversion = get_python_version()
         else:
             pyversion = 'any'
-        self.distribution.dist_files.append(('bdist_wininst', pyversion,
-                                             self.get_installer_filename(fullname)))
+        self.distribution.dist_files.append(
+            ('bdist_wininst', pyversion, self.get_installer_filename(fullname)))
         # remove the zip-file again
         log.debug("removing temporary file '%s'", arcname)
         os.remove(arcname)
@@ -202,7 +217,7 @@ class bdist_wininst (Command):
 
     # run()
 
-    def get_inidata (self):
+    def get_inidata(self):
         # Return data describing the installation.
 
         lines = []
@@ -223,7 +238,7 @@ class bdist_wininst (Command):
                      "maintainer_email", "name", "url", "version"]:
             data = getattr(metadata, name, "")
             if data:
-                info = info + ("\n    %s: %s" % \
+                info = info + ("\n    %s: %s" %
                                (string.capitalize(name), escape(data)))
                 lines.append("%s=%s" % (name, escape(data)))
 
@@ -251,7 +266,7 @@ class bdist_wininst (Command):
 
     # get_inidata()
 
-    def create_exe (self, arcname, fullname, bitmap=None):
+    def create_exe(self, arcname, fullname, bitmap=None):
         import struct
 
         self.mkpath(self.dist_dir)
@@ -311,16 +326,17 @@ class bdist_wininst (Command):
         if self.target_version:
             # if we create an installer for a specific python version,
             # it's better to include this in the name
-            installer_name = os.path.join(self.dist_dir,
-                                          "%s.%s-py%s.exe" %
-                                           (fullname, self.plat_name, self.target_version))
+            installer_name = os.path.join(
+                self.dist_dir, "%s.%s-py%s.exe" %
+                (fullname, self.plat_name, self.target_version))
         else:
-            installer_name = os.path.join(self.dist_dir,
-                                          "%s.%s.exe" % (fullname, self.plat_name))
+            installer_name = os.path.join(
+                self.dist_dir, "%s.%s.exe" %
+                (fullname, self.plat_name))
         return installer_name
     # get_installer_filename()
 
-    def get_exe_bytes (self):
+    def get_exe_bytes(self):
         from distutils.msvccompiler import get_build_version
         # If a target-version other than the current version has been
         # specified, then using the MSVC version from *this* build is no good.

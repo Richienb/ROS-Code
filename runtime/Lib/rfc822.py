@@ -77,7 +77,7 @@ from warnings import warnpy3k
 warnpy3k("in 3.x, rfc822 has been removed in favor of the email package",
          stacklevel=2)
 
-__all__ = ["Message","AddressList","parsedate","parsedate_tz","mktime_tz"]
+__all__ = ["Message", "AddressList", "parsedate", "parsedate_tz", "mktime_tz"]
 
 _blanklines = ('\r\n', '\n')            # Optimization for islast()
 
@@ -85,7 +85,7 @@ _blanklines = ('\r\n', '\n')            # Optimization for islast()
 class Message:
     """Represents a single RFC 2822-compliant message."""
 
-    def __init__(self, fp, seekable = 1):
+    def __init__(self, fp, seekable=1):
         """Initialize the class instance and read the headers."""
         if seekable == 1:
             # Exercise tell() to make sure it works
@@ -116,7 +116,7 @@ class Message:
     def rewindbody(self):
         """Rewind the file to the start of the body (if seekable)."""
         if not self.seekable:
-            raise IOError, "unseekable file"
+            raise IOError("unseekable file")
         self.fp.seek(self.startofbody)
 
     def readheaders(self):
@@ -145,7 +145,7 @@ class Message:
             unread = self.fp.unread
         elif self.seekable:
             tell = self.fp.tell
-        while 1:
+        while True:
             if tell:
                 try:
                     startofline = tell()
@@ -177,7 +177,7 @@ class Message:
             if headerseen:
                 # It's a legal header line, save it.
                 lst.append(line)
-                self.dict[headerseen] = line[len(headerseen)+1:].strip()
+                self.dict[headerseen] = line[len(headerseen) + 1:].strip()
                 continue
             else:
                 # It's not a header line; throw it back and stop here.
@@ -346,7 +346,7 @@ class Message:
                     raw.append(', ')
                 i = h.find(':')
                 if i > 0:
-                    addr = h[i+1:]
+                    addr = h[i + 1:]
                 raw.append(addr)
         alladdrs = ''.join(raw)
         a = AddressList(alladdrs)
@@ -376,7 +376,6 @@ class Message:
             return None
         return parsedate_tz(data)
 
-
     # Access as a dictionary (only finds *last* header of each type):
 
     def __len__(self):
@@ -394,7 +393,7 @@ class Message:
         changed headers get stuck at the end of the raw-headers list rather
         than where the altered header was.
         """
-        del self[name] # Won't fail if it doesn't exist
+        del self[name]  # Won't fail if it doesn't exist
         self.dict[name.lower()] = value
         text = name + ": " + value
         for line in text.split("\n"):
@@ -403,7 +402,7 @@ class Message:
     def __delitem__(self, name):
         """Delete all occurrences of a specific header, if it is present."""
         name = name.lower()
-        if not name in self.dict:
+        if name not in self.dict:
             return
         del self.dict[name]
         name = name + ':'
@@ -530,7 +529,8 @@ class AddrlistClass:
                 self.pos = self.pos + 1
             elif self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
-            else: break
+            else:
+                break
 
     def getaddrlist(self):
         """Parse all addresses.
@@ -587,9 +587,10 @@ class AddrlistClass:
             routeaddr = self.getrouteaddr()
 
             if self.commentlist:
-                returnlist = [(' '.join(plist) + ' (' + \
-                         ' '.join(self.commentlist) + ')', routeaddr)]
-            else: returnlist = [(' '.join(plist), routeaddr)]
+                returnlist = [(' '.join(plist) + ' (' +
+                               ' '.join(self.commentlist) + ')', routeaddr)]
+            else:
+                returnlist = [(' '.join(plist), routeaddr)]
 
         else:
             if plist:
@@ -647,7 +648,8 @@ class AddrlistClass:
                 aslist.append('"%s"' % self.getquote())
             elif self.field[self.pos] in self.atomends:
                 break
-            else: aslist.append(self.getatom())
+            else:
+                aslist.append(self.getatom())
             self.gotonext()
 
         if self.pos >= len(self.field) or self.field[self.pos] != '@':
@@ -673,10 +675,11 @@ class AddrlistClass:
                 sdlist.append('.')
             elif self.field[self.pos] in self.atomends:
                 break
-            else: sdlist.append(self.getatom())
+            else:
+                sdlist.append(self.getatom())
         return ''.join(sdlist)
 
-    def getdelimited(self, beginchar, endchars, allowcomments = 1):
+    def getdelimited(self, beginchar, endchars, allowcomments=1):
         """Parse a header fragment delimited by special characters.
 
         `beginchar' is the start character for the fragment.  If self is not
@@ -739,7 +742,8 @@ class AddrlistClass:
         while self.pos < len(self.field):
             if self.field[self.pos] in atomends:
                 break
-            else: atomlist.append(self.field[self.pos])
+            else:
+                atomlist.append(self.field[self.pos])
             self.pos += 1
 
         return ''.join(atomlist)
@@ -767,8 +771,10 @@ class AddrlistClass:
 
         return plist
 
+
 class AddressList(AddrlistClass):
     """An AddressList encapsulates a list of parsed RFC 2822 addresses."""
+
     def __init__(self, field):
         AddrlistClass.__init__(self, field)
         if field:
@@ -787,14 +793,14 @@ class AddressList(AddrlistClass):
         newaddr = AddressList(None)
         newaddr.addresslist = self.addresslist[:]
         for x in other.addresslist:
-            if not x in self.addresslist:
+            if x not in self.addresslist:
                 newaddr.addresslist.append(x)
         return newaddr
 
     def __iadd__(self, other):
         # Set union, in-place
         for x in other.addresslist:
-            if not x in self.addresslist:
+            if x not in self.addresslist:
                 self.addresslist.append(x)
         return self
 
@@ -802,7 +808,7 @@ class AddressList(AddrlistClass):
         # Set difference
         newaddr = AddressList(None)
         for x in self.addresslist:
-            if not x in other.addresslist:
+            if x not in other.addresslist:
                 newaddr.addresslist.append(x)
         return newaddr
 
@@ -817,6 +823,7 @@ class AddressList(AddrlistClass):
         # Make indexing, slices, and 'in' work
         return self.addresslist[index]
 
+
 def dump_address_pair(pair):
     """Dump a (name, address) pair in a canonicalized form."""
     if pair[0]:
@@ -825,6 +832,7 @@ def dump_address_pair(pair):
         return pair[1]
 
 # Parse a date field
+
 
 _monthnames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul',
                'aug', 'sep', 'oct', 'nov', 'dec',
@@ -838,7 +846,7 @@ _daynames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 # zones.  RFC1123 recommends that numeric timezone indicators be used
 # instead of timezone names.
 
-_timezones = {'UT':0, 'UTC':0, 'GMT':0, 'Z':0,
+_timezones = {'UT': 0, 'UTC': 0, 'GMT': 0, 'Z': 0,
               'AST': -400, 'ADT': -300,  # Atlantic (used in Canada)
               'EST': -500, 'EDT': -400,  # Eastern
               'CST': -600, 'CDT': -500,  # Central
@@ -862,8 +870,8 @@ def parsedate_tz(data):
         # no space after the "weekday,"?
         i = data[0].rfind(',')
         if i >= 0:
-            data[0] = data[0][i+1:]
-    if len(data) == 3: # RFC 850 date, deprecated
+            data[0] = data[0][i + 1:]
+    if len(data) == 3:  # RFC 850 date, deprecated
         stuff = data[0].split('-')
         if len(stuff) == 3:
             data = stuff + data[1:]
@@ -871,20 +879,21 @@ def parsedate_tz(data):
         s = data[3]
         i = s.find('+')
         if i > 0:
-            data[3:] = [s[:i], s[i+1:]]
+            data[3:] = [s[:i], s[i + 1:]]
         else:
-            data.append('') # Dummy tz
+            data.append('')  # Dummy tz
     if len(data) < 5:
         return None
     data = data[:5]
     [dd, mm, yy, tm, tz] = data
     mm = mm.lower()
-    if not mm in _monthnames:
+    if mm not in _monthnames:
         dd, mm = mm, dd.lower()
-        if not mm in _monthnames:
+        if mm not in _monthnames:
             return None
-    mm = _monthnames.index(mm)+1
-    if mm > 12: mm = mm - 12
+    mm = _monthnames.index(mm) + 1
+    if mm > 12:
+        mm = mm - 12
     if dd[-1] == ',':
         dd = dd[:-1]
     i = yy.find(':')
@@ -928,7 +937,7 @@ def parsedate_tz(data):
             tzoffset = -tzoffset
         else:
             tzsign = 1
-        tzoffset = tzsign * ( (tzoffset//100)*3600 + (tzoffset % 100)*60)
+        tzoffset = tzsign * ((tzoffset // 100) * 3600 + (tzoffset % 100) * 60)
     return (yy, mm, dd, thh, tmm, tss, 0, 1, 0, tzoffset)
 
 
@@ -949,6 +958,7 @@ def mktime_tz(data):
         t = time.mktime(data[:8] + (0,))
         return t - data[9] - time.timezone
 
+
 def formatdate(timeval=None):
     """Returns time format preferred for Internet standards.
 
@@ -963,11 +973,11 @@ def formatdate(timeval=None):
         timeval = time.time()
     timeval = time.gmtime(timeval)
     return "%s, %02d %s %04d %02d:%02d:%02d GMT" % (
-            ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")[timeval[6]],
-            timeval[2],
-            ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
-             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")[timeval[1]-1],
-                                timeval[0], timeval[3], timeval[4], timeval[5])
+        ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")[timeval[6]],
+        timeval[2],
+        ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")[timeval[1] - 1],
+        timeval[0], timeval[3], timeval[4], timeval[5])
 
 
 # When used as script, run a small test program.
@@ -975,9 +985,11 @@ def formatdate(timeval=None):
 # message in RFC-822 format.
 
 if __name__ == '__main__':
-    import sys, os
+    import sys
+    import os
     file = os.path.join(os.environ['HOME'], 'Mail/inbox/1')
-    if sys.argv[1:]: file = sys.argv[1]
+    if sys.argv[1:]:
+        file = sys.argv[1]
     f = open(file, 'r')
     m = Message(f)
     print 'From:', m.getaddr('from')
@@ -993,7 +1005,8 @@ if __name__ == '__main__':
         hhmm, ss = divmod(hhmmss, 60)
         hh, mm = divmod(hhmm, 60)
         print "%+03d%02d" % (hh, mm),
-        if ss: print ".%02d" % ss,
+        if ss:
+            print ".%02d" % ss,
         print
     else:
         print 'ParsedDate:', None
@@ -1002,10 +1015,12 @@ if __name__ == '__main__':
     while f.readline():
         n += 1
     print 'Lines:', n
-    print '-'*70
+    print '-' * 70
     print 'len =', len(m)
-    if 'Date' in m: print 'Date =', m['Date']
-    if 'X-Nonsense' in m: pass
+    if 'Date' in m:
+        print 'Date =', m['Date']
+    if 'X-Nonsense' in m:
+        pass
     print 'keys =', m.keys()
     print 'values =', m.values()
     print 'items =', m.items()

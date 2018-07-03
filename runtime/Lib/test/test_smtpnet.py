@@ -6,6 +6,7 @@ import smtplib
 
 test_support.requires("network")
 
+
 class SmtpSSLTest(unittest.TestCase):
     testServer = 'smtp.gmail.com'
     remotePort = 465
@@ -24,8 +25,10 @@ class SmtpSSLTest(unittest.TestCase):
         server.ehlo()
         server.quit()
 
+
 def test_main():
     test_support.run_unittest(SmtpSSLTest)
+
 
 if __name__ == "__main__":
     test_main()

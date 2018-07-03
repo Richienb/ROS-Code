@@ -16,9 +16,10 @@ import re
 import sys
 
 from SimpleXMLRPCServer import (SimpleXMLRPCServer,
-            SimpleXMLRPCRequestHandler,
-            CGIXMLRPCRequestHandler,
-            resolve_dotted_attribute)
+                                SimpleXMLRPCRequestHandler,
+                                CGIXMLRPCRequestHandler,
+                                resolve_dotted_attribute)
+
 
 class ServerHTMLDoc(pydoc.HTMLDoc):
     """Class used to generate pydoc HTML document for a server"""
@@ -35,12 +36,13 @@ class ServerHTMLDoc(pydoc.HTMLDoc):
         # names. Only methods with names consisting of word characters
         # and '.'s are hyperlinked.
         pattern = re.compile(r'\b((http|ftp)://\S+[\w/]|'
-                                r'RFC[- ]?(\d+)|'
-                                r'PEP[- ]?(\d+)|'
-                                r'(self\.)?((?:\w|\.)+))\b')
-        while 1:
+                             r'RFC[- ]?(\d+)|'
+                             r'PEP[- ]?(\d+)|'
+                             r'(self\.)?((?:\w|\.)+))\b')
+        while True:
             match = pattern.search(text, here)
-            if not match: break
+            if not match:
+                break
             start, end = match.span()
             results.append(escape(text[here:start]))
 
@@ -54,7 +56,7 @@ class ServerHTMLDoc(pydoc.HTMLDoc):
             elif pep:
                 url = 'http://www.python.org/dev/peps/pep-%04d/' % int(pep)
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
-            elif text[end:end+1] == '(':
+            elif text[end:end + 1] == '(':
                 results.append(self.namelink(name, methods, funcs, classes))
             elif selfdot:
                 results.append('self.<strong>%s</strong>' % name)
@@ -78,13 +80,13 @@ class ServerHTMLDoc(pydoc.HTMLDoc):
             args, varargs, varkw, defaults = inspect.getargspec(object.im_func)
             # exclude the argument bound to the instance, it will be
             # confusing to the non-Python user
-            argspec = inspect.formatargspec (
-                    args[1:],
-                    varargs,
-                    varkw,
-                    defaults,
-                    formatvalue=self.formatvalue
-                )
+            argspec = inspect.formatargspec(
+                args[1:],
+                varargs,
+                varkw,
+                defaults,
+                formatvalue=self.formatvalue
+            )
         elif inspect.isfunction(object):
             args, varargs, varkw, defaults = inspect.getargspec(object)
             argspec = inspect.formatargspec(
@@ -99,7 +101,7 @@ class ServerHTMLDoc(pydoc.HTMLDoc):
             docstring = pydoc.getdoc(object)
 
         decl = title + argspec + (note and self.grey(
-               '<font face="helvetica, arial">%s</font>' % note))
+            '<font face="helvetica, arial">%s</font>' % note))
 
         doc = self.markup(
             docstring, self.preformat, funcs, classes, methods)
@@ -130,6 +132,7 @@ class ServerHTMLDoc(pydoc.HTMLDoc):
             'Methods', '#ffffff', '#eeaa77', pydoc.join(contents))
 
         return result
+
 
 class XMLRPCDocGenerator:
     """Generates documentation for an XML-RPC server.
@@ -178,9 +181,10 @@ class XMLRPCDocGenerator:
             if method_name in self.funcs:
                 method = self.funcs[method_name]
             elif self.instance is not None:
-                method_info = [None, None] # argspec, documentation
+                method_info = [None, None]  # argspec, documentation
                 if hasattr(self.instance, '_get_method_argstring'):
-                    method_info[0] = self.instance._get_method_argstring(method_name)
+                    method_info[0] = self.instance._get_method_argstring(
+                        method_name)
                 if hasattr(self.instance, '_methodHelp'):
                     method_info[1] = self.instance._methodHelp(method_name)
 
@@ -190,9 +194,9 @@ class XMLRPCDocGenerator:
                 elif not hasattr(self.instance, '_dispatch'):
                     try:
                         method = resolve_dotted_attribute(
-                                    self.instance,
-                                    method_name
-                                    )
+                            self.instance,
+                            method_name
+                        )
                     except AttributeError:
                         method = method_info
                 else:
@@ -205,12 +209,13 @@ class XMLRPCDocGenerator:
 
         documenter = ServerHTMLDoc()
         documentation = documenter.docserver(
-                                self.server_name,
-                                self.server_documentation,
-                                methods
-                            )
+            self.server_name,
+            self.server_documentation,
+            methods
+        )
 
         return documenter.page(self.server_title, documentation)
+
 
 class DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
     """XML-RPC and documentation request handler class.
@@ -240,8 +245,9 @@ class DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
         self.end_headers()
         self.wfile.write(response)
 
-class DocXMLRPCServer(  SimpleXMLRPCServer,
-                        XMLRPCDocGenerator):
+
+class DocXMLRPCServer(SimpleXMLRPCServer,
+                      XMLRPCDocGenerator):
     """XML-RPC and HTML documentation server.
 
     Adds the ability to serve server documentation to the capabilities
@@ -255,8 +261,9 @@ class DocXMLRPCServer(  SimpleXMLRPCServer,
                                     allow_none, encoding, bind_and_activate)
         XMLRPCDocGenerator.__init__(self)
 
-class DocCGIXMLRPCRequestHandler(   CGIXMLRPCRequestHandler,
-                                    XMLRPCDocGenerator):
+
+class DocCGIXMLRPCRequestHandler(CGIXMLRPCRequestHandler,
+                                 XMLRPCDocGenerator):
     """Handler for XML-RPC data and documentation requests passed through
     CGI"""
 

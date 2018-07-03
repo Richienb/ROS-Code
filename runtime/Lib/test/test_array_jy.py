@@ -6,9 +6,10 @@ import unittest
 from test import test_support
 from array import array
 
+
 class ArrayJyTestCase(unittest.TestCase):
 
-    def test_jarray(self): # until it is fully formally removed
+    def test_jarray(self):  # until it is fully formally removed
         # While jarray is still being phased out, just flex the initializers.
         # The rest of the test for array will catch all the big problems.
         import jarray
@@ -26,21 +27,23 @@ class ArrayJyTestCase(unittest.TestCase):
         jStringArr = array(String, [String("a"), String("b"), String("c")])
         self.assert_(
             Arrays.equals(jStringArr.typecode, 'java.lang.String'),
-               "String array typecode of wrong type, expected %s, found %s" %
-               (jStringArr.typecode, str(String)))
+            "String array typecode of wrong type, expected %s, found %s" %
+            (jStringArr.typecode, str(String)))
         self.assertEqual(zeros(String, 5), Array.newInstance(String, 5))
 
-        import java.lang.String # require for eval to work
+        import java.lang.String  # require for eval to work
         self.assertEqual(jStringArr, eval(str(jStringArr)))
 
     def test_java_compat(self):
         from array import zeros
         from java.awt import Color
-        hsb = Color.RGBtoHSB(0,255,255, None)
-        self.assertEqual(hsb, array('f', [0.5,1,1]),
-                         "output hsb float array does not correspond to input rgb values")
+        hsb = Color.RGBtoHSB(0, 255, 255, None)
+        self.assertEqual(
+            hsb, array(
+                'f', [
+                    0.5, 1, 1]), "output hsb float array does not correspond to input rgb values")
 
-        rgb = apply(Color.HSBtoRGB, tuple(hsb))
+        rgb = Color.HSBtoRGB(*tuple(hsb))
         self.assertEqual(rgb, -0xff0001,
                          "output rgb bytes don't match input hsb floats")
         hsb1 = zeros('f', 3)
@@ -50,9 +53,9 @@ class ArrayJyTestCase(unittest.TestCase):
     def test_java_roundtrip(self):
         # bug 1543
         from java.lang import Object
-        x = array(Object, [0,1,2])
+        x = array(Object, [0, 1, 2])
         x.append(3)
-        y = array(Object, [x]) # forces an implicit __tojava__
+        y = array(Object, [x])  # forces an implicit __tojava__
         self.assertEqual(x, y[0], "Did not shrink to fit")
 
 

@@ -4,6 +4,7 @@ from distutils.version import LooseVersion
 from distutils.version import StrictVersion
 from test.test_support import run_unittest
 
+
 class VersionTestCase(unittest.TestCase):
 
     def test_prerelease(self):
@@ -41,11 +42,10 @@ class VersionTestCase(unittest.TestCase):
                 else:
                     raise AssertionError(("cmp(%s, %s) "
                                           "shouldn't raise ValueError")
-                                            % (v1, v2))
+                                         % (v1, v2))
             self.assertEqual(res, wanted,
                              'cmp(%s, %s) should be %s, got %s' %
                              (v1, v2, wanted, res))
-
 
     def test_cmp(self):
         versions = (('1.5.1', '1.5.2b2', -1),
@@ -57,15 +57,16 @@ class VersionTestCase(unittest.TestCase):
                     ('0.960923', '2.2beta29', -1),
                     ('1.13++', '5.5.kw', -1))
 
-
         for v1, v2, wanted in versions:
             res = LooseVersion(v1).__cmp__(LooseVersion(v2))
             self.assertEqual(res, wanted,
                              'cmp(%s, %s) should be %s, got %s' %
                              (v1, v2, wanted, res))
 
+
 def test_suite():
     return unittest.makeSuite(VersionTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

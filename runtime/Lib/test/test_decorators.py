@@ -1,11 +1,13 @@
 import unittest
 from test import test_support
 
+
 def funcattrs(**kwds):
     def decorate(func):
         func.__dict__.update(kwds)
         return func
     return decorate
+
 
 class MiscDecorators (object):
     @staticmethod
@@ -17,17 +19,20 @@ class MiscDecorators (object):
 
 # -----------------------------------------------
 
+
 class DbcheckError (Exception):
     def __init__(self, exprstr, func, args, kwds):
         # A real version of this would set attributes here
-        Exception.__init__(self, "dbcheck %r failed (func=%s args=%s kwds=%s)" %
-                           (exprstr, func, args, kwds))
+        Exception.__init__(
+            self, "dbcheck %r failed (func=%s args=%s kwds=%s)" %
+            (exprstr, func, args, kwds))
 
 
 def dbcheck(exprstr, globals=None, locals=None):
     "Decorator to implement debugging assertions"
     def decorate(func):
         expr = compile(exprstr, "dbcheck-%s" % func.func_name, "eval")
+
         def check(*args, **kwds):
             if not eval(expr, globals, locals):
                 raise DbcheckError(exprstr, func, args, kwds)
@@ -37,11 +42,13 @@ def dbcheck(exprstr, globals=None, locals=None):
 
 # -----------------------------------------------
 
+
 def countcalls(counts):
     "Decorator to count calls to a function"
     def decorate(func):
         func_name = func.func_name
         counts[func_name] = 0
+
         def call(*args, **kwds):
             counts[func_name] += 1
             return func(*args, **kwds)
@@ -51,8 +58,10 @@ def countcalls(counts):
 
 # -----------------------------------------------
 
+
 def memoize(func):
     saved = {}
+
     def call(*args):
         try:
             return saved[args]
@@ -67,6 +76,7 @@ def memoize(func):
     return call
 
 # -----------------------------------------------
+
 
 class TestDecorators(unittest.TestCase):
 
@@ -85,6 +95,7 @@ class TestDecorators(unittest.TestCase):
 
     def test_dotted(self):
         decorators = MiscDecorators()
+
         @decorators.author('Cleese')
         def foo(): return 42
         self.assertEqual(foo(), 42)
@@ -100,8 +111,9 @@ class TestDecorators(unittest.TestCase):
                 return func
             return decorate
 
-        args = ( 'Now', 'is', 'the', 'time' )
+        args = ('Now', 'is', 'the', 'time')
         kwds = dict(one=1, two=2)
+
         @noteargs(*args, **kwds)
         def f1(): return 42
         self.assertEqual(f1(), 42)
@@ -111,7 +123,7 @@ class TestDecorators(unittest.TestCase):
         def f2(): return 84
         self.assertEqual(f2(), 84)
         self.assertEqual(f2.dbval, (('terry', 'gilliam'),
-                                     dict(eric='idle', john='cleese')))
+                                    dict(eric='idle', john='cleese')))
 
         @noteargs(1, 2,)
         def f3(): pass
@@ -154,7 +166,7 @@ class TestDecorators(unittest.TestCase):
     def test_errors(self):
         # Test syntax restrictions - these are all compile-time errors:
         #
-        for expr in [ "1+2", "x[3]", "(1, 2)" ]:
+        for expr in ["1+2", "x[3]", "(1, 2)"]:
             # Sanity check: is expr is a valid expression by itself?
             compile(expr, "testexpr", "exec")
 
@@ -172,10 +184,10 @@ class TestDecorators(unittest.TestCase):
             raise NotImplementedError
         context = dict(nullval=None, unimp=unimp)
 
-        for expr, exc in [ ("undef", NameError),
-                           ("nullval", TypeError),
-                           ("nullval.attr", AttributeError),
-                           ("unimp", NotImplementedError)]:
+        for expr, exc in [("undef", NameError),
+                          ("nullval", TypeError),
+                          ("nullval.attr", AttributeError),
+                          ("unimp", NotImplementedError)]:
             codestr = "@%s\ndef f(): pass\nassert f() is None" % expr
             code = compile(codestr, "test", "exec")
             self.assertRaises(exc, eval, code, context)
@@ -199,11 +211,12 @@ class TestDecorators(unittest.TestCase):
             def deco(func):
                 return lambda: num
             return deco
+
         @callnum(2)
         @callnum(1)
         def foo(): return 42
         self.assertEqual(foo(), 2,
-                            "Application order of decorators is incorrect")
+                         "Application order of decorators is incorrect")
 
     def test_eval_order(self):
         # Evaluating a decorated function involves four steps for each
@@ -223,6 +236,7 @@ class TestDecorators(unittest.TestCase):
 
         def make_decorator(tag):
             actions.append('makedec' + tag)
+
             def decorate(func):
                 actions.append('calldec' + tag)
                 return func
@@ -242,14 +256,15 @@ class TestDecorators(unittest.TestCase):
                 actions.append('%s%d' % (opname, self.index))
                 return res
 
-        c1, c2, c3 = map(NameLookupTracer, [ 1, 2, 3 ])
+        c1, c2, c3 = map(NameLookupTracer, [1, 2, 3])
 
-        expected_actions = [ 'evalname1', 'evalargs1', 'makedec1',
-                             'evalname2', 'evalargs2', 'makedec2',
-                             'evalname3', 'evalargs3', 'makedec3',
-                             'calldec3', 'calldec2', 'calldec1' ]
+        expected_actions = ['evalname1', 'evalargs1', 'makedec1',
+                            'evalname2', 'evalargs2', 'makedec2',
+                            'evalname3', 'evalargs3', 'makedec3',
+                            'calldec3', 'calldec2', 'calldec1']
 
         actions = []
+
         @c1.make_decorator(c1.arg)
         @c2.make_decorator(c2.arg)
         @c3.make_decorator(c3.arg)
@@ -261,10 +276,17 @@ class TestDecorators(unittest.TestCase):
         # Test the equivalence claim in chapter 7 of the reference manual.
         #
         actions = []
+
         def bar(): return 42
-        bar = c1.make_decorator(c1.arg)(c2.make_decorator(c2.arg)(c3.make_decorator(c3.arg)(bar)))
+        bar = c1.make_decorator(
+            c1.arg)(
+            c2.make_decorator(
+                c2.arg)(
+                c3.make_decorator(
+                    c3.arg)(bar)))
         self.assertEqual(bar(), 42)
         self.assertEqual(actions, expected_actions)
+
 
 class TestClassDecorators(unittest.TestCase):
 
@@ -272,38 +294,47 @@ class TestClassDecorators(unittest.TestCase):
         def plain(x):
             x.extra = 'Hello'
             return x
+
         @plain
-        class C(object): pass
+        class C(object):
+            pass
         self.assertEqual(C.extra, 'Hello')
 
     def test_double(self):
         def ten(x):
             x.extra = 10
             return x
+
         def add_five(x):
             x.extra += 5
             return x
 
         @add_five
         @ten
-        class C(object): pass
+        class C(object):
+            pass
         self.assertEqual(C.extra, 15)
 
     def test_order(self):
         def applied_first(x):
             x.extra = 'first'
             return x
+
         def applied_second(x):
             x.extra = 'second'
             return x
+
         @applied_second
         @applied_first
-        class C(object): pass
+        class C(object):
+            pass
         self.assertEqual(C.extra, 'second')
+
 
 def test_main():
     test_support.run_unittest(TestDecorators)
     test_support.run_unittest(TestClassDecorators)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     test_main()

@@ -4,13 +4,14 @@
 import unittest
 from test import test_support
 
+
 class EOFTestCase(unittest.TestCase):
     def test_EOFC(self):
         expect = "EOL while scanning string literal (<string>, line 1)"
         try:
             eval("""'this is a test\
             """)
-        except SyntaxError, msg:
+        except SyntaxError as msg:
             self.assertEqual(str(msg), expect)
         else:
             raise test_support.TestFailed
@@ -20,13 +21,15 @@ class EOFTestCase(unittest.TestCase):
                   "(<string>, line 1)")
         try:
             eval("""'''this is a test""")
-        except SyntaxError, msg:
+        except SyntaxError as msg:
             self.assertEqual(str(msg), expect)
         else:
             raise test_support.TestFailed
 
+
 def test_main():
     test_support.run_unittest(EOFTestCase)
+
 
 if __name__ == "__main__":
     test_main()

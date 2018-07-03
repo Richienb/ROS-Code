@@ -68,13 +68,13 @@ import abc
 # For the time being, import everything via _jyio instead of from _io directly
 import _jyio
 from _jyio import (DEFAULT_BUFFER_SIZE, BlockingIOError, UnsupportedOperation,
-                 open,
-                 FileIO,
-                 BytesIO, StringIO, BufferedReader,
-                 BufferedWriter, BufferedRWPair, BufferedRandom,
-                 IncrementalNewlineDecoder, TextIOWrapper)
+                   open,
+                   FileIO,
+                   BytesIO, StringIO, BufferedReader,
+                   BufferedWriter, BufferedRWPair, BufferedRandom,
+                   IncrementalNewlineDecoder, TextIOWrapper)
 
-OpenWrapper = _jyio.open # for compatibility with _pyio
+OpenWrapper = _jyio.open  # for compatibility with _pyio
 
 # for seek()
 SEEK_SET = 0
@@ -84,17 +84,23 @@ SEEK_END = 2
 # Declaring ABCs in C is tricky so we do it here.
 # Method descriptions and default implementations are inherited from the C
 # version however.
+
+
 class IOBase(_jyio._IOBase):
     __metaclass__ = abc.ABCMeta
+
 
 class RawIOBase(_jyio._RawIOBase, IOBase):
     pass
 
+
 class BufferedIOBase(_jyio._BufferedIOBase, IOBase):
     pass
 
+
 class TextIOBase(_jyio._TextIOBase, IOBase):
     pass
+
 
 RawIOBase.register(FileIO)
 

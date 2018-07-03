@@ -4,6 +4,7 @@ import unittest
 from test import test_support
 from test.pickletester import ExtensionSaver
 
+
 class C:
     pass
 
@@ -11,14 +12,18 @@ class C:
 class WithoutSlots(object):
     pass
 
+
 class WithWeakref(object):
     __slots__ = ('__weakref__',)
+
 
 class WithPrivate(object):
     __slots__ = ('__spam',)
 
+
 class WithSingleString(object):
     __slots__ = 'spam'
+
 
 class WithInherited(WithSingleString):
     __slots__ = ('eggs',)
@@ -64,9 +69,9 @@ class CopyRegTestCase(unittest.TestCase):
                               mod, func, code + 1)
             # Conflicting module name.
             self.assertRaises(ValueError, copy_reg.add_extension,
-                              mod[1:], func, code )
+                              mod[1:], func, code)
             self.assertRaises(ValueError, copy_reg.remove_extension,
-                              mod[1:], func, code )
+                              mod[1:], func, code)
             # Conflicting function name.
             self.assertRaises(ValueError, copy_reg.add_extension,
                               mod, func[1:], code)
@@ -96,7 +101,7 @@ class CopyRegTestCase(unittest.TestCase):
                 e.restore()
 
         # Ensure invalid codes blow up.
-        for code in -1, 0, 0x80000000L:
+        for code in -1, 0, 0x80000000:
             self.assertRaises(ValueError, copy_reg.add_extension,
                               mod, func, code)
 
@@ -106,8 +111,7 @@ class CopyRegTestCase(unittest.TestCase):
         expected = ['_WithPrivate__spam']
         self.assertEqual(copy_reg._slotnames(WithPrivate), expected)
         self.assertEqual(copy_reg._slotnames(WithSingleString), ['spam'])
-        expected = ['eggs', 'spam']
-        expected.sort()
+        expected = sorted(['eggs', 'spam'])
         result = copy_reg._slotnames(WithInherited)
         result.sort()
         self.assertEqual(result, expected)

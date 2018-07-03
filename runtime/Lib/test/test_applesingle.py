@@ -9,17 +9,18 @@ MacOS = test_support.import_module('MacOS')
 # The following should exist if MacOS does.
 import applesingle
 
-AS_MAGIC=0x00051600
-AS_VERSION=0x00020000
+AS_MAGIC = 0x00051600
+AS_VERSION = 0x00020000
 dataforkdata = 'hello\r\0world\n'
 resourceforkdata = 'goodbye\ncruel\0world\r'
 
 applesingledata = struct.pack(">ll16sh", AS_MAGIC, AS_VERSION, "foo", 2) + \
     struct.pack(">llllll", 1, 50, len(dataforkdata),
-        2, 50+len(dataforkdata), len(resourceforkdata)) + \
+                2, 50 + len(dataforkdata), len(resourceforkdata)) + \
     dataforkdata + \
     resourceforkdata
 TESTFN2 = test_support.TESTFN + '2'
+
 
 class TestApplesingle(unittest.TestCase):
 
@@ -31,11 +32,11 @@ class TestApplesingle(unittest.TestCase):
     def tearDown(self):
         try:
             os.unlink(test_support.TESTFN)
-        except:
+        except BaseException:
             pass
         try:
             os.unlink(TESTFN2)
-        except:
+        except BaseException:
             pass
 
     def compareData(self, isrf, data):
@@ -49,7 +50,7 @@ class TestApplesingle(unittest.TestCase):
     def test_applesingle(self):
         try:
             os.unlink(TESTFN2)
-        except:
+        except BaseException:
             pass
         applesingle.decode(test_support.TESTFN, TESTFN2)
         self.compareData(False, dataforkdata)
@@ -58,10 +59,11 @@ class TestApplesingle(unittest.TestCase):
     def test_applesingle_resonly(self):
         try:
             os.unlink(TESTFN2)
-        except:
+        except BaseException:
             pass
         applesingle.decode(test_support.TESTFN, TESTFN2, resonly=True)
         self.compareData(False, resourceforkdata)
+
 
 def test_main():
     test_support.run_unittest(TestApplesingle)

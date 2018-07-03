@@ -234,56 +234,60 @@ class PluralFormsTestCase(GettextBaseTest):
     def test_hu(self):
         eq = self.assertEqual
         f = gettext.c2py('0')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([str(f(x)) for x in range(200)])
         eq(s, "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
 
     def test_de(self):
         eq = self.assertEqual
         f = gettext.c2py('n != 1')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([str(f(x)) for x in range(200)])
         eq(s, "10111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")
 
     def test_fr(self):
         eq = self.assertEqual
         f = gettext.c2py('n>1')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([str(f(x)) for x in range(200)])
         eq(s, "00111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")
 
     def test_gd(self):
         eq = self.assertEqual
         f = gettext.c2py('n==1 ? 0 : n==2 ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([str(f(x)) for x in range(200)])
         eq(s, "20122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
     def test_gd2(self):
         eq = self.assertEqual
         # Tests the combination of parentheses and "?:"
         f = gettext.c2py('n==1 ? 0 : (n==2 ? 1 : 2)')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([str(f(x)) for x in range(200)])
         eq(s, "20122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
     def test_lt(self):
         eq = self.assertEqual
-        f = gettext.c2py('n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        f = gettext.c2py(
+            'n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2')
+        s = ''.join([str(f(x)) for x in range(200)])
         eq(s, "20111111112222222222201111111120111111112011111111201111111120111111112011111111201111111120111111112011111111222222222220111111112011111111201111111120111111112011111111201111111120111111112011111111")
 
     def test_ru(self):
         eq = self.assertEqual
-        f = gettext.c2py('n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        f = gettext.c2py(
+            'n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2')
+        s = ''.join([str(f(x)) for x in range(200)])
         eq(s, "20111222222222222222201112222220111222222011122222201112222220111222222011122222201112222220111222222011122222222222222220111222222011122222201112222220111222222011122222201112222220111222222011122222")
 
     def test_pl(self):
         eq = self.assertEqual
-        f = gettext.c2py('n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        f = gettext.c2py(
+            'n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2')
+        s = ''.join([str(f(x)) for x in range(200)])
         eq(s, "20111222222222222222221112222222111222222211122222221112222222111222222211122222221112222222111222222211122222222222222222111222222211122222221112222222111222222211122222221112222222111222222211122222")
 
     def test_sl(self):
         eq = self.assertEqual
-        f = gettext.c2py('n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        f = gettext.c2py(
+            'n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3')
+        s = ''.join([str(f(x)) for x in range(200)])
         eq(s, "30122333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333012233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333")
 
     def test_security(self):
@@ -315,14 +319,15 @@ class WeirdMetadataTest(GettextBaseTest):
         with open(MMOFILE, 'rb') as fp:
             try:
                 self.t = gettext.GNUTranslations(fp)
-            except:
+            except BaseException:
                 self.tearDown()
                 raise
 
     def test_weird_metadata(self):
         info = self.t.info()
-        self.assertEqual(info['last-translator'],
-           'John Doe <jdoe@example.com>\nJane Foobar <jfoobar@example.com>')
+        self.assertEqual(
+            info['last-translator'],
+            'John Doe <jdoe@example.com>\nJane Foobar <jfoobar@example.com>')
 
 
 class DummyGNUTranslations(gettext.GNUTranslations):
@@ -358,6 +363,7 @@ class GettextCacheTestCase(GettextBaseTest):
 
 def test_main():
     test_support.run_unittest(__name__)
+
 
 if __name__ == '__main__':
     test_main()

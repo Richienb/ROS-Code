@@ -1,9 +1,10 @@
 from test import test_support
 import unittest
 
-import sys, cStringIO, subprocess
+import sys
+import cStringIO
+import subprocess
 import quopri
-
 
 
 ENCSAMPLE = """\
@@ -26,7 +27,7 @@ characters... have fun!
 
 # First line ends with a space
 DECSAMPLE = "Here's a bunch of special \n" + \
-"""\
+    """\
 
 \xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9
 \xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3
@@ -62,6 +63,7 @@ def withpythonimplementation(testfunc):
     newtest.__name__ = testfunc.__name__
     return newtest
 
+
 class QuopriTestCase(unittest.TestCase):
     # Each entry is a tuple of (plaintext, encoded string).  These strings are
     # used in the "quotetabs=0" tests.
@@ -90,7 +92,7 @@ class QuopriTestCase(unittest.TestCase):
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'''),
         # A line of exactly 76 characters, no soft line break should be needed
         ('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',
-        'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy'),
+         'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy'),
         # A line of 77 characters, forcing a soft line break at position 75,
         # and a second line of exactly 2 characters (because the soft line
         # break `=' sign counts against the line length limit).
@@ -113,19 +115,19 @@ yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'''),
         # Now some really complex stuff ;)
         (DECSAMPLE, ENCSAMPLE),
-        )
+    )
 
     # These are used in the "quotetabs=1" tests.
     ESTRINGS = (
         ('hello world', 'hello=20world'),
         ('hello\tworld', 'hello=09world'),
-        )
+    )
 
     # These are used in the "header=1" tests.
     HSTRINGS = (
         ('hello world', 'hello_world'),
         ('hello_world', 'hello=5Fworld'),
-        )
+    )
 
     @withpythonimplementation
     def test_encodestring(self):
@@ -192,6 +194,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         self.addCleanup(process.stdout.close)
         cout, cerr = process.communicate(e)
         self.assertEqual(cout.splitlines(), p.splitlines())
+
 
 def test_main():
     test_support.run_unittest(QuopriTestCase)

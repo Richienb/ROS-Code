@@ -7,12 +7,13 @@ from test import test_support, string_tests
 from UserString import UserString, MutableString
 import warnings
 
+
 class UserStringTest(
     string_tests.CommonTest,
     string_tests.MixinStrUnicodeUserStringTest,
     string_tests.MixinStrStringUserStringTest,
     string_tests.MixinStrUserStringTest
-    ):
+):
 
     type2test = UserString
 
@@ -42,6 +43,7 @@ class UserStringTest(
         object = self.fixtype(object)
         # we don't fix the arguments, because UserString can't cope with it
         getattr(object, methodname)(*args)
+
 
 class MutableStringTest(UserStringTest):
     type2test = MutableString
@@ -134,6 +136,7 @@ class MutableStringTest(UserStringTest):
         s *= -1
         self.assertEqual(s, "")
 
+
 def test_main():
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore", ".*MutableString has been removed",
@@ -142,6 +145,7 @@ def test_main():
                                 ".*__(get|set|del)slice__ has been removed",
                                 DeprecationWarning)
         test_support.run_unittest(UserStringTest, MutableStringTest)
+
 
 if __name__ == "__main__":
     test_main()

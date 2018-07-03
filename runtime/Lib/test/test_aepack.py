@@ -7,6 +7,7 @@ from test import test_support
 aetypes = test_support.import_module('aetypes')
 aepack = test_support.import_module('aepack')
 
+
 class TestAepack(unittest.TestCase):
     OBJECTS = [
         aetypes.Enum('enum'),
@@ -16,9 +17,9 @@ class TestAepack(unittest.TestCase):
         aetypes.Comparison(1, '<   ', 10),
         aetypes.Logical('not ', 1),
         aetypes.IntlText(0, 0, 'international text'),
-        aetypes.IntlWritingCode(0,0),
-        aetypes.QDPoint(50,100),
-        aetypes.QDRectangle(50,100,150,200),
+        aetypes.IntlWritingCode(0, 0),
+        aetypes.QDPoint(50, 100),
+        aetypes.QDRectangle(50, 100, 150, 200),
         aetypes.RGBColor(0x7000, 0x6000, 0x5000),
         aetypes.Unknown('xxxx', 'unknown type data'),
         aetypes.Character(1),
@@ -58,7 +59,7 @@ class TestAepack(unittest.TestCase):
     def test_roundtrip_FSSpec(self):
         try:
             import Carbon.File
-        except:
+        except BaseException:
             return
 
         if not hasattr(Carbon.File, "FSSpec"):
@@ -71,7 +72,7 @@ class TestAepack(unittest.TestCase):
     def test_roundtrip_Alias(self):
         try:
             import Carbon.File
-        except:
+        except BaseException:
             return
         if not hasattr(Carbon.File, "FSSpec"):
             return
@@ -79,7 +80,7 @@ class TestAepack(unittest.TestCase):
         packed = aepack.pack(o)
         unpacked = aepack.unpack(packed)
         self.assertEqual(o.FSResolveAlias(None)[0].as_pathname(),
-            unpacked.FSResolveAlias(None)[0].as_pathname())
+                         unpacked.FSResolveAlias(None)[0].as_pathname())
 
 
 def test_main():

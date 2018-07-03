@@ -23,11 +23,14 @@ except ImportError:
     PY_STRUCT_FLOAT_COERCE = 2
 else:
     PY_STRUCT_RANGE_CHECKING = getattr(_struct, '_PY_STRUCT_RANGE_CHECKING', 0)
-    PY_STRUCT_OVERFLOW_MASKING = getattr(_struct, '_PY_STRUCT_OVERFLOW_MASKING', 0)
+    PY_STRUCT_OVERFLOW_MASKING = getattr(
+        _struct, '_PY_STRUCT_OVERFLOW_MASKING', 0)
     PY_STRUCT_FLOAT_COERCE = getattr(_struct, '_PY_STRUCT_FLOAT_COERCE', 0)
+
 
 def string_reverse(s):
     return "".join(reversed(s))
+
 
 def bigendian_to_native(value):
     if ISBIGENDIAN:
@@ -35,14 +38,16 @@ def bigendian_to_native(value):
     else:
         return string_reverse(value)
 
+
 def simple_err(func, *args):
     try:
         func(*args)
     except struct.error:
         pass
     else:
-        raise TestFailed, "%s%s did not raise struct.error" % (
-            func.__name__, args)
+        raise TestFailed("%s%s did not raise struct.error" % (
+            func.__name__, args))
+
 
 def any_err(func, *args):
     try:
@@ -50,8 +55,9 @@ def any_err(func, *args):
     except (struct.error, TypeError):
         pass
     else:
-        raise TestFailed, "%s%s did not raise error" % (
-            func.__name__, args)
+        raise TestFailed("%s%s did not raise error" % (
+            func.__name__, args))
+
 
 def with_warning_restore(func):
     def _with_warning_restore(*args, **kw):
@@ -73,6 +79,7 @@ def with_warning_restore(func):
             warnings.filters[:] = save_warnings_filters[:]
     return _with_warning_restore
 
+
 def deprecated_err(func, *args):
     try:
         func(*args)
@@ -80,11 +87,13 @@ def deprecated_err(func, *args):
         pass
     except DeprecationWarning:
         if not PY_STRUCT_OVERFLOW_MASKING:
-            raise TestFailed, "%s%s expected to raise struct.error" % (
-                func.__name__, args)
+            raise TestFailed("%s%s expected to raise struct.error" % (
+                func.__name__, args))
     else:
-        raise TestFailed, "%s%s did not raise error" % (
-            func.__name__, args)
+        raise TestFailed("%s%s did not raise error" % (
+            func.__name__, args))
+
+
 deprecated_err = with_warning_restore(deprecated_err)
 
 
@@ -92,15 +101,15 @@ simple_err(struct.calcsize, 'Z')
 
 sz = struct.calcsize('i')
 if sz * 3 != struct.calcsize('iii'):
-    raise TestFailed, 'inconsistent sizes'
+    raise TestFailed('inconsistent sizes')
 
 fmt = 'cbxxxxxxhhhhiillffd'
 fmt3 = '3c3b18x12h6i6l6f3d'
 sz = struct.calcsize(fmt)
 sz3 = struct.calcsize(fmt3)
 if sz * 3 != sz3:
-    raise TestFailed, 'inconsistent sizes (3*%r -> 3*%d = %d, %r -> %d)' % (
-        fmt, sz, 3*sz, fmt3, sz3)
+    raise TestFailed('inconsistent sizes (3*%r -> 3*%d = %d, %r -> %d)' % (
+        fmt, sz, 3 * sz, fmt3, sz3))
 
 simple_err(struct.pack, 'iii', 3)
 simple_err(struct.pack, 'i', 3, 3, 3)
@@ -127,11 +136,11 @@ for prefix in ('', '@', '<', '>', '=', '!'):
             print "trying:", format
         s = struct.pack(format, c, b, h, i, l, f, d)
         cp, bp, hp, ip, lp, fp, dp = struct.unpack(format, s)
-        if (cp != c or bp != b or hp != h or ip != i or lp != l or
-            int(100 * fp) != int(100 * f) or int(100 * dp) != int(100 * d)):
+        if (cp != c or bp != b or hp != h or ip != i or lp != l or int(
+                100 * fp) != int(100 * f) or int(100 * dp) != int(100 * d)):
             # ^^^ calculate only to two decimal places
-            raise TestFailed, "unpack/pack not transitive (%s, %s)" % (
-                str(format), str((cp, bp, hp, ip, lp, fp, dp)))
+            raise TestFailed("unpack/pack not transitive (%s, %s)" % (
+                str(format), str((cp, bp, hp, ip, lp, fp, dp))))
 
 # Test some of the new features in detail
 
@@ -146,7 +155,7 @@ tests = [
     ('9s', 'helloworld', 'helloworl', 'helloworl', 1),
     ('10s', 'helloworld', 'helloworld', 'helloworld', 0),
     ('11s', 'helloworld', 'helloworld\0', 'helloworld\0', 1),
-    ('20s', 'helloworld', 'helloworld'+10*'\0', 'helloworld'+10*'\0', 1),
+    ('20s', 'helloworld', 'helloworld' + 10 * '\0', 'helloworld' + 10 * '\0', 1),
     ('b', 7, '\7', '\7', 0),
     ('b', -7, '\371', '\371', 0),
     ('B', 7, '\7', '\7', 0),
@@ -154,40 +163,40 @@ tests = [
     ('h', 700, '\002\274', '\274\002', 0),
     ('h', -700, '\375D', 'D\375', 0),
     ('H', 700, '\002\274', '\274\002', 0),
-    ('H', 0x10000-700, '\375D', 'D\375', 0),
+    ('H', 0x10000 - 700, '\375D', 'D\375', 0),
     ('i', 70000000, '\004,\035\200', '\200\035,\004', 0),
     ('i', -70000000, '\373\323\342\200', '\200\342\323\373', 0),
-    ('I', 70000000L, '\004,\035\200', '\200\035,\004', 0),
-    ('I', 0x100000000L-70000000, '\373\323\342\200', '\200\342\323\373', 0),
+    ('I', 70000000, '\004,\035\200', '\200\035,\004', 0),
+    ('I', 0x100000000 - 70000000, '\373\323\342\200', '\200\342\323\373', 0),
     ('l', 70000000, '\004,\035\200', '\200\035,\004', 0),
     ('l', -70000000, '\373\323\342\200', '\200\342\323\373', 0),
-    ('L', 70000000L, '\004,\035\200', '\200\035,\004', 0),
-    ('L', 0x100000000L-70000000, '\373\323\342\200', '\200\342\323\373', 0),
+    ('L', 70000000, '\004,\035\200', '\200\035,\004', 0),
+    ('L', 0x100000000 - 70000000, '\373\323\342\200', '\200\342\323\373', 0),
     ('f', 2.0, '@\000\000\000', '\000\000\000@', 0),
     ('d', 2.0, '@\000\000\000\000\000\000\000',
                '\000\000\000\000\000\000\000@', 0),
     ('f', -2.0, '\300\000\000\000', '\000\000\000\300', 0),
     ('d', -2.0, '\300\000\000\000\000\000\000\000',
-               '\000\000\000\000\000\000\000\300', 0),
+     '\000\000\000\000\000\000\000\300', 0),
 ]
 
 for fmt, arg, big, lil, asy in tests:
     if verbose:
         print "%r %r %r %r" % (fmt, arg, big, lil)
-    for (xfmt, exp) in [('>'+fmt, big), ('!'+fmt, big), ('<'+fmt, lil),
-                        ('='+fmt, ISBIGENDIAN and big or lil)]:
+    for (xfmt, exp) in [('>' + fmt, big), ('!' + fmt, big), ('<' + fmt, lil),
+                        ('=' + fmt, ISBIGENDIAN and big or lil)]:
         res = struct.pack(xfmt, arg)
         if res != exp:
-            raise TestFailed, "pack(%r, %r) -> %r # expected %r" % (
-                fmt, arg, res, exp)
+            raise TestFailed("pack(%r, %r) -> %r # expected %r" % (
+                fmt, arg, res, exp))
         n = struct.calcsize(xfmt)
         if n != len(res):
-            raise TestFailed, "calcsize(%r) -> %d # expected %d" % (
-                xfmt, n, len(res))
+            raise TestFailed("calcsize(%r) -> %d # expected %d" % (
+                xfmt, n, len(res)))
         rev = struct.unpack(xfmt, res)[0]
         if rev != arg and not asy:
-            raise TestFailed, "unpack(%r, %r) -> (%r,) # expected (%r,)" % (
-                fmt, res, rev, arg)
+            raise TestFailed("unpack(%r, %r) -> (%r,) # expected (%r,)" % (
+                fmt, res, rev, arg))
 
 ###########################################################################
 # Simple native q/Q tests.
@@ -205,6 +214,7 @@ any_err(struct.pack, "Q", -1)   # can't pack -1 as unsigned regardless
 simple_err(struct.pack, "q", "a")  # can't pack string as 'q' regardless
 simple_err(struct.pack, "Q", "a")  # ditto, but 'Q'
 
+
 def test_native_qQ():
     bytes = struct.calcsize('q')
     # The expected values here are in big-endian format, primarily because
@@ -214,18 +224,19 @@ def test_native_qQ():
             ('q', -1, '\xff' * bytes),
             ('q', 0, '\x00' * bytes),
             ('Q', 0, '\x00' * bytes),
-            ('q', 1L, '\x00' * (bytes-1) + '\x01'),
-            ('Q', (1L << (8*bytes))-1, '\xff' * bytes),
-            ('q', (1L << (8*bytes-1))-1, '\x7f' + '\xff' * (bytes - 1))):
+            ('q', 1, '\x00' * (bytes - 1) + '\x01'),
+            ('Q', (1 << (8 * bytes)) - 1, '\xff' * bytes),
+            ('q', (1 << (8 * bytes - 1)) - 1, '\x7f' + '\xff' * (bytes - 1))):
         got = struct.pack(format, input)
         native_expected = bigendian_to_native(expected)
         verify(got == native_expected,
                "%r-pack of %r gave %r, not %r" %
-                    (format, input, got, native_expected))
+               (format, input, got, native_expected))
         retrieved = struct.unpack(format, got)[0]
         verify(retrieved == input,
                "%r-unpack of %r gave %r, not %r" %
-                    (format, got, retrieved, input))
+               (format, got, retrieved, input))
+
 
 if has_native_qQ:
     test_native_qQ()
@@ -234,6 +245,7 @@ if has_native_qQ:
 # Standard integer tests (bBhHiIlLqQ).
 
 import binascii
+
 
 class IntTester:
 
@@ -254,13 +266,13 @@ class IntTester:
         self.bitsize = bytesize * 8
         self.signed_code, self.unsigned_code = formatpair
         self.unsigned_min = 0
-        self.unsigned_max = 2L**self.bitsize - 1
-        self.signed_min = -(2L**(self.bitsize-1))
-        self.signed_max = 2L**(self.bitsize-1) - 1
+        self.unsigned_max = 2**self.bitsize - 1
+        self.signed_min = -(2**(self.bitsize - 1))
+        self.signed_max = 2**(self.bitsize - 1) - 1
 
     def test_one(self, x, pack=struct.pack,
-                          unpack=struct.unpack,
-                          unhexlify=binascii.unhexlify):
+                 unpack=struct.unpack,
+                 unhexlify=binascii.unhexlify):
         if verbose:
             print "trying std", self.formatpair, "on", x, "==", hex(x)
 
@@ -270,9 +282,9 @@ class IntTester:
             # Try big-endian.
             expected = long(x)
             if x < 0:
-                expected += 1L << self.bitsize
+                expected += 1 << self.bitsize
                 assert expected > 0
-            expected = hex(expected)[2:-1] # chop "0x" and trailing 'L'
+            expected = hex(expected)[2:-1]  # chop "0x" and trailing 'L'
             if len(expected) & 1:
                 expected = "0" + expected
             expected = unhexlify(expected)
@@ -283,13 +295,13 @@ class IntTester:
             got = pack(format, x)
             verify(got == expected,
                    "'%s'-pack of %r gave %r, not %r" %
-                    (format, x, got, expected))
+                   (format, x, got, expected))
 
             # Unpack work?
             retrieved = unpack(format, got)[0]
             verify(x == retrieved,
                    "'%s'-unpack of %r gave %r, not %r" %
-                    (format, got, retrieved, x))
+                   (format, got, retrieved, x))
 
             # Adding any byte should cause a "too big" error.
             any_err(unpack, format, '\x01' + got)
@@ -302,13 +314,13 @@ class IntTester:
             got = pack(format, x)
             verify(got == expected,
                    "'%s'-pack of %r gave %r, not %r" %
-                    (format, x, got, expected))
+                   (format, x, got, expected))
 
             # Unpack work?
             retrieved = unpack(format, got)[0]
             verify(x == retrieved,
                    "'%s'-unpack of %r gave %r, not %r" %
-                    (format, got, retrieved, x))
+                   (format, got, retrieved, x))
 
             # Adding any byte should cause a "too big" error.
             any_err(unpack, format, '\x01' + got)
@@ -328,7 +340,7 @@ class IntTester:
             # Try big-endian.
             format = ">" + code
             expected = long(x)
-            expected = hex(expected)[2:-1] # chop "0x" and trailing 'L'
+            expected = hex(expected)[2:-1]  # chop "0x" and trailing 'L'
             if len(expected) & 1:
                 expected = "0" + expected
             expected = unhexlify(expected)
@@ -338,13 +350,13 @@ class IntTester:
             got = pack(format, x)
             verify(got == expected,
                    "'%s'-pack of %r gave %r, not %r" %
-                    (format, x, got, expected))
+                   (format, x, got, expected))
 
             # Unpack work?
             retrieved = unpack(format, got)[0]
             verify(x == retrieved,
                    "'%s'-unpack of %r gave %r, not %r" %
-                    (format, got, retrieved, x))
+                   (format, got, retrieved, x))
 
             # Adding any byte should cause a "too big" error.
             any_err(unpack, format, '\x01' + got)
@@ -357,13 +369,13 @@ class IntTester:
             got = pack(format, x)
             verify(got == expected,
                    "'%s'-pack of %r gave %r, not %r" %
-                    (format, x, got, expected))
+                   (format, x, got, expected))
 
             # Unpack work?
             retrieved = unpack(format, got)[0]
             verify(x == retrieved,
                    "'%s'-unpack of %r gave %r, not %r" %
-                    (format, got, retrieved, x))
+                   (format, got, retrieved, x))
 
             # Adding any byte should cause a "too big" error.
             any_err(unpack, format, '\x01' + got)
@@ -383,11 +395,11 @@ class IntTester:
         # Create all interesting powers of 2.
         values = []
         for exp in range(self.bitsize + 3):
-            values.append(1L << exp)
+            values.append(1 << exp)
 
         # Add some random values.
         for i in range(self.bitsize):
-            val = 0L
+            val = 0
             for j in range(self.bytesize):
                 val = (val << 8) | randrange(256)
             values.append(val)
@@ -408,8 +420,9 @@ class IntTester:
         # Some error cases.
         for direction in "<>":
             for code in self.formatpair:
-                for badobject in "a string", 3+42j, randrange:
+                for badobject in "a string", 3 + 42j, randrange:
                     any_err(struct.pack, direction + code, badobject)
+
 
 for args in [("bB", 1),
              ("hH", 2),
@@ -425,14 +438,14 @@ for args in [("bB", 1),
 
 def test_p_code():
     for code, input, expected, expectedback in [
-            ('p','abc', '\x00', ''),
+            ('p', 'abc', '\x00', ''),
             ('1p', 'abc', '\x00', ''),
             ('2p', 'abc', '\x01a', 'a'),
             ('3p', 'abc', '\x02ab', 'ab'),
             ('4p', 'abc', '\x03abc', 'abc'),
             ('5p', 'abc', '\x03abc\x00', 'abc'),
             ('6p', 'abc', '\x03abc\x00\x00', 'abc'),
-            ('1000p', 'x'*1000, '\xff' + 'x'*999, 'x'*255)]:
+            ('1000p', 'x' * 1000, '\xff' + 'x' * 999, 'x' * 255)]:
         got = struct.pack(code, input)
         if got != expected:
             raise TestFailed("pack(%r, %r) == %r but expected %r" %
@@ -441,6 +454,7 @@ def test_p_code():
         if got != expectedback:
             raise TestFailed("unpack(%r, %r) == %r but expected %r" %
                              (code, input, got, expectedback))
+
 
 test_p_code()
 
@@ -488,10 +502,12 @@ def test_705836():
     else:
         TestFailed("expected OverflowError")
 
+
 test_705836()
 
 ###########################################################################
 # SF bug 1229380. No struct.pack exception for some out of range integers
+
 
 def test_1229380():
     import sys
@@ -503,14 +519,16 @@ def test_1229380():
             deprecated_err(struct.pack, endian + 'B', cls(300))
             deprecated_err(struct.pack, endian + 'H', cls(70000))
 
-        deprecated_err(struct.pack, endian + 'I', sys.maxint * 4L)
-        deprecated_err(struct.pack, endian + 'L', sys.maxint * 4L)
+        deprecated_err(struct.pack, endian + 'I', sys.maxsize * 4)
+        deprecated_err(struct.pack, endian + 'L', sys.maxsize * 4)
+
 
 if PY_STRUCT_RANGE_CHECKING:
     test_1229380()
 
 ###########################################################################
 # SF bug 1530559. struct.pack raises TypeError where it used to convert.
+
 
 def check_float_coerce(format, number):
     if PY_STRUCT_FLOAT_COERCE == 2:
@@ -531,7 +549,9 @@ def check_float_coerce(format, number):
     else:
         raise TestFailed("did not raise error for float coerce")
 
+
 check_float_coerce = with_warning_restore(deprecated_err)
+
 
 def test_1530559():
     for endian in ('', '>', '<'):
@@ -539,12 +559,15 @@ def test_1530559():
             check_float_coerce(endian + fmt, 1.0)
             check_float_coerce(endian + fmt, 1.5)
 
+
 test_1530559()
 
 ###########################################################################
 # Packing and unpacking to/from buffers.
 
 # Copied and modified from unittest.
+
+
 def assertRaises(excClass, callableObj, *args, **kwargs):
     try:
         callableObj(*args, **kwargs)
@@ -552,6 +575,7 @@ def assertRaises(excClass, callableObj, *args, **kwargs):
         return
     else:
         raise TestFailed("%s not raised." % excClass)
+
 
 def test_unpack_from():
     test_string = 'abcd01234'
@@ -563,7 +587,7 @@ def test_unpack_from():
         vereq(s.unpack_from(data, 2), ('cd01',))
         vereq(s.unpack_from(data, 4), ('0123',))
         for i in xrange(6):
-            vereq(s.unpack_from(data, i), (data[i:i+4],))
+            vereq(s.unpack_from(data, i), (data[i:i + 4],))
         for i in xrange(6, len(test_string) + 1):
             simple_err(s.unpack_from, data, i)
     for cls in (str, buffer):
@@ -572,13 +596,14 @@ def test_unpack_from():
         vereq(struct.unpack_from(fmt, data, 2), ('cd01',))
         vereq(struct.unpack_from(fmt, data, 4), ('0123',))
         for i in xrange(6):
-            vereq(struct.unpack_from(fmt, data, i), (data[i:i+4],))
+            vereq(struct.unpack_from(fmt, data, i), (data[i:i + 4],))
         for i in xrange(6, len(test_string) + 1):
             simple_err(struct.unpack_from, fmt, data, i)
 
+
 def test_pack_into():
     test_string = 'Reykjavik rocks, eow!'
-    writable_buf = array.array('c', ' '*100)
+    writable_buf = array.array('c', ' ' * 100)
     fmt = '21s'
     s = struct.Struct(fmt)
 
@@ -589,17 +614,18 @@ def test_pack_into():
 
     # Test with offset.
     s.pack_into(writable_buf, 10, test_string)
-    from_buf = writable_buf.tostring()[:len(test_string)+10]
+    from_buf = writable_buf.tostring()[:len(test_string) + 10]
     vereq(from_buf, test_string[:10] + test_string)
 
     # Go beyond boundaries.
-    small_buf = array.array('c', ' '*10)
+    small_buf = array.array('c', ' ' * 10)
     assertRaises(struct.error, s.pack_into, small_buf, 0, test_string)
     assertRaises(struct.error, s.pack_into, small_buf, 2, test_string)
 
+
 def test_pack_into_fn():
     test_string = 'Reykjavik rocks, eow!'
-    writable_buf = array.array('c', ' '*100)
+    writable_buf = array.array('c', ' ' * 100)
     fmt = '21s'
     pack_into = lambda *args: struct.pack_into(fmt, *args)
 
@@ -610,19 +636,21 @@ def test_pack_into_fn():
 
     # Test with offset.
     pack_into(writable_buf, 10, test_string)
-    from_buf = writable_buf.tostring()[:len(test_string)+10]
+    from_buf = writable_buf.tostring()[:len(test_string) + 10]
     vereq(from_buf, test_string[:10] + test_string)
 
     # Go beyond boundaries.
-    small_buf = array.array('c', ' '*10)
+    small_buf = array.array('c', ' ' * 10)
     assertRaises(struct.error, pack_into, small_buf, 0, test_string)
     assertRaises(struct.error, pack_into, small_buf, 2, test_string)
+
 
 def test_unpack_with_buffer():
     # SF bug 1563759: struct.unpack doens't support buffer protocol objects
     data = array.array('B', '\x12\x34\x56\x78')
     value, = struct.unpack('>I', data)
     vereq(value, 0x12345678)
+
 
 # Test methods to pack and unpack from buffers rather than strings.
 test_unpack_from()

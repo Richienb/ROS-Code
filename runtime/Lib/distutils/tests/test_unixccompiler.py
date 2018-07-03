@@ -6,11 +6,13 @@ from test.test_support import run_unittest
 from distutils import sysconfig
 from distutils.unixccompiler import UnixCCompiler
 
+
 class UnixCCompilerTestCase(unittest.TestCase):
 
     def setUp(self):
         self._backup_platform = sys.platform
         self._backup_get_config_var = sysconfig.get_config_var
+
         class CompilerWrapper(UnixCCompiler):
             def rpath_foo(self):
                 return self.runtime_library_dir_option('/foo')
@@ -38,6 +40,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
         # hp-ux
         sys.platform = 'hp-ux'
         old_gcv = sysconfig.get_config_var
+
         def gcv(v):
             return 'xxx'
         sysconfig.get_config_var = gcv
@@ -65,6 +68,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
 
         # GCC GNULD
         sys.platform = 'bar'
+
         def gcv(v):
             if v == 'CC':
                 return 'gcc'
@@ -75,6 +79,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
 
         # GCC non-GNULD
         sys.platform = 'bar'
+
         def gcv(v):
             if v == 'CC':
                 return 'gcc'
@@ -86,6 +91,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
         # GCC GNULD with fully qualified configuration prefix
         # see #7617
         sys.platform = 'bar'
+
         def gcv(v):
             if v == 'CC':
                 return 'x86_64-pc-linux-gnu-gcc-4.4.2'
@@ -94,9 +100,9 @@ class UnixCCompilerTestCase(unittest.TestCase):
         sysconfig.get_config_var = gcv
         self.assertEqual(self.cc.rpath_foo(), '-Wl,-R/foo')
 
-
         # non-GCC GNULD
         sys.platform = 'bar'
+
         def gcv(v):
             if v == 'CC':
                 return 'cc'
@@ -107,6 +113,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
 
         # non-GCC non-GNULD
         sys.platform = 'bar'
+
         def gcv(v):
             if v == 'CC':
                 return 'cc'
@@ -117,6 +124,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
 
         # AIX C/C++ linker
         sys.platform = 'aix'
+
         def gcv(v):
             return 'xxx'
         sysconfig.get_config_var = gcv
@@ -125,6 +133,7 @@ class UnixCCompilerTestCase(unittest.TestCase):
 
 def test_suite():
     return unittest.makeSuite(UnixCCompilerTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

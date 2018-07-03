@@ -8,7 +8,7 @@ import operator
 re_validPackage = re.compile(r"(?i)^\s*([a-z_]\w*(?:\.[a-z_]\w*)*)(.*)")
 # (package) (rest)
 
-re_paren = re.compile(r"^\s*\((.*)\)\s*$") # (list) inside of parentheses
+re_paren = re.compile(r"^\s*\((.*)\)\s*$")  # (list) inside of parentheses
 re_splitComparison = re.compile(r"^\s*(<=|>=|<|>|!=|==)\s*([^\s,]+)\s*$")
 # (comp) (version)
 
@@ -24,8 +24,10 @@ def splitUp(pred):
     comp, verStr = res.groups()
     return (comp, distutils.version.StrictVersion(verStr))
 
+
 compmap = {"<": operator.lt, "<=": operator.le, "==": operator.eq,
            ">": operator.gt, ">=": operator.ge, "!=": operator.ne}
+
 
 class VersionPredicate:
     """Parse and test package version predicates.
@@ -138,6 +140,7 @@ class VersionPredicate:
 
 
 _provision_rx = None
+
 
 def split_provision(value):
     """Return the name and optional version number of a provision.

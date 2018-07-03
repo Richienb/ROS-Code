@@ -6,6 +6,7 @@ resource = test_support.import_module('resource')
 
 # This test is checking a few specific problem spots with the resource module.
 
+
 class ResourceTest(unittest.TestCase):
 
     def test_args(self):
@@ -77,7 +78,7 @@ class ResourceTest(unittest.TestCase):
 
     def test_fsize_toobig(self):
         # Be sure that setrlimit is checking for really large values
-        too_big = 10L**50
+        too_big = 10**50
         try:
             (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
         except AttributeError:
@@ -113,6 +114,7 @@ class ResourceTest(unittest.TestCase):
             class BadSequence:
                 def __len__(self):
                     return 2
+
                 def __getitem__(self, key):
                     if key in (0, 1):
                         return len(tuple(range(1000000)))
@@ -120,8 +122,10 @@ class ResourceTest(unittest.TestCase):
 
             resource.setrlimit(resource.RLIMIT_CPU, BadSequence())
 
+
 def test_main(verbose=None):
     test_support.run_unittest(ResourceTest)
+
 
 if __name__ == "__main__":
     test_main()

@@ -41,10 +41,9 @@ __all__ = [
     'parser',
     'quoprimime',
     'utils',
-    ]
+]
 
 
-
 # Some convenience routines.  Don't import Parser and Message as side-effects
 # of importing email since those cascadingly import most of the rest of the
 # email package.
@@ -66,10 +65,11 @@ def message_from_file(fp, *args, **kws):
     return Parser(*args, **kws).parse(fp)
 
 
-
+
 # Lazy loading to provide name mapping from new-style names (PEP 8 compatible
 # email 4.0 module names), to old-style names (email 3.0 module names).
 import sys
+
 
 class LazyImporter(object):
     def __init__(self, module_name):
@@ -96,7 +96,7 @@ _LOWERNAMES = [
     'Utils',
     'base64MIME',
     'quopriMIME',
-    ]
+]
 
 _MIMENAMES = [
     # email.MIME<old name> -> email.mime.<new name is lowercased old name>
@@ -107,7 +107,7 @@ _MIMENAMES = [
     'Multipart',
     'NonMultipart',
     'Text',
-    ]
+]
 
 for _name in _LOWERNAMES:
     importer = LazyImporter(_name.lower())

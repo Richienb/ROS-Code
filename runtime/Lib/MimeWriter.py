@@ -16,8 +16,11 @@ __all__ = ["MimeWriter"]
 
 import warnings
 
-warnings.warn("the MimeWriter module is deprecated; use the email package instead",
-                DeprecationWarning, 2)
+warnings.warn(
+    "the MimeWriter module is deprecated; use the email package instead",
+    DeprecationWarning,
+    2)
+
 
 class MimeWriter:
 
@@ -103,8 +106,10 @@ class MimeWriter:
 
         """
         lines = value.split("\n")
-        while lines and not lines[-1]: del lines[-1]
-        while lines and not lines[0]: del lines[0]
+        while lines and not lines[-1]:
+            del lines[-1]
+        while lines and not lines[0]:
+            del lines[0]
         for i in range(1, len(lines)):
             lines[i] = "    " + lines[i].strip()
         value = "\n".join(lines) + "\n"

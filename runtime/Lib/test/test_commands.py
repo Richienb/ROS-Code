@@ -3,10 +3,12 @@
    Nick Mathewson
 '''
 import unittest
-import os, tempfile, re
+import os
+import tempfile
+import re
 
 from test.test_support import run_unittest, reap_children, import_module, \
-                              check_warnings
+    check_warnings
 
 # Silence Py3k warning
 commands = import_module('commands', deprecated=True)
@@ -62,7 +64,11 @@ class CommandTests(unittest.TestCase):
 
         with check_warnings((".*commands.getstatus.. is deprecated",
                              DeprecationWarning)):
-            self.assertTrue(re.match(pat, commands.getstatus("/."), re.VERBOSE))
+            self.assertTrue(
+                re.match(
+                    pat,
+                    commands.getstatus("/."),
+                    re.VERBOSE))
 
 
 def test_main():

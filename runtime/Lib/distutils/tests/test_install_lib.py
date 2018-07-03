@@ -9,6 +9,7 @@ from distutils.tests import support
 from distutils.errors import DistutilsOptionError
 from test.test_support import run_unittest
 
+
 class InstallLibTestCase(support.TempdirManager,
                          support.LoggingSilencer,
                          support.EnvironGuard,
@@ -100,8 +101,10 @@ class InstallLibTestCase(support.TempdirManager,
 
         self.assertTrue('byte-compiling is disabled' in self.logs[0][1])
 
+
 def test_suite():
     return unittest.makeSuite(InstallLibTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

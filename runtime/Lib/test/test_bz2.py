@@ -18,6 +18,7 @@ from bz2 import BZ2File, BZ2Compressor, BZ2Decompressor
 
 has_cmdline_bunzip2 = sys.platform not in ("win32", "os2emx", "riscos")
 
+
 class BaseTest(unittest.TestCase):
     "Base for other testcases."
     TEXT = 'root:x:0:0:root:/root:/bin/bash\nbin:x:1:1:bin:/bin:\ndaemon:x:2:2:daemon:/sbin:\nadm:x:3:4:adm:/var/adm:\nlp:x:4:7:lp:/var/spool/lpd:\nsync:x:5:0:sync:/sbin:/bin/sync\nshutdown:x:6:0:shutdown:/sbin:/sbin/shutdown\nhalt:x:7:0:halt:/sbin:/sbin/halt\nmail:x:8:12:mail:/var/spool/mail:\nnews:x:9:13:news:/var/spool/news:\nuucp:x:10:14:uucp:/var/spool/uucp:\noperator:x:11:0:operator:/root:\ngames:x:12:100:games:/usr/games:\ngopher:x:13:30:gopher:/usr/lib/gopher-data:\nftp:x:14:50:FTP User:/var/ftp:/bin/bash\nnobody:x:65534:65534:Nobody:/home:\npostfix:x:100:101:postfix:/var/spool/postfix:\nniemeyer:x:500:500::/home/niemeyer:/bin/bash\npostgres:x:101:102:PostgreSQL Server:/var/lib/pgsql:/bin/bash\nmysql:x:102:103:MySQL server:/var/lib/mysql:/bin/bash\nwww:x:103:104::/var/www:/bin/false\n'
@@ -82,7 +83,7 @@ class BZ2FileTest(BaseTest):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             text = ''
-            while 1:
+            while True:
                 str = bz2f.read(10)
                 if not str:
                     break
@@ -135,7 +136,7 @@ class BZ2FileTest(BaseTest):
         self.createTempFile()
         bz2f = BZ2File(self.filename)
         sio = StringIO(self.TEXT)
-        self.assertEqual(list(bz2f.xreadlines()), sio.readlines())
+        self.assertEqual(list(bz2f), sio.readlines())
         bz2f.close()
 
     def testUniversalNewlinesLF(self):
@@ -166,8 +167,8 @@ class BZ2FileTest(BaseTest):
         # "Test BZ2File.write() with chunks of 10 bytes"
         with BZ2File(self.filename, "w") as bz2f:
             n = 0
-            while 1:
-                str = self.TEXT[n*10:(n+1)*10]
+            while True:
+                str = self.TEXT[n * 10:(n + 1) * 10]
                 if not str:
                     break
                 bz2f.write(str)
@@ -208,14 +209,14 @@ class BZ2FileTest(BaseTest):
         with BZ2File(self.filename) as bz2f:
             bz2f.read(500)
             bz2f.seek(-150, 1)
-            self.assertEqual(bz2f.read(), self.TEXT[500-150:])
+            self.assertEqual(bz2f.read(), self.TEXT[500 - 150:])
 
     def testSeekBackwardsFromEnd(self):
         # "Test BZ2File.seek(-150, 2)"
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             bz2f.seek(-150, 2)
-            self.assertEqual(bz2f.read(), self.TEXT[len(self.TEXT)-150:])
+            self.assertEqual(bz2f.read(), self.TEXT[len(self.TEXT) - 150:])
 
     def testSeekPostEnd(self):
         # "Test BZ2File.seek(150000)"
@@ -340,6 +341,7 @@ class BZ2FileTest(BaseTest):
         self.assertRaises(IOError, f.__init__, "non-existent-file")
         del f
 
+
 class BZ2CompressorTest(BaseTest):
     def testCompress(self):
         # "Test BZ2Compressor.compress()/flush()"
@@ -361,8 +363,8 @@ class BZ2CompressorTest(BaseTest):
         bz2c = BZ2Compressor()
         n = 0
         data = ''
-        while 1:
-            str = self.TEXT[n*10:(n+1)*10]
+        while True:
+            str = self.TEXT[n * 10:(n + 1) * 10]
             if not str:
                 break
             data += bz2c.compress(str)
@@ -397,8 +399,8 @@ class BZ2DecompressorTest(BaseTest):
         bz2d = BZ2Decompressor()
         text = ''
         n = 0
-        while 1:
-            str = self.DATA[n*10:(n+1)*10]
+        while True:
+            str = self.DATA[n * 10:(n + 1) * 10]
             if not str:
                 break
             text += bz2d.decompress(str)
@@ -409,7 +411,7 @@ class BZ2DecompressorTest(BaseTest):
         # "Test BZ2Decompressor.decompress() with unused data"
         bz2d = BZ2Decompressor()
         unused_data = "this is unused data"
-        text = bz2d.decompress(self.DATA+unused_data)
+        text = bz2d.decompress(self.DATA + unused_data)
         self.assertEqual(text, self.TEXT)
         self.assertEqual(bz2d.unused_data, unused_data)
 
@@ -482,6 +484,7 @@ class FuncTest(BaseTest):
         self.assertEqual(len(text), _4G)
         self.assertEqual(text.strip("a"), "")
 
+
 def test_main():
     test_support.run_unittest(
         BZ2FileTest,
@@ -490,6 +493,7 @@ def test_main():
         FuncTest
     )
     test_support.reap_children()
+
 
 if __name__ == '__main__':
     test_main()

@@ -35,6 +35,7 @@ def _splitparam(param):
         return a.strip(), None
     return a.strip(), b.strip()
 
+
 def _formatparam(param, value=None, quote=True):
     """Convenience function to format and return a key=value pair.
 
@@ -59,6 +60,7 @@ def _formatparam(param, value=None, quote=True):
     else:
         return param
 
+
 def _parseparam(s):
     plist = []
     while s[:1] == ';':
@@ -71,7 +73,7 @@ def _parseparam(s):
         f = s[:end]
         if '=' in f:
             i = f.index('=')
-            f = f[:i].strip().lower() + '=' + f[i+1:].strip()
+            f = f[:i].strip().lower() + '=' + f[i + 1:].strip()
         plist.append(f.strip())
         s = s[end:]
     return plist
@@ -88,7 +90,6 @@ def _unquotevalue(value):
         return utils.unquote(value)
 
 
-
 class Message:
     """Basic message object.
 
@@ -104,6 +105,7 @@ class Message:
     you must use the explicit API to set or get all the headers.  Not all of
     the mapping methods are implemented.
     """
+
     def __init__(self):
         self._headers = []
         self._unixfrom = None
@@ -206,7 +208,7 @@ class Message:
             elif cte in ('x-uuencode', 'uuencode', 'uue', 'x-uue'):
                 sfp = StringIO()
                 try:
-                    uu.decode(StringIO(payload+'\n'), sfp, quiet=True)
+                    uu.decode(StringIO(payload + '\n'), sfp, quiet=True)
                     payload = sfp.getvalue()
                 except uu.Error:
                     # Some decoding problem

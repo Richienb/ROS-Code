@@ -8,6 +8,7 @@ from distutils.errors import DistutilsFileError
 from distutils.tests import support
 from test.test_support import run_unittest
 
+
 class DepUtilTestCase(support.TempdirManager, unittest.TestCase):
 
     def test_newer(self):
@@ -44,7 +45,7 @@ class DepUtilTestCase(support.TempdirManager, unittest.TestCase):
         self.write_file(four)
 
         self.assertEqual(newer_pairwise([one, two], [three, four]),
-                         ([one],[three]))
+                         ([one], [three]))
 
     def test_newer_group(self):
         tmpdir = self.mkdtemp()
@@ -76,6 +77,7 @@ class DepUtilTestCase(support.TempdirManager, unittest.TestCase):
 
 def test_suite():
     return unittest.makeSuite(DepUtilTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

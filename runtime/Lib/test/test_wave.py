@@ -8,6 +8,7 @@ sampwidth = 2
 framerate = 8000
 nframes = 100
 
+
 class TestWave(unittest.TestCase):
 
     def setUp(self):
@@ -38,8 +39,10 @@ class TestWave(unittest.TestCase):
         self.assertEqual(nframes, self.f.getnframes())
         self.assertEqual(self.f.readframes(nframes), output)
 
+
 def test_main():
     run_unittest(TestWave)
+
 
 if __name__ == '__main__':
     test_main()

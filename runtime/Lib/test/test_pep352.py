@@ -18,12 +18,15 @@ if sys.py3kwarning:
 _deprecations = [(msg, DeprecationWarning) for msg in DEPRECATION_WARNINGS]
 
 # Silence Py3k and other deprecation warnings
+
+
 def ignore_deprecation_warnings(func):
     """Ignore the known DeprecationWarnings."""
     def wrapper(*args, **kw):
         with check_warnings(*_deprecations, quiet=True):
             return func(*args, **kw)
     return wrapper
+
 
 class ExceptionClassTests(unittest.TestCase):
 
@@ -44,7 +47,7 @@ class ExceptionClassTests(unittest.TestCase):
         # Make sure the inheritance hierarchy matches the documentation
         exc_set = set(x for x in dir(exceptions) if not x.startswith('_'))
         inheritance_tree = open(os.path.join(os.path.split(__file__)[0],
-                                                'exception_hierarchy.txt'))
+                                             'exception_hierarchy.txt'))
         try:
             superclass_name = inheritance_tree.readline().rstrip()
             try:
@@ -58,17 +61,17 @@ class ExceptionClassTests(unittest.TestCase):
             for exc_line in inheritance_tree:
                 exc_line = exc_line.rstrip()
                 depth = exc_line.rindex('-')
-                exc_name = exc_line[depth+2:]  # Slice past space
+                exc_name = exc_line[depth + 2:]  # Slice past space
                 if '(' in exc_name:
                     paren_index = exc_name.index('(')
-                    platform_name = exc_name[paren_index+1:-1]
-                    exc_name = exc_name[:paren_index-1]  # Slice off space
+                    platform_name = exc_name[paren_index + 1:-1]
+                    exc_name = exc_name[:paren_index - 1]  # Slice off space
                     if platform_system() != platform_name:
                         exc_set.discard(exc_name)
                         continue
                 if '[' in exc_name:
                     left_bracket = exc_name.index('[')
-                    exc_name = exc_name[:left_bracket-1]  # cover space
+                    exc_name = exc_name[:left_bracket - 1]  # cover space
                 try:
                     exc = getattr(__builtin__, exc_name)
                 except AttributeError:
@@ -78,9 +81,10 @@ class ExceptionClassTests(unittest.TestCase):
                 elif last_depth > depth:
                     while superclasses[-1][0] >= depth:
                         superclasses.pop()
-                self.assertTrue(issubclass(exc, superclasses[-1][1]),
-                "%s is not a subclass of %s" % (exc.__name__,
-                    superclasses[-1][1].__name__))
+                self.assertTrue(issubclass(exc,
+                                           superclasses[-1][1]),
+                                "%s is not a subclass of %s" % (exc.__name__,
+                                                                superclasses[-1][1].__name__))
                 try:  # Some exceptions require arguments; just skip them
                     self.verify_instance_interface(exc())
                 except TypeError:
@@ -94,12 +98,13 @@ class ExceptionClassTests(unittest.TestCase):
         self.assertEqual(len(exc_set), 0, "%s not accounted for" % exc_set)
 
     interface_tests = ("length", "args", "message", "str", "unicode", "repr",
-            "indexing")
+                       "indexing")
 
     def interface_test_driver(self, results):
         for test_name, (given, expected) in zip(self.interface_tests, results):
-            self.assertEqual(given, expected, "%s: %s != %s" % (test_name,
-                given, expected))
+            self.assertEqual(
+                given, expected, "%s: %s != %s" %
+                (test_name, given, expected))
 
     @ignore_deprecation_warnings
     def test_interface_single_arg(self):
@@ -135,7 +140,6 @@ class ExceptionClassTests(unittest.TestCase):
                    [repr(exc), exc.__class__.__name__ + '()'], [True, True])
         self.interface_test_driver(results)
 
-
     def test_message_deprecation(self):
         # As of Python 2.6, BaseException.message is deprecated.
         with check_warnings(("", DeprecationWarning)):
@@ -158,24 +162,24 @@ class UsageTests(unittest.TestCase):
         """Catching 'object_' should raise a TypeError."""
         try:
             try:
-                raise StandardError
+                raise Exception
             except object_:
                 pass
         except TypeError:
             pass
-        except StandardError:
+        except Exception:
             self.fail("TypeError expected when catching %s" % type(object_))
 
         try:
             try:
-                raise StandardError
+                raise Exception
             except (object_,):
                 pass
         except TypeError:
             return
-        except StandardError:
+        except Exception:
             self.fail("TypeError expected when catching %s as specified in a "
-                        "tuple" % type(object_))
+                      "tuple" % type(object_))
 
     @ignore_deprecation_warnings
     def test_raise_classic(self):
@@ -186,13 +190,13 @@ class UsageTests(unittest.TestCase):
             raise ClassicClass
         except ClassicClass:
             pass
-        except:
+        except BaseException:
             self.fail("unable to raise classic class")
         try:
             raise ClassicClass()
         except ClassicClass:
             pass
-        except:
+        except BaseException:
             self.fail("unable to raise classic class instance")
 
     def test_raise_new_style_non_exception(self):
@@ -217,7 +221,7 @@ class UsageTests(unittest.TestCase):
             str_exc = "spam"
             with self.assertRaises(DeprecationWarning):
                 try:
-                    raise StandardError
+                    raise Exception
                 except str_exc:
                     pass
 
@@ -225,14 +229,13 @@ class UsageTests(unittest.TestCase):
             # that a warning is raised.
             with self.assertRaises(DeprecationWarning):
                 try:
-                    raise StandardError
+                    raise Exception
                 except (AssertionError, str_exc):
                     pass
 
 
 def test_main():
     run_unittest(ExceptionClassTests, UsageTests)
-
 
 
 if __name__ == '__main__':

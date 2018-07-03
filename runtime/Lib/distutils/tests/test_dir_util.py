@@ -12,6 +12,7 @@ from distutils import log
 from distutils.tests import support
 from test.test_support import run_unittest
 
+
 class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
 
     def _log(self, msg, *args):
@@ -52,7 +53,7 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
         self.assertEqual(self._logs, wanted)
 
     @unittest.skipIf(sys.platform.startswith('win'),
-                        "This test is only appropriate for POSIX-like systems.")
+                     "This test is only appropriate for POSIX-like systems.")
     def test_mkpath_with_custom_mode(self):
         # Get and set the current umask value for testing mode bits.
         umask = os.umask(0o002)
@@ -75,7 +76,6 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
         self.assertEqual(self._logs, wanted)
 
         remove_tree(self.root_target, verbose=0)
-
 
     def test_copy_tree_verbosity(self):
 
@@ -127,8 +127,10 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
             self.assertEqual(ensure_relative('c:\\home\\foo'), 'c:home\\foo')
             self.assertEqual(ensure_relative('home\\foo'), 'home\\foo')
 
+
 def test_suite():
     return unittest.makeSuite(DirUtilTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

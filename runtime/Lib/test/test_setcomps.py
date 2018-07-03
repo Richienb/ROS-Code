@@ -129,7 +129,8 @@ We also repeat each of the above scoping tests inside a function
 """
 
 
-__test__ = {'doctests' : doctests}
+__test__ = {'doctests': doctests}
+
 
 def test_main(verbose=None):
     import sys
@@ -146,6 +147,7 @@ def test_main(verbose=None):
             gc.collect()
             counts[i] = sys.gettotalrefcount()
         print(counts)
+
 
 if __name__ == "__main__":
     test_main(verbose=True)

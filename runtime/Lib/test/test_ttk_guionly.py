@@ -7,7 +7,7 @@ test_support.import_module('_tkinter')
 
 this_dir = os.path.dirname(os.path.abspath(__file__))
 lib_tk_test = os.path.abspath(os.path.join(this_dir, os.path.pardir,
-    'lib-tk', 'test'))
+                                           'lib-tk', 'test'))
 
 with test_support.DirsOnSysPath(lib_tk_test):
     import runtktests
@@ -20,9 +20,10 @@ from _tkinter import TclError
 
 try:
     ttk.Button()
-except TclError, msg:
+except TclError as msg:
     # assuming ttk is not available
     raise unittest.SkipTest("ttk not available: %s" % msg)
+
 
 def test_main(enable_gui=False):
     if enable_gui:
@@ -38,6 +39,7 @@ def test_main(enable_gui=False):
                 *runtktests.get_tests(text=False, packages=['test_ttk']))
         finally:
             get_tk_root().destroy()
+
 
 if __name__ == '__main__':
     test_main(enable_gui=True)

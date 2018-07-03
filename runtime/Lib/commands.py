@@ -23,7 +23,7 @@ warnpy3k("the commands module has been removed in Python 3.0; "
          "use the subprocess module instead", stacklevel=2)
 del warnpy3k
 
-__all__ = ["getstatusoutput","getoutput","getstatus"]
+__all__ = ["getstatusoutput", "getoutput", "getstatus"]
 
 # Module 'commands'
 #
@@ -59,8 +59,10 @@ def getstatusoutput(cmd):
     pipe = os.popen('{ ' + cmd + '; } 2>&1', 'r')
     text = pipe.read()
     sts = pipe.close()
-    if sts is None: sts = 0
-    if text[-1:] == '\n': text = text[:-1]
+    if sts is None:
+        sts = 0
+    if text[-1:] == '\n':
+        text = text[:-1]
     return sts, text
 
 

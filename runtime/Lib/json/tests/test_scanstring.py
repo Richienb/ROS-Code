@@ -23,8 +23,13 @@ class TestScanstring(object):
             (u'{', 8))
 
         self.assertEqual(
-            scanstring('"A JSON payload should be an object or array, not a string."', 1, None, True),
-            (u'A JSON payload should be an object or array, not a string.', 60))
+            scanstring(
+                '"A JSON payload should be an object or array, not a string."',
+                1,
+                None,
+                True),
+            (u'A JSON payload should be an object or array, not a string.',
+             60))
 
         self.assertEqual(
             scanstring('["Unclosed array"', 2, None, True),
@@ -51,8 +56,13 @@ class TestScanstring(object):
             (u'Extra comma', 14))
 
         self.assertEqual(
-            scanstring('{"Extra value after close": true} "misplaced quoted value"', 2, None, True),
-            (u'Extra value after close', 26))
+            scanstring(
+                '{"Extra value after close": true} "misplaced quoted value"',
+                2,
+                None,
+                True),
+            (u'Extra value after close',
+             26))
 
         self.assertEqual(
             scanstring('{"Illegal expression": 1 + 2}', 2, None, True),
@@ -71,8 +81,13 @@ class TestScanstring(object):
             (u'Numbers cannot be hex', 24))
 
         self.assertEqual(
-            scanstring('[[[[[[[[[[[[[[[[[[[["Too deep"]]]]]]]]]]]]]]]]]]]]', 21, None, True),
-            (u'Too deep', 30))
+            scanstring(
+                '[[[[[[[[[[[[[[[[[[[["Too deep"]]]]]]]]]]]]]]]]]]]]',
+                21,
+                None,
+                True),
+            (u'Too deep',
+             30))
 
         self.assertEqual(
             scanstring('{"Missing colon" null}', 2, None, True),
@@ -102,8 +117,12 @@ class TestScanstring(object):
 
     def test_overflow(self):
         with self.assertRaises(OverflowError):
-            self.json.decoder.scanstring(b"xxx", sys.maxsize+1)
+            self.json.decoder.scanstring(b"xxx", sys.maxsize + 1)
 
 
-class TestPyScanstring(TestScanstring, PyTest): pass
-class TestCScanstring(TestScanstring, CTest): pass
+class TestPyScanstring(TestScanstring, PyTest):
+    pass
+
+
+class TestCScanstring(TestScanstring, CTest):
+    pass

@@ -24,6 +24,7 @@ try:
 except ImportError:
     getgrnam = None
 
+
 def _get_gid(name):
     """Returns a gid, given a group name."""
     if getgrnam is None or name is None:
@@ -36,6 +37,7 @@ def _get_gid(name):
         return result[2]
     return None
 
+
 def _get_uid(name):
     """Returns an uid, given a user name."""
     if getpwnam is None or name is None:
@@ -47,6 +49,7 @@ def _get_uid(name):
     if result is not None:
         return result[2]
     return None
+
 
 def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
                  owner=None, group=None):
@@ -70,9 +73,9 @@ def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
 
     # flags for compression program, each element of list will be an argument
     if compress is not None and compress not in compress_ext.keys():
-        raise ValueError, \
-              ("bad value for 'compress': must be None, 'gzip', 'bzip2' "
-               "or 'compress'")
+        raise ValueError(
+            "bad value for 'compress': must be None, 'gzip', 'bzip2' "
+            "or 'compress'")
 
     archive_name = base_name + '.tar'
     if compress != 'compress':
@@ -118,6 +121,7 @@ def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
 
     return archive_name
 
+
 def make_zipfile(base_name, base_dir, verbose=0, dry_run=0):
     """Create a zip file from all the files under 'base_dir'.
 
@@ -149,10 +153,11 @@ def make_zipfile(base_name, base_dir, verbose=0, dry_run=0):
         except DistutilsExecError:
             # XXX really should distinguish between "couldn't find
             # external 'zip' command" and "zip failed".
-            raise DistutilsExecError, \
-                  ("unable to create zip file '%s': "
-                   "could neither import the 'zipfile' module nor "
-                   "find a standalone zip utility") % zip_filename
+            raise DistutilsExecError(
+                ("unable to create zip file '%s': "
+                 "could neither import the 'zipfile' module nor "
+                 "find a standalone zip utility") %
+                zip_filename)
 
     else:
         log.info("creating '%s' and adding '%s' to it",
@@ -172,13 +177,15 @@ def make_zipfile(base_name, base_dir, verbose=0, dry_run=0):
 
     return zip_filename
 
+
 ARCHIVE_FORMATS = {
     'gztar': (make_tarball, [('compress', 'gzip')], "gzip'ed tar-file"),
     'bztar': (make_tarball, [('compress', 'bzip2')], "bzip2'ed tar-file"),
-    'ztar':  (make_tarball, [('compress', 'compress')], "compressed tar file"),
-    'tar':   (make_tarball, [('compress', None)], "uncompressed tar file"),
-    'zip':   (make_zipfile, [],"ZIP file")
-    }
+    'ztar': (make_tarball, [('compress', 'compress')], "compressed tar file"),
+    'tar': (make_tarball, [('compress', None)], "uncompressed tar file"),
+    'zip': (make_zipfile, [], "ZIP file")
+}
+
 
 def check_archive_formats(formats):
     """Returns the first format from the 'format' list that is unknown.
@@ -189,6 +196,7 @@ def check_archive_formats(formats):
         if format not in ARCHIVE_FORMATS:
             return format
     return None
+
 
 def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
                  dry_run=0, owner=None, group=None):
@@ -223,7 +231,7 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
     try:
         format_info = ARCHIVE_FORMATS[format]
     except KeyError:
-        raise ValueError, "unknown archive format '%s'" % format
+        raise ValueError("unknown archive format '%s'" % format)
 
     func = format_info[0]
     for arg, val in format_info[1]:

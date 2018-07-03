@@ -13,6 +13,7 @@ _fname = test_support.TESTFN
 # Silence Py3k warning
 anydbm = test_support.import_module('anydbm', deprecated=True)
 
+
 def _delete_files():
     # we don't know the precise name the underlying database uses
     # so we use glob to locate all names
@@ -21,6 +22,7 @@ def _delete_files():
             os.unlink(f)
         except OSError:
             pass
+
 
 class AnyDBMTestCase(unittest.TestCase):
     _dict = {'0': '',
@@ -74,8 +76,7 @@ class AnyDBMTestCase(unittest.TestCase):
         f.close()
 
     def keys_helper(self, f):
-        keys = f.keys()
-        keys.sort()
+        keys = sorted(f.keys())
         dkeys = self._dict.keys()
         dkeys.sort()
         self.assertEqual(keys, dkeys)
@@ -87,11 +88,13 @@ class AnyDBMTestCase(unittest.TestCase):
     def setUp(self):
         _delete_files()
 
+
 def test_main():
     try:
         test_support.run_unittest(AnyDBMTestCase)
     finally:
         _delete_files()
+
 
 if __name__ == "__main__":
     test_main()

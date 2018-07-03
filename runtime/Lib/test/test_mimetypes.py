@@ -55,8 +55,7 @@ class MimeTypesTestCase(unittest.TestCase):
         all = set(self.db.guess_all_extensions('text/plain', strict=True))
         unless(all >= set(['.bat', '.c', '.h', '.ksh', '.pl', '.txt']))
         # And now non-strict
-        all = self.db.guess_all_extensions('image/jpg', strict=False)
-        all.sort()
+        all = sorted(self.db.guess_all_extensions('image/jpg', strict=False))
         eq(all, ['.jpg'])
         # And now for no hits
         all = self.db.guess_all_extensions('image/jpg', strict=True)
@@ -84,10 +83,11 @@ class Win32MimeTypesTestCase(unittest.TestCase):
         eq = self.assertEqual
         eq(self.db.guess_type("foo.txt"), ("text/plain", None))
 
+
 def test_main():
     test_support.run_unittest(MimeTypesTestCase,
-        Win32MimeTypesTestCase
-        )
+                              Win32MimeTypesTestCase
+                              )
 
 
 if __name__ == "__main__":

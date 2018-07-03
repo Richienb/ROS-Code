@@ -43,7 +43,6 @@ class BlockingIOError(IOError):
 def open(file, mode="r", buffering=-1,
          encoding=None, errors=None,
          newline=None, closefd=True):
-
     r"""Open file and return a stream.  Raise IOError upon failure.
 
     file is either a text or byte string giving the name (and the path
@@ -229,11 +228,13 @@ def open(file, mode="r", buffering=-1,
 class DocDescriptor:
     """Helper for builtins.open.__doc__
     """
+
     def __get__(self, obj, typ):
         return (
             "open(file, mode='r', buffering=-1, encoding=None, "
-                 "errors=None, newline=None, closefd=True)\n\n" +
+            "errors=None, newline=None, closefd=True)\n\n" +
             open.__doc__)
+
 
 class OpenWrapper:
     """Wrapper for builtins.open
@@ -354,7 +355,7 @@ class IOBase:
         # the end users, we suppress the traceback.
         try:
             self.close()
-        except:
+        except BaseException:
             pass
 
     ### Inquiries ###
@@ -373,7 +374,6 @@ class IOBase:
         if not self.seekable():
             raise IOError("File or stream is not seekable."
                           if msg is None else msg)
-
 
     def readable(self):
         """Return whether object was opened for reading.
@@ -521,6 +521,7 @@ class IOBase:
         for line in lines:
             self.write(line)
 
+
 io.IOBase.register(IOBase)
 
 
@@ -583,6 +584,7 @@ class RawIOBase(IOBase):
         Returns the number of bytes written, which may be less than len(b).
         """
         self._unsupported("write")
+
 
 io.RawIOBase.register(RawIOBase)
 from _io import FileIO
@@ -672,6 +674,7 @@ class BufferedIOBase(IOBase):
         state.
         """
         self._unsupported("detach")
+
 
 io.BufferedIOBase.register(BufferedIOBase)
 
@@ -818,7 +821,7 @@ class BytesIO(BufferedIOBase):
         if len(self._buffer) <= self._pos:
             return b""
         newpos = min(len(self._buffer), self._pos + n)
-        b = self._buffer[self._pos : newpos]
+        b = self._buffer[self._pos: newpos]
         self._pos = newpos
         return bytes(b)
 
@@ -972,7 +975,7 @@ class BufferedReader(_BufferedIOMixin):
         if n <= avail:
             # Fast path: the data to read is fully buffered.
             self._read_pos += n
-            return buf[pos:pos+n]
+            return buf[pos:pos + n]
         # Slow path: read from the stream until enough bytes are read,
         # or until an EOF occurs or until read() would block.
         chunks = [buf[pos:]]
@@ -1039,7 +1042,8 @@ class BufferedReader(_BufferedIOMixin):
                 min(n, len(self._read_buf) - self._read_pos))
 
     def tell(self):
-        return _BufferedIOMixin.tell(self) - len(self._read_buf) + self._read_pos
+        return _BufferedIOMixin.tell(
+            self) - len(self._read_buf) + self._read_pos
 
     def seek(self, pos, whence=0):
         if not (0 <= whence <= 2):
@@ -1050,6 +1054,7 @@ class BufferedReader(_BufferedIOMixin):
             pos = _BufferedIOMixin.seek(self, pos, whence)
             self._reset_read_buf()
             return pos
+
 
 class BufferedWriter(_BufferedIOMixin):
 
@@ -1171,7 +1176,10 @@ class BufferedRWPair(BufferedIOBase):
         The arguments are two RawIO instances.
         """
         if max_buffer_size is not None:
-            warnings.warn("max_buffer_size is deprecated", DeprecationWarning, 2)
+            warnings.warn(
+                "max_buffer_size is deprecated",
+                DeprecationWarning,
+                2)
 
         if not reader.readable():
             raise IOError('"reader" argument must be readable.')
@@ -1356,6 +1364,7 @@ class TextIOBase(IOBase):
         Subclasses should override."""
         return None
 
+
 io.TextIOBase.register(TextIOBase)
 
 
@@ -1366,6 +1375,7 @@ class IncrementalNewlineDecoder(codecs.IncrementalDecoder):
     translate=False, it ensures that the newline sequence is returned in
     one piece.
     """
+
     def __init__(self, decoder, translate, errors='strict'):
         codecs.IncrementalDecoder.__init__(self, errors=errors)
         self.translate = translate
@@ -1394,7 +1404,7 @@ class IncrementalNewlineDecoder(codecs.IncrementalDecoder):
         cr = output.count('\r') - crlf
         lf = output.count('\n') - crlf
         self.seennl |= (lf and self._LF) | (cr and self._CR) \
-                    | (crlf and self._CRLF)
+            | (crlf and self._CRLF)
 
         if self.translate:
             if crlf:
@@ -1441,7 +1451,7 @@ class IncrementalNewlineDecoder(codecs.IncrementalDecoder):
                 ("\n", "\r\n"),
                 ("\r", "\r\n"),
                 ("\r", "\n", "\r\n")
-               )[self.seennl]
+                )[self.seennl]
 
 
 class TextIOWrapper(TextIOBase):
@@ -1682,20 +1692,20 @@ class TextIOWrapper(TextIOBase):
         return not eof
 
     def _pack_cookie(self, position, dec_flags=0,
-                           bytes_to_feed=0, need_eof=0, chars_to_skip=0):
+                     bytes_to_feed=0, need_eof=0, chars_to_skip=0):
         # The meaning of a tell() cookie is: seek to position, set the
         # decoder flags to dec_flags, read bytes_to_feed bytes, feed them
         # into the decoder with need_eof as the EOF flag, then skip
         # chars_to_skip characters of the decoded result.  For most simple
         # decoders, tell() will often just give a byte offset in the file.
-        return (position | (dec_flags<<64) | (bytes_to_feed<<128) |
-               (chars_to_skip<<192) | bool(need_eof)<<256)
+        return (position | (dec_flags << 64) | (bytes_to_feed << 128) |
+                (chars_to_skip << 192) | bool(need_eof) << 256)
 
     def _unpack_cookie(self, bigint):
-        rest, position = divmod(bigint, 1<<64)
-        rest, dec_flags = divmod(rest, 1<<64)
-        rest, bytes_to_feed = divmod(rest, 1<<64)
-        need_eof, chars_to_skip = divmod(rest, 1<<64)
+        rest, position = divmod(bigint, 1 << 64)
+        rest, dec_flags = divmod(rest, 1 << 64)
+        rest, bytes_to_feed = divmod(rest, 1 << 64)
+        need_eof, chars_to_skip = divmod(rest, 1 << 64)
         return position, dec_flags, bytes_to_feed, need_eof, chars_to_skip
 
     def tell(self):
@@ -1779,14 +1789,14 @@ class TextIOWrapper(TextIOBase):
             raise ValueError("tell on closed file")
         if not self._seekable:
             raise IOError("underlying stream is not seekable")
-        if whence == 1: # seek relative to current position
+        if whence == 1:  # seek relative to current position
             if cookie != 0:
                 raise IOError("can't do nonzero cur-relative seeks")
             # Seeking to the current position should attempt to
             # sync the underlying buffer with the current position.
             whence = 0
             cookie = self.tell()
-        if whence == 2: # seek relative to end of file
+        if whence == 2:  # seek relative to end of file
             if cookie != 0:
                 raise IOError("can't do nonzero end-relative seeks")
             self.flush()

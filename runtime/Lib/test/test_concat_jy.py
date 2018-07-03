@@ -5,6 +5,7 @@ Made for Jython.
 import unittest
 import test.test_support
 
+
 class StrUnicodeConcatTestCase(unittest.TestCase):
 
     def test_basic(self):
@@ -27,7 +28,7 @@ class StrUnicodeConcatTestCase(unittest.TestCase):
                                                             resType))
                 self.assertEquals(res, 'ab',
                                   '%r (%s) != %r (%s)' % (res, type(res), 'ab',
-                                                 str))
+                                                          str))
 
 
 class StrUnicodeConcatOverridesTestCase(unittest.TestCase):
@@ -85,6 +86,7 @@ class StrUnicodeConcatOverridesTestCase(unittest.TestCase):
 def test_main():
     test.test_support.run_unittest(StrUnicodeConcatTestCase,
                                    StrUnicodeConcatOverridesTestCase)
+
 
 if __name__ == "__main__":
     test_main()

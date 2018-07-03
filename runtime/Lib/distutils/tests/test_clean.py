@@ -8,6 +8,7 @@ from distutils.command.clean import clean
 from distutils.tests import support
 from test.test_support import run_unittest
 
+
 class cleanTestCase(support.TempdirManager,
                     support.LoggingSilencer,
                     unittest.TestCase):
@@ -19,7 +20,7 @@ class cleanTestCase(support.TempdirManager,
         # let's add some elements clean should remove
         dirs = [(d, os.path.join(pkg_dir, d))
                 for d in ('build_temp', 'build_lib', 'bdist_base',
-                'build_scripts', 'build_base')]
+                          'build_scripts', 'build_base')]
 
         for name, path in dirs:
             os.mkdir(path)
@@ -37,15 +38,17 @@ class cleanTestCase(support.TempdirManager,
         # make sure the files where removed
         for name, path in dirs:
             self.assertTrue(not os.path.exists(path),
-                         '%s was not removed' % path)
+                            '%s was not removed' % path)
 
         # let's run the command again (should spit warnings but succeed)
         cmd.all = 1
         cmd.ensure_finalized()
         cmd.run()
 
+
 def test_suite():
     return unittest.makeSuite(cleanTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

@@ -90,14 +90,15 @@ _CLEANED_MANIFEST = """\
   </dependency>
 </assembly>"""
 
-if sys.platform=="win32":
+if sys.platform == "win32":
     from distutils.msvccompiler import get_build_version
-    if get_build_version()>=8.0:
+    if get_build_version() >= 8.0:
         SKIP_MESSAGE = None
     else:
         SKIP_MESSAGE = "These tests are only for MSVC8.0 or above"
 else:
     SKIP_MESSAGE = "These tests are only for win32"
+
 
 @unittest.skipUnless(SKIP_MESSAGE is None, SKIP_MESSAGE)
 class msvc9compilerTestCase(support.TempdirManager,
@@ -108,6 +109,7 @@ class msvc9compilerTestCase(support.TempdirManager,
         # a DistutilsPlatformError if the compiler
         # is not found
         from distutils.msvc9compiler import query_vcvarsall
+
         def _find_vcvarsall(version):
             return None
 
@@ -116,7 +118,7 @@ class msvc9compilerTestCase(support.TempdirManager,
         msvc9compiler.find_vcvarsall = _find_vcvarsall
         try:
             self.assertRaises(DistutilsPlatformError, query_vcvarsall,
-                             'wont find this version')
+                              'wont find this version')
         finally:
             msvc9compiler.find_vcvarsall = old_find_vcvarsall
 
@@ -179,6 +181,7 @@ class msvc9compilerTestCase(support.TempdirManager,
 
 def test_suite():
     return unittest.makeSuite(msvc9compilerTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

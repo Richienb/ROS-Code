@@ -10,7 +10,6 @@ import shutil
 import zipfile
 
 
-
 class PkgutilTests(unittest.TestCase):
 
     def setUp(self):
@@ -89,6 +88,7 @@ class PkgutilTests(unittest.TestCase):
         for t in pkgutil.walk_packages(path=[self.dirname]):
             self.fail("unexpected package found")
 
+
 class PkgutilPEP302Tests(unittest.TestCase):
 
     class MyTestLoader(object):
@@ -100,7 +100,7 @@ class PkgutilPEP302Tests(unittest.TestCase):
             # Make it a package
             mod.__path__ = []
             # Count how many times the module is reloaded
-            mod.__dict__['loads'] = mod.__dict__.get('loads',0) + 1
+            mod.__dict__['loads'] = mod.__dict__.get('loads', 0) + 1
             return mod
 
         def get_data(self, path):
@@ -131,11 +131,13 @@ class PkgutilPEP302Tests(unittest.TestCase):
         self.assertEqual(foo.loads, 1)
         del sys.modules['foo']
 
+
 def test_main():
     run_unittest(PkgutilTests, PkgutilPEP302Tests)
     # this is necessary if test is run repeated (like when finding leaks)
     import zipimport
     zipimport._zip_directory_cache.clear()
+
 
 if __name__ == '__main__':
     test_main()

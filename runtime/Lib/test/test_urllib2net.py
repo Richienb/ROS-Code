@@ -16,27 +16,30 @@ def _retry_thrice(func, exc, *args, **kwargs):
     for i in range(3):
         try:
             return func(*args, **kwargs)
-        except exc, last_exc:
+        except exc as last_exc:
             continue
-        except:
+        except BaseException:
             raise
     raise last_exc
+
 
 def _wrap_with_retry_thrice(func, exc):
     def wrapped(*args, **kwargs):
         return _retry_thrice(func, exc, *args, **kwargs)
     return wrapped
 
+
 # Connecting to remote hosts is flaky.  Make it more robust by retrying
 # the connection several times.
-_urlopen_with_retry = _wrap_with_retry_thrice(urllib2.urlopen, urllib2.URLError)
+_urlopen_with_retry = _wrap_with_retry_thrice(
+    urllib2.urlopen, urllib2.URLError)
 
 
 class AuthTests(unittest.TestCase):
     """Tests urllib2 authentication features."""
 
-## Disabled at the moment since there is no page under python.org which
-## could be used to HTTP authentication.
+# Disabled at the moment since there is no page under python.org which
+# could be used to HTTP authentication.
 #
 #    def test_basic_auth(self):
 #        import httplib
@@ -92,6 +95,7 @@ class CloseSocketTest(unittest.TestCase):
         response.close()
         self.assertTrue(fileobject.closed)
 
+
 class OtherNetworkTests(unittest.TestCase):
     def setUp(self):
         if 0:  # for debugging
@@ -106,10 +110,10 @@ class OtherNetworkTests(unittest.TestCase):
         urls = [
             'ftp://ftp.kernel.org/pub/linux/kernel/README',
             'ftp://ftp.kernel.org/pub/linux/kernel/non-existent-file',
-            #'ftp://ftp.kernel.org/pub/leenox/kernel/test',
+            # 'ftp://ftp.kernel.org/pub/leenox/kernel/test',
             'ftp://gatekeeper.research.compaq.com/pub/DEC/SRC'
-                '/research-reports/00README-Legal-Rules-Regs',
-            ]
+            '/research-reports/00README-Legal-Rules-Regs',
+        ]
         self._test_urls(urls, self._extra_handlers())
 
     def test_file(self):
@@ -119,40 +123,43 @@ class OtherNetworkTests(unittest.TestCase):
             f.write('hi there\n')
             f.close()
             urls = [
-                'file:'+sanepathname2url(os.path.abspath(TESTFN)),
+                'file:' + sanepathname2url(os.path.abspath(TESTFN)),
                 ('file:///nonsensename/etc/passwd', None, urllib2.URLError),
-                ]
+            ]
             self._test_urls(urls, self._extra_handlers(), retry=True)
         finally:
             os.remove(TESTFN)
 
-        self.assertRaises(ValueError, urllib2.urlopen,'./relative_path/to/file')
+        self.assertRaises(
+            ValueError,
+            urllib2.urlopen,
+            './relative_path/to/file')
 
     # XXX Following test depends on machine configurations that are internal
     # to CNRI.  Need to set up a public server with the right authentication
     # configuration for test purposes.
 
-##     def test_cnri(self):
-##         if socket.gethostname() == 'bitdiddle':
+# def test_cnri(self):
+# if socket.gethostname() == 'bitdiddle':
 ##             localhost = 'bitdiddle.cnri.reston.va.us'
-##         elif socket.gethostname() == 'bitdiddle.concentric.net':
+# elif socket.gethostname() == 'bitdiddle.concentric.net':
 ##             localhost = 'localhost'
-##         else:
+# else:
 ##             localhost = None
-##         if localhost is not None:
-##             urls = [
+# if localhost is not None:
+# urls = [
 ##                 'file://%s/etc/passwd' % localhost,
 ##                 'http://%s/simple/' % localhost,
 ##                 'http://%s/digest/' % localhost,
 ##                 'http://%s/not/found.h' % localhost,
-##                 ]
+# ]
 
 ##             bauth = HTTPBasicAuthHandler()
-##             bauth.add_password('basic_test_realm', localhost, 'jhylton',
-##                                'password')
+# bauth.add_password('basic_test_realm', localhost, 'jhylton',
+# 'password')
 ##             dauth = HTTPDigestAuthHandler()
-##             dauth.add_password('digest_test_realm', localhost, 'jhylton',
-##                                'password')
+# dauth.add_password('digest_test_realm', localhost, 'jhylton',
+# 'password')
 
 ##             self._test_urls(urls, self._extra_handlers()+[bauth, dauth])
 
@@ -161,8 +168,9 @@ class OtherNetworkTests(unittest.TestCase):
         with test_support.transient_internet(urlwith_frag):
             req = urllib2.Request(urlwith_frag)
             res = urllib2.urlopen(req)
-            self.assertEqual(res.geturl(),
-                    "https://docs.python.org/2/glossary.html#glossary")
+            self.assertEqual(
+                res.geturl(),
+                "https://docs.python.org/2/glossary.html#glossary")
 
     def test_fileno(self):
         req = urllib2.Request("http://www.python.org")
@@ -184,15 +192,15 @@ class OtherNetworkTests(unittest.TestCase):
             opener.open(request)
             self.assertTrue(request.header_items())
             self.assertTrue(request.has_header('User-agent'))
-            request.add_header('User-Agent','Test-Agent')
+            request.add_header('User-Agent', 'Test-Agent')
             opener.open(request)
-            self.assertEqual(request.get_header('User-agent'),'Test-Agent')
+            self.assertEqual(request.get_header('User-agent'), 'Test-Agent')
 
     def test_sites_no_connection_close(self):
         # Some sites do not send Connection: close header.
         # Verify that those work properly. (#issue12576)
 
-        URL = 'http://www.imdb.com' # No Connection:close
+        URL = 'http://www.imdb.com'  # No Connection:close
         with test_support.transient_internet(URL):
             req = urllib2.urlopen(URL)
             res = req.read()
@@ -219,8 +227,9 @@ class OtherNetworkTests(unittest.TestCase):
                 except EnvironmentError as err:
                     debug(err)
                     if expected_err:
-                        msg = ("Didn't get expected error(s) %s for %s %s, got %s: %s" %
-                               (expected_err, url, req, type(err), err))
+                        msg = (
+                            "Didn't get expected error(s) %s for %s %s, got %s: %s" %
+                            (expected_err, url, req, type(err), err))
                         self.assertIsInstance(err, expected_err, msg)
                 except urllib2.URLError as err:
                     if isinstance(err[0], socket.timeout):
@@ -327,6 +336,7 @@ def test_main():
                               CloseSocketTest,
                               TimeoutTest,
                               )
+
 
 if __name__ == "__main__":
     test_main()

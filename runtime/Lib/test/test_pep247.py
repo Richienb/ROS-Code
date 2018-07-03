@@ -16,13 +16,14 @@ import sha
 import unittest
 from test import test_support
 
+
 class Pep247Test(unittest.TestCase):
 
     def check_module(self, module, key=None):
         self.assertTrue(hasattr(module, 'digest_size'))
         self.assertTrue(module.digest_size is None or module.digest_size > 0)
 
-        if not key is None:
+        if key is not None:
             obj1 = module.new(key)
             obj2 = module.new(key, 'string')
 
@@ -43,7 +44,7 @@ class Pep247Test(unittest.TestCase):
 
         self.assertTrue(hasattr(obj1, 'digest_size'))
 
-        if not module.digest_size is None:
+        if module.digest_size is not None:
             self.assertEqual(obj1.digest_size, module.digest_size)
 
         self.assertEqual(obj1.digest_size, len(h1))
@@ -67,8 +68,10 @@ class Pep247Test(unittest.TestCase):
     def test_hmac(self):
         self.check_module(hmac, key='abc')
 
+
 def test_main():
     test_support.run_unittest(Pep247Test)
+
 
 if __name__ == '__main__':
     test_main()

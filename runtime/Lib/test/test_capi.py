@@ -15,58 +15,64 @@ except ImportError:
     threading = None
 import _testcapi
 
+
 @unittest.skipUnless(threading, 'Threading required for this test.')
 class TestPendingCalls(unittest.TestCase):
 
     def pendingcalls_submit(self, l, n):
         def callback():
-            #this function can be interrupted by thread switching so let's
-            #use an atomic operation
+            # this function can be interrupted by thread switching so let's
+            # use an atomic operation
             l.append(None)
 
         for i in range(n):
-            time.sleep(random.random()*0.02) #0.01 secs on average
-            #try submitting callback until successful.
-            #rely on regular interrupt to flush queue if we are
-            #unsuccessful.
+            time.sleep(random.random() * 0.02)  # 0.01 secs on average
+            # try submitting callback until successful.
+            # rely on regular interrupt to flush queue if we are
+            # unsuccessful.
             while True:
                 if _testcapi._pending_threadfunc(callback):
-                    break;
+                    break
 
-    def pendingcalls_wait(self, l, n, context = None):
-        #now, stick around until l[0] has grown to 10
-        count = 0;
+    def pendingcalls_wait(self, l, n, context=None):
+        # now, stick around until l[0] has grown to 10
+        count = 0
         while len(l) != n:
-            #this busy loop is where we expect to be interrupted to
-            #run our callbacks.  Note that callbacks are only run on the
-            #main thread
+            # this busy loop is where we expect to be interrupted to
+            # run our callbacks.  Note that callbacks are only run on the
+            # main thread
             if False and test_support.verbose:
-                print "(%i)"%(len(l),),
+                print "(%i)" % (len(l),),
             for i in xrange(1000):
-                a = i*i
+                a = i * i
             if context and not context.event.is_set():
                 continue
             count += 1
-            self.assertTrue(count < 10000,
-                "timeout waiting for %i callbacks, got %i"%(n, len(l)))
+            self.assertTrue(
+                count < 10000, "timeout waiting for %i callbacks, got %i" %
+                (n, len(l)))
         if False and test_support.verbose:
-            print "(%i)"%(len(l),)
+            print "(%i)" % (len(l),)
 
     def test_pendingcalls_threaded(self):
-        #do every callback on a separate thread
-        n = 32 #total callbacks
+        # do every callback on a separate thread
+        n = 32  # total callbacks
         threads = []
-        class foo(object):pass
+
+        class foo(object):
+            pass
         context = foo()
         context.l = []
-        context.n = 2 #submits per thread
+        context.n = 2  # submits per thread
         context.nThreads = n // context.n
         context.nFinished = 0
         context.lock = threading.Lock()
         context.event = threading.Event()
 
         for i in range(context.nThreads):
-            t = threading.Thread(target=self.pendingcalls_thread, args = (context,))
+            t = threading.Thread(
+                target=self.pendingcalls_thread, args=(
+                    context,))
             t.start()
             threads.append(t)
 
@@ -88,10 +94,10 @@ class TestPendingCalls(unittest.TestCase):
                 context.event.set()
 
     def test_pendingcalls_non_threaded(self):
-        #again, just using the main thread, likely they will all be dispatched at
-        #once.  It is ok to ask for too many, because we loop until we find a slot.
-        #the loop can be interrupted to dispatch.
-        #there are only 32 dispatch slots, so we go for twice that!
+        # again, just using the main thread, likely they will all be dispatched at
+        # once.  It is ok to ask for too many, because we loop until we find a slot.
+        # the loop can be interrupted to dispatch.
+        # there are only 32 dispatch slots, so we go for twice that!
         l = []
         n = 64
         self.pendingcalls_submit(l, n)
@@ -135,6 +141,7 @@ def test_main():
                 raise test_support.TestFailed, sys.exc_info()[1]
 
     test_support.run_unittest(TestPendingCalls, TestThreadState)
+
 
 if __name__ == "__main__":
     test_main()

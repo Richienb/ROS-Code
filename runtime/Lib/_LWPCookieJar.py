@@ -11,11 +11,13 @@ libwww-perl, I hope.
 
 """
 
-import time, re
+import time
+import re
 from cookielib import (_warn_unhandled_exception, FileCookieJar, LoadError,
                        Cookie, MISSING_FILENAME_TEXT,
                        join_header_words, split_header_words,
                        iso2time, time2isoz)
+
 
 def lwp_cookie_str(cookie):
     """Return string representation of Cookie in an the LWP cookie file format.
@@ -26,25 +28,34 @@ def lwp_cookie_str(cookie):
     h = [(cookie.name, cookie.value),
          ("path", cookie.path),
          ("domain", cookie.domain)]
-    if cookie.port is not None: h.append(("port", cookie.port))
-    if cookie.path_specified: h.append(("path_spec", None))
-    if cookie.port_specified: h.append(("port_spec", None))
-    if cookie.domain_initial_dot: h.append(("domain_dot", None))
-    if cookie.secure: h.append(("secure", None))
-    if cookie.expires: h.append(("expires",
-                               time2isoz(float(cookie.expires))))
-    if cookie.discard: h.append(("discard", None))
-    if cookie.comment: h.append(("comment", cookie.comment))
-    if cookie.comment_url: h.append(("commenturl", cookie.comment_url))
+    if cookie.port is not None:
+        h.append(("port", cookie.port))
+    if cookie.path_specified:
+        h.append(("path_spec", None))
+    if cookie.port_specified:
+        h.append(("port_spec", None))
+    if cookie.domain_initial_dot:
+        h.append(("domain_dot", None))
+    if cookie.secure:
+        h.append(("secure", None))
+    if cookie.expires:
+        h.append(("expires",
+                  time2isoz(float(cookie.expires))))
+    if cookie.discard:
+        h.append(("discard", None))
+    if cookie.comment:
+        h.append(("comment", cookie.comment))
+    if cookie.comment_url:
+        h.append(("commenturl", cookie.comment_url))
 
-    keys = cookie._rest.keys()
-    keys.sort()
+    keys = sorted(cookie._rest.keys())
     for k in keys:
         h.append((k, str(cookie._rest[k])))
 
     h.append(("version", str(cookie.version)))
 
     return join_header_words([h])
+
 
 class LWPCookieJar(FileCookieJar):
     """
@@ -73,12 +84,14 @@ class LWPCookieJar(FileCookieJar):
             if not ignore_expires and cookie.is_expired(now):
                 continue
             r.append("Set-Cookie3: %s" % lwp_cookie_str(cookie))
-        return "\n".join(r+[""])
+        return "\n".join(r + [""])
 
     def save(self, filename=None, ignore_discard=False, ignore_expires=False):
         if filename is None:
-            if self.filename is not None: filename = self.filename
-            else: raise ValueError(MISSING_FILENAME_TEXT)
+            if self.filename is not None:
+                filename = self.filename
+            else:
+                raise ValueError(MISSING_FILENAME_TEXT)
 
         f = open(filename, "w")
         try:
@@ -108,9 +121,10 @@ class LWPCookieJar(FileCookieJar):
                        "comment", "commenturl")
 
         try:
-            while 1:
+            while True:
                 line = f.readline()
-                if line == "": break
+                if line == "":
+                    break
                 if not line.startswith(header):
                     continue
                 line = line[len(header):].strip()
@@ -130,7 +144,8 @@ class LWPCookieJar(FileCookieJar):
                         if (lc in value_attrs) or (lc in boolean_attrs):
                             k = lc
                         if k in boolean_attrs:
-                            if v is None: v = True
+                            if v is None:
+                                v = True
                             standard[k] = v
                         elif k in value_attrs:
                             standard[k] = v

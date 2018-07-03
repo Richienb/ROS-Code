@@ -54,7 +54,7 @@ class DummyPOP3Handler(asynchat.async_chat):
             method = getattr(self, 'cmd_' + cmd)
             method(arg)
         else:
-            self.push('-ERR unrecognized POP3 command "%s".' %cmd)
+            self.push('-ERR unrecognized POP3 command "%s".' % cmd)
 
     def handle_error(self):
         raise
@@ -81,7 +81,7 @@ class DummyPOP3Handler(asynchat.async_chat):
 
     def cmd_list(self, arg):
         if arg:
-            self.push('+OK %s %s' %(arg, arg))
+            self.push('+OK %s %s' % (arg, arg))
         else:
             self.push('+OK')
             asynchat.async_chat.push(self, LIST_RESP)
@@ -89,7 +89,7 @@ class DummyPOP3Handler(asynchat.async_chat):
     cmd_uidl = cmd_list
 
     def cmd_retr(self, arg):
-        self.push('+OK %s bytes' %len(RETR_RESP))
+        self.push('+OK %s bytes' % len(RETR_RESP))
         asynchat.async_chat.push(self, RETR_RESP)
 
     cmd_top = cmd_retr
@@ -169,10 +169,15 @@ class TestPOP3Class(TestCase):
         self.server.stop()
 
     def test_getwelcome(self):
-        self.assertEqual(self.client.getwelcome(), '+OK dummy pop3 server ready.')
+        self.assertEqual(
+            self.client.getwelcome(),
+            '+OK dummy pop3 server ready.')
 
     def test_exceptions(self):
-        self.assertRaises(poplib.error_proto, self.client._shortcmd, 'echo -err')
+        self.assertRaises(
+            poplib.error_proto,
+            self.client._shortcmd,
+            'echo -err')
 
     def test_user(self):
         self.assertOK(self.client.user('guido'))
@@ -208,11 +213,11 @@ class TestPOP3Class(TestCase):
         self.assertOK(self.client.rpop('foo'))
 
     def test_top(self):
-        expected =  ('+OK 116 bytes',
-                     ['From: postmaster@python.org', 'Content-Type: text/plain',
-                      'MIME-Version: 1.0', 'Subject: Dummy', '',
-                      'line1', 'line2', 'line3'],
-                     113)
+        expected = ('+OK 116 bytes',
+                    ['From: postmaster@python.org', 'Content-Type: text/plain',
+                     'MIME-Version: 1.0', 'Subject: Dummy', '',
+                     'line1', 'line2', 'line3'],
+                    113)
         self.assertEqual(self.client.top(1, 1), expected)
 
     def test_uidl(self):
@@ -225,7 +230,9 @@ if hasattr(poplib, 'POP3_SSL'):
     import ssl
 
     SUPPORTS_SSL = True
-    CERTFILE = os.path.join(os.path.dirname(__file__) or os.curdir, "keycert.pem")
+    CERTFILE = os.path.join(
+        os.path.dirname(__file__) or os.curdir,
+        "keycert.pem")
 
     class DummyPOP3_SSLHandler(DummyPOP3Handler):
 
@@ -244,14 +251,14 @@ if hasattr(poplib, 'POP3_SSL'):
         def _do_ssl_handshake(self):
             try:
                 self.socket.do_handshake()
-            except ssl.SSLError, err:
+            except ssl.SSLError as err:
                 if err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return
                 elif err.args[0] == ssl.SSL_ERROR_EOF:
                     return self.handle_close()
                 raise
-            except socket.error, err:
+            except socket.error as err:
                 if err.args[0] == errno.ECONNABORTED:
                     return self.handle_close()
             else:
@@ -283,7 +290,9 @@ class TestTimeouts(TestCase):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.settimeout(60)  # Safety net. Look issue 11812
         self.port = test_support.bind_port(self.sock)
-        self.thread = threading.Thread(target=self.server, args=(self.evt,self.sock))
+        self.thread = threading.Thread(
+            target=self.server, args=(
+                self.evt, self.sock))
         self.thread.setDaemon(True)
         self.thread.start()
         self.evt.wait()

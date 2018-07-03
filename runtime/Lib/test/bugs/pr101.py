@@ -18,6 +18,7 @@ for dir in cpath.split(os.pathsep):
 sys.path.insert(0, tmpdir)
 javafile = os.path.join(tmpdir, 'pr101j.java')
 
+
 def makejavaclass(s):
     fp = open(javafile, 'w')
     fp.write('''
@@ -33,6 +34,7 @@ public class pr101j {
     status = proc.waitFor()
     if status <> 0:
         raise RuntimeError, 'javac process failed'
+
 
 try:
     makejavaclass("first")
@@ -54,6 +56,6 @@ try:
         print 'unexpected third doit() result:', ret
 
 finally:
-    classfile = os.path.splitext(javafile)[0]+'.class'
+    classfile = os.path.splitext(javafile)[0] + '.class'
     os.unlink(javafile)
     os.unlink(classfile)

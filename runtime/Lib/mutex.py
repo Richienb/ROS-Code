@@ -17,6 +17,7 @@ del warnpy3k
 
 from collections import deque
 
+
 class mutex:
     def __init__(self):
         """Create a new mutex -- initially unlocked."""

@@ -70,7 +70,8 @@ except ImportError:
 
 import UserDict
 
-__all__ = ["Shelf","BsdDbShelf","DbfilenameShelf","open"]
+__all__ = ["Shelf", "BsdDbShelf", "DbfilenameShelf", "open"]
+
 
 class _ClosedDict(UserDict.DictMixin):
     'Marker for a closed dict.  Access attempts raise a ValueError.'
@@ -81,6 +82,7 @@ class _ClosedDict(UserDict.DictMixin):
 
     def __repr__(self):
         return '<Closed Dictionary>'
+
 
 class Shelf(UserDict.DictMixin):
     """Base class for shelf implementations.

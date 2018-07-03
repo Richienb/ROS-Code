@@ -18,7 +18,6 @@ except LookupError:
     raise unittest.SkipTest
 
 
-
 class TestEmailAsianCodecs(TestEmailBase):
     def test_japanese_codecs(self):
         eq = self.ndiffAssertEqual
@@ -46,7 +45,7 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
         # test a very long header
         enc = h.encode()
         # TK: splitting point may differ by codec design and/or Header encoding
-        eq(enc , """\
+        eq(enc, """\
 =?iso-2022-jp?b?dGVzdC1qYSAbJEIkWEVqOUYkNSRsJD8lYSE8JWskTztKGyhC?=
  =?iso-2022-jp?b?GyRCMnE8VCROPjVHJyRyQlQkQyRGJCQkXiQ5GyhC?=""")
         # TK: full decode comparison
@@ -54,14 +53,13 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
 
     def test_payload_encoding(self):
         jhello = '\xa5\xcf\xa5\xed\xa1\xbc\xa5\xef\xa1\xbc\xa5\xeb\xa5\xc9\xa1\xaa'
-        jcode  = 'euc-jp'
+        jcode = 'euc-jp'
         msg = Message()
         msg.set_payload(jhello, jcode)
         ustr = unicode(msg.get_payload(), msg.get_content_charset())
         self.assertEqual(jhello, ustr.encode(jcode))
 
 
-
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestEmailAsianCodecs))
@@ -72,6 +70,5 @@ def test_main():
     run_unittest(TestEmailAsianCodecs)
 
 
-
 if __name__ == '__main__':
     unittest.main(defaultTest='suite')

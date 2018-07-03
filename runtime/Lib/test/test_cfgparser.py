@@ -9,13 +9,11 @@ from test import test_support
 
 class SortedDict(UserDict.UserDict):
     def items(self):
-        result = self.data.items()
-        result.sort()
+        result = sorted(self.data.items())
         return result
 
     def keys(self):
-        result = self.data.keys()
-        result.sort()
+        result = sorted(self.data.keys())
         return result
 
     def values(self):
@@ -24,8 +22,10 @@ class SortedDict(UserDict.UserDict):
         return [i[1] for i in result]
 
     def iteritems(self): return iter(self.items())
+
     def iterkeys(self): return iter(self.keys())
     __iter__ = iterkeys
+
     def itervalues(self): return iter(self.values())
 
 
@@ -66,16 +66,15 @@ class TestCaseBase(unittest.TestCase):
             "[Spaces]\n"
             "key with spaces : value\n"
             "another with spaces = splat!\n"
-            )
+        )
         if self.allow_no_value:
             config_string += (
                 "[NoValue]\n"
                 "option-without-value\n"
-                )
+            )
 
         cf = self.fromstring(config_string)
-        L = cf.sections()
-        L.sort()
+        L = sorted(cf.sections())
         E = [r'Commented Bar',
              r'Foo Bar',
              r'Internationalized Stuff',
@@ -109,10 +108,13 @@ class TestCaseBase(unittest.TestCase):
         self.assertTrue(cf.remove_option('Foo Bar', 'foo'),
                         "remove_option() failed to report existence of option")
         self.assertFalse(cf.has_option('Foo Bar', 'foo'),
-                    "remove_option() failed to remove option")
-        self.assertFalse(cf.remove_option('Foo Bar', 'foo'),
-                    "remove_option() failed to report non-existence of option"
-                    " that was removed")
+                         "remove_option() failed to remove option")
+        self.assertFalse(
+            cf.remove_option(
+                'Foo Bar',
+                'foo'),
+            "remove_option() failed to report non-existence of option"
+            " that was removed")
 
         self.assertRaises(ConfigParser.NoSectionError,
                           cf.remove_option, 'No Such Section', 'foo')
@@ -124,8 +126,7 @@ class TestCaseBase(unittest.TestCase):
         cf = self.newconfig()
         cf.add_section("A")
         cf.add_section("a")
-        L = cf.sections()
-        L.sort()
+        L = sorted(cf.sections())
         eq = self.assertEqual
         eq(L, ["A", "a"])
         cf.set("a", "B", "value")
@@ -151,9 +152,8 @@ class TestCaseBase(unittest.TestCase):
 
         # SF bug #561822:
         cf = self.fromstring("[section]\nnekey=nevalue\n",
-                             defaults={"key":"value"})
+                             defaults={"key": "value"})
         self.assertTrue(cf.has_option("section", "Key"))
-
 
     def test_default_case_sensitivity(self):
         cf = self.newconfig({"foo": "Bar"})
@@ -200,7 +200,7 @@ class TestCaseBase(unittest.TestCase):
     def get_error(self, exc, section, option):
         try:
             self.cf.get(section, option)
-        except exc, e:
+        except exc as e:
             return e
         else:
             self.fail("expected exception type %s.%s"
@@ -224,7 +224,7 @@ class TestCaseBase(unittest.TestCase):
             "E3=-1\n"
             "E4=0.1\n"
             "E5=FALSE AND MORE"
-            )
+        )
         for x in range(1, 5):
             self.assertTrue(cf.getboolean('BOOLTEST', 't%d' % x))
             self.assertFalse(cf.getboolean('BOOLTEST', 'f%d' % x))
@@ -245,11 +245,11 @@ class TestCaseBase(unittest.TestCase):
             "[DEFAULT]\n"
             "foo: another very\n"
             " long line\n"
-            )
+        )
         if self.allow_no_value:
             config_string += (
-            "[Valueless]\n"
-            "option-without-value\n"
+                "[Valueless]\n"
+                "option-without-value\n"
             )
 
         cf = self.fromstring(config_string)
@@ -264,13 +264,13 @@ class TestCaseBase(unittest.TestCase):
             "foo = this line is much, much longer than my editor\n"
             "\tlikes it.\n"
             "\n"
-            )
+        )
         if self.allow_no_value:
             expect_string += (
                 "[Valueless]\n"
                 "option-without-value\n"
                 "\n"
-                )
+            )
         self.assertEqual(output.getvalue(), expect_string)
 
     def test_set_string_types(self):
@@ -278,6 +278,7 @@ class TestCaseBase(unittest.TestCase):
                              "option1=foo\n")
         # Check that we don't get an exception when setting values in
         # an existing section using strings:
+
         class mystr(str):
             pass
         cf.set("sect", "option1", "splat")
@@ -350,8 +351,7 @@ class TestCaseBase(unittest.TestCase):
             "getdefault: |%(default)s|\n"
             "getname: |%(__name__)s|",
             defaults={"default": "<default>"})
-        L = list(cf.items("section"))
-        L.sort()
+        L = sorted(cf.items("section"))
         self.assertEqual(L, expected)
 
 
@@ -413,6 +413,7 @@ class ConfigParserTestCase(TestCaseBase):
                           'string_with_interpolation', raw=False)
         self.assertEqual(cf.get('non-string', 'no-value'), None)
 
+
 class MultilineValuesTestCase(TestCaseBase):
     config_class = ConfigParser.ConfigParser
     wonderful_spam = ("I'm having spam spam spam spam "
@@ -440,6 +441,7 @@ class MultilineValuesTestCase(TestCaseBase):
             cf_from_file.readfp(f)
         self.assertEqual(cf_from_file.get('section8', 'lovely_spam4'),
                          self.wonderful_spam.replace('\t\n', '\n'))
+
 
 class RawConfigParserTestCase(TestCaseBase):
     config_class = ConfigParser.RawConfigParser
@@ -529,6 +531,7 @@ class SafeConfigParserTestCase(ConfigParserTestCase):
 class SafeConfigParserTestCaseNoValue(SafeConfigParserTestCase):
     allow_no_value = True
 
+
 class TestChainMap(unittest.TestCase):
     def test_issue_12717(self):
         d1 = dict(red=1, green=2)
@@ -542,15 +545,17 @@ class TestChainMap(unittest.TestCase):
         self.assertEqual(set(cm.items()), set(dcomb.items()))    # items()
         self.assertEqual(set(cm), set(dcomb))                    # __iter__ ()
         self.assertEqual(cm, dcomb)                              # __eq__()
-        self.assertEqual([cm[k] for k in dcomb], dcomb.values()) # __getitem__()
+        self.assertEqual([cm[k] for k in dcomb],
+                         dcomb.values())  # __getitem__()
         klist = 'red green blue black brown'.split()
         self.assertEqual([cm.get(k, 10) for k in klist],
                          [dcomb.get(k, 10) for k in klist])      # get()
         self.assertEqual([k in cm for k in klist],
                          [k in dcomb for k in klist])            # __contains__()
         with test_support.check_py3k_warnings():
-            self.assertEqual([cm.has_key(k) for k in klist],
-                             [dcomb.has_key(k) for k in klist])  # has_key()
+            self.assertEqual([k in cm for k in klist],
+                             [k in dcomb for k in klist])  # has_key()
+
 
 class Issue7005TestCase(unittest.TestCase):
     """Test output when None is set() as a value and allow_no_value == False.
@@ -659,8 +664,8 @@ class ExceptionPicklingTestCase(unittest.TestCase):
 
     def test_interpolationmissingoptionerror(self):
         import pickle
-        e1 = ConfigParser.InterpolationMissingOptionError('option', 'section',
-            'rawval', 'reference')
+        e1 = ConfigParser.InterpolationMissingOptionError(
+            'option', 'section', 'rawval', 'reference')
         pickled = pickle.dumps(e1)
         e2 = pickle.loads(pickled)
         self.assertEqual(e1.message, e2.message)
@@ -684,7 +689,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
     def test_interpolationdeptherror(self):
         import pickle
         e1 = ConfigParser.InterpolationDepthError('option', 'section',
-            'rawval')
+                                                  'rawval')
         pickled = pickle.dumps(e1)
         e2 = pickle.loads(pickled)
         self.assertEqual(e1.message, e2.message)
@@ -731,7 +736,7 @@ def test_main():
         Issue7005TestCase,
         TestChainMap,
         ExceptionPicklingTestCase,
-        )
+    )
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@
 import struct
 import sys
 
+
 class MixinBytesBufferCommonTests(object):
     """Tests that work for both bytes and buffer objects.
     See PEP 3137.
@@ -133,7 +134,7 @@ class MixinBytesBufferCommonTests(object):
 
     def test_swapcase(self):
         self.assertEqual(b'hEllO CoMPuTErS',
-            self.marshal(b'HeLLo cOmpUteRs').swapcase())
+                         self.marshal(b'HeLLo cOmpUteRs').swapcase())
 
         self.assertRaises(TypeError, self.marshal(b'hello').swapcase, 42)
 
@@ -166,15 +167,17 @@ class MixinBytesBufferCommonTests(object):
                          self.marshal(b'abc\rab\tdef\ng\thi').expandtabs())
         self.assertEqual(b'abc\rab      def\ng       hi',
                          self.marshal(b'abc\rab\tdef\ng\thi').expandtabs(8))
-        self.assertEqual(b'abc\r\nab\r\ndef\ng\r\nhi',
-            self.marshal(b'abc\r\nab\r\ndef\ng\r\nhi').expandtabs(4))
+        self.assertEqual(b'abc\r\nab\r\ndef\ng\r\nhi', self.marshal(
+            b'abc\r\nab\r\ndef\ng\r\nhi').expandtabs(4))
         self.assertEqual(b'  a\n b', self.marshal(b' \ta\n\tb').expandtabs(1))
 
         self.assertRaises(TypeError, self.marshal(b'hello').expandtabs, 42, 42)
         # This test is only valid when sizeof(int) == sizeof(void*) == 4.
-        if sys.maxint < (1 << 32) and struct.calcsize('P') == 4:
-            self.assertRaises(OverflowError,
-                              self.marshal(b'\ta\n\tb').expandtabs, sys.maxint)
+        if sys.maxsize < (1 << 32) and struct.calcsize('P') == 4:
+            self.assertRaises(
+                OverflowError,
+                self.marshal(b'\ta\n\tb').expandtabs,
+                sys.maxsize)
 
     def test_title(self):
         self.assertEqual(b' Hello ', self.marshal(b' hello ').title())

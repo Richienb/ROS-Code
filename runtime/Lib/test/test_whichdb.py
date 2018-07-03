@@ -14,6 +14,7 @@ _fname = test.test_support.TESTFN
 # Silence Py3k warning
 anydbm = test.test_support.import_module('anydbm', deprecated=True)
 
+
 def _delete_files():
     # we don't know the precise name the underlying database uses
     # so we use glob to locate all names
@@ -22,6 +23,7 @@ def _delete_files():
             os.unlink(f)
         except OSError:
             pass
+
 
 class WhichDBTestCase(unittest.TestCase):
     # Actual test methods are added to namespace
@@ -34,6 +36,7 @@ class WhichDBTestCase(unittest.TestCase):
 
     def setUp(self):
         _delete_files()
+
 
 for name in anydbm._names:
     # we define a new test method for each
@@ -56,13 +59,15 @@ for name in anydbm._names:
         f["1"] = "1"
         f.close()
         self.assertEqual(name, whichdb.whichdb(_fname))
-    setattr(WhichDBTestCase,"test_whichdb_%s" % name, test_whichdb_name)
+    setattr(WhichDBTestCase, "test_whichdb_%s" % name, test_whichdb_name)
+
 
 def test_main():
     try:
         test.test_support.run_unittest(WhichDBTestCase)
     finally:
         _delete_files()
+
 
 if __name__ == "__main__":
     test_main()

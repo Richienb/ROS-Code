@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
-import unittest, operator, copy, pickle, random
+import unittest
+import operator
+import copy
+import pickle
+import random
 from test import test_support
 
 test_support.import_module("sets", deprecated=True)
@@ -8,7 +12,8 @@ from sets import Set, ImmutableSet
 
 empty_set = Set()
 
-#==============================================================================
+# ==============================================================================
+
 
 class TestBasicOps(unittest.TestCase):
 
@@ -82,27 +87,29 @@ class TestBasicOps(unittest.TestCase):
         self.assertEqual(self.set, copy,
                          "%s != %s" % (self.set, copy))
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestBasicOpsEmpty(TestBasicOps):
     def setUp(self):
-        self.case   = "empty set"
+        self.case = "empty set"
         self.values = []
-        self.set    = Set(self.values)
-        self.dup    = Set(self.values)
+        self.set = Set(self.values)
+        self.dup = Set(self.values)
         self.length = 0
-        self.repr   = "Set([])"
+        self.repr = "Set([])"
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestBasicOpsSingleton(TestBasicOps):
     def setUp(self):
-        self.case   = "unit set (number)"
+        self.case = "unit set (number)"
         self.values = [3]
-        self.set    = Set(self.values)
-        self.dup    = Set(self.values)
+        self.set = Set(self.values)
+        self.dup = Set(self.values)
         self.length = 1
-        self.repr   = "Set([3])"
+        self.repr = "Set([3])"
 
     def test_in(self):
         self.assertTrue(3 in self.set)
@@ -110,16 +117,17 @@ class TestBasicOpsSingleton(TestBasicOps):
     def test_not_in(self):
         self.assertTrue(2 not in self.set)
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestBasicOpsTuple(TestBasicOps):
     def setUp(self):
-        self.case   = "unit set (tuple)"
+        self.case = "unit set (tuple)"
         self.values = [(0, "zero")]
-        self.set    = Set(self.values)
-        self.dup    = Set(self.values)
+        self.set = Set(self.values)
+        self.dup = Set(self.values)
         self.length = 1
-        self.repr   = "Set([(0, 'zero')])"
+        self.repr = "Set([(0, 'zero')])"
 
     def test_in(self):
         self.assertTrue((0, "zero") in self.set)
@@ -127,25 +135,29 @@ class TestBasicOpsTuple(TestBasicOps):
     def test_not_in(self):
         self.assertTrue(9 not in self.set)
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestBasicOpsTriple(TestBasicOps):
     def setUp(self):
-        self.case   = "triple set"
+        self.case = "triple set"
         self.values = [0, "zero", operator.add]
-        self.set    = Set(self.values)
-        self.dup    = Set(self.values)
+        self.set = Set(self.values)
+        self.dup = Set(self.values)
         self.length = 3
-        self.repr   = None
+        self.repr = None
 
-#==============================================================================
+# ==============================================================================
+
 
 def baditer():
     raise TypeError
     yield True
 
+
 def gooditer():
     yield True
+
 
 class TestExceptionPropagation(unittest.TestCase):
     """SF 628246:  Set constructor should not trap iterator TypeErrors"""
@@ -155,14 +167,15 @@ class TestExceptionPropagation(unittest.TestCase):
 
     def test_instancesWithoutException(self):
         # All of these iterables should load without exception.
-        Set([1,2,3])
-        Set((1,2,3))
-        Set({'one':1, 'two':2, 'three':3})
+        Set([1, 2, 3])
+        Set((1, 2, 3))
+        Set({'one': 1, 'two': 2, 'three': 3})
         Set(xrange(3))
         Set('abc')
         Set(gooditer())
 
-#==============================================================================
+# ==============================================================================
+
 
 class TestSetOfSets(unittest.TestCase):
     def test_constructor(self):
@@ -175,14 +188,15 @@ class TestSetOfSets(unittest.TestCase):
         self.assertEqual(outer, Set())   # Verify that remove worked
         outer.discard(inner)    # Absence of KeyError indicates working fine
 
-#==============================================================================
+# ==============================================================================
+
 
 class TestBinaryOps(unittest.TestCase):
     def setUp(self):
         self.set = Set((2, 4, 6))
 
     def test_eq(self):              # SF bug 643115
-        self.assertEqual(self.set, Set({2:1,4:3,6:5}))
+        self.assertEqual(self.set, Set({2: 1, 4: 3, 6: 5}))
 
     def test_union_subset(self):
         result = self.set | Set([2])
@@ -258,7 +272,7 @@ class TestBinaryOps(unittest.TestCase):
         self.assertEqual(len(t), 0)
 
 
-#==============================================================================
+# ==============================================================================
 
 class TestUpdateOps(unittest.TestCase):
     def setUp(self):
@@ -344,7 +358,8 @@ class TestUpdateOps(unittest.TestCase):
         self.set.difference_update(Set([3, 4, 5]))
         self.assertEqual(self.set, Set([2, 6]))
 
-#==============================================================================
+# ==============================================================================
+
 
 class TestMutate(unittest.TestCase):
     def setUp(self):
@@ -418,21 +433,22 @@ class TestMutate(unittest.TestCase):
         self.set.union_update(("a", "z"))
         self.assertEqual(self.set, Set(self.values + ["z"]))
 
-#==============================================================================
+# ==============================================================================
+
 
 class TestSubsets(unittest.TestCase):
 
     case2method = {"<=": "issubset",
                    ">=": "issuperset",
-                  }
+                   }
 
     reverse = {"==": "==",
                "!=": "!=",
-               "<":  ">",
-               ">":  "<",
+               "<": ">",
+               ">": "<",
                "<=": ">=",
                ">=": "<=",
-              }
+               }
 
     def test_issubset(self):
         x = self.left
@@ -456,47 +472,53 @@ class TestSubsets(unittest.TestCase):
                 method = getattr(y, TestSubsets.case2method[rcase])
                 result = method(x)
                 self.assertEqual(result, expected)
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestSubsetEqualEmpty(TestSubsets):
-    left  = Set()
+    left = Set()
     right = Set()
-    name  = "both empty"
+    name = "both empty"
     cases = "==", "<=", ">="
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestSubsetEqualNonEmpty(TestSubsets):
-    left  = Set([1, 2])
+    left = Set([1, 2])
     right = Set([1, 2])
-    name  = "equal pair"
+    name = "equal pair"
     cases = "==", "<=", ">="
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestSubsetEmptyNonEmpty(TestSubsets):
-    left  = Set()
+    left = Set()
     right = Set([1, 2])
-    name  = "one empty, one non-empty"
+    name = "one empty, one non-empty"
     cases = "!=", "<", "<="
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestSubsetPartial(TestSubsets):
-    left  = Set([1])
+    left = Set([1])
     right = Set([1, 2])
-    name  = "one a non-empty proper subset of other"
+    name = "one a non-empty proper subset of other"
     cases = "!=", "<", "<="
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestSubsetNonOverlap(TestSubsets):
-    left  = Set([1])
+    left = Set([1])
     right = Set([2])
-    name  = "neither empty, neither contains"
+    name = "neither empty, neither contains"
     cases = "!="
 
-#==============================================================================
+# ==============================================================================
+
 
 class TestOnlySetsInBinaryOps(unittest.TestCase):
 
@@ -586,7 +608,10 @@ class TestOnlySetsInBinaryOps(unittest.TestCase):
         if self.otherIsIterable:
             self.set.symmetric_difference(self.other)
         else:
-            self.assertRaises(TypeError, self.set.symmetric_difference, self.other)
+            self.assertRaises(
+                TypeError,
+                self.set.symmetric_difference,
+                self.other)
 
     def test_difference_update_operator(self):
         try:
@@ -612,27 +637,30 @@ class TestOnlySetsInBinaryOps(unittest.TestCase):
         else:
             self.assertRaises(TypeError, self.set.difference, self.other)
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestOnlySetsNumeric(TestOnlySetsInBinaryOps):
     def setUp(self):
-        self.set   = Set((1, 2, 3))
+        self.set = Set((1, 2, 3))
         self.other = 19
         self.otherIsIterable = False
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestOnlySetsDict(TestOnlySetsInBinaryOps):
     def setUp(self):
-        self.set   = Set((1, 2, 3))
-        self.other = {1:2, 3:4}
+        self.set = Set((1, 2, 3))
+        self.other = {1: 2, 3: 4}
         self.otherIsIterable = True
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestOnlySetsOperator(TestOnlySetsInBinaryOps):
     def setUp(self):
-        self.set   = Set((1, 2, 3))
+        self.set = Set((1, 2, 3))
         self.other = operator.add
         self.otherIsIterable = False
 
@@ -640,42 +668,47 @@ class TestOnlySetsOperator(TestOnlySetsInBinaryOps):
         with test_support.check_py3k_warnings():
             super(TestOnlySetsOperator, self).test_ge_gt_le_lt()
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestOnlySetsTuple(TestOnlySetsInBinaryOps):
     def setUp(self):
-        self.set   = Set((1, 2, 3))
+        self.set = Set((1, 2, 3))
         self.other = (2, 4, 6)
         self.otherIsIterable = True
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestOnlySetsString(TestOnlySetsInBinaryOps):
     def setUp(self):
-        self.set   = Set((1, 2, 3))
+        self.set = Set((1, 2, 3))
         self.other = 'abc'
         self.otherIsIterable = True
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestOnlySetsGenerator(TestOnlySetsInBinaryOps):
     def setUp(self):
         def gen():
             for i in xrange(0, 10, 2):
                 yield i
-        self.set   = Set((1, 2, 3))
+        self.set = Set((1, 2, 3))
         self.other = gen()
         self.otherIsIterable = True
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestOnlySetsofSets(TestOnlySetsInBinaryOps):
     def setUp(self):
-        self.set   = Set((1, 2, 3))
+        self.set = Set((1, 2, 3))
         self.other = [Set('ab'), ImmutableSet('cd')]
         self.otherIsIterable = True
 
-#==============================================================================
+# ==============================================================================
+
 
 class TestCopying(unittest.TestCase):
 
@@ -692,19 +725,22 @@ class TestCopying(unittest.TestCase):
         dup = copy.deepcopy(self.set)
         self.assertSetEqual(dup, self.set)
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestCopyingEmpty(TestCopying):
     def setUp(self):
         self.set = Set()
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestCopyingSingleton(TestCopying):
     def setUp(self):
         self.set = Set(["hello"])
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestCopyingTriple(TestCopying):
     def setUp(self):
@@ -714,19 +750,22 @@ class TestCopyingTriple(TestCopying):
         with test_support.check_py3k_warnings():
             super(TestCopyingTriple, self).test_copy()
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestCopyingTuple(TestCopying):
     def setUp(self):
         self.set = Set([(1, 2)])
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+
 
 class TestCopyingNested(TestCopying):
     def setUp(self):
         self.set = Set([((1, 2), (3, 4))])
 
-#==============================================================================
+# ==============================================================================
+
 
 class TestIdentities(unittest.TestCase):
     def setUp(self):
@@ -745,11 +784,11 @@ class TestIdentities(unittest.TestCase):
 
     def test_commutativity(self):
         a, b = self.a, self.b
-        self.assertEqual(a&b, b&a)
-        self.assertEqual(a|b, b|a)
-        self.assertEqual(a^b, b^a)
+        self.assertEqual(a & b, b & a)
+        self.assertEqual(a | b, b | a)
+        self.assertEqual(a ^ b, b ^ a)
         if a != b:
-            self.assertNotEqual(a-b, b-a)
+            self.assertNotEqual(a - b, b - a)
 
     def test_reflexsive_relations(self):
         a, zero = self.a, Set()
@@ -764,30 +803,31 @@ class TestIdentities(unittest.TestCase):
     def test_summations(self):
         # check that sums of parts equal the whole
         a, b = self.a, self.b
-        self.assertEqual((a-b)|(a&b)|(b-a), a|b)
-        self.assertEqual((a&b)|(a^b), a|b)
-        self.assertEqual(a|(b-a), a|b)
-        self.assertEqual((a-b)|b, a|b)
-        self.assertEqual((a-b)|(a&b), a)
-        self.assertEqual((b-a)|(a&b), b)
-        self.assertEqual((a-b)|(b-a), a^b)
+        self.assertEqual((a - b) | (a & b) | (b - a), a | b)
+        self.assertEqual((a & b) | (a ^ b), a | b)
+        self.assertEqual(a | (b - a), a | b)
+        self.assertEqual((a - b) | b, a | b)
+        self.assertEqual((a - b) | (a & b), a)
+        self.assertEqual((b - a) | (a & b), b)
+        self.assertEqual((a - b) | (b - a), a ^ b)
 
     def test_exclusion(self):
         # check that inverse operations do not overlap
         a, b, zero = self.a, self.b, Set()
-        self.assertEqual((a-b)&b, zero)
-        self.assertEqual((b-a)&a, zero)
-        self.assertEqual((a&b)&(a^b), zero)
+        self.assertEqual((a - b) & b, zero)
+        self.assertEqual((b - a) & a, zero)
+        self.assertEqual((a & b) & (a ^ b), zero)
 
     def test_cardinality_relations(self):
         a, b = self.a, self.b
-        self.assertEqual(len(a), len(a-b) + len(a&b))
-        self.assertEqual(len(b), len(b-a) + len(a&b))
-        self.assertEqual(len(a^b), len(a-b) + len(b-a))
-        self.assertEqual(len(a|b), len(a-b) + len(a&b) + len(b-a))
-        self.assertEqual(len(a^b) + len(a&b), len(a|b))
+        self.assertEqual(len(a), len(a - b) + len(a & b))
+        self.assertEqual(len(b), len(b - a) + len(a & b))
+        self.assertEqual(len(a ^ b), len(a - b) + len(b - a))
+        self.assertEqual(len(a | b), len(a - b) + len(a & b) + len(b - a))
+        self.assertEqual(len(a ^ b) + len(a & b), len(a | b))
 
-#==============================================================================
+# ==============================================================================
+
 
 libreftest = """
 Example from the Library Reference:  Doc/lib/libsets.tex
@@ -820,9 +860,10 @@ Set(['Jack', 'Jane', 'Zack'])
 Set(['Jack', 'Jane', 'Janice', 'John', 'Marvin', 'Sam', 'Zack'])
 """
 
-#==============================================================================
+# ==============================================================================
 
-__test__ = {'libreftest' : libreftest}
+__test__ = {'libreftest': libreftest}
+
 
 def test_main(verbose=None):
     import doctest
@@ -857,6 +898,7 @@ def test_main(verbose=None):
         TestIdentities,
         doctest.DocTestSuite(test_sets),
     )
+
 
 if __name__ == "__main__":
     test_main(verbose=True)

@@ -3,6 +3,7 @@ import unittest
 
 crypt = test_support.import_module('crypt')
 
+
 class CryptTestCase(unittest.TestCase):
 
     def test_crypt(self):
@@ -10,8 +11,10 @@ class CryptTestCase(unittest.TestCase):
         if test_support.verbose:
             print 'Test encryption: ', c
 
+
 def test_main():
     test_support.run_unittest(CryptTestCase)
+
 
 if __name__ == "__main__":
     test_main()

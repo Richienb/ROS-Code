@@ -16,6 +16,7 @@ from distutils.errors import (DistutilsOptionError, DistutilsPlatformError,
                               DistutilsFileError, DistutilsExecError)
 from distutils import log
 
+
 class bdist_rpm (Command):
 
     description = "create an RPM distribution"
@@ -127,7 +128,7 @@ class bdist_rpm (Command):
 
         ('quiet', 'q',
          "Run the INSTALL phase of RPM building in quiet mode"),
-        ]
+    ]
 
     boolean_options = ['keep-temp', 'use-rpm-opt-flags', 'rpm3-mode',
                        'no-autoreq', 'quiet']
@@ -136,8 +137,7 @@ class bdist_rpm (Command):
                     'no-rpm-opt-flags': 'use-rpm-opt-flags',
                     'rpm2-mode': 'rpm3-mode'}
 
-
-    def initialize_options (self):
+    def initialize_options(self):
         self.bdist_base = None
         self.rpm_base = None
         self.dist_dir = None
@@ -184,13 +184,12 @@ class bdist_rpm (Command):
 
     # initialize_options()
 
-
-    def finalize_options (self):
+    def finalize_options(self):
         self.set_undefined_options('bdist', ('bdist_base', 'bdist_base'))
         if self.rpm_base is None:
             if not self.rpm3_mode:
-                raise DistutilsOptionError, \
-                      "you must specify --rpm-base in RPM 2 mode"
+                raise DistutilsOptionError(
+                    "you must specify --rpm-base in RPM 2 mode")
             self.rpm_base = os.path.join(self.bdist_base, "rpm")
 
         if self.python is None:
@@ -199,16 +198,17 @@ class bdist_rpm (Command):
             else:
                 self.python = "python"
         elif self.fix_python:
-            raise DistutilsOptionError, \
-                  "--python and --fix-python are mutually exclusive options"
+            raise DistutilsOptionError(
+                "--python and --fix-python are mutually exclusive options")
 
         if os.name != 'posix':
-            raise DistutilsPlatformError, \
-                  ("don't know how to create RPM "
-                   "distributions on platform %s" % os.name)
+            raise DistutilsPlatformError(
+                "don't know how to create RPM "
+                "distributions on platform %s" %
+                os.name)
         if self.binary_only and self.source_only:
-            raise DistutilsOptionError, \
-                  "cannot supply both '--source-only' and '--binary-only'"
+            raise DistutilsOptionError(
+                "cannot supply both '--source-only' and '--binary-only'")
 
         # don't pass CFLAGS to pure python distributions
         if not self.distribution.has_ext_modules():
@@ -219,7 +219,7 @@ class bdist_rpm (Command):
 
     # finalize_options()
 
-    def finalize_package_data (self):
+    def finalize_package_data(self):
         self.ensure_string('group', "Development/Libraries")
         self.ensure_string('vendor',
                            "%s <%s>" % (self.distribution.get_contact(),
@@ -237,7 +237,7 @@ class bdist_rpm (Command):
         self.ensure_string('distribution_name')
 
         self.ensure_string('changelog')
-          # Format changelog correctly
+        # Format changelog correctly
         self.changelog = self._format_changelog(self.changelog)
 
         self.ensure_filename('icon')
@@ -265,8 +265,7 @@ class bdist_rpm (Command):
         self.ensure_string('force_arch')
     # finalize_package_data ()
 
-
-    def run (self):
+    def run(self):
 
         if DEBUG:
             print "before _get_package_data():"
@@ -295,7 +294,7 @@ class bdist_rpm (Command):
                       self._make_spec_file()),
                      "writing '%s'" % spec_path)
 
-        if self.spec_only: # stop if requested
+        if self.spec_only:  # stop if requested
             return
 
         # Make a source distribution and copy to SOURCES directory with
@@ -317,9 +316,9 @@ class bdist_rpm (Command):
             if os.path.exists(self.icon):
                 self.copy_file(self.icon, source_dir)
             else:
-                raise DistutilsFileError, \
-                      "icon file '%s' does not exist" % self.icon
-
+                raise DistutilsFileError(
+                    "icon file '%s' does not exist" %
+                    self.icon)
 
         # build package
         log.info("building RPMs")
@@ -328,7 +327,7 @@ class bdist_rpm (Command):
            os.path.exists('/bin/rpmbuild'):
             rpm_cmd = ['rpmbuild']
 
-        if self.source_only: # what kind of RPMs?
+        if self.source_only:  # what kind of RPMs?
             rpm_cmd.append('-bs')
         elif self.binary_only:
             rpm_cmd.append('-bb')
@@ -336,7 +335,7 @@ class bdist_rpm (Command):
             rpm_cmd.append('-ba')
         if self.rpm3_mode:
             rpm_cmd.extend(['--define',
-                             '_topdir %s' % os.path.abspath(self.rpm_base)])
+                            '_topdir %s' % os.path.abspath(self.rpm_base)])
         if not self.keep_temp:
             rpm_cmd.append('--clean')
 
@@ -358,14 +357,15 @@ class bdist_rpm (Command):
         try:
             binary_rpms = []
             source_rpm = None
-            while 1:
+            while True:
                 line = out.readline()
                 if not line:
                     break
                 l = string.split(string.strip(line))
                 assert(len(l) == 2)
                 binary_rpms.append(l[1])
-                # The source rpm is named after the first entry in the spec file
+                # The source rpm is named after the first entry in the spec
+                # file
                 if source_rpm is None:
                     source_rpm = l[0]
 
@@ -412,25 +412,34 @@ class bdist_rpm (Command):
         """
         # definitions and headers
         spec_file = [
-            '%define name ' + self.distribution.get_name(),
-            '%define version ' + self.distribution.get_version().replace('-','_'),
-            '%define unmangled_version ' + self.distribution.get_version(),
-            '%define release ' + self.release.replace('-','_'),
+            '%define name ' +
+            self.distribution.get_name(),
+            '%define version ' +
+            self.distribution.get_version().replace(
+                '-',
+                '_'),
+            '%define unmangled_version ' +
+            self.distribution.get_version(),
+            '%define release ' +
+            self.release.replace(
+                '-',
+                '_'),
             '',
-            'Summary: ' + self.distribution.get_description(),
-            ]
+            'Summary: ' +
+            self.distribution.get_description(),
+        ]
 
         # put locale summaries into spec file
         # XXX not supported for now (hard to put a dictionary
         # in a config file -- arg!)
-        #for locale in self.summaries.keys():
+        # for locale in self.summaries.keys():
         #    spec_file.append('Summary(%s): %s' % (locale,
         #                                          self.summaries[locale]))
 
         spec_file.extend([
             'Name: %{name}',
             'Version: %{version}',
-            'Release: %{release}',])
+            'Release: %{release}', ])
 
         # XXX yuck! this filename is available from the "sdist" command,
         # but only after it has run: and we create the spec file before
@@ -451,7 +460,7 @@ class bdist_rpm (Command):
             if not self.distribution.has_ext_modules():
                 spec_file.append('BuildArch: noarch')
         else:
-            spec_file.append( 'BuildArch: %s' % self.force_arch )
+            spec_file.append('BuildArch: %s' % self.force_arch)
 
         for field in ('Vendor',
                       'Packager',
@@ -465,7 +474,6 @@ class bdist_rpm (Command):
                 spec_file.append('%s: %s' % (field, string.join(val)))
             elif val is not None:
                 spec_file.append('%s: %s' % (field, val))
-
 
         if self.distribution.get_url() != 'UNKNOWN':
             spec_file.append('Url: ' + self.distribution.get_url())
@@ -487,12 +495,12 @@ class bdist_rpm (Command):
             '',
             '%description',
             self.distribution.get_long_description()
-            ])
+        ])
 
         # put locale descriptions into spec file
         # XXX again, suppressed because config file syntax doesn't
         # easily support this ;-(
-        #for locale in self.descriptions.keys():
+        # for locale in self.descriptions.keys():
         #    spec_file.extend([
         #        '',
         #        '%description -l ' + locale,
@@ -501,7 +509,7 @@ class bdist_rpm (Command):
 
         # rpm scripts
         # figure out default build script
-        def_setup_call = "%s %s" % (self.python,os.path.basename(sys.argv[0]))
+        def_setup_call = "%s %s" % (self.python, os.path.basename(sys.argv[0]))
         def_build = "%s build" % def_setup_call
         if self.use_rpm_opt_flags:
             def_build = 'env CFLAGS="$RPM_OPT_FLAGS" ' + def_build
@@ -534,19 +542,18 @@ class bdist_rpm (Command):
             if val or default:
                 spec_file.extend([
                     '',
-                    '%' + rpm_opt,])
+                    '%' + rpm_opt, ])
                 if val:
                     spec_file.extend(string.split(open(val, 'r').read(), '\n'))
                 else:
                     spec_file.append(default)
-
 
         # files section
         spec_file.extend([
             '',
             '%files -f INSTALLED_FILES',
             '%defattr(-,root,root)',
-            ])
+        ])
 
         if self.doc_files:
             spec_file.append('%doc ' + string.join(self.doc_files))
@@ -554,7 +561,7 @@ class bdist_rpm (Command):
         if self.changelog:
             spec_file.extend([
                 '',
-                '%changelog',])
+                '%changelog', ])
             spec_file.extend(self.changelog)
 
         return spec_file

@@ -1,7 +1,11 @@
 
-import os, filecmp, shutil, tempfile
+import os
+import filecmp
+import shutil
+import tempfile
 import unittest
 from test import test_support
+
 
 class FileCompareTestCase(unittest.TestCase):
     def setUp(self):
@@ -36,9 +40,10 @@ class FileCompareTestCase(unittest.TestCase):
 
     def test_different(self):
         self.assertFalse(filecmp.cmp(self.name, self.name_diff),
-                    "Mismatched files compare as equal")
+                         "Mismatched files compare as equal")
         self.assertFalse(filecmp.cmp(self.name, self.dir),
-                    "File and directory compare as equal")
+                         "File and directory compare as equal")
+
 
 class DirCompareTestCase(unittest.TestCase):
     def setUp(self):
@@ -91,18 +96,17 @@ class DirCompareTestCase(unittest.TestCase):
         output.close()
 
         self.assertFalse(filecmp.cmpfiles(self.dir, self.dir_same,
-                                     ['file', 'file2']) ==
-                    (['file'], ['file2'], []),
-                    "Comparing mismatched directories fails")
-
+                                          ['file', 'file2']) ==
+                         (['file'], ['file2'], []),
+                         "Comparing mismatched directories fails")
 
     def test_dircmp(self):
         # Check attributes for comparison of two identical directories
         d = filecmp.dircmp(self.dir, self.dir_same)
         if self.caseinsensitive:
-            self.assertEqual([d.left_list, d.right_list],[['file'], ['FiLe']])
+            self.assertEqual([d.left_list, d.right_list], [['file'], ['FiLe']])
         else:
-            self.assertEqual([d.left_list, d.right_list],[['file'], ['file']])
+            self.assertEqual([d.left_list, d.right_list], [['file'], ['file']])
         self.assertTrue(d.common == ['file'])
         self.assertTrue(d.left_only == d.right_only == [])
         self.assertTrue(d.same_files == ['file'])
@@ -129,6 +133,7 @@ class DirCompareTestCase(unittest.TestCase):
 
 def test_main():
     test_support.run_unittest(FileCompareTestCase, DirCompareTestCase)
+
 
 if __name__ == "__main__":
     test_main()

@@ -21,12 +21,15 @@ handles the EMX port of the GNU C compiler to OS/2.
 
 __revision__ = "$Id$"
 
-import os,sys,copy
+import os
+import sys
+import copy
 from distutils.ccompiler import gen_preprocess_options, gen_lib_options
 from distutils.unixccompiler import UnixCCompiler
 from distutils.file_util import write_file
 from distutils.errors import DistutilsExecError, CompileError, UnknownFileError
 from distutils import log
+
 
 class EMXCCompiler (UnixCCompiler):
 
@@ -39,12 +42,12 @@ class EMXCCompiler (UnixCCompiler):
     res_extension = ".res"      # compiled resource file
     exe_extension = ".exe"
 
-    def __init__ (self,
-                  verbose=0,
-                  dry_run=0,
-                  force=0):
+    def __init__(self,
+                 verbose=0,
+                 dry_run=0,
+                 force=0):
 
-        UnixCCompiler.__init__ (self, verbose, dry_run, force)
+        UnixCCompiler.__init__(self, verbose, dry_run, force)
 
         (status, details) = check_config_h()
         self.debug_print("Python's GCC status: %s (details: %s)" %
@@ -59,18 +62,19 @@ class EMXCCompiler (UnixCCompiler):
             get_versions()
         self.debug_print(self.compiler_type + ": gcc %s, ld %s\n" %
                          (self.gcc_version,
-                          self.ld_version) )
+                          self.ld_version))
 
         # Hard-code GCC because that's what this is all about.
         # XXX optimization, warnings etc. should be customizable.
-        self.set_executables(compiler='gcc -Zomf -Zmt -O3 -fomit-frame-pointer -mprobe -Wall',
-                             compiler_so='gcc -Zomf -Zmt -O3 -fomit-frame-pointer -mprobe -Wall',
-                             linker_exe='gcc -Zomf -Zmt -Zcrtdll',
-                             linker_so='gcc -Zomf -Zmt -Zcrtdll -Zdll')
+        self.set_executables(
+            compiler='gcc -Zomf -Zmt -O3 -fomit-frame-pointer -mprobe -Wall',
+            compiler_so='gcc -Zomf -Zmt -O3 -fomit-frame-pointer -mprobe -Wall',
+            linker_exe='gcc -Zomf -Zmt -Zcrtdll',
+            linker_so='gcc -Zomf -Zmt -Zcrtdll -Zdll')
 
         # want the gcc library statically linked (so that we don't have
         # to distribute a version dependent on the compiler we have)
-        self.dll_libraries=["gcc"]
+        self.dll_libraries = ["gcc"]
 
     # __init__ ()
 
@@ -79,29 +83,29 @@ class EMXCCompiler (UnixCCompiler):
             # gcc requires '.rc' compiled to binary ('.res') files !!!
             try:
                 self.spawn(["rc", "-r", src])
-            except DistutilsExecError, msg:
-                raise CompileError, msg
-        else: # for other files use the C-compiler
+            except DistutilsExecError as msg:
+                raise CompileError(msg)
+        else:  # for other files use the C-compiler
             try:
                 self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
                            extra_postargs)
-            except DistutilsExecError, msg:
-                raise CompileError, msg
+            except DistutilsExecError as msg:
+                raise CompileError(msg)
 
-    def link (self,
-              target_desc,
-              objects,
-              output_filename,
-              output_dir=None,
-              libraries=None,
-              library_dirs=None,
-              runtime_library_dirs=None,
-              export_symbols=None,
-              debug=0,
-              extra_preargs=None,
-              extra_postargs=None,
-              build_temp=None,
-              target_lang=None):
+    def link(self,
+             target_desc,
+             objects,
+             output_filename,
+             output_dir=None,
+             libraries=None,
+             library_dirs=None,
+             runtime_library_dirs=None,
+             export_symbols=None,
+             debug=0,
+             extra_preargs=None,
+             extra_postargs=None,
+             build_temp=None,
+             target_lang=None):
 
         # use separate copies, so we can modify the lists
         extra_preargs = copy.copy(extra_preargs or [])
@@ -114,7 +118,7 @@ class EMXCCompiler (UnixCCompiler):
         # handle export symbols by creating a def-file
         # with executables this only works with gcc/ld as linker
         if ((export_symbols is not None) and
-            (target_desc != self.EXECUTABLE)):
+                (target_desc != self.EXECUTABLE)):
             # (The linker doesn't do anything if output is up-to-date.
             # So it would probably better to check if we really need this,
             # but for this we had to insert some unchanged parts of
@@ -133,7 +137,7 @@ class EMXCCompiler (UnixCCompiler):
 
             # Generate .def file
             contents = [
-                "LIBRARY %s INITINSTANCE TERMINSTANCE" % \
+                "LIBRARY %s INITINSTANCE TERMINSTANCE" %
                 os.path.splitext(os.path.basename(output_filename))[0],
                 "DATA MULTIPLE NONSHARED",
                 "EXPORTS"]
@@ -146,7 +150,7 @@ class EMXCCompiler (UnixCCompiler):
             # for gcc/ld the def-file is specified as any other object files
             objects.append(def_file)
 
-        #end: if ((export_symbols is not None) and
+        # end: if ((export_symbols is not None) and
         #        (target_desc != self.EXECUTABLE or self.linker_dll == "gcc")):
 
         # who wants symbols and a many times larger output file
@@ -166,7 +170,7 @@ class EMXCCompiler (UnixCCompiler):
                            libraries,
                            library_dirs,
                            runtime_library_dirs,
-                           None, # export_symbols, we do this in our def-file
+                           None,  # export_symbols, we do this in our def-file
                            debug,
                            extra_preargs,
                            extra_postargs,
@@ -179,28 +183,28 @@ class EMXCCompiler (UnixCCompiler):
 
     # override the object_filenames method from CCompiler to
     # support rc and res-files
-    def object_filenames (self,
-                          source_filenames,
-                          strip_dir=0,
-                          output_dir=''):
-        if output_dir is None: output_dir = ''
+    def object_filenames(self,
+                         source_filenames,
+                         strip_dir=0,
+                         output_dir=''):
+        if output_dir is None:
+            output_dir = ''
         obj_names = []
         for src_name in source_filenames:
             # use normcase to make sure '.rc' is really '.rc' and not '.RC'
-            (base, ext) = os.path.splitext (os.path.normcase(src_name))
+            (base, ext) = os.path.splitext(os.path.normcase(src_name))
             if ext not in (self.src_extensions + ['.rc']):
-                raise UnknownFileError, \
-                      "unknown file type '%s' (from '%s')" % \
-                      (ext, src_name)
+                raise UnknownFileError("unknown file type '%s' (from '%s')" %
+                                       (ext, src_name))
             if strip_dir:
-                base = os.path.basename (base)
+                base = os.path.basename(base)
             if ext == '.rc':
                 # these need to be compiled to object files
-                obj_names.append (os.path.join (output_dir,
-                                            base + self.res_extension))
+                obj_names.append(os.path.join(output_dir,
+                                              base + self.res_extension))
             else:
-                obj_names.append (os.path.join (output_dir,
-                                            base + self.obj_extension))
+                obj_names.append(os.path.join(output_dir,
+                                              base + self.obj_extension))
         return obj_names
 
     # object_filenames ()
@@ -239,8 +243,8 @@ CONFIG_H_OK = "ok"
 CONFIG_H_NOTOK = "not ok"
 CONFIG_H_UNCERTAIN = "uncertain"
 
-def check_config_h():
 
+def check_config_h():
     """Check if the current Python installation (specifically, pyconfig.h)
     appears amenable to building extensions with GCC.  Returns a tuple
     (status, details), where 'status' is one of the following constants:
@@ -264,7 +268,7 @@ def check_config_h():
     import string
     # if sys.version contains GCC then python was compiled with
     # GCC, and the pyconfig.h file should be OK
-    if string.find(sys.version,"GCC") >= 0:
+    if string.find(sys.version, "GCC") >= 0:
         return (CONFIG_H_OK, "sys.version mentions 'GCC'")
 
     fn = sysconfig.get_config_h_filename()
@@ -277,7 +281,7 @@ def check_config_h():
         finally:
             f.close()
 
-    except IOError, exc:
+    except IOError as exc:
         # if we can't read this file, we cannot say it is wrong
         # the compiler will complain later about this file as missing
         return (CONFIG_H_UNCERTAIN,
@@ -285,7 +289,7 @@ def check_config_h():
 
     else:
         # "pyconfig.h" contains an "#ifdef __GNUC__" or something similar
-        if string.find(s,"__GNUC__") >= 0:
+        if string.find(s, "__GNUC__") >= 0:
             return (CONFIG_H_OK, "'%s' mentions '__GNUC__'" % fn)
         else:
             return (CONFIG_H_NOTOK, "'%s' does not mention '__GNUC__'" % fn)
@@ -301,12 +305,12 @@ def get_versions():
 
     gcc_exe = find_executable('gcc')
     if gcc_exe:
-        out = os.popen(gcc_exe + ' -dumpversion','r')
+        out = os.popen(gcc_exe + ' -dumpversion', 'r')
         try:
             out_string = out.read()
         finally:
             out.close()
-        result = re.search('(\d+\.\d+\.\d+)',out_string)
+        result = re.search('(\d+\.\d+\.\d+)', out_string)
         if result:
             gcc_version = StrictVersion(result.group(1))
         else:

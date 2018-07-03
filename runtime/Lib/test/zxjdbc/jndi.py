@@ -10,7 +10,8 @@ from org.gjt.mm.mysql import MysqlDataSource
 from javax.naming import Context, InitialContext, NameAlreadyBoundException
 
 env = Hashtable()
-env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.fscontext.RefFSContextFactory")
+env.put(Context.INITIAL_CONTEXT_FACTORY,
+        "com.sun.jndi.fscontext.RefFSContextFactory")
 
 ds = MysqlDataSource()
 ds.setServerName("localhost")
@@ -21,7 +22,7 @@ ctx = InitialContext(env)
 try:
     try:
         ctx.bind("/jdbc/mysqldb", ds)
-    except NameAlreadyBoundException, e:
+    except NameAlreadyBoundException as e:
         ctx.unbind("/jdbc/mysqldb")
         ctx.bind("/jdbc/mysqldb", ds)
 finally:

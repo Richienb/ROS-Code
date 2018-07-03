@@ -37,7 +37,7 @@ class ApproxFloat(unittest.TestCase):
     # subsequent test classes - when we can guarantee that floats that
     # are pickled by cPickle are exact in the same way they are on
     # CPython
-    
+
     def test_float(self):
         from test.pickletester import protocols
 
@@ -79,6 +79,7 @@ class DumpPickle_LoadCPickle(AbstractPickleTests):
     def loads(self, buf):
         # Ignore fast
         return cPickle.loads(buf)
+
 
 def have_python_version(name):
     """Check whether the given name is a valid Python binary and has
@@ -218,6 +219,7 @@ else:
         def test_reduce_ex_calls_base(self):
             pass
 
+
 class PicklePython24Compat(CPicklePython24Compat):
 
     module = pickle
@@ -235,6 +237,7 @@ else:
         python = "python2.5"
         error = cPickle.BadPickleGet
 
+
 class PicklePython25Compat(CPicklePython25Compat):
 
     module = pickle
@@ -251,6 +254,7 @@ else:
         module = cPickle
         python = "python2.6"
         error = cPickle.BadPickleGet
+
 
 class PicklePython26Compat(CPicklePython26Compat):
 
@@ -280,6 +284,7 @@ def test_main():
         PicklePython25Compat,
         PicklePython26Compat,
     )
+
 
 if __name__ == "__main__":
     if "worker" in sys.argv:

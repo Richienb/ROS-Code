@@ -27,6 +27,7 @@ SAMPLE_XML_NS = """
 </body>
 """
 
+
 def sanity():
     """
     Import sanity.
@@ -34,9 +35,11 @@ def sanity():
     >>> from xml.etree import cElementTree
     """
 
+
 def check_method(method):
     if not hasattr(method, '__call__'):
         print method, "not callable"
+
 
 def serialize(ET, elem, encoding=None):
     import StringIO
@@ -48,11 +51,14 @@ def serialize(ET, elem, encoding=None):
         tree.write(file)
     return file.getvalue()
 
+
 def summarize(elem):
     return elem.tag
 
+
 def summarize_list(seq):
     return map(summarize, seq)
+
 
 def interface():
     """
@@ -100,6 +106,7 @@ def interface():
     >>> serialize(ET, element) # 6
     '<tag key="value" />'
     """
+
 
 def find():
     """
@@ -168,6 +175,7 @@ def find():
     ['{http://effbot.org/ns}tag', '{http://effbot.org/ns}tag', '{http://effbot.org/ns}tag']
     """
 
+
 def parseliteral():
     r"""
 
@@ -192,6 +200,7 @@ def parseliteral():
     'body'
     """
 
+
 def check_encoding(encoding):
     """
     >>> check_encoding("ascii")
@@ -203,7 +212,8 @@ def check_encoding(encoding):
     """
     ET.XML(
         "<?xml version='1.0' encoding='%s'?><xml />" % encoding
-        )
+    )
+
 
 def bug_1534630():
     """
@@ -216,9 +226,11 @@ def bug_1534630():
     '<tag />'
     """
 
+
 def test_main():
     from test import test_xml_etree_c
     test_support.run_doctest(test_xml_etree_c, verbosity=True)
+
 
 if __name__ == '__main__':
     test_main()

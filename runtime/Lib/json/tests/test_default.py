@@ -8,5 +8,9 @@ class TestDefault(object):
             self.dumps(repr(type)))
 
 
-class TestPyDefault(TestDefault, PyTest): pass
-class TestCDefault(TestDefault, CTest): pass
+class TestPyDefault(TestDefault, PyTest):
+    pass
+
+
+class TestCDefault(TestDefault, CTest):
+    pass

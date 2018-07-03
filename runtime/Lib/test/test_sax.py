@@ -2,14 +2,14 @@
 # $Id$
 
 from xml.sax import make_parser, ContentHandler, \
-                    SAXException, SAXReaderNotAvailable, SAXParseException
+    SAXException, SAXReaderNotAvailable, SAXParseException
 try:
     make_parser()
 except SAXReaderNotAvailable:
     # don't try to test this module if we cannot create a parser
     raise ImportError("no XML parsers available")
 from xml.sax.saxutils import XMLGenerator, escape, unescape, quoteattr, \
-                             XMLFilterBase
+    XMLFilterBase
 from xml.sax.expatreader import create_parser
 from xml.sax.handler import feature_namespaces
 from xml.sax.xmlreader import InputSource, AttributesImpl, AttributesNSImpl
@@ -33,10 +33,11 @@ if not os.path.supports_unicode_filenames:
         # cannot be encoded in the file system encoding.
         supports_unicode_filenames = False
 requires_unicode_filenames = unittest.skipUnless(
-        supports_unicode_filenames,
-        'Requires unicode filenames support')
+    supports_unicode_filenames,
+    'Requires unicode filenames support')
 
 ns_uri = "http://www.python.org/xml-ns/saxtest/"
+
 
 class XmlTestBase(unittest.TestCase):
     def verify_empty_attrs(self, attrs):
@@ -49,7 +50,7 @@ class XmlTestBase(unittest.TestCase):
         self.assertEqual(attrs.getNames(), [])
         self.assertEqual(attrs.getQNames(), [])
         self.assertEqual(len(attrs), 0)
-        self.assertFalse(attrs.has_key("attr"))
+        self.assertFalse("attr" in attrs)
         self.assertEqual(attrs.keys(), [])
         self.assertEqual(attrs.get("attrs"), None)
         self.assertEqual(attrs.get("attrs", 25), 25)
@@ -66,7 +67,7 @@ class XmlTestBase(unittest.TestCase):
         self.assertEqual(attrs.getNames(), [])
         self.assertEqual(attrs.getQNames(), [])
         self.assertEqual(len(attrs), 0)
-        self.assertFalse(attrs.has_key((ns_uri, "attr")))
+        self.assertFalse((ns_uri, "attr") in attrs)
         self.assertEqual(attrs.keys(), [])
         self.assertEqual(attrs.get((ns_uri, "attr")), None)
         self.assertEqual(attrs.get((ns_uri, "attr"), 25), 25)
@@ -78,7 +79,7 @@ class XmlTestBase(unittest.TestCase):
         self.assertEqual(attrs.getNames(), ["attr"])
         self.assertEqual(attrs.getQNames(), ["attr"])
         self.assertEqual(len(attrs), 1)
-        self.assertTrue(attrs.has_key("attr"))
+        self.assertTrue("attr" in attrs)
         self.assertEqual(attrs.keys(), ["attr"])
         self.assertEqual(attrs.get("attr"), "val")
         self.assertEqual(attrs.get("attr", 25), "val")
@@ -89,6 +90,7 @@ class XmlTestBase(unittest.TestCase):
         self.assertEqual(attrs.getNameByQName("attr"), "attr")
         self.assertEqual(attrs["attr"], "val")
         self.assertEqual(attrs.getQNameByName("attr"), "attr")
+
 
 class MakeParserTest(unittest.TestCase):
     def test_make_parser2(self):
@@ -125,7 +127,7 @@ class SaxutilsTest(unittest.TestCase):
                          "&lt;Donald Duck &amp; Co&gt;")
 
     def test_escape_extra(self):
-        self.assertEqual(escape("Hei på deg", {"å" : "&aring;"}),
+        self.assertEqual(escape("Hei på deg", {"å": "&aring;"}),
                          "Hei p&aring; deg")
 
     # ===== unescape
@@ -137,7 +139,7 @@ class SaxutilsTest(unittest.TestCase):
                          "<Donald Duck & Co>")
 
     def test_unescape_extra(self):
-        self.assertEqual(unescape("Hei på deg", {"å" : "&aring;"}),
+        self.assertEqual(unescape("Hei på deg", {"å": "&aring;"}),
                          "Hei p&aring; deg")
 
     def test_unescape_amp_extra(self):
@@ -170,6 +172,7 @@ class SaxutilsTest(unittest.TestCase):
 # ===== XMLGenerator
 
 start = '<?xml version="1.0" encoding="iso-8859-1"?>\n'
+
 
 class XmlgenTest:
     def test_xmlgen_basic(self):
@@ -217,7 +220,7 @@ class XmlgenTest:
         gen.endDocument()
 
         self.assertEqual(result.getvalue(),
-            start + "<doc>&lt;huhei&amp;</doc>")
+                         start + "<doc>&lt;huhei&amp;</doc>")
 
     def test_xmlgen_attr_escape(self):
         result = self.ioclass()
@@ -235,9 +238,9 @@ class XmlgenTest:
         gen.endDocument()
 
         self.assertEqual(result.getvalue(), start +
-            ("<doc a='\"'><e a=\"'\"></e>"
-             "<e a=\"'&quot;\"></e>"
-             "<e a=\"&#10;&#13;&#9;\"></e></doc>"))
+                         ("<doc a='\"'><e a=\"'\"></e>"
+                          "<e a=\"'&quot;\"></e>"
+                          "<e a=\"&#10;&#13;&#9;\"></e></doc>"))
 
     def test_xmlgen_encoding(self):
         encodings = ('iso-8859-15', 'utf-8',
@@ -256,7 +259,7 @@ class XmlgenTest:
             self.assertEqual(result.getvalue(), (
                 u'<?xml version="1.0" encoding="%s"?>\n'
                 u'<doc a="\u20ac">\u20ac</doc>' % encoding
-                ).encode(encoding, 'xmlcharrefreplace'))
+            ).encode(encoding, 'xmlcharrefreplace'))
 
     def test_xmlgen_unencodable(self):
         result = self.ioclass()
@@ -269,8 +272,8 @@ class XmlgenTest:
         gen.endDocument()
 
         self.assertEqual(result.getvalue(),
-                '<?xml version="1.0" encoding="ascii"?>\n'
-                '<doc a="&#8364;">&#8364;</doc>')
+                         '<?xml version="1.0" encoding="ascii"?>\n'
+                         '<doc a="&#8364;">&#8364;</doc>')
 
     def test_xmlgen_ignorable(self):
         result = self.ioclass()
@@ -298,20 +301,20 @@ class XmlgenTest:
         gen.endPrefixMapping("ns1")
         gen.endDocument()
 
-        self.assertEqual(result.getvalue(), start + \
-           ('<ns1:doc xmlns:ns1="%s"><udoc></udoc></ns1:doc>' %
-                                         ns_uri))
+        self.assertEqual(result.getvalue(), start +
+                         ('<ns1:doc xmlns:ns1="%s"><udoc></udoc></ns1:doc>' %
+                          ns_uri))
 
     def test_1463026_1(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
         gen.startDocument()
-        gen.startElementNS((None, 'a'), 'a', {(None, 'b'):'c'})
+        gen.startElementNS((None, 'a'), 'a', {(None, 'b'): 'c'})
         gen.endElementNS((None, 'a'), 'a')
         gen.endDocument()
 
-        self.assertEqual(result.getvalue(), start+'<a b="c"></a>')
+        self.assertEqual(result.getvalue(), start + '<a b="c"></a>')
 
     def test_1463026_2(self):
         result = self.ioclass()
@@ -324,7 +327,7 @@ class XmlgenTest:
         gen.endPrefixMapping(None)
         gen.endDocument()
 
-        self.assertEqual(result.getvalue(), start+'<a xmlns="qux"></a>')
+        self.assertEqual(result.getvalue(), start + '<a xmlns="qux"></a>')
 
     def test_1463026_3(self):
         result = self.ioclass()
@@ -332,13 +335,13 @@ class XmlgenTest:
 
         gen.startDocument()
         gen.startPrefixMapping('my', 'qux')
-        gen.startElementNS(('qux', 'a'), 'a', {(None, 'b'):'c'})
+        gen.startElementNS(('qux', 'a'), 'a', {(None, 'b'): 'c'})
         gen.endElementNS(('qux', 'a'), 'a')
         gen.endPrefixMapping('my')
         gen.endDocument()
 
         self.assertEqual(result.getvalue(),
-            start+'<my:a xmlns:my="qux" b="c"></my:a>')
+                         start + '<my:a xmlns:my="qux" b="c"></my:a>')
 
     def test_5027_1(self):
         # The xml prefix (as in xml:lang below) is reserved and bound by
@@ -350,7 +353,7 @@ class XmlgenTest:
         test_xml = StringIO(
             '<?xml version="1.0"?>'
             '<a:g1 xmlns:a="http://example.com/ns">'
-             '<a:g2 xml:lang="en">Hello</a:g2>'
+            '<a:g2 xml:lang="en">Hello</a:g2>'
             '</a:g1>')
 
         parser = make_parser()
@@ -363,7 +366,7 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
                          start + (
                          '<a:g1 xmlns:a="http://example.com/ns">'
-                          '<a:g2 xml:lang="en">Hello</a:g2>'
+                         '<a:g2 xml:lang="en">Hello</a:g2>'
                          '</a:g1>'))
 
     def test_5027_2(self):
@@ -391,11 +394,12 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
                          start + (
                          '<a:g1 xmlns:a="http://example.com/ns">'
-                          '<a:g2 xml:lang="en">Hello</a:g2>'
+                         '<a:g2 xml:lang="en">Hello</a:g2>'
                          '</a:g1>'))
 
     def test_no_close_file(self):
         result = self.ioclass()
+
         def func(out):
             gen = XMLGenerator(out)
             gen.startDocument()
@@ -418,11 +422,14 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
                          '<foo a="1.0">Hello</foo><bar b="2.0"></bar>')
 
+
 class StringXmlgenTest(XmlgenTest, unittest.TestCase):
     ioclass = StringIO
 
+
 class BytesIOXmlgenTest(XmlgenTest, unittest.TestCase):
     ioclass = io.BytesIO
+
 
 class WriterXmlgenTest(XmlgenTest, unittest.TestCase):
     class ioclass(list):
@@ -455,7 +462,9 @@ class XMLFilterBaseTest(unittest.TestCase):
 #
 # ===========================================================================
 
+
 xml_test_out = open(TEST_XMLFILE_OUT).read()
+
 
 class ExpatReaderTest(XmlTestBase):
 
@@ -492,7 +501,7 @@ class ExpatReaderTest(XmlTestBase):
 
         def __init__(self):
             self._notations = []
-            self._entities  = []
+            self._entities = []
 
         def notationDecl(self, name, publicId, systemId):
             self._notations.append((name, publicId, systemId))
@@ -507,14 +516,18 @@ class ExpatReaderTest(XmlTestBase):
 
         parser.feed('<!DOCTYPE doc [\n')
         parser.feed('  <!ENTITY img SYSTEM "expat.gif" NDATA GIF>\n')
-        parser.feed('  <!NOTATION GIF PUBLIC "-//CompuServe//NOTATION Graphics Interchange Format 89a//EN">\n')
+        parser.feed(
+            '  <!NOTATION GIF PUBLIC "-//CompuServe//NOTATION Graphics Interchange Format 89a//EN">\n')
         parser.feed(']>\n')
         parser.feed('<doc></doc>')
         parser.close()
 
-        self.assertEqual(handler._notations,
-            [("GIF", "-//CompuServe//NOTATION Graphics Interchange Format 89a//EN", None)])
-        self.assertEqual(handler._entities, [("img", None, "expat.gif", "GIF")])
+        self.assertEqual(
+            handler._notations, [
+                ("GIF", "-//CompuServe//NOTATION Graphics Interchange Format 89a//EN", None)])
+        self.assertEqual(
+            handler._entities, [
+                ("img", None, "expat.gif", "GIF")])
 
     # ===== EntityResolver support
 
@@ -595,7 +608,7 @@ class ExpatReaderTest(XmlTestBase):
         self.assertTrue((attrs.getQNames() == [] or
                          attrs.getQNames() == ["ns:attr"]))
         self.assertEqual(len(attrs), 1)
-        self.assertTrue(attrs.has_key((ns_uri, "attr")))
+        self.assertTrue((ns_uri, "attr") in attrs)
         self.assertEqual(attrs.get((ns_uri, "attr")), "val")
         self.assertEqual(attrs.get((ns_uri, "attr"), 25), "val")
         self.assertEqual(attrs.items(), [((ns_uri, "attr"), "val")])
@@ -738,20 +751,20 @@ class ExpatReaderTest(XmlTestBase):
 class ErrorReportingTest(unittest.TestCase):
     def test_expat_inpsource_location(self):
         parser = create_parser()
-        parser.setContentHandler(ContentHandler()) # do nothing
+        parser.setContentHandler(ContentHandler())  # do nothing
         source = InputSource()
-        source.setByteStream(StringIO("<foo bar foobar>"))   #ill-formed
+        source.setByteStream(StringIO("<foo bar foobar>"))  # ill-formed
         name = "a file name"
         source.setSystemId(name)
         try:
             parser.parse(source)
             self.fail()
-        except SAXException, e:
+        except SAXException as e:
             self.assertEqual(e.getSystemId(), name)
 
     def test_expat_incomplete(self):
         parser = create_parser()
-        parser.setContentHandler(ContentHandler()) # do nothing
+        parser.setContentHandler(ContentHandler())  # do nothing
         self.assertRaises(SAXParseException, parser.parse, StringIO("<foo>"))
 
     def test_sax_parse_exception_str(self):
@@ -795,6 +808,7 @@ class ErrorReportingTest(unittest.TestCase):
 #
 # ===========================================================================
 
+
 class XmlReaderTest(XmlTestBase):
 
     # ===== AttributesImpl
@@ -802,20 +816,20 @@ class XmlReaderTest(XmlTestBase):
         self.verify_empty_attrs(AttributesImpl({}))
 
     def test_attrs_wattr(self):
-        self.verify_attrs_wattr(AttributesImpl({"attr" : "val"}))
+        self.verify_attrs_wattr(AttributesImpl({"attr": "val"}))
 
     def test_nsattrs_empty(self):
         self.verify_empty_nsattrs(AttributesNSImpl({}, {}))
 
     def test_nsattrs_wattr(self):
-        attrs = AttributesNSImpl({(ns_uri, "attr") : "val"},
-                                 {(ns_uri, "attr") : "ns:attr"})
+        attrs = AttributesNSImpl({(ns_uri, "attr"): "val"},
+                                 {(ns_uri, "attr"): "ns:attr"})
 
         self.assertEqual(attrs.getLength(), 1)
         self.assertEqual(attrs.getNames(), [(ns_uri, "attr")])
         self.assertEqual(attrs.getQNames(), ["ns:attr"])
         self.assertEqual(len(attrs), 1)
-        self.assertTrue(attrs.has_key((ns_uri, "attr")))
+        self.assertTrue((ns_uri, "attr") in attrs)
         self.assertEqual(attrs.keys(), [(ns_uri, "attr")])
         self.assertEqual(attrs.get((ns_uri, "attr")), "val")
         self.assertEqual(attrs.get((ns_uri, "attr"), 25), "val")
@@ -826,7 +840,6 @@ class XmlReaderTest(XmlTestBase):
         self.assertEqual(attrs.getNameByQName("ns:attr"), (ns_uri, "attr"))
         self.assertEqual(attrs[(ns_uri, "attr")], "val")
         self.assertEqual(attrs.getQNameByName((ns_uri, "attr")), "ns:attr")
-
 
     # During the development of Python 2.5, an attempt to move the "xml"
     # package implementation to a new package ("xmlcore") proved painful.
@@ -882,6 +895,7 @@ def test_main():
                  ExpatReaderTest,
                  ErrorReportingTest,
                  XmlReaderTest)
+
 
 if __name__ == "__main__":
     test_main()

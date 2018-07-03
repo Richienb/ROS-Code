@@ -1,9 +1,9 @@
 # a test for PR#241, writeable sys.stdout.softspace
 
 import sys
-#print 'hello',
+# print 'hello',
 sys.stdout.softspace = 0
-#print 'there', 'mister'
+# print 'there', 'mister'
 
 try:
     sys.stdout.jimmy = 1

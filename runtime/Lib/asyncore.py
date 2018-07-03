@@ -54,16 +54,22 @@ import warnings
 
 import os
 from errno import EALREADY, EINPROGRESS, EWOULDBLOCK, ECONNRESET, EINVAL, \
-     ENOTCONN, ESHUTDOWN, EINTR, EISCONN, EBADF, ECONNABORTED, EPIPE, EAGAIN, \
-     errorcode
+    ENOTCONN, ESHUTDOWN, EINTR, EISCONN, EBADF, ECONNABORTED, EPIPE, EAGAIN, \
+    errorcode
 
-_DISCONNECTED = frozenset((ECONNRESET, ENOTCONN, ESHUTDOWN, ECONNABORTED, EPIPE,
-                           EBADF))
+_DISCONNECTED = frozenset(
+    (ECONNRESET,
+     ENOTCONN,
+     ESHUTDOWN,
+     ECONNABORTED,
+     EPIPE,
+     EBADF))
 
 try:
     socket_map
 except NameError:
     socket_map = {}
+
 
 def _strerror(err):
     try:
@@ -71,36 +77,42 @@ def _strerror(err):
     except (ValueError, OverflowError, NameError):
         if err in errorcode:
             return errorcode[err]
-        return "Unknown error %s" %err
+        return "Unknown error %s" % err
+
 
 class ExitNow(Exception):
     pass
 
+
 _reraised_exceptions = (ExitNow, KeyboardInterrupt, SystemExit)
+
 
 def read(obj):
     try:
         obj.handle_read_event()
     except _reraised_exceptions:
         raise
-    except:
+    except BaseException:
         obj.handle_error()
+
 
 def write(obj):
     try:
         obj.handle_write_event()
     except _reraised_exceptions:
         raise
-    except:
+    except BaseException:
         obj.handle_error()
+
 
 def _exception(obj):
     try:
         obj.handle_expt_event()
     except _reraised_exceptions:
         raise
-    except:
+    except BaseException:
         obj.handle_error()
+
 
 def readwrite(obj, flags):
     try:
@@ -112,21 +124,24 @@ def readwrite(obj, flags):
             obj.handle_expt_event()
         if flags & (select.POLLHUP | select.POLLERR | select.POLLNVAL):
             obj.handle_close()
-    except socket.error, e:
+    except socket.error as e:
         if e.args[0] not in _DISCONNECTED:
             obj.handle_error()
         else:
             obj.handle_close()
     except _reraised_exceptions:
         raise
-    except:
+    except BaseException:
         obj.handle_error()
+
 
 def poll(timeout=0.0, map=None):
     if map is None:
         map = socket_map
     if map:
-        r = []; w = []; e = []
+        r = []
+        w = []
+        e = []
         for fd, obj in map.items():
             is_r = obj.readable()
             is_w = obj.writable()
@@ -143,7 +158,7 @@ def poll(timeout=0.0, map=None):
 
         try:
             r, w, e = select.select(r, w, e, timeout)
-        except select.error, err:
+        except select.error as err:
             if err.args[0] != EINTR:
                 raise
             else:
@@ -167,13 +182,14 @@ def poll(timeout=0.0, map=None):
                 continue
             _exception(obj)
 
+
 def poll2(timeout=0.0, map=None):
     # Use the poll() support added to the select module in Python 2.0
     if map is None:
         map = socket_map
     if timeout is not None:
         # timeout is in milliseconds
-        timeout = int(timeout*1000)
+        timeout = int(timeout * 1000)
     pollster = select.poll()
     if map:
         for fd, obj in map.items():
@@ -190,7 +206,7 @@ def poll2(timeout=0.0, map=None):
                 pollster.register(fd, flags)
         try:
             r = pollster.poll(timeout)
-        except select.error, err:
+        except select.error as err:
             if err.args[0] != EINTR:
                 raise
             r = []
@@ -200,7 +216,9 @@ def poll2(timeout=0.0, map=None):
                 continue
             readwrite(obj, flags)
 
+
 poll3 = poll2                           # Alias for backward compatibility
+
 
 def loop(timeout=30.0, use_poll=False, map=None, count=None):
     if map is None:
@@ -219,6 +237,7 @@ def loop(timeout=30.0, use_poll=False, map=None, count=None):
         while map and count > 0:
             poll_fun(timeout, map)
             count = count - 1
+
 
 class dispatcher:
 
@@ -248,7 +267,7 @@ class dispatcher:
             # passed be connected.
             try:
                 self.addr = sock.getpeername()
-            except socket.error, err:
+            except socket.error as err:
                 if err.args[0] in (ENOTCONN, EINVAL):
                     # To handle the case where we got an unconnected
                     # socket.
@@ -263,7 +282,7 @@ class dispatcher:
             self.socket = None
 
     def __repr__(self):
-        status = [self.__class__.__module__+"."+self.__class__.__name__]
+        status = [self.__class__.__module__ + "." + self.__class__.__name__]
         if self.accepting and self.addr:
             status.append('listening')
         elif self.connected:
@@ -311,7 +330,7 @@ class dispatcher:
                 socket.SOL_SOCKET, socket.SO_REUSEADDR,
                 self.socket.getsockopt(socket.SOL_SOCKET,
                                        socket.SO_REUSEADDR) | 1
-                )
+            )
         except socket.error:
             pass
 
@@ -346,7 +365,7 @@ class dispatcher:
         self.connecting = True
         err = self.socket.connect_ex(address)
         if err in (EINPROGRESS, EALREADY, EWOULDBLOCK) \
-        or err == EINVAL and os.name in ('nt', 'ce'):
+                or err == EINVAL and os.name in ('nt', 'ce'):
             self.addr = address
             return
         if err in (0, EISCONN):
@@ -373,7 +392,7 @@ class dispatcher:
         try:
             result = self.socket.send(data)
             return result
-        except socket.error, why:
+        except socket.error as why:
             if why.args[0] == EWOULDBLOCK:
                 return 0
             elif why.args[0] in _DISCONNECTED:
@@ -392,7 +411,7 @@ class dispatcher:
                 return ''
             else:
                 return data
-        except socket.error, why:
+        except socket.error as why:
             # winsock sometimes raises ENOTCONN
             if why.args[0] in _DISCONNECTED:
                 self.handle_close()
@@ -407,7 +426,7 @@ class dispatcher:
         self.del_channel()
         try:
             self.socket.close()
-        except socket.error, why:
+        except socket.error as why:
             if why.args[0] not in (ENOTCONN, EBADF):
                 raise
 
@@ -418,10 +437,10 @@ class dispatcher:
             retattr = getattr(self.socket, attr)
         except AttributeError:
             raise AttributeError("%s instance has no attribute '%s'"
-                                 %(self.__class__.__name__, attr))
+                                 % (self.__class__.__name__, attr))
         else:
             msg = "%(me)s.%(attr)s is deprecated. Use %(me)s.socket.%(attr)s " \
-                  "instead." % {'me': self.__class__.__name__, 'attr':attr}
+                  "instead." % {'me': self.__class__.__name__, 'attr': attr}
             warnings.warn(msg, DeprecationWarning, stacklevel=2)
             return retattr
 
@@ -488,7 +507,7 @@ class dispatcher:
         # sometimes a user repr method will crash.
         try:
             self_repr = repr(self)
-        except:
+        except BaseException:
             self_repr = '<__repr__(self) failed for object at %0x>' % id(self)
 
         self.log_info(
@@ -497,9 +516,9 @@ class dispatcher:
                 t,
                 v,
                 tbinfo
-                ),
+            ),
             'error'
-            )
+        )
         self.handle_close()
 
     def handle_expt(self):
@@ -525,6 +544,7 @@ class dispatcher:
 # adds simple buffered output capability, useful for simple clients.
 # [for more sophisticated usage use asynchat.async_chat]
 # ---------------------------------------------------------------------------
+
 
 class dispatcher_with_send(dispatcher):
 
@@ -553,17 +573,18 @@ class dispatcher_with_send(dispatcher):
 # used for debugging.
 # ---------------------------------------------------------------------------
 
+
 def compact_traceback():
     t, v, tb = sys.exc_info()
     tbinfo = []
-    if not tb: # Must have a traceback
+    if not tb:  # Must have a traceback
         raise AssertionError("traceback does not exist")
     while tb:
         tbinfo.append((
             tb.tb_frame.f_code.co_filename,
             tb.tb_frame.f_code.co_name,
             str(tb.tb_lineno)
-            ))
+        ))
         tb = tb.tb_next
 
     # just to be safe
@@ -573,20 +594,21 @@ def compact_traceback():
     info = ' '.join(['[%s|%s|%s]' % x for x in tbinfo])
     return (file, function, line), t, v, info
 
+
 def close_all(map=None, ignore_all=False):
     if map is None:
         map = socket_map
     for x in map.values():
         try:
             x.close()
-        except OSError, x:
+        except OSError as x:
             if x.args[0] == EBADF:
                 pass
             elif not ignore_all:
                 raise
         except _reraised_exceptions:
             raise
-        except:
+        except BaseException:
             if not ignore_all:
                 raise
     map.clear()
@@ -603,6 +625,7 @@ def close_all(map=None, ignore_all=False):
 # What other OS's (besides NT) support async file i/o?  [VMS?]
 #
 # Regardless, this is useful for pipes, and stdin/stdout...
+
 
 if os.name == 'posix':
     import fcntl
@@ -624,7 +647,7 @@ if os.name == 'posix':
         def getsockopt(self, level, optname, buflen=None):
             if (level == socket.SOL_SOCKET and
                 optname == socket.SO_ERROR and
-                not buflen):
+                    not buflen):
                 return 0
             raise NotImplementedError("Only asyncore specific behaviour "
                                       "implemented.")

@@ -7,6 +7,7 @@ MacOS = test_support.import_module('MacOS')
 
 TESTFN2 = test_support.TESTFN + '2'
 
+
 class TestMacOS(unittest.TestCase):
 
     def testGetCreatorAndType(self):
@@ -19,8 +20,8 @@ class TestMacOS(unittest.TestCase):
             fp.close()
 
             subprocess.call(
-                    ['/Developer/Tools/SetFile', '-t', 'ABCD', '-c', 'EFGH',
-                        test_support.TESTFN])
+                ['/Developer/Tools/SetFile', '-t', 'ABCD', '-c', 'EFGH',
+                 test_support.TESTFN])
 
             cr, tp = MacOS.GetCreatorAndType(test_support.TESTFN)
             self.assertEqual(tp, 'ABCD')
@@ -39,18 +40,19 @@ class TestMacOS(unittest.TestCase):
             fp.close()
 
             MacOS.SetCreatorAndType(test_support.TESTFN,
-                    'ABCD', 'EFGH')
+                                    'ABCD', 'EFGH')
 
             cr, tp = MacOS.GetCreatorAndType(test_support.TESTFN)
             self.assertEqual(cr, 'ABCD')
             self.assertEqual(tp, 'EFGH')
 
-            data = subprocess.Popen(["/Developer/Tools/GetFileInfo", test_support.TESTFN],
-                    stdout=subprocess.PIPE).communicate()[0]
+            data = subprocess.Popen(["/Developer/Tools/GetFileInfo",
+                                     test_support.TESTFN],
+                                    stdout=subprocess.PIPE).communicate()[0]
 
             tp = None
             cr = None
-            for  ln in data.splitlines():
+            for ln in data.splitlines():
                 if ln.startswith('type:'):
                     tp = ln.split()[-1][1:-1]
                 if ln.startswith('creator:'):
@@ -62,7 +64,6 @@ class TestMacOS(unittest.TestCase):
         finally:
             os.unlink(test_support.TESTFN)
 
-
     def testOpenRF(self):
         try:
             fp = open(test_support.TESTFN, 'w')
@@ -72,7 +73,6 @@ class TestMacOS(unittest.TestCase):
             rfp = MacOS.openrf(test_support.TESTFN, '*wb')
             rfp.write('goodbye world\n')
             rfp.close()
-
 
             fp = open(test_support.TESTFN, 'r')
             data = fp.read()
@@ -86,9 +86,9 @@ class TestMacOS(unittest.TestCase):
             self.assertEqual(data, 'goodbye world\n')
             self.assertEqual(data2, '')
 
-
         finally:
             os.unlink(test_support.TESTFN)
+
 
 def test_main():
     test_support.run_unittest(TestMacOS)

@@ -27,82 +27,82 @@ class TclTest(unittest.TestCase):
     def testEval(self):
         tcl = self.interp
         tcl.eval('set a 1')
-        self.assertEqual(tcl.eval('set a'),'1')
+        self.assertEqual(tcl.eval('set a'), '1')
 
     def testEvalException(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.eval,'set a')
+        self.assertRaises(TclError, tcl.eval, 'set a')
 
     def testEvalException2(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.eval,'this is wrong')
+        self.assertRaises(TclError, tcl.eval, 'this is wrong')
 
     def testCall(self):
         tcl = self.interp
-        tcl.call('set','a','1')
-        self.assertEqual(tcl.call('set','a'),'1')
+        tcl.call('set', 'a', '1')
+        self.assertEqual(tcl.call('set', 'a'), '1')
 
     def testCallException(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.call,'set','a')
+        self.assertRaises(TclError, tcl.call, 'set', 'a')
 
     def testCallException2(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.call,'this','is','wrong')
+        self.assertRaises(TclError, tcl.call, 'this', 'is', 'wrong')
 
     def testSetVar(self):
         tcl = self.interp
-        tcl.setvar('a','1')
-        self.assertEqual(tcl.eval('set a'),'1')
+        tcl.setvar('a', '1')
+        self.assertEqual(tcl.eval('set a'), '1')
 
     def testSetVarArray(self):
         tcl = self.interp
-        tcl.setvar('a(1)','1')
-        self.assertEqual(tcl.eval('set a(1)'),'1')
+        tcl.setvar('a(1)', '1')
+        self.assertEqual(tcl.eval('set a(1)'), '1')
 
     def testGetVar(self):
         tcl = self.interp
         tcl.eval('set a 1')
-        self.assertEqual(tcl.getvar('a'),'1')
+        self.assertEqual(tcl.getvar('a'), '1')
 
     def testGetVarArray(self):
         tcl = self.interp
         tcl.eval('set a(1) 1')
-        self.assertEqual(tcl.getvar('a(1)'),'1')
+        self.assertEqual(tcl.getvar('a(1)'), '1')
 
     def testGetVarException(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.getvar,'a')
+        self.assertRaises(TclError, tcl.getvar, 'a')
 
     def testGetVarArrayException(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.getvar,'a(1)')
+        self.assertRaises(TclError, tcl.getvar, 'a(1)')
 
     def testUnsetVar(self):
         tcl = self.interp
-        tcl.setvar('a',1)
-        self.assertEqual(tcl.eval('info exists a'),'1')
+        tcl.setvar('a', 1)
+        self.assertEqual(tcl.eval('info exists a'), '1')
         tcl.unsetvar('a')
-        self.assertEqual(tcl.eval('info exists a'),'0')
+        self.assertEqual(tcl.eval('info exists a'), '0')
 
     def testUnsetVarArray(self):
         tcl = self.interp
-        tcl.setvar('a(1)',1)
-        tcl.setvar('a(2)',2)
-        self.assertEqual(tcl.eval('info exists a(1)'),'1')
-        self.assertEqual(tcl.eval('info exists a(2)'),'1')
+        tcl.setvar('a(1)', 1)
+        tcl.setvar('a(2)', 2)
+        self.assertEqual(tcl.eval('info exists a(1)'), '1')
+        self.assertEqual(tcl.eval('info exists a(2)'), '1')
         tcl.unsetvar('a(1)')
-        self.assertEqual(tcl.eval('info exists a(1)'),'0')
-        self.assertEqual(tcl.eval('info exists a(2)'),'1')
+        self.assertEqual(tcl.eval('info exists a(1)'), '0')
+        self.assertEqual(tcl.eval('info exists a(2)'), '1')
 
     def testUnsetVarException(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.unsetvar,'a')
+        self.assertRaises(TclError, tcl.unsetvar, 'a')
 
     def testEvalFile(self):
         tcl = self.interp
         filename = "testEvalFile.tcl"
-        fd = open(filename,'w')
+        fd = open(filename, 'w')
         script = """set a 1
         set b 2
         set c [ expr $a + $b ]
@@ -111,22 +111,22 @@ class TclTest(unittest.TestCase):
         fd.close()
         tcl.evalfile(filename)
         os.remove(filename)
-        self.assertEqual(tcl.eval('set a'),'1')
-        self.assertEqual(tcl.eval('set b'),'2')
-        self.assertEqual(tcl.eval('set c'),'3')
+        self.assertEqual(tcl.eval('set a'), '1')
+        self.assertEqual(tcl.eval('set b'), '2')
+        self.assertEqual(tcl.eval('set c'), '3')
 
     def testEvalFileException(self):
         tcl = self.interp
         filename = "doesnotexists"
         try:
             os.remove(filename)
-        except Exception,e:
+        except Exception as e:
             pass
-        self.assertRaises(TclError,tcl.evalfile,filename)
+        self.assertRaises(TclError, tcl.evalfile, filename)
 
     def testPackageRequireException(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.eval,'package require DNE')
+        self.assertRaises(TclError, tcl.eval, 'package require DNE')
 
     def testLoadWithUNC(self):
         import sys
@@ -141,8 +141,8 @@ class TclTest(unittest.TestCase):
         if fullname[1] != ':':
             return
         unc_name = r'\\%s\%s$\%s' % (os.environ['COMPUTERNAME'],
-                                    fullname[0],
-                                    fullname[3:])
+                                     fullname[0],
+                                     fullname[3:])
 
         with test_support.EnvironmentVarGuard() as env:
             env.unset("TCL_LIBRARY")
@@ -161,14 +161,14 @@ class TclTest(unittest.TestCase):
         self.assertEqual(passValue('string\u20ac'), 'string\u20ac')
         self.assertEqual(passValue(u'string'), u'string')
         self.assertEqual(passValue(u'string\u20ac'), u'string\u20ac')
-        for i in (0, 1, -1, int(2**31-1), int(-2**31)):
+        for i in (0, 1, -1, int(2**31 - 1), int(-2**31)):
             self.assertEqual(passValue(i), i)
-        for f in (0.0, 1.0, -1.0, 1//3, 1/3.0,
+        for f in (0.0, 1.0, -1.0, 1 // 3, 1 / 3.0,
                   sys.float_info.min, sys.float_info.max,
                   -sys.float_info.min, -sys.float_info.max):
             self.assertEqual(passValue(f), f)
         for f in float('nan'), float('inf'), -float('inf'):
-            if f != f: # NaN
+            if f != f:  # NaN
                 self.assertNotEqual(passValue(f), f)
             else:
                 self.assertEqual(passValue(f), f)
@@ -177,6 +177,7 @@ class TclTest(unittest.TestCase):
 
 def test_main():
     test_support.run_unittest(TclTest, TkinterTest)
+
 
 if __name__ == "__main__":
     test_main()

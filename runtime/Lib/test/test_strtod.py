@@ -25,7 +25,9 @@ strtod_parser = re.compile(r"""    # A numeric string consists of:
 
 # Pure Python version of correctly rounded string->float conversion.
 # Avoids any use of floating-point by returning the result as a hex string.
-def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
+
+
+def strtod(s, mant_dig=53, min_exp=-1021, max_exp=1024):
     """Convert a finite decimal string to a hex string representing an
     IEEE 754 binary64 float.  Return 'inf' or '-inf' on overflow.
     This function makes no use of floating-point arithmetic at any
@@ -40,7 +42,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     intpart = int(m.group('int') + fraction)
     exp = int(m.group('exp') or '0') - len(fraction)
     negative = m.group('sign') == '-'
-    a, b = intpart*10**max(exp, 0), 10**max(0, -exp)
+    a, b = intpart * 10**max(exp, 0), 10**max(0, -exp)
 
     # quick return for zeros
     if not a:
@@ -55,9 +57,9 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     # approximate a/b by number of the form q * 2**e; adjust e if necessary
     a, b = a << max(-e, 0), b << max(e, 0)
     q, r = divmod(a, b)
-    if 2*r > b or 2*r == b and q & 1:
+    if 2 * r > b or 2 * r == b and q & 1:
         q += 1
-        if q.bit_length() == mant_dig+1:
+        if q.bit_length() == mant_dig + 1:
             q //= 2
             e += 1
 
@@ -72,17 +74,19 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
         return '-0x0.0p+0' if negative else '0x0.0p+0'
 
     # for hex representation, shift so # bits after point is a multiple of 4
-    hexdigs = 1 + (mant_dig-2)//4
-    shift = 3 - (mant_dig-2)%4
+    hexdigs = 1 + (mant_dig - 2) // 4
+    shift = 3 - (mant_dig - 2) % 4
     q, e = q << shift, e - shift
     return '{}0x{:x}.{:0{}x}p{:+d}'.format(
         '-' if negative else '',
         q // 16**hexdigs,
         q % 16**hexdigs,
         hexdigs,
-        e + 4*hexdigs)
+        e + 4 * hexdigs)
+
 
 TEST_SIZE = 10
+
 
 class StrtodTests(unittest.TestCase):
 
@@ -90,13 +94,15 @@ class StrtodTests(unittest.TestCase):
         # Jython specific - we allow for one bit difference due to what
         # the underlying JVM provides. Revisit if we ever implement Apache
         # Commons Math.
-        # Example: expected 0x1.e2bb05c458496p-1022, got 0x1.e2bb05c458495p-1022
+        # Example: expected 0x1.e2bb05c458496p-1022, got
+        # 0x1.e2bb05c458495p-1022
         am, ae = a.split('p')
         bm, be = b.split('p')
         self.assertEqual(ae, be)
         am = int(am.replace('.', ''), 16)
         bm = int(bm.replace('.', ''), 16)
-        self.assertTrue(abs(am - bm) <= 1, "Expected %s, got %s with more than one bit precision loss" % (a, b))
+        self.assertTrue(abs(
+            am - bm) <= 1, "Expected %s, got %s with more than one bit precision loss" % (a, b))
 
     def check_strtod(self, s, approx=False):
         """Compare the result of Python's builtin correctly rounded
@@ -116,17 +122,22 @@ class StrtodTests(unittest.TestCase):
         if approx:
             self.assertApproxHexEqual(expected, got)
         else:
-            self.assertEqual(expected, got,
-                         "Incorrectly rounded str->float conversion for {}: "
-                         "expected {}, got {}".format(s, expected, got))
+            self.assertEqual(
+                expected,
+                got,
+                "Incorrectly rounded str->float conversion for {}: "
+                "expected {}, got {}".format(
+                    s,
+                    expected,
+                    got))
 
     def test_short_halfway_cases(self):
         # exact halfway cases with a small number of significant digits
         for k in 0, 5, 10, 15, 20:
             # upper = smallest integer >= 2**54/5**k
-            upper = -(-2**54//5**k)
+            upper = -(-2**54 // 5**k)
             # lower = smallest odd number >= 2**53/5**k
-            lower = -(-2**53//5**k)
+            lower = -(-2**53 // 5**k)
             if lower % 2 == 0:
                 lower += 1
             for i in xrange(TEST_SIZE):
@@ -167,7 +178,7 @@ class StrtodTests(unittest.TestCase):
         # test halfway cases for the round-half-to-even rule
         for i in xrange(100 * TEST_SIZE):
             # bit pattern for a random finite positive (or +0.0) float
-            bits = random.randrange(2047*2**52)
+            bits = random.randrange(2047 * 2**52)
 
             # convert bit pattern to a number of the form m * 2**e
             e, m = divmod(bits, 2**52)
@@ -176,7 +187,7 @@ class StrtodTests(unittest.TestCase):
             e -= 1074
 
             # add 0.5 ulps
-            m, e = 2*m + 1, e - 1
+            m, e = 2 * m + 1, e - 1
 
             # convert to a decimal string
             if e >= 0:
@@ -198,10 +209,10 @@ class StrtodTests(unittest.TestCase):
             (17976931348623159077, 289, 1995),   # overflow boundary (2.**1024)
             (22250738585072013831, -327, 4941),  # normal/subnormal (2.**-1022)
             (0, -327, 4941),                     # zero
-            ]
+        ]
         for n, e, u in boundaries:
             for j in xrange(1000):
-                digits = n + random.randrange(-3*u, 3*u)
+                digits = n + random.randrange(-3 * u, 3 * u)
                 exponent = e
                 s = '{}e{}'.format(digits, exponent)
                 self.check_strtod(s)
@@ -240,7 +251,8 @@ class StrtodTests(unittest.TestCase):
             for j in xrange(TEST_SIZE):
                 s = random.choice(signs)
                 intpart_len = random.randrange(5)
-                s += ''.join(random.choice(digits) for _ in xrange(intpart_len))
+                s += ''.join(random.choice(digits)
+                             for _ in xrange(intpart_len))
                 if random.choice([True, False]):
                     s += '.'
                     fracpart_len = random.randrange(5)
@@ -293,7 +305,7 @@ class StrtodTests(unittest.TestCase):
             '99999999999999994487665465554760717039532578546e-47',
             # failing case for off-by-one error introduced by METD in
             # r77483 (dtoa.c cleanup), fixed in r77490
-            '965437176333654931799035513671997118345570045914469' #...
+            '965437176333654931799035513671997118345570045914469'  # ...
             '6213413350821416312194420007991306908470147322020121018368e0',
             # incorrect lsb detection for round-half-to-even when
             # bc->scale != 0 (issue 7632, bug 6).
@@ -336,7 +348,7 @@ class StrtodTests(unittest.TestCase):
             '10.900000000000000012345678912345678912345',
 
             # two humongous values from issue 7743
-            
+
             # Java does not correctly handle, so we don't either
             # '116512874940594195638617907092569881519034793229385' #...
             # '228569165191541890846564669771714896916084883987920' #...
@@ -354,22 +366,22 @@ class StrtodTests(unittest.TestCase):
             # '161875352572590420823607478788399460162228308693742' #...
             # '05287663441403533948204085390898399055004119873046875e-1075',
 
-            '525440653352955266109661060358202819561258984964913' #...
-            '892256527849758956045218257059713765874251436193619' #...
-            '443248205998870001633865657517447355992225852945912' #...
-            '016668660000210283807209850662224417504752264995360' #...
-            '631512007753855801075373057632157738752800840302596' #...
-            '237050247910530538250008682272783660778181628040733' #...
-            '653121492436408812668023478001208529190359254322340' #...
-            '397575185248844788515410722958784640926528544043090' #...
-            '115352513640884988017342469275006999104519620946430' #...
-            '818767147966495485406577703972687838176778993472989' #...
-            '561959000047036638938396333146685137903018376496408' #...
-            '319705333868476925297317136513970189073693314710318' #...
-            '991252811050501448326875232850600451776091303043715' #...
-            '157191292827614046876950225714743118291034780466325' #...
-            '085141343734564915193426994587206432697337118211527' #...
-            '278968731294639353354774788602467795167875117481660' #...
+            '525440653352955266109661060358202819561258984964913'  # ...
+            '892256527849758956045218257059713765874251436193619'  # ...
+            '443248205998870001633865657517447355992225852945912'  # ...
+            '016668660000210283807209850662224417504752264995360'  # ...
+            '631512007753855801075373057632157738752800840302596'  # ...
+            '237050247910530538250008682272783660778181628040733'  # ...
+            '653121492436408812668023478001208529190359254322340'  # ...
+            '397575185248844788515410722958784640926528544043090'  # ...
+            '115352513640884988017342469275006999104519620946430'  # ...
+            '818767147966495485406577703972687838176778993472989'  # ...
+            '561959000047036638938396333146685137903018376496408'  # ...
+            '319705333868476925297317136513970189073693314710318'  # ...
+            '991252811050501448326875232850600451776091303043715'  # ...
+            '157191292827614046876950225714743118291034780466325'  # ...
+            '085141343734564915193426994587206432697337118211527'  # ...
+            '278968731294639353354774788602467795167875117481660'  # ...
             '4738791256853675690543663283782215866825e-1180',
 
             # exercise exit conditions in bigcomp comparison loop
@@ -385,36 +397,38 @@ class StrtodTests(unittest.TestCase):
             # 2**1024 - 2**970:  exact overflow boundary.  All values
             # smaller than this should round to something finite;  any value
             # greater than or equal to this one overflows.
-            '179769313486231580793728971405303415079934132710037' #...
-            '826936173778980444968292764750946649017977587207096' #...
-            '330286416692887910946555547851940402630657488671505' #...
-            '820681908902000708383676273854845817711531764475730' #...
-            '270069855571366959622842914819860834936475292719074' #...
+            '179769313486231580793728971405303415079934132710037'  # ...
+            '826936173778980444968292764750946649017977587207096'  # ...
+            '330286416692887910946555547851940402630657488671505'  # ...
+            '820681908902000708383676273854845817711531764475730'  # ...
+            '270069855571366959622842914819860834936475292719074'  # ...
             '168444365510704342711559699508093042880177904174497792',
             # 2**1024 - 2**970 - tiny
-            '179769313486231580793728971405303415079934132710037' #...
-            '826936173778980444968292764750946649017977587207096' #...
-            '330286416692887910946555547851940402630657488671505' #...
-            '820681908902000708383676273854845817711531764475730' #...
-            '270069855571366959622842914819860834936475292719074' #...
+            '179769313486231580793728971405303415079934132710037'  # ...
+            '826936173778980444968292764750946649017977587207096'  # ...
+            '330286416692887910946555547851940402630657488671505'  # ...
+            '820681908902000708383676273854845817711531764475730'  # ...
+            '270069855571366959622842914819860834936475292719074'  # ...
             '168444365510704342711559699508093042880177904174497791.999',
             # 2**1024 - 2**970 + tiny
-            '179769313486231580793728971405303415079934132710037' #...
-            '826936173778980444968292764750946649017977587207096' #...
-            '330286416692887910946555547851940402630657488671505' #...
-            '820681908902000708383676273854845817711531764475730' #...
-            '270069855571366959622842914819860834936475292719074' #...
+            '179769313486231580793728971405303415079934132710037'  # ...
+            '826936173778980444968292764750946649017977587207096'  # ...
+            '330286416692887910946555547851940402630657488671505'  # ...
+            '820681908902000708383676273854845817711531764475730'  # ...
+            '270069855571366959622842914819860834936475292719074'  # ...
             '168444365510704342711559699508093042880177904174497792.001',
             # 1 - 2**-54, +-tiny
             '999999999999999944488848768742172978818416595458984375e-54',
             '9999999999999999444888487687421729788184165954589843749999999e-54',
             '9999999999999999444888487687421729788184165954589843750000001e-54',
-            ]
+        ]
         for s in test_strings:
             self.check_strtod(s)
 
+
 def test_main():
     test_support.run_unittest(StrtodTests)
+
 
 if __name__ == "__main__":
     test_main()

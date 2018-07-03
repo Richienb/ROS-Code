@@ -30,7 +30,7 @@ def testimage(name):
         # get a more qualified path component of the script...
         if __name__ == '__main__':
             ourname = sys.argv[0]
-        else: # ...or the full path of the module
+        else:  # ...or the full path of the module
             ourname = sys.modules[__name__].__file__
 
         parts = ourname.split(os.sep)
@@ -53,8 +53,7 @@ def testimage(name):
     # bytes are used). These are the formats returned by gl.lrectread.
     if verbose:
         print 'Writing output file'
-    imgfile.write (outputfile, image, sizes[0], sizes[1], sizes[2])
-
+    imgfile.write(outputfile, image, sizes[0], sizes[1], sizes[2])
 
     if verbose:
         print 'Opening scaled test image: %s, sizes: %s' % (name, str(sizes))
@@ -72,7 +71,12 @@ def testimage(name):
     # is the users' responsibility.
     if verbose:
         print 'Filtering with "impulse"'
-    simage = imgfile.readscaled (name, sizes[0]/2, sizes[1]/2, 'impulse', 2.0)
+    simage = imgfile.readscaled(
+        name,
+        sizes[0] / 2,
+        sizes[1] / 2,
+        'impulse',
+        2.0)
 
     # This function sets a global flag which defines whether the
     # scan lines of the image are read or written from bottom to
@@ -80,23 +84,35 @@ def testimage(name):
     # bottom(flag is one, compatible with X). The default is zero.
     if verbose:
         print 'Switching to X compatibility'
-    imgfile.ttob (1)
+    imgfile.ttob(1)
 
     if verbose:
         print 'Filtering with "triangle"'
-    simage = imgfile.readscaled (name, sizes[0]/2, sizes[1]/2, 'triangle', 3.0)
+    simage = imgfile.readscaled(
+        name,
+        sizes[0] / 2,
+        sizes[1] / 2,
+        'triangle',
+        3.0)
     if verbose:
         print 'Switching back to SGI compatibility'
-    imgfile.ttob (0)
+    imgfile.ttob(0)
 
-    if verbose: print 'Filtering with "quadratic"'
-    simage = imgfile.readscaled (name, sizes[0]/2, sizes[1]/2, 'quadratic')
-    if verbose: print 'Filtering with "gaussian"'
-    simage = imgfile.readscaled (name, sizes[0]/2, sizes[1]/2, 'gaussian', 1.0)
+    if verbose:
+        print 'Filtering with "quadratic"'
+    simage = imgfile.readscaled(name, sizes[0] / 2, sizes[1] / 2, 'quadratic')
+    if verbose:
+        print 'Filtering with "gaussian"'
+    simage = imgfile.readscaled(
+        name,
+        sizes[0] / 2,
+        sizes[1] / 2,
+        'gaussian',
+        1.0)
 
     if verbose:
         print 'Writing output file'
-    imgfile.write (outputfile, simage, sizes[0]/2, sizes[1]/2, sizes[2])
+    imgfile.write(outputfile, simage, sizes[0] / 2, sizes[1] / 2, sizes[2])
 
     os.unlink(outputfile)
 
@@ -114,6 +130,7 @@ def test_main():
 
     unlink('test.rgb')
     unlink('greytest.rgb')
+
 
 if __name__ == '__main__':
     test_main()

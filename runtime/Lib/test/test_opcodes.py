@@ -3,67 +3,98 @@
 from test.test_support import run_unittest, check_py3k_warnings
 import unittest
 
+
 class OpcodeTest(unittest.TestCase):
 
     def test_try_inside_for_loop(self):
         n = 0
         for i in range(10):
-            n = n+i
-            try: 1 // 0
-            except NameError: pass
-            except ZeroDivisionError: pass
-            except TypeError: pass
-            try: pass
-            except: pass
-            try: pass
-            finally: pass
-            n = n+i
+            n = n + i
+            try:
+                1 // 0
+            except NameError:
+                pass
+            except ZeroDivisionError:
+                pass
+            except TypeError:
+                pass
+            try:
+                pass
+            except BaseException:
+                pass
+            try:
+                pass
+            finally:
+                pass
+            n = n + i
         if n != 90:
             self.fail('try inside for')
 
     def test_raise_class_exceptions(self):
 
-        class AClass: pass
-        class BClass(AClass): pass
-        class CClass: pass
+        class AClass:
+            pass
+
+        class BClass(AClass):
+            pass
+
+        class CClass:
+            pass
+
         class DClass(AClass):
             def __init__(self, ignore):
                 pass
 
-        try: raise AClass()
-        except: pass
+        try:
+            raise AClass()
+        except BaseException:
+            pass
 
-        try: raise AClass()
-        except AClass: pass
+        try:
+            raise AClass()
+        except AClass:
+            pass
 
-        try: raise BClass()
-        except AClass: pass
+        try:
+            raise BClass()
+        except AClass:
+            pass
 
-        try: raise BClass()
-        except CClass: self.fail()
-        except: pass
+        try:
+            raise BClass()
+        except CClass:
+            self.fail()
+        except BaseException:
+            pass
 
         a = AClass()
         b = BClass()
 
-        try: raise AClass, b
-        except BClass, v:
+        try:
+            raise AClass, b
+        except BClass as v:
             self.assertEqual(v, b)
-        else: self.fail("no exception")
+        else:
+            self.fail("no exception")
 
-        try: raise b
-        except AClass, v:
+        try:
+            raise b
+        except AClass as v:
             self.assertEqual(v, b)
         else:
             self.fail("no exception")
 
         # not enough arguments
-        try:  raise BClass, a
-        except TypeError: pass
-        else: self.fail("no exception")
+        try:
+            raise BClass, a
+        except TypeError:
+            pass
+        else:
+            self.fail("no exception")
 
-        try:  raise DClass, a
-        except DClass, v:
+        try:
+            raise DClass, a
+        except DClass as v:
             self.assertIsInstance(v, DClass)
         else:
             self.fail("no exception")
@@ -116,6 +147,7 @@ def test_main():
                               "from BaseException is not allowed",
                               DeprecationWarning)):
         run_unittest(OpcodeTest)
+
 
 if __name__ == '__main__':
     test_main()

@@ -2,6 +2,7 @@ import unittest
 import cStringIO
 from test import test_support
 
+
 class TestUnicodeInput(unittest.TestCase):
     def test_differences_handling_unicode(self):
         # Test for the "feature" described on #1089.
@@ -12,6 +13,7 @@ class TestUnicodeInput(unittest.TestCase):
         self.assertEqual(u'foo', cStringIO.StringIO(u'foo').read())
         self.assertEqual('foo', cStringIO.StringIO(u'foo').read())
 
+
 class TestWrite(unittest.TestCase):
     def test_write_seek_write(self):
         f = cStringIO.StringIO()
@@ -20,7 +22,7 @@ class TestWrite(unittest.TestCase):
         f.write('hi')
         self.assertEquals(f.getvalue(), 'hehio')
 
-    #XXX: this should get pushed to CPython's test_StringIO
+    # XXX: this should get pushed to CPython's test_StringIO
     def test_write_past_end(self):
         f = cStringIO.StringIO()
         f.write("abcdef")
@@ -51,12 +53,15 @@ class TestGetValueAfterClose(unittest.TestCase):
         except ValueError:
             pass
         else:
-            self.fail("cStringIO.StringIO: getvalue() after close() should have raised ValueError")
+            self.fail(
+                "cStringIO.StringIO: getvalue() after close() should have raised ValueError")
+
 
 def test_main():
     test_support.run_unittest(TestUnicodeInput)
     test_support.run_unittest(TestWrite)
     test_support.run_unittest(TestGetValueAfterClose)
+
 
 if __name__ == '__main__':
     test_main()

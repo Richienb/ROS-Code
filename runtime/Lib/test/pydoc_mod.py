@@ -11,9 +11,11 @@ class A:
         """Wow, I have no function!"""
         pass
 
+
 class B(object):
     NO_MEANING = "eggs"
     pass
+
 
 def doc_func():
     """
@@ -22,6 +24,7 @@ def doc_func():
     lack of Python
     war
     """
+
 
 def nodoc_func():
     pass

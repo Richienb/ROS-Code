@@ -49,7 +49,8 @@ class TimingCheck(unittest.TestCase):
         now = time.time()
         if self.next_time <= now:
             TimingCheck.next_time = now + self._PRINT_WORKING_MSG_INTERVAL
-            sys.__stdout__.write('  test_bsddb3 still working, be patient...\n')
+            sys.__stdout__.write(
+                '  test_bsddb3 still working, be patient...\n')
             sys.__stdout__.flush()
 
 
@@ -58,8 +59,8 @@ def test_main():
     from bsddb import db
     from bsddb.test import test_all
     test_all.set_test_path_prefix(os.path.join(tempfile.gettempdir(),
-                                 'z-test_bsddb3-%s' %
-                                 os.getpid()))
+                                               'z-test_bsddb3-%s' %
+                                               os.getpid()))
     # Please leave this print in, having this show up in the buildbots
     # makes diagnosing problems a lot easier.
     print >>sys.stderr, db.DB_VERSION_STRING
@@ -73,7 +74,7 @@ def test_main():
         # ignore errors.  We should always make a unique name now.
         try:
             test_all.remove_test_path_directory()
-        except:
+        except BaseException:
             pass
 
 

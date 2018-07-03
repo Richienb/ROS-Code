@@ -6,6 +6,7 @@
 # At the time neither Tim nor Michael could be bothered to think of a
 # way to fix it.
 
+
 class Yuck:
     def __init__(self):
         self.i = 0
@@ -38,6 +39,7 @@ class Yuck:
         for i in range(n):
             dict[i] = i
         dict[self] = "OK!"
+
 
 y = Yuck()
 dict = {y: "OK!"}

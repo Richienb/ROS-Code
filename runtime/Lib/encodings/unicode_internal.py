@@ -8,7 +8,8 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 """
 import codecs
 
-### Codec APIs
+# Codec APIs
+
 
 class Codec(codecs.Codec):
 
@@ -17,21 +18,26 @@ class Codec(codecs.Codec):
     encode = codecs.unicode_internal_encode
     decode = codecs.unicode_internal_decode
 
+
 class IncrementalEncoder(codecs.IncrementalEncoder):
     def encode(self, input, final=False):
         return codecs.unicode_internal_encode(input, self.errors)[0]
+
 
 class IncrementalDecoder(codecs.IncrementalDecoder):
     def decode(self, input, final=False):
         return codecs.unicode_internal_decode(input, self.errors)[0]
 
-class StreamWriter(Codec,codecs.StreamWriter):
+
+class StreamWriter(Codec, codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+
+class StreamReader(Codec, codecs.StreamReader):
     pass
 
-### encodings module API
+# encodings module API
+
 
 def getregentry():
     return codecs.CodecInfo(

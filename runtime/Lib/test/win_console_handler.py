@@ -17,6 +17,7 @@ import sys
 # Function prototype for the handler function. Returns BOOL, takes a DWORD.
 HandlerRoutine = WINFUNCTYPE(wintypes.BOOL, wintypes.DWORD)
 
+
 def _ctrl_handler(sig):
     """Handle a sig event and return 0 to terminate the process"""
     if sig == signal.CTRL_C_EVENT:
@@ -26,6 +27,7 @@ def _ctrl_handler(sig):
     else:
         print("UNKNOWN EVENT")
     return 0
+
 
 ctrl_handler = HandlerRoutine(_ctrl_handler)
 

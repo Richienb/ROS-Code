@@ -6,7 +6,8 @@
 """
 Implements the bdist_msi command.
 """
-import sys, os
+import sys
+import os
 from sysconfig import get_python_version
 
 from distutils.core import Command
@@ -20,16 +21,18 @@ import msilib
 from msilib import schema, sequence, text
 from msilib import Directory, Feature, Dialog, add_data
 
+
 class PyDialog(Dialog):
     """Dialog class with a fixed layout: controls at the top, then a ruler,
     then a list of buttons: back, next, cancel. Optionally a bitmap at the
     left."""
+
     def __init__(self, *args, **kw):
         """Dialog(database, name, x, y, w, h, attributes, title, first,
         default, cancel, bitmap=true)"""
         Dialog.__init__(self, *args)
         ruler = self.h - 36
-        #if kw.get("bitmap", True):
+        # if kw.get("bitmap", True):
         #    self.bitmap("Bitmap", 0, 0, bmwidth, ruler, "PythonWin")
         self.line("BottomLine", 0, ruler, self.w, 0)
 
@@ -40,38 +43,62 @@ class PyDialog(Dialog):
         self.text("Title", 15, 10, 320, 60, 0x30003,
                   r"{\VerdanaBold10}%s" % title)
 
-    def back(self, title, next, name = "Back", active = 1):
+    def back(self, title, next, name="Back", active=1):
         """Add a back button with a given title, the tab-next button,
         its name in the Control table, possibly initially disabled.
 
         Return the button, so that events can be associated"""
         if active:
-            flags = 3 # Visible|Enabled
+            flags = 3  # Visible|Enabled
         else:
-            flags = 1 # Visible
-        return self.pushbutton(name, 180, self.h-27 , 56, 17, flags, title, next)
+            flags = 1  # Visible
+        return self.pushbutton(
+            name,
+            180,
+            self.h - 27,
+            56,
+            17,
+            flags,
+            title,
+            next)
 
-    def cancel(self, title, next, name = "Cancel", active = 1):
+    def cancel(self, title, next, name="Cancel", active=1):
         """Add a cancel button with a given title, the tab-next button,
         its name in the Control table, possibly initially disabled.
 
         Return the button, so that events can be associated"""
         if active:
-            flags = 3 # Visible|Enabled
+            flags = 3  # Visible|Enabled
         else:
-            flags = 1 # Visible
-        return self.pushbutton(name, 304, self.h-27, 56, 17, flags, title, next)
+            flags = 1  # Visible
+        return self.pushbutton(
+            name,
+            304,
+            self.h - 27,
+            56,
+            17,
+            flags,
+            title,
+            next)
 
-    def next(self, title, next, name = "Next", active = 1):
+    def next(self, title, next, name="Next", active=1):
         """Add a Next button with a given title, the tab-next button,
         its name in the Control table, possibly initially disabled.
 
         Return the button, so that events can be associated"""
         if active:
-            flags = 3 # Visible|Enabled
+            flags = 3  # Visible|Enabled
         else:
-            flags = 1 # Visible
-        return self.pushbutton(name, 236, self.h-27, 56, 17, flags, title, next)
+            flags = 1  # Visible
+        return self.pushbutton(
+            name,
+            236,
+            self.h - 27,
+            56,
+            17,
+            flags,
+            title,
+            next)
 
     def xbutton(self, name, title, next, xpos):
         """Add a button with a given title, the tab-next button,
@@ -79,40 +106,55 @@ class PyDialog(Dialog):
         y-position is aligned with the other buttons.
 
         Return the button, so that events can be associated"""
-        return self.pushbutton(name, int(self.w*xpos - 28), self.h-27, 56, 17, 3, title, next)
+        return self.pushbutton(
+            name, int(
+                self.w * xpos - 28), self.h - 27, 56, 17, 3, title, next)
+
 
 class bdist_msi (Command):
 
     description = "create a Microsoft Installer (.msi) binary distribution"
 
-    user_options = [('bdist-dir=', None,
-                     "temporary directory for creating the distribution"),
-                    ('plat-name=', 'p',
-                     "platform name to embed in generated filenames "
-                     "(default: %s)" % get_platform()),
-                    ('keep-temp', 'k',
-                     "keep the pseudo-installation tree around after " +
-                     "creating the distribution archive"),
-                    ('target-version=', None,
-                     "require a specific python version" +
-                     " on the target system"),
-                    ('no-target-compile', 'c',
-                     "do not compile .py to .pyc on the target system"),
-                    ('no-target-optimize', 'o',
-                     "do not compile .py to .pyo (optimized)"
-                     "on the target system"),
-                    ('dist-dir=', 'd',
-                     "directory to put final built distributions in"),
-                    ('skip-build', None,
-                     "skip rebuilding everything (for testing/debugging)"),
-                    ('install-script=', None,
-                     "basename of installation script to be run after"
-                     "installation or before deinstallation"),
-                    ('pre-install-script=', None,
-                     "Fully qualified filename of a script to be run before "
-                     "any files are installed.  This script need not be in the "
-                     "distribution"),
-                   ]
+    user_options = [
+        ('bdist-dir=',
+         None,
+         "temporary directory for creating the distribution"),
+        ('plat-name=',
+         'p',
+         "platform name to embed in generated filenames "
+         "(default: %s)" %
+         get_platform()),
+        ('keep-temp',
+         'k',
+         "keep the pseudo-installation tree around after " +
+         "creating the distribution archive"),
+        ('target-version=',
+         None,
+         "require a specific python version" +
+         " on the target system"),
+        ('no-target-compile',
+         'c',
+         "do not compile .py to .pyc on the target system"),
+        ('no-target-optimize',
+         'o',
+         "do not compile .py to .pyo (optimized)"
+         "on the target system"),
+        ('dist-dir=',
+         'd',
+         "directory to put final built distributions in"),
+        ('skip-build',
+         None,
+         "skip rebuilding everything (for testing/debugging)"),
+        ('install-script=',
+         None,
+         "basename of installation script to be run after"
+         "installation or before deinstallation"),
+        ('pre-install-script=',
+         None,
+         "Fully qualified filename of a script to be run before "
+         "any files are installed.  This script need not be in the "
+         "distribution"),
+    ]
 
     boolean_options = ['keep-temp', 'no-target-compile', 'no-target-optimize',
                        'skip-build']
@@ -123,7 +165,7 @@ class bdist_msi (Command):
                     '3.5', '3.6', '3.7', '3.8', '3.9']
     other_version = 'X'
 
-    def initialize_options (self):
+    def initialize_options(self):
         self.bdist_dir = None
         self.plat_name = None
         self.keep_temp = 0
@@ -136,7 +178,7 @@ class bdist_msi (Command):
         self.pre_install_script = None
         self.versions = None
 
-    def finalize_options (self):
+    def finalize_options(self):
         self.set_undefined_options('bdist', ('skip_build', 'skip_build'))
 
         if self.bdist_dir is None:
@@ -151,9 +193,10 @@ class bdist_msi (Command):
             self.versions = [self.target_version]
             if not self.skip_build and self.distribution.has_ext_modules()\
                and self.target_version != short_version:
-                raise DistutilsOptionError, \
-                      "target version can only be %s, or the '--skip-build'" \
-                      " option must be specified" % (short_version,)
+                raise DistutilsOptionError(
+                    "target version can only be %s, or the '--skip-build'"
+                    " option must be specified" %
+                    (short_version,))
         else:
             self.versions = list(self.all_versions)
 
@@ -163,21 +206,21 @@ class bdist_msi (Command):
                                    )
 
         if self.pre_install_script:
-            raise DistutilsOptionError, "the pre-install-script feature is not yet implemented"
+            raise DistutilsOptionError(
+                "the pre-install-script feature is not yet implemented")
 
         if self.install_script:
             for script in self.distribution.scripts:
                 if self.install_script == os.path.basename(script):
                     break
             else:
-                raise DistutilsOptionError, \
-                      "install_script '%s' not found in scripts" % \
-                      self.install_script
+                raise DistutilsOptionError(
+                    "install_script '%s' not found in scripts" %
+                    self.install_script)
         self.install_script_key = None
     # finalize_options()
 
-
-    def run (self):
+    def run(self):
         if not self.skip_build:
             self.run_command('build')
 
@@ -222,7 +265,8 @@ class bdist_msi (Command):
         fullname = self.distribution.get_fullname()
         installer_name = self.get_installer_filename(fullname)
         installer_name = os.path.abspath(installer_name)
-        if os.path.exists(installer_name): os.unlink(installer_name)
+        if os.path.exists(installer_name):
+            os.unlink(installer_name)
 
         metadata = self.distribution.metadata
         author = metadata.author
@@ -243,8 +287,8 @@ class bdist_msi (Command):
         else:
             product_name = "Python %s" % (fullname)
         self.db = msilib.init_database(installer_name, schema,
-                product_name, msilib.gen_uuid(),
-                sversion, author)
+                                       product_name, msilib.gen_uuid(),
+                                       sversion, author)
         msilib.add_tables(self.db, sequence)
         props = [('DistVersion', version)]
         email = metadata.author_email or metadata.maintainer_email
@@ -310,15 +354,16 @@ class bdist_msi (Command):
                             dir.start_component(dir.logical, feature, 0)
                         if afile not in seen:
                             key = seen[afile] = dir.add_file(file)
-                            if file==self.install_script:
+                            if file == self.install_script:
                                 if self.install_script_key:
                                     raise DistutilsOptionError(
-                                          "Multiple files with name %s" % file)
+                                        "Multiple files with name %s" % file)
                                 self.install_script_key = '[#%s]' % key
                         else:
                             key = seen[afile]
-                            add_data(self.db, "DuplicateFile",
-                                [(key + version, dir.component, key, None, dir.logical)])
+                            add_data(
+                                self.db, "DuplicateFile", [
+                                    (key + version, dir.component, key, None, dir.logical)])
             db.Commit()
         cab.commit(db)
 
@@ -347,32 +392,42 @@ class bdist_msi (Command):
             exe_prop = "PYTHON" + ver
             if msilib.Win64:
                 # type: msidbLocatorTypeRawValue + msidbLocatorType64bit
-                Type = 2+16
+                Type = 2 + 16
             else:
                 Type = 2
             add_data(self.db, "RegLocator",
-                    [(machine_reg, 2, install_path, None, Type),
-                     (user_reg, 1, install_path, None, Type)])
+                     [(machine_reg, 2, install_path, None, Type),
+                      (user_reg, 1, install_path, None, Type)])
             add_data(self.db, "AppSearch",
-                    [(machine_prop, machine_reg),
-                     (user_prop, user_reg)])
-            add_data(self.db, "CustomAction",
-                    [(machine_action, 51+256, target_dir_prop, "[" + machine_prop + "]"),
-                     (user_action, 51+256, target_dir_prop, "[" + user_prop + "]"),
-                     (exe_action, 51+256, exe_prop, "[" + target_dir_prop + "]\\python.exe"),
-                    ])
+                     [(machine_prop, machine_reg),
+                      (user_prop, user_reg)])
+            add_data(self.db,
+                     "CustomAction",
+                     [(machine_action,
+                       51 + 256,
+                       target_dir_prop,
+                       "[" + machine_prop + "]"),
+                      (user_action,
+                       51 + 256,
+                       target_dir_prop,
+                       "[" + user_prop + "]"),
+                         (exe_action,
+                          51 + 256,
+                          exe_prop,
+                          "[" + target_dir_prop + "]\\python.exe"),
+                      ])
             add_data(self.db, "InstallExecuteSequence",
-                    [(machine_action, machine_prop, start),
-                     (user_action, user_prop, start + 1),
-                     (exe_action, None, start + 2),
-                    ])
+                     [(machine_action, machine_prop, start),
+                      (user_action, user_prop, start + 1),
+                      (exe_action, None, start + 2),
+                      ])
             add_data(self.db, "InstallUISequence",
-                    [(machine_action, machine_prop, start),
-                     (user_action, user_prop, start + 1),
-                     (exe_action, None, start + 2),
-                    ])
+                     [(machine_action, machine_prop, start),
+                      (user_action, user_prop, start + 1),
+                      (exe_action, None, start + 2),
+                      ])
             add_data(self.db, "Condition",
-                    [("Python" + ver, 0, "NOT TARGETDIR" + ver)])
+                     [("Python" + ver, 0, "NOT TARGETDIR" + ver)])
             start += 4
             assert start < 500
 
@@ -382,10 +437,11 @@ class bdist_msi (Command):
             for ver in self.versions + [self.other_version]:
                 install_action = "install_script." + ver
                 exe_prop = "PYTHON" + ver
-                add_data(self.db, "CustomAction",
-                        [(install_action, 50, exe_prop, self.install_script_key)])
+                add_data(
+                    self.db, "CustomAction", [
+                        (install_action, 50, exe_prop, self.install_script_key)])
                 add_data(self.db, "InstallExecuteSequence",
-                        [(install_action, "&Python%s=3" % ver, start)])
+                         [(install_action, "&Python%s=3" % ver, start)])
                 start += 1
         # XXX pre-install scripts are currently refused in finalize_options()
         #     but if this feature is completed, it will also need to add
@@ -405,14 +461,13 @@ class bdist_msi (Command):
             f.write(open(self.pre_install_script).read())
             f.close()
             add_data(self.db, "Binary",
-                [("PreInstall", msilib.Binary(scriptfn))
-                ])
+                     [("PreInstall", msilib.Binary(scriptfn))
+                      ])
             add_data(self.db, "CustomAction",
-                [("PreInstall", 2, "PreInstall", None)
-                ])
+                     [("PreInstall", 2, "PreInstall", None)
+                      ])
             add_data(self.db, "InstallExecuteSequence",
-                    [("PreInstall", "NOT Installed", 450)])
-
+                     [("PreInstall", "NOT Installed", 450)])
 
     def add_ui(self):
         db = self.db
@@ -436,64 +491,79 @@ class bdist_msi (Command):
                   ("MaintenanceForm_Action", "Repair"),
                   # possible values: ALL, JUSTME
                   ("WhichUsers", "ALL")
-                 ])
+                  ])
 
         # Fonts, see "TextStyle Table"
         add_data(db, "TextStyle",
                  [("DlgFont8", "Tahoma", 9, None, 0),
-                  ("DlgFontBold8", "Tahoma", 8, None, 1), #bold
+                  ("DlgFontBold8", "Tahoma", 8, None, 1),  # bold
                   ("VerdanaBold10", "Verdana", 10, None, 1),
                   ("VerdanaRed9", "Verdana", 9, 255, 0),
-                 ])
+                  ])
 
         # UI Sequences, see "InstallUISequence Table", "Using a Sequence Table"
-        # Numbers indicate sequence; see sequence.py for how these action integrate
+        # Numbers indicate sequence; see sequence.py for how these action
+        # integrate
         add_data(db, "InstallUISequence",
                  [("PrepareDlg", "Not Privileged or Windows9x or Installed", 140),
                   ("WhichUsersDlg", "Privileged and not Windows9x and not Installed", 141),
-                  # In the user interface, assume all-users installation if privileged.
+                  # In the user interface, assume all-users installation if
+                  # privileged.
                   ("SelectFeaturesDlg", "Not Installed", 1230),
                   # XXX no support for resume installations yet
                   #("ResumeDlg", "Installed AND (RESUME OR Preselected)", 1240),
-                  ("MaintenanceTypeDlg", "Installed AND NOT RESUME AND NOT Preselected", 1250),
+                  ("MaintenanceTypeDlg",
+                   "Installed AND NOT RESUME AND NOT Preselected", 1250),
                   ("ProgressDlg", None, 1280)])
 
         add_data(db, 'ActionText', text.ActionText)
         add_data(db, 'UIText', text.UIText)
         #####################################################################
         # Standard dialogs: FatalError, UserExit, ExitDialog
-        fatal=PyDialog(db, "FatalError", x, y, w, h, modal, title,
-                     "Finish", "Finish", "Finish")
+        fatal = PyDialog(db, "FatalError", x, y, w, h, modal, title,
+                         "Finish", "Finish", "Finish")
         fatal.title("[ProductName] Installer ended prematurely")
-        fatal.back("< Back", "Finish", active = 0)
-        fatal.cancel("Cancel", "Back", active = 0)
-        fatal.text("Description1", 15, 70, 320, 80, 0x30003,
-                   "[ProductName] setup ended prematurely because of an error.  Your system has not been modified.  To install this program at a later time, please run the installation again.")
+        fatal.back("< Back", "Finish", active=0)
+        fatal.cancel("Cancel", "Back", active=0)
+        fatal.text(
+            "Description1",
+            15,
+            70,
+            320,
+            80,
+            0x30003,
+            "[ProductName] setup ended prematurely because of an error.  Your system has not been modified.  To install this program at a later time, please run the installation again.")
         fatal.text("Description2", 15, 155, 320, 20, 0x30003,
                    "Click the Finish button to exit the Installer.")
-        c=fatal.next("Finish", "Cancel", name="Finish")
+        c = fatal.next("Finish", "Cancel", name="Finish")
         c.event("EndDialog", "Exit")
 
-        user_exit=PyDialog(db, "UserExit", x, y, w, h, modal, title,
-                     "Finish", "Finish", "Finish")
+        user_exit = PyDialog(db, "UserExit", x, y, w, h, modal, title,
+                             "Finish", "Finish", "Finish")
         user_exit.title("[ProductName] Installer was interrupted")
-        user_exit.back("< Back", "Finish", active = 0)
-        user_exit.cancel("Cancel", "Back", active = 0)
-        user_exit.text("Description1", 15, 70, 320, 80, 0x30003,
-                   "[ProductName] setup was interrupted.  Your system has not been modified.  "
-                   "To install this program at a later time, please run the installation again.")
+        user_exit.back("< Back", "Finish", active=0)
+        user_exit.cancel("Cancel", "Back", active=0)
+        user_exit.text(
+            "Description1",
+            15,
+            70,
+            320,
+            80,
+            0x30003,
+            "[ProductName] setup was interrupted.  Your system has not been modified.  "
+            "To install this program at a later time, please run the installation again.")
         user_exit.text("Description2", 15, 155, 320, 20, 0x30003,
-                   "Click the Finish button to exit the Installer.")
+                       "Click the Finish button to exit the Installer.")
         c = user_exit.next("Finish", "Cancel", name="Finish")
         c.event("EndDialog", "Exit")
 
         exit_dialog = PyDialog(db, "ExitDialog", x, y, w, h, modal, title,
-                             "Finish", "Finish", "Finish")
+                               "Finish", "Finish", "Finish")
         exit_dialog.title("Completing the [ProductName] Installer")
-        exit_dialog.back("< Back", "Finish", active = 0)
-        exit_dialog.cancel("Cancel", "Back", active = 0)
+        exit_dialog.back("< Back", "Finish", active=0)
+        exit_dialog.cancel("Cancel", "Back", active=0)
         exit_dialog.text("Description", 15, 235, 320, 20, 0x30003,
-                   "Click the Finish button to exit the Installer.")
+                         "Click the Finish button to exit the Installer.")
         c = exit_dialog.next("Finish", "Cancel", name="Finish")
         c.event("EndDialog", "Return")
 
@@ -507,54 +577,107 @@ class bdist_msi (Command):
         inuse.text("Title", 15, 6, 200, 15, 0x30003,
                    r"{\DlgFontBold8}Files in Use")
         inuse.text("Description", 20, 23, 280, 20, 0x30003,
-               "Some files that need to be updated are currently in use.")
-        inuse.text("Text", 20, 55, 330, 50, 3,
-                   "The following applications are using files that need to be updated by this setup. Close these applications and then click Retry to continue the installation or Cancel to exit it.")
-        inuse.control("List", "ListBox", 20, 107, 330, 130, 7, "FileInUseProcess",
-                      None, None, None)
-        c=inuse.back("Exit", "Ignore", name="Exit")
+                   "Some files that need to be updated are currently in use.")
+        inuse.text(
+            "Text",
+            20,
+            55,
+            330,
+            50,
+            3,
+            "The following applications are using files that need to be updated by this setup. Close these applications and then click Retry to continue the installation or Cancel to exit it.")
+        inuse.control(
+            "List",
+            "ListBox",
+            20,
+            107,
+            330,
+            130,
+            7,
+            "FileInUseProcess",
+            None,
+            None,
+            None)
+        c = inuse.back("Exit", "Ignore", name="Exit")
         c.event("EndDialog", "Exit")
-        c=inuse.next("Ignore", "Retry", name="Ignore")
+        c = inuse.next("Ignore", "Retry", name="Ignore")
         c.event("EndDialog", "Ignore")
-        c=inuse.cancel("Retry", "Exit", name="Retry")
-        c.event("EndDialog","Retry")
+        c = inuse.cancel("Retry", "Exit", name="Retry")
+        c.event("EndDialog", "Retry")
 
-        # See "Error Dialog". See "ICE20" for the required names of the controls.
+        # See "Error Dialog". See "ICE20" for the required names of the
+        # controls.
         error = Dialog(db, "ErrorDlg",
                        50, 10, 330, 101,
                        65543,       # Error|Minimize|Modal|Visible
                        title,
                        "ErrorText", None, None)
-        error.text("ErrorText", 50,9,280,48,3, "")
+        error.text("ErrorText", 50, 9, 280, 48, 3, "")
         #error.control("ErrorIcon", "Icon", 15, 9, 24, 24, 5242881, None, "py.ico", None, None)
-        error.pushbutton("N",120,72,81,21,3,"No",None).event("EndDialog","ErrorNo")
-        error.pushbutton("Y",240,72,81,21,3,"Yes",None).event("EndDialog","ErrorYes")
-        error.pushbutton("A",0,72,81,21,3,"Abort",None).event("EndDialog","ErrorAbort")
-        error.pushbutton("C",42,72,81,21,3,"Cancel",None).event("EndDialog","ErrorCancel")
-        error.pushbutton("I",81,72,81,21,3,"Ignore",None).event("EndDialog","ErrorIgnore")
-        error.pushbutton("O",159,72,81,21,3,"Ok",None).event("EndDialog","ErrorOk")
-        error.pushbutton("R",198,72,81,21,3,"Retry",None).event("EndDialog","ErrorRetry")
+        error.pushbutton(
+            "N", 120, 72, 81, 21, 3, "No", None).event(
+            "EndDialog", "ErrorNo")
+        error.pushbutton(
+            "Y", 240, 72, 81, 21, 3, "Yes", None).event(
+            "EndDialog", "ErrorYes")
+        error.pushbutton(
+            "A", 0, 72, 81, 21, 3, "Abort", None).event(
+            "EndDialog", "ErrorAbort")
+        error.pushbutton(
+            "C", 42, 72, 81, 21, 3, "Cancel", None).event(
+            "EndDialog", "ErrorCancel")
+        error.pushbutton(
+            "I", 81, 72, 81, 21, 3, "Ignore", None).event(
+            "EndDialog", "ErrorIgnore")
+        error.pushbutton(
+            "O", 159, 72, 81, 21, 3, "Ok", None).event(
+            "EndDialog", "ErrorOk")
+        error.pushbutton(
+            "R", 198, 72, 81, 21, 3, "Retry", None).event(
+            "EndDialog", "ErrorRetry")
 
         #####################################################################
         # Global "Query Cancel" dialog
         cancel = Dialog(db, "CancelDlg", 50, 10, 260, 85, 3, title,
                         "No", "No", "No")
-        cancel.text("Text", 48, 15, 194, 30, 3,
-                    "Are you sure you want to cancel [ProductName] installation?")
-        #cancel.control("Icon", "Icon", 15, 15, 24, 24, 5242881, None,
+        cancel.text(
+            "Text",
+            48,
+            15,
+            194,
+            30,
+            3,
+            "Are you sure you want to cancel [ProductName] installation?")
+        # cancel.control("Icon", "Icon", 15, 15, 24, 24, 5242881, None,
         #               "py.ico", None, None)
-        c=cancel.pushbutton("Yes", 72, 57, 56, 17, 3, "Yes", "No")
+        c = cancel.pushbutton("Yes", 72, 57, 56, 17, 3, "Yes", "No")
         c.event("EndDialog", "Exit")
 
-        c=cancel.pushbutton("No", 132, 57, 56, 17, 3, "No", "Yes")
+        c = cancel.pushbutton("No", 132, 57, 56, 17, 3, "No", "Yes")
         c.event("EndDialog", "Return")
 
         #####################################################################
         # Global "Wait for costing" dialog
-        costing = Dialog(db, "WaitForCostingDlg", 50, 10, 260, 85, modal, title,
-                         "Return", "Return", "Return")
-        costing.text("Text", 48, 15, 194, 30, 3,
-                     "Please wait while the installer finishes determining your disk space requirements.")
+        costing = Dialog(
+            db,
+            "WaitForCostingDlg",
+            50,
+            10,
+            260,
+            85,
+            modal,
+            title,
+            "Return",
+            "Return",
+            "Return")
+        costing.text(
+            "Text",
+            48,
+            15,
+            194,
+            30,
+            3,
+            "Please wait while the installer finishes determining your disk space requirements.")
         c = costing.pushbutton("Return", 102, 57, 56, 17, 3, "Return", None)
         c.event("EndDialog", "Exit")
 
@@ -562,22 +685,28 @@ class bdist_msi (Command):
         # Preparation dialog: no user input except cancellation
         prep = PyDialog(db, "PrepareDlg", x, y, w, h, modeless, title,
                         "Cancel", "Cancel", "Cancel")
-        prep.text("Description", 15, 70, 320, 40, 0x30003,
-                  "Please wait while the Installer prepares to guide you through the installation.")
+        prep.text(
+            "Description",
+            15,
+            70,
+            320,
+            40,
+            0x30003,
+            "Please wait while the Installer prepares to guide you through the installation.")
         prep.title("Welcome to the [ProductName] Installer")
-        c=prep.text("ActionText", 15, 110, 320, 20, 0x30003, "Pondering...")
+        c = prep.text("ActionText", 15, 110, 320, 20, 0x30003, "Pondering...")
         c.mapping("ActionText", "Text")
-        c=prep.text("ActionData", 15, 135, 320, 30, 0x30003, None)
+        c = prep.text("ActionData", 15, 135, 320, 30, 0x30003, None)
         c.mapping("ActionData", "Text")
         prep.back("Back", None, active=0)
         prep.next("Next", None, active=0)
-        c=prep.cancel("Cancel", None)
+        c = prep.cancel("Cancel", None)
         c.event("SpawnDialog", "CancelDlg")
 
         #####################################################################
         # Feature (Python directory) selection
         seldlg = PyDialog(db, "SelectFeaturesDlg", x, y, w, h, modal, title,
-                        "Next", "Next", "Cancel")
+                          "Next", "Next", "Cancel")
         seldlg.title("Select Python Installations")
 
         seldlg.text("Hint", 15, 30, 300, 20, 3,
@@ -625,14 +754,26 @@ class bdist_msi (Command):
                         "OK", "OK", "OK", bitmap=False)
         cost.text("Title", 15, 6, 200, 15, 0x30003,
                   "{\DlgFontBold8}Disk Space Requirements")
-        cost.text("Description", 20, 20, 280, 20, 0x30003,
-                  "The disk space required for the installation of the selected features.")
-        cost.text("Text", 20, 53, 330, 60, 3,
-                  "The highlighted volumes (if any) do not have enough disk space "
-              "available for the currently selected features.  You can either "
-              "remove some files from the highlighted volumes, or choose to "
-              "install less features onto local drive(s), or select different "
-              "destination drive(s).")
+        cost.text(
+            "Description",
+            20,
+            20,
+            280,
+            20,
+            0x30003,
+            "The disk space required for the installation of the selected features.")
+        cost.text(
+            "Text",
+            20,
+            53,
+            330,
+            60,
+            3,
+            "The highlighted volumes (if any) do not have enough disk space "
+            "available for the currently selected features.  You can either "
+            "remove some files from the highlighted volumes, or choose to "
+            "install less features onto local drive(s), or select different "
+            "destination drive(s).")
         cost.control("VolumeList", "VolumeCostList", 20, 100, 330, 150, 393223,
                      None, "{120}{70}{70}{70}{70}", None, None)
         cost.xbutton("OK", "Ok", None, 0.5).event("EndDialog", "Return")
@@ -649,8 +790,9 @@ class bdist_msi (Command):
         # and in the Property table, but installer fails according to the documentation
         # if a dialog attempts to set ALLUSERS.
         whichusers = PyDialog(db, "WhichUsersDlg", x, y, w, h, modal, title,
-                            "AdminInstall", "Next", "Cancel")
-        whichusers.title("Select whether to install [ProductName] for all users of this computer.")
+                              "AdminInstall", "Next", "Cancel")
+        whichusers.title(
+            "Select whether to install [ProductName] for all users of this computer.")
         # A radio group with two options: allusers, justme
         g = whichusers.radiogroup("AdminInstall", 15, 60, 260, 50, 3,
                                   "WhichUsers", "", "Next")
@@ -661,7 +803,7 @@ class bdist_msi (Command):
 
         c = whichusers.next("Next >", "Cancel")
         c.event("[ALLUSERS]", "1", 'WhichUsers="ALL"', 1)
-        c.event("EndDialog", "Return", ordering = 2)
+        c.event("EndDialog", "Return", ordering=2)
 
         c = whichusers.cancel("Cancel", "AdminInstall")
         c.event("SpawnDialog", "CancelDlg")
@@ -672,19 +814,35 @@ class bdist_msi (Command):
                             "Cancel", "Cancel", "Cancel", bitmap=False)
         progress.text("Title", 20, 15, 200, 15, 0x30003,
                       "{\DlgFontBold8}[Progress1] [ProductName]")
-        progress.text("Text", 35, 65, 300, 30, 3,
-                      "Please wait while the Installer [Progress2] [ProductName]. "
-                      "This may take several minutes.")
+        progress.text(
+            "Text",
+            35,
+            65,
+            300,
+            30,
+            3,
+            "Please wait while the Installer [Progress2] [ProductName]. "
+            "This may take several minutes.")
         progress.text("StatusLabel", 35, 100, 35, 20, 3, "Status:")
 
-        c=progress.text("ActionText", 70, 100, w-70, 20, 3, "Pondering...")
+        c = progress.text("ActionText", 70, 100, w - 70, 20, 3, "Pondering...")
         c.mapping("ActionText", "Text")
 
         #c=progress.text("ActionData", 35, 140, 300, 20, 3, None)
         #c.mapping("ActionData", "Text")
 
-        c=progress.control("ProgressBar", "ProgressBar", 35, 120, 300, 10, 65537,
-                           None, "Progress done", None, None)
+        c = progress.control(
+            "ProgressBar",
+            "ProgressBar",
+            35,
+            120,
+            300,
+            10,
+            65537,
+            None,
+            "Progress done",
+            None,
+            None)
         c.mapping("SetProgress", "Progress")
 
         progress.back("< Back", "Next", active=False)
@@ -696,16 +854,22 @@ class bdist_msi (Command):
         maint = PyDialog(db, "MaintenanceTypeDlg", x, y, w, h, modal, title,
                          "Next", "Next", "Cancel")
         maint.title("Welcome to the [ProductName] Setup Wizard")
-        maint.text("BodyText", 15, 63, 330, 42, 3,
-                   "Select whether you want to repair or remove [ProductName].")
-        g=maint.radiogroup("RepairRadioGroup", 15, 108, 330, 60, 3,
-                            "MaintenanceForm_Action", "", "Next")
+        maint.text(
+            "BodyText",
+            15,
+            63,
+            330,
+            42,
+            3,
+            "Select whether you want to repair or remove [ProductName].")
+        g = maint.radiogroup("RepairRadioGroup", 15, 108, 330, 60, 3,
+                             "MaintenanceForm_Action", "", "Next")
         #g.add("Change", 0, 0, 200, 17, "&Change [ProductName]")
         g.add("Repair", 0, 18, 200, 17, "&Repair [ProductName]")
         g.add("Remove", 0, 36, 200, 17, "Re&move [ProductName]")
 
         maint.back("< Back", None, active=False)
-        c=maint.next("Finish", "Cancel")
+        c = maint.next("Finish", "Cancel")
         # Change installation: Change progress dialog to "Change", then ask
         # for feature selection
         #c.event("[Progress1]", "Change", 'MaintenanceForm_Action="Change"', 1)
@@ -714,22 +878,38 @@ class bdist_msi (Command):
         # Reinstall: Change progress dialog to "Repair", then invoke reinstall
         # Also set list of reinstalled features to "ALL"
         c.event("[REINSTALL]", "ALL", 'MaintenanceForm_Action="Repair"', 5)
-        c.event("[Progress1]", "Repairing", 'MaintenanceForm_Action="Repair"', 6)
+        c.event(
+            "[Progress1]",
+            "Repairing",
+            'MaintenanceForm_Action="Repair"',
+            6)
         c.event("[Progress2]", "repairs", 'MaintenanceForm_Action="Repair"', 7)
         c.event("Reinstall", "ALL", 'MaintenanceForm_Action="Repair"', 8)
 
         # Uninstall: Change progress to "Remove", then invoke uninstall
         # Also set list of removed features to "ALL"
         c.event("[REMOVE]", "ALL", 'MaintenanceForm_Action="Remove"', 11)
-        c.event("[Progress1]", "Removing", 'MaintenanceForm_Action="Remove"', 12)
-        c.event("[Progress2]", "removes", 'MaintenanceForm_Action="Remove"', 13)
+        c.event(
+            "[Progress1]",
+            "Removing",
+            'MaintenanceForm_Action="Remove"',
+            12)
+        c.event(
+            "[Progress2]",
+            "removes",
+            'MaintenanceForm_Action="Remove"',
+            13)
         c.event("Remove", "ALL", 'MaintenanceForm_Action="Remove"', 14)
 
         # Close dialog when maintenance action scheduled
         c.event("EndDialog", "Return", 'MaintenanceForm_Action<>"Change"', 20)
         #c.event("NewDialog", "SelectFeaturesDlg", 'MaintenanceForm_Action="Change"', 21)
 
-        maint.cancel("Cancel", "RepairRadioGroup").event("SpawnDialog", "CancelDlg")
+        maint.cancel(
+            "Cancel",
+            "RepairRadioGroup").event(
+            "SpawnDialog",
+            "CancelDlg")
 
     def get_installer_filename(self, fullname):
         # Factored out to allow overriding in subclasses

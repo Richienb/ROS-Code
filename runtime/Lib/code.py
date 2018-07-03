@@ -12,6 +12,7 @@ from codeop import CommandCompiler, compile_command
 __all__ = ["InteractiveInterpreter", "InteractiveConsole", "interact",
            "compile_command"]
 
+
 def softspace(file, newvalue):
     oldvalue = 0
     try:
@@ -24,6 +25,7 @@ def softspace(file, newvalue):
         # "attribute-less object" or "read-only attributes"
         pass
     return oldvalue
+
 
 class InteractiveInterpreter:
     """Base class for InteractiveConsole.
@@ -103,7 +105,7 @@ class InteractiveInterpreter:
             exec code in self.locals
         except SystemExit:
             raise
-        except:
+        except BaseException:
             self.showtraceback()
         else:
             if softspace(sys.stdout, 0):
@@ -128,7 +130,7 @@ class InteractiveInterpreter:
             # Work hard to stuff the correct filename in the exception
             try:
                 msg, (dummy_filename, lineno, offset, line) = value
-            except:
+            except BaseException:
                 # Not the format we expect; leave it alone
                 pass
             else:
@@ -224,7 +226,7 @@ class InteractiveConsole(InteractiveInterpreter):
         else:
             self.write("%s\n" % str(banner))
         more = 0
-        while 1:
+        while True:
             try:
                 if more:
                     prompt = sys.ps2

@@ -15,15 +15,17 @@ the "typical" Unix-style command-line C compiler:
 
 __revision__ = "$Id$"
 
-import os, sys, re
+import os
+import sys
+import re
 from types import StringType, NoneType
 
 from distutils import sysconfig
 from distutils.dep_util import newer
 from distutils.ccompiler import \
-     CCompiler, gen_preprocess_options, gen_lib_options
+    CCompiler, gen_preprocess_options, gen_lib_options
 from distutils.errors import \
-     DistutilsExecError, CompileError, LibError, LinkError
+    DistutilsExecError, CompileError, LibError, LinkError
 from distutils import log
 
 if sys.platform == 'darwin':
@@ -55,15 +57,15 @@ class UnixCCompiler(CCompiler):
     # are pretty generic; they will probably have to be set by an outsider
     # (eg. using information discovered by the sysconfig about building
     # Python extensions).
-    executables = {'preprocessor' : None,
-                   'compiler'     : ["cc"],
-                   'compiler_so'  : ["cc"],
-                   'compiler_cxx' : ["cc"],
-                   'linker_so'    : ["cc", "-shared"],
-                   'linker_exe'   : ["cc"],
-                   'archiver'     : ["ar", "-cr"],
-                   'ranlib'       : None,
-                  }
+    executables = {'preprocessor': None,
+                   'compiler': ["cc"],
+                   'compiler_so': ["cc"],
+                   'compiler_cxx': ["cc"],
+                   'linker_so': ["cc", "-shared"],
+                   'linker_exe': ["cc"],
+                   'archiver': ["ar", "-cr"],
+                   'ranlib': None,
+                   }
 
     if sys.platform[:6] == "darwin":
         executables['ranlib'] = ["ranlib"]
@@ -74,7 +76,7 @@ class UnixCCompiler(CCompiler):
     # reasonable common default here, but it's not necessarily used on all
     # Unices!
 
-    src_extensions = [".c",".C",".cc",".cxx",".cpp",".m"]
+    src_extensions = [".c", ".C", ".cc", ".cxx", ".cpp", ".m"]
     obj_extension = ".o"
     static_lib_extension = ".a"
     shared_lib_extension = ".so"
@@ -107,19 +109,19 @@ class UnixCCompiler(CCompiler):
                 self.mkpath(os.path.dirname(output_file))
             try:
                 self.spawn(pp_args)
-            except DistutilsExecError, msg:
-                raise CompileError, msg
+            except DistutilsExecError as msg:
+                raise CompileError(msg)
 
     def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
         compiler_so = self.compiler_so
         if sys.platform == 'darwin':
             compiler_so = _osx_support.compiler_fixup(compiler_so,
-                                                    cc_args + extra_postargs)
+                                                      cc_args + extra_postargs)
         try:
             self.spawn(compiler_so + cc_args + [src, '-o', obj] +
                        extra_postargs)
-        except DistutilsExecError, msg:
-            raise CompileError, msg
+        except DistutilsExecError as msg:
+            raise CompileError(msg)
 
     def create_static_lib(self, objects, output_libname,
                           output_dir=None, debug=0, target_lang=None):
@@ -142,8 +144,8 @@ class UnixCCompiler(CCompiler):
             if self.ranlib:
                 try:
                     self.spawn(self.ranlib + [output_filename])
-                except DistutilsExecError, msg:
-                    raise LibError, msg
+                except DistutilsExecError as msg:
+                    raise LibError(msg)
         else:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -159,7 +161,7 @@ class UnixCCompiler(CCompiler):
         lib_opts = gen_lib_options(self, library_dirs, runtime_library_dirs,
                                    libraries)
         if type(output_dir) not in (StringType, NoneType):
-            raise TypeError, "'output_dir' must be a string or None"
+            raise TypeError("'output_dir' must be a string or None")
         if output_dir is not None:
             output_filename = os.path.join(output_dir, output_filename)
 
@@ -196,8 +198,8 @@ class UnixCCompiler(CCompiler):
                     linker = _osx_support.compiler_fixup(linker, ld_args)
 
                 self.spawn(linker + ld_args)
-            except DistutilsExecError, msg:
-                raise LinkError, msg
+            except DistutilsExecError as msg:
+                raise LinkError(msg)
         else:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -258,8 +260,6 @@ class UnixCCompiler(CCompiler):
             else:
                 sysroot = m.group(1)
 
-
-
         for dir in dirs:
             shared = os.path.join(dir, shared_f)
             dylib = os.path.join(dir, dylib_f)
@@ -267,7 +267,7 @@ class UnixCCompiler(CCompiler):
 
             if sys.platform == 'darwin' and (
                 dir.startswith('/System/') or (
-                dir.startswith('/usr/') and not dir.startswith('/usr/local/'))):
+                    dir.startswith('/usr/') and not dir.startswith('/usr/local/'))):
 
                 shared = os.path.join(sysroot, dir[1:], shared_f)
                 dylib = os.path.join(sysroot, dir[1:], dylib_f)

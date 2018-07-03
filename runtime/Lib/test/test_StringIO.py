@@ -110,7 +110,7 @@ class TestGenericStringIO(unittest.TestCase):
 
     @test_support.bigmemtest(test_support._2G + 2**26, memuse=2.001)
     def test_reads_from_large_stream(self, size):
-        linesize = 2**26 # 64 MiB
+        linesize = 2**26  # 64 MiB
         lines = ['x' * (linesize - 1) + '\n'] * (size // linesize) + \
                 ['y' * (size % linesize)]
         f = self.MODULE.StringIO(''.join(lines))
@@ -136,7 +136,7 @@ class TestGenericStringIO(unittest.TestCase):
     # bytes per input character.
     @test_support.bigmemtest(test_support._2G, memuse=4)
     def test_writes_to_large_stream(self, size):
-        s = 'x' * 2**26 # 64 MiB
+        s = 'x' * 2**26  # 64 MiB
         f = self.MODULE.StringIO()
         n = size
         while n > len(s):
@@ -152,7 +152,8 @@ class TestStringIO(TestGenericStringIO):
 
     def test_unicode(self):
 
-        if not test_support.have_unicode: return
+        if not test_support.have_unicode:
+            return
 
         # The StringIO module also supports concatenating Unicode
         # snippets to larger Unicode strings. This is tested by this
@@ -167,18 +168,20 @@ class TestStringIO(TestGenericStringIO):
         self.assertEqual(s, unicode('abcuvwxyz!'))
         self.assertEqual(type(s), types.UnicodeType)
 
+
 class TestcStringIO(TestGenericStringIO):
     MODULE = cStringIO
 
     def test_array_support(self):
         # Issue #1730114: cStringIO should accept array objects
-        a = array.array('B', [0,1,2])
+        a = array.array('B', [0, 1, 2])
         f = self.MODULE.StringIO(a)
         self.assertEqual(f.getvalue(), '\x00\x01\x02')
 
     def test_unicode(self):
 
-        if not test_support.have_unicode: return
+        if not test_support.have_unicode:
+            return
 
         # The cStringIO module converts Unicode strings to character
         # strings when writing them to cStringIO objects.
@@ -199,7 +202,10 @@ class TestcStringIO(TestGenericStringIO):
             # On Jython, this should raise UnicodeEncodeError, however, we
             # have to do more work on preventing inadvertent mixing of Unicode
             # into String-supporting objects like StringBuilder
-            self.assertRaises(UnicodeEncodeError, self.MODULE.StringIO, u'\xf4')
+            self.assertRaises(
+                UnicodeEncodeError,
+                self.MODULE.StringIO,
+                u'\xf4')
 
 
 import sys
@@ -208,8 +214,10 @@ if sys.platform.startswith('java'):
     # fake of the buffer tests.
     buffer = str
 
+
 class TestBufferStringIO(TestStringIO):
     constructor = buffer
+
 
 class TestBuffercStringIO(TestcStringIO):
     constructor = buffer
@@ -218,8 +226,9 @@ class TestBuffercStringIO(TestcStringIO):
 def test_main():
     test_support.run_unittest(TestStringIO, TestcStringIO)
     with test_support.check_py3k_warnings(("buffer.. not supported",
-                                             DeprecationWarning)):
+                                           DeprecationWarning)):
         test_support.run_unittest(TestBufferStringIO, TestBuffercStringIO)
+
 
 if __name__ == '__main__':
     test_main()

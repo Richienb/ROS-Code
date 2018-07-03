@@ -19,8 +19,10 @@ import sys
 # included in the profile and would appear to consume all the time.)
 TICKS = 42000
 
+
 def timer():
     return TICKS
+
 
 def testfunc():
     # 1 call
@@ -32,6 +34,7 @@ def testfunc():
     TICKS += 171
     factorial(14)                       # 130
 
+
 def factorial(n):
     # 23 calls total
     # 170 ticks total, 150 ticks local
@@ -40,10 +43,11 @@ def factorial(n):
     global TICKS
     if n > 0:
         TICKS += n
-        return mul(n, factorial(n-1))
+        return mul(n, factorial(n - 1))
     else:
         TICKS += 11
         return 1
+
 
 def mul(a, b):
     # 20 calls
@@ -51,6 +55,7 @@ def mul(a, b):
     global TICKS
     TICKS += 1
     return a * b
+
 
 def helper():
     # 2 calls
@@ -70,6 +75,7 @@ def helper():
     helper2_indirect()                  # 70
     TICKS += 1
 
+
 def helper1():
     # 4 calls
     # 30 ticks total: 29 ticks local, 1 tick in subfunctions
@@ -81,9 +87,11 @@ def helper1():
     lst.append(42)                      # 0
     sys.exc_info()                      # 0
 
+
 def helper2_indirect():
     helper2()                           # 50
     factorial(3)                        # 20
+
 
 def helper2():
     # 8 calls
@@ -95,6 +103,7 @@ def helper2():
     subhelper()                         # 10
     TICKS += 15
 
+
 def subhelper():
     # 8 calls
     # 10 ticks total: 8 ticks local, 2 ticks in subfunctions
@@ -105,6 +114,7 @@ def subhelper():
             C().foo                     # 1 x 2
         except AttributeError:
             TICKS += 3                  # 3 x 2
+
 
 class C:
     def __getattr__(self, name):

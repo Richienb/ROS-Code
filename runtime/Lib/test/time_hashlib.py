@@ -1,16 +1,18 @@
 # It's intended that this script be run by hand.  It runs speed tests on
 # hashlib functions; it does not test for correctness.
 
-import sys, time
+import sys
+import time
 import hashlib
 
 
 def creatorFunc():
-    raise RuntimeError, "eek, creatorFunc not overridden"
+    raise RuntimeError("eek, creatorFunc not overridden")
+
 
 def test_scaled_msg(scale, name):
-    iterations = 106201/scale * 20
-    longStr = 'Z'*scale
+    iterations = 106201 / scale * 20
+    longStr = 'Z' * scale
 
     localCF = creatorFunc
     start = time.time()
@@ -18,7 +20,10 @@ def test_scaled_msg(scale, name):
         x = localCF(longStr).digest()
     end = time.time()
 
-    print ('%2.2f' % (end-start)), "seconds", iterations, "x", len(longStr), "bytes", name
+    print(
+        '%2.2f' %
+        (end - start)), "seconds", iterations, "x", len(longStr), "bytes", name
+
 
 def test_create():
     start = time.time()
@@ -26,7 +31,8 @@ def test_create():
         d = creatorFunc()
     end = time.time()
 
-    print ('%2.2f' % (end-start)), "seconds", '[20000 creations]'
+    print('%2.2f' % (end - start)), "seconds", '[20000 creations]'
+
 
 def test_zero():
     start = time.time()
@@ -34,8 +40,7 @@ def test_zero():
         x = creatorFunc().digest()
     end = time.time()
 
-    print ('%2.2f' % (end-start)), "seconds", '[20000 "" digests]'
-
+    print('%2.2f' % (end - start)), "seconds", '[20000 "" digests]'
 
 
 hName = sys.argv[1]
@@ -44,8 +49,8 @@ hName = sys.argv[1]
 # setup our creatorFunc to test the requested hash
 #
 if hName in ('_md5', '_sha'):
-    exec 'import '+hName
-    exec 'creatorFunc = '+hName+'.new'
+    exec 'import ' + hName
+    exec 'creatorFunc = ' + hName + '.new'
     print "testing speed of old", hName, "legacy interface"
 elif hName == '_hashlib' and len(sys.argv) > 3:
     import _hashlib
@@ -57,7 +62,7 @@ elif hName == '_hashlib' and len(sys.argv) == 3:
     print "testing speed of _hashlib.new(%r)" % sys.argv[2]
 elif hasattr(hashlib, hName) and callable(getattr(hashlib, hName)):
     creatorFunc = getattr(hashlib, hName)
-    print "testing speed of hashlib."+hName, getattr(hashlib, hName)
+    print "testing speed of hashlib." + hName, getattr(hashlib, hName)
 else:
     exec "creatorFunc = lambda x=hashlib.new : x(%r)" % hName
     print "testing speed of hashlib.new(%r)" % hName

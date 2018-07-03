@@ -3,7 +3,6 @@ from test import test_support
 import pstats
 
 
-
 class AddCallersTestCase(unittest.TestCase):
     """Tests for pstats.add_callers helper."""
 

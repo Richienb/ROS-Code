@@ -42,7 +42,7 @@ class InstallTestCase(support.TempdirManager,
         dist.command_obj["build"] = support.DummyCommand(
             build_base=builddir,
             build_lib=os.path.join(builddir, "lib"),
-            )
+        )
 
         cmd = install(dist)
         cmd.home = destination
@@ -242,6 +242,7 @@ class InstallTestCase(support.TempdirManager,
 
 def test_suite():
     return unittest.makeSuite(InstallTestCase)
+
 
 if __name__ == "__main__":
     run_unittest(test_suite())

@@ -7,6 +7,7 @@ import unittest
 from md5 import md5
 from test import test_support
 
+
 def hexstr(s):
     import string
     h = string.hexdigits
@@ -15,6 +16,7 @@ def hexstr(s):
         i = ord(c)
         r = r + h[(i >> 4) & 0xF] + h[i & 0xF]
     return r
+
 
 class MD5_Test(unittest.TestCase):
 
@@ -54,8 +56,10 @@ class MD5_Test(unittest.TestCase):
         m2.update(aas + bees + cees)
         self.assertEqual(m1.digest(), m2.digest())
 
+
 def test_main():
     test_support.run_unittest(MD5_Test)
+
 
 if __name__ == '__main__':
     test_main()

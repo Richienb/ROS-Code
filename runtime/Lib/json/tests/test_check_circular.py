@@ -4,6 +4,7 @@ from json.tests import PyTest, CTest
 def default_iterable(obj):
     return list(obj)
 
+
 class TestCheckCircular(object):
     def test_circular_dict(self):
         dct = {}
@@ -30,5 +31,9 @@ class TestCheckCircular(object):
         self.assertRaises(TypeError, self.dumps, [set()], check_circular=False)
 
 
-class TestPyCheckCircular(TestCheckCircular, PyTest): pass
-class TestCCheckCircular(TestCheckCircular, CTest): pass
+class TestPyCheckCircular(TestCheckCircular, PyTest):
+    pass
+
+
+class TestCCheckCircular(TestCheckCircular, CTest):
+    pass

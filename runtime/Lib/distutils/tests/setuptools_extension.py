@@ -1,6 +1,7 @@
 from distutils.core import Extension as _Extension
 from distutils.core import Distribution as _Distribution
 
+
 def _get_unpatched(cls):
     """Protect against re-patching the distutils if reloaded
 
@@ -14,6 +15,7 @@ def _get_unpatched(cls):
             "distutils has already been patched by %r" % cls
         )
     return cls
+
 
 _Distribution = _get_unpatched(_Distribution)
 _Extension = _get_unpatched(_Extension)
@@ -31,20 +33,24 @@ class Extension(_Extension):
 
     if not have_pyrex:
         # convert .pyx extensions to .c
-        def __init__(self,*args,**kw):
-            _Extension.__init__(self,*args,**kw)
+        def __init__(self, *args, **kw):
+            _Extension.__init__(self, *args, **kw)
             sources = []
             for s in self.sources:
                 if s.endswith('.pyx'):
-                    sources.append(s[:-3]+'c')
+                    sources.append(s[:-3] + 'c')
                 else:
                     sources.append(s)
             self.sources = sources
 
+
 class Library(Extension):
     """Just like a regular Extension, but built as a library instead"""
 
-import sys, distutils.core, distutils.extension
+
+import sys
+import distutils.core
+import distutils.extension
 distutils.core.Extension = Extension
 distutils.extension.Extension = Extension
 if 'distutils.command.build_ext' in sys.modules:

@@ -67,7 +67,8 @@ def getctime(filename):
 # Return the longest prefix of all list elements.
 def commonprefix(m):
     "Given a list of pathnames, returns the longest common leading component"
-    if not m: return ''
+    if not m:
+        return ''
     s1 = min(m)
     s2 = max(m)
     for i, c in enumerate(s1):
@@ -82,6 +83,8 @@ def commonprefix(m):
 
 # Generic implementation of splitext, to be parametrized with
 # the separators
+
+
 def _splitext(p, sep, altsep, extsep):
     """Split the extension from a pathname.
 

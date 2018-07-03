@@ -75,7 +75,7 @@ class BuildExtTestCase(support.TempdirManager,
             self.assertTrue(hasattr(xx, attr))
 
         self.assertEqual(xx.foo(2, 5), 7)
-        self.assertEqual(xx.foo(13,15), 28)
+        self.assertEqual(xx.foo(13, 15), 28)
         self.assertEqual(xx.new().demo(), None)
         if test_support.HAVE_DOCSTRINGS:
             doc = 'This is a template module just for instruction.'
@@ -88,8 +88,8 @@ class BuildExtTestCase(support.TempdirManager,
         cmd = build_ext(dist)
         old = sys.platform
 
-        sys.platform = 'sunos' # fooling finalize_options
-        from distutils.sysconfig import  _config_vars
+        sys.platform = 'sunos'  # fooling finalize_options
+        from distutils.sysconfig import _config_vars
         old_var = _config_vars.get('Py_ENABLE_SHARED')
         _config_vars['Py_ENABLE_SHARED'] = 1
         try:
@@ -202,8 +202,11 @@ class BuildExtTestCase(support.TempdirManager,
         cmd = build_ext(dist)
         cmd.finalize_options()
 
-        #'extensions' option must be a list of Extension instances
-        self.assertRaises(DistutilsSetupError, cmd.check_extensions_list, 'foo')
+        # 'extensions' option must be a list of Extension instances
+        self.assertRaises(
+            DistutilsSetupError,
+            cmd.check_extensions_list,
+            'foo')
 
         # each element of 'ext_modules' option must be an
         # Extension instance or 2-tuple
@@ -235,8 +238,10 @@ class BuildExtTestCase(support.TempdirManager,
         self.assertTrue(not hasattr(ext, 'some'))
 
         # 'macros' element of build info dict must be 1- or 2-tuple
-        exts = [('foo.bar', {'sources': [''], 'libraries': 'foo',
-                'some': 'bar', 'macros': [('1', '2', '3'), 'foo']})]
+        exts = [
+            ('foo.bar', {
+                'sources': [''], 'libraries': 'foo', 'some': 'bar', 'macros': [
+                    ('1', '2', '3'), 'foo']})]
         self.assertRaises(DistutilsSetupError, cmd.check_extensions_list, exts)
 
         exts[0][1]['macros'] = [('1', '2'), ('3',)]
@@ -375,7 +380,9 @@ class BuildExtTestCase(support.TempdirManager,
         self.assertEqual(wanted, path)
 
     def test_setuptools_compat(self):
-        import distutils.core, distutils.extension, distutils.command.build_ext
+        import distutils.core
+        import distutils.extension
+        import distutils.command.build_ext
         saved_ext = distutils.extension.Extension
         try:
             # on some platforms, it loads the deprecated "dl" module
@@ -427,21 +434,27 @@ class BuildExtTestCase(support.TempdirManager,
         wanted = os.path.join(cmd.build_lib, 'UpdateManager', 'fdsend' + ext)
         self.assertEqual(ext_path, wanted)
 
-    @unittest.skipUnless(sys.platform == 'darwin', 'test only relevant for MacOSX')
+    @unittest.skipUnless(
+        sys.platform == 'darwin',
+        'test only relevant for MacOSX')
     def test_deployment_target_default(self):
         # Issue 9516: Test that, in the absence of the environment variable,
         # an extension module is compiled with the same deployment target as
         #  the interpreter.
         self._try_compile_deployment_target('==', None)
 
-    @unittest.skipUnless(sys.platform == 'darwin', 'test only relevant for MacOSX')
+    @unittest.skipUnless(
+        sys.platform == 'darwin',
+        'test only relevant for MacOSX')
     def test_deployment_target_too_low(self):
         # Issue 9516: Test that an extension module is not allowed to be
         # compiled with a deployment target less than that of the interpreter.
         self.assertRaises(DistutilsPlatformError,
-            self._try_compile_deployment_target, '>', '10.1')
+                          self._try_compile_deployment_target, '>', '10.1')
 
-    @unittest.skipUnless(sys.platform == 'darwin', 'test only relevant for MacOSX')
+    @unittest.skipUnless(
+        sys.platform == 'darwin',
+        'test only relevant for MacOSX')
     def test_deployment_target_higher_ok(self):
         # Issue 9516: Test that an extension module can be compiled with a
         # deployment target higher than that of the interpreter: the ext
@@ -487,7 +500,7 @@ class BuildExtTestCase(support.TempdirManager,
         deptarget_ext = Extension(
             'deptarget',
             [deptarget_c],
-            extra_compile_args=['-DTARGET=%s'%(target,)],
+            extra_compile_args=['-DTARGET=%s' % (target,)],
         )
         dist = Distribution({
             'name': 'deptarget',
@@ -504,8 +517,10 @@ class BuildExtTestCase(support.TempdirManager,
         except CompileError:
             self.fail("Wrong deployment target during compilation")
 
+
 def test_suite():
     return unittest.makeSuite(BuildExtTestCase)
+
 
 if __name__ == '__main__':
     test_support.run_unittest(test_suite())

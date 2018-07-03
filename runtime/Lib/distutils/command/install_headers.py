@@ -17,7 +17,7 @@ class install_headers(Command):
                      "directory to install header files to"),
                     ('force', 'f',
                      "force installation (overwrite existing files)"),
-                   ]
+                    ]
 
     boolean_options = ['force']
 
@@ -30,7 +30,6 @@ class install_headers(Command):
         self.set_undefined_options('install',
                                    ('install_headers', 'install_dir'),
                                    ('force', 'force'))
-
 
     def run(self):
         headers = self.distribution.headers

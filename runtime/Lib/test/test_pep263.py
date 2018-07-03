@@ -3,6 +3,7 @@
 import unittest
 from test import test_support
 
+
 class PEP263Test(unittest.TestCase):
 
     def test_pep263(self):
@@ -22,7 +23,6 @@ class PEP263Test(unittest.TestCase):
         exec c in d
         self.assertEqual(d['u'], u'\xf3')
 
-
     def test_issue3297(self):
         c = compile("a, b = '\U0001010F', '\\U0001010F'", "dummy", "exec")
         d = {}
@@ -41,8 +41,10 @@ class PEP263Test(unittest.TestCase):
         # two bytes in common with the UTF-8 BOM
         self.assertRaises(SyntaxError, eval, '\xef\xbb\x20')
 
+
 def test_main():
     test_support.run_unittest(PEP263Test)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     test_main()

@@ -35,6 +35,7 @@ except ImportError:
     # docutils is not installed
     HAS_DOCUTILS = False
 
+
 class check(Command):
     """This command checks the meta-data of the package.
     """
@@ -95,7 +96,7 @@ class check(Command):
                 missing.append(attr)
 
         if missing:
-            self.warn("missing required meta-data: %s"  % ', '.join(missing))
+            self.warn("missing required meta-data: %s" % ', '.join(missing))
         if metadata.author:
             if not metadata.author_email:
                 self.warn("missing meta-data: if 'author' supplied, " +
@@ -130,13 +131,14 @@ class check(Command):
         settings.tab_width = 4
         settings.pep_references = None
         settings.rfc_references = None
-        reporter = SilentReporter(source_path,
-                          settings.report_level,
-                          settings.halt_level,
-                          stream=settings.warning_stream,
-                          debug=settings.debug,
-                          encoding=settings.error_encoding,
-                          error_handler=settings.error_encoding_error_handler)
+        reporter = SilentReporter(
+            source_path,
+            settings.report_level,
+            settings.halt_level,
+            stream=settings.warning_stream,
+            debug=settings.debug,
+            encoding=settings.error_encoding,
+            error_handler=settings.error_encoding_error_handler)
 
         document = nodes.document(settings, reporter, source=source_path)
         document.note_source(source_path, -1)

@@ -13,6 +13,7 @@ from distutils.errors import DistutilsOptionError, DistutilsFileError
 from distutils.util import convert_path
 from distutils import log
 
+
 class build_py(Command):
 
     description = "\"build\" pure Python modules (copy to build directory)"
@@ -25,10 +26,10 @@ class build_py(Command):
          "also compile with optimization: -O1 for \"python -O\", "
          "-O2 for \"python -OO\", and -O0 to disable [default: -O0]"),
         ('force', 'f', "forcibly build everything (ignore file timestamps)"),
-        ]
+    ]
 
     boolean_options = ['compile', 'force']
-    negative_opt = {'no-compile' : 'compile'}
+    negative_opt = {'no-compile': 'compile'}
 
     def initialize_options(self):
         self.build_lib = None
@@ -110,19 +111,19 @@ class build_py(Command):
             # Length of path to strip from found files
             plen = 0
             if src_dir:
-                plen = len(src_dir)+1
+                plen = len(src_dir) + 1
 
             # Strip directory from globbed filenames
             filenames = [
                 file[plen:] for file in self.find_data_files(package, src_dir)
-                ]
+            ]
             data.append((package, src_dir, build_dir, filenames))
         return data
 
     def find_data_files(self, package, src_dir):
         """Return filenames for package's data files in 'src_dir'"""
-        globs = (self.package_data.get('', [])
-                 + self.package_data.get(package, []))
+        globs = (self.package_data.get('', []) +
+                 self.package_data.get(package, []))
         files = []
         for pattern in globs:
             # Each pattern has to be converted to a platform-specific path
@@ -188,11 +189,11 @@ class build_py(Command):
         if package_dir != "":
             if not os.path.exists(package_dir):
                 raise DistutilsFileError(
-                      "package directory '%s' does not exist" % package_dir)
+                    "package directory '%s' does not exist" % package_dir)
             if not os.path.isdir(package_dir):
                 raise DistutilsFileError(
-                       "supposed package directory '%s' exists, "
-                       "but is not a directory" % package_dir)
+                    "supposed package directory '%s' exists, "
+                    "but is not a directory" % package_dir)
 
         # Require __init__.py for all but the "root package"
         if package:
@@ -321,7 +322,7 @@ class build_py(Command):
             os.path.join(build_dir, filename)
             for package, src_dir, build_dir, filenames in self.data_files
             for filename in filenames
-            ]
+        ]
 
         return outputs
 
@@ -330,7 +331,7 @@ class build_py(Command):
             package = package.split('.')
         elif not isinstance(package, (list, tuple)):
             raise TypeError(
-                  "'package' must be a string (dot-separated), list, or tuple")
+                "'package' must be a string (dot-separated), list, or tuple")
 
         # Now put the module source file into the "build" area -- this is
         # easy, we just copy it somewhere under self.build_lib (the build

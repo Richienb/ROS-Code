@@ -9,6 +9,7 @@ from string import Template
 class Bag:
     pass
 
+
 class Mapping:
     def __getitem__(self, name):
         obj = self
@@ -151,7 +152,7 @@ class TestTemplate(unittest.TestCase):
         eq(s.safe_substitute(who='tim', what='ham'), 'tim likes ham')
         eq(s.safe_substitute(dict(who='tim'), what='ham'), 'tim likes ham')
         eq(s.safe_substitute(dict(who='fred', what='kung pao'),
-                        who='tim', what='ham'),
+                             who='tim', what='ham'),
            'tim likes ham')
         s = Template('the mapping is $mapping')
         eq(s.safe_substitute(dict(foo='none'), mapping='bozo'),
@@ -165,6 +166,7 @@ class TestTemplate(unittest.TestCase):
     def test_delimiter_override(self):
         eq = self.assertEqual
         raises = self.assertRaises
+
         class AmpersandTemplate(Template):
             delimiter = '&'
         s = AmpersandTemplate('this &gift is for &{who} &&')
@@ -185,7 +187,7 @@ class TestTemplate(unittest.TestCase):
 
 def test_main():
     from test import test_support
-    test_classes = [TestTemplate,]
+    test_classes = [TestTemplate, ]
     test_support.run_unittest(*test_classes)
 
 

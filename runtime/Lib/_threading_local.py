@@ -145,6 +145,7 @@ __all__ = ["local"]
 # then, so problems introduced by fiddling the order of imports here won't
 # manifest on most boxes.
 
+
 class _localbase(object):
     __slots__ = '_local__key', '_local__args', '_local__lock'
 
@@ -166,6 +167,7 @@ class _localbase(object):
 
         return self
 
+
 def _patch(self):
     key = object.__getattribute__(self, '_local__key')
     d = current_thread().__dict__.get(key)
@@ -182,6 +184,7 @@ def _patch(self):
             cls.__init__(self, *args, **kw)
     else:
         object.__setattr__(self, '__dict__', d)
+
 
 class local(_localbase):
 
@@ -229,7 +232,7 @@ class local(_localbase):
             # We use the non-locking API since we might already hold the lock
             # (__del__ can be called at any point by the cyclic GC).
             threads = threading._enumerate()
-        except:
+        except BaseException:
             # If enumerating the current threads fails, as it seems to do
             # during shutdown, we'll skip cleanup under the assumption
             # that there is nothing to clean up.
@@ -246,6 +249,7 @@ class local(_localbase):
                 try:
                     del __dict__[key]
                 except KeyError:
-                    pass # didn't have anything in this thread
+                    pass  # didn't have anything in this thread
+
 
 from threading import current_thread, RLock

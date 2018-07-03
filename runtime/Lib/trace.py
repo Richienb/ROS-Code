@@ -80,6 +80,7 @@ else:
         sys.settrace(None)
         threading.settrace(None)
 
+
 def usage(outfile):
     outfile.write("""Usage: %s [OPTIONS] <file> [ARGS]
 
@@ -125,18 +126,20 @@ Filters, may be repeated multiple times:
                       directories can be joined by os.pathsep).
 """ % sys.argv[0])
 
+
 PRAGMA_NOCOVER = "#pragma NO COVER"
 
 # Simple rx to find lines with no code.
 rx_blank = re.compile(r'^\s*(#.*)?$')
 
+
 class Ignore:
-    def __init__(self, modules = None, dirs = None):
+    def __init__(self, modules=None, dirs=None):
         self._mods = modules or []
         self._dirs = dirs or []
 
         self._dirs = map(os.path.normpath, self._dirs)
-        self._ignore = { '<string>': 1 }
+        self._ignore = {'<string>': 1}
 
     def names(self, filename, modulename):
         if modulename in self._ignore:
@@ -183,12 +186,14 @@ class Ignore:
         self._ignore[modulename] = 0
         return 0
 
+
 def modname(path):
     """Return a plausible module name for the patch."""
 
     base = os.path.basename(path)
     filename, ext = os.path.splitext(base)
     return filename
+
 
 def fullmodname(path):
     """Return a plausible module name for the path."""
@@ -218,13 +223,14 @@ def fullmodname(path):
     filename, ext = os.path.splitext(base)
     return filename.lstrip(".")
 
+
 class CoverageResults:
     def __init__(self, counts=None, calledfuncs=None, infile=None,
                  callers=None, outfile=None):
         self.counts = counts
         if self.counts is None:
             self.counts = {}
-        self.counter = self.counts.copy() # map (filename, lineno) to count
+        self.counter = self.counts.copy()  # map (filename, lineno) to count
         self.calledfuncs = calledfuncs
         if self.calledfuncs is None:
             self.calledfuncs = {}
@@ -239,9 +245,9 @@ class CoverageResults:
             # Try to merge existing counts file.
             try:
                 counts, calledfuncs, callers = \
-                        pickle.load(open(self.infile, 'rb'))
+                    pickle.load(open(self.infile, 'rb'))
                 self.update(self.__class__(counts, calledfuncs, callers))
-            except (IOError, EOFError, ValueError), err:
+            except (IOError, EOFError, ValueError) as err:
                 print >> sys.stderr, ("Skipping counts file %r: %s"
                                       % (self.infile, err))
 
@@ -270,17 +276,15 @@ class CoverageResults:
         if self.calledfuncs:
             print
             print "functions called:"
-            calls = self.calledfuncs.keys()
-            calls.sort()
+            calls = sorted(self.calledfuncs.keys())
             for filename, modulename, funcname in calls:
-                print ("filename: %s, modulename: %s, funcname: %s"
-                       % (filename, modulename, funcname))
+                print("filename: %s, modulename: %s, funcname: %s"
+                      % (filename, modulename, funcname))
 
         if self.callers:
             print
             print "calling relationships:"
-            calls = self.callers.keys()
-            calls.sort()
+            calls = sorted(self.callers.keys())
             lastfile = lastcfile = ""
             for ((pfile, pmod, pfunc), (cfile, cmod, cfunc)) in calls:
                 if pfile != lastfile:
@@ -339,8 +343,7 @@ class CoverageResults:
                 sums[modulename] = n_lines, percent, modulename, filename
 
         if summary and sums:
-            mods = sums.keys()
-            mods.sort()
+            mods = sorted(sums.keys())
             print "lines   cov%   module   (path)"
             for m in mods:
                 n_lines, percent, modulename, filename = sums[m]
@@ -351,7 +354,7 @@ class CoverageResults:
             try:
                 pickle.dump((self.counts, self.calledfuncs, self.callers),
                             open(self.outfile, 'wb'), 1)
-            except IOError, err:
+            except IOError as err:
                 print >> sys.stderr, "Can't save counts files because %s" % err
 
     def write_results_file(self, path, lines, lnotab, lines_hit):
@@ -359,7 +362,7 @@ class CoverageResults:
 
         try:
             outfile = open(path, "w")
-        except IOError, err:
+        except IOError as err:
             print >> sys.stderr, ("trace: Could not open %r for writing: %s"
                                   "- skipping" % (path, err))
             return 0, 0
@@ -380,7 +383,7 @@ class CoverageResults:
                 # lines preceded by no marks weren't hit
                 # Highlight them if so indicated, unless the line contains
                 # #pragma: NO COVER
-                if lineno in lnotab and not PRAGMA_NOCOVER in lines[i]:
+                if lineno in lnotab and PRAGMA_NOCOVER not in lines[i]:
                     outfile.write(">>>>>> ")
                     n_lines += 1
                 else:
@@ -389,6 +392,7 @@ class CoverageResults:
         outfile.close()
 
         return n_hits, n_lines
+
 
 def find_lines_from_code(code, strs):
     """Return dict where keys are lines in the line number table."""
@@ -399,6 +403,7 @@ def find_lines_from_code(code, strs):
             linenos[lineno] = 1
 
     return linenos
+
 
 def find_lines(code, strs):
     """Return lineno dict for all code objects reachable from code."""
@@ -411,6 +416,7 @@ def find_lines(code, strs):
             # find another code object, so recurse into it
             linenos.update(find_lines(c, strs))
     return linenos
+
 
 def find_strings(filename):
     """Return a dict of possible docstring positions.
@@ -435,17 +441,19 @@ def find_strings(filename):
     f.close()
     return d
 
+
 def find_executable_linenos(filename):
     """Return dict where keys are line numbers in the line number table."""
     try:
         prog = open(filename, "rU").read()
-    except IOError, err:
+    except IOError as err:
         print >> sys.stderr, ("Not printing coverage data for %r: %s"
                               % (filename, err))
         return {}
     code = compile(prog, filename, "exec")
     strs = find_strings(filename)
     return find_lines(code, strs)
+
 
 class Trace:
     def __init__(self, count=1, trace=1, countfuncs=0, countcallers=0,
@@ -472,8 +480,8 @@ class Trace:
         self.outfile = outfile
         self.ignore = Ignore(ignoremods, ignoredirs)
         self.counts = {}   # keys are (filename, linenumber)
-        self.blabbed = {} # for debugging
-        self.pathtobasename = {} # for memoizing os.path.basename
+        self.blabbed = {}  # for debugging
+        self.pathtobasename = {}  # for memoizing os.path.basename
         self.donothing = 0
         self.trace = trace
         self._calledfuncs = {}
@@ -505,8 +513,10 @@ class Trace:
         self.runctx(cmd, dict, dict)
 
     def runctx(self, cmd, globals=None, locals=None):
-        if globals is None: globals = {}
-        if locals is None: locals = {}
+        if globals is None:
+            globals = {}
+        if locals is None:
+            locals = {}
         if not self.donothing:
             _settrace(self.globaltrace)
         try:
@@ -541,19 +551,19 @@ class Trace:
                 clsname = self._caller_cache[code]
         else:
             self._caller_cache[code] = None
-            ## use of gc.get_referrers() was suggested by Michael Hudson
+            # use of gc.get_referrers() was suggested by Michael Hudson
             # all functions which refer to this code object
             funcs = [f for f in gc.get_referrers(code)
-                         if inspect.isfunction(f)]
+                     if inspect.isfunction(f)]
             # require len(func) == 1 to avoid ambiguity caused by calls to
             # new.function(): "In the face of ambiguity, refuse the
             # temptation to guess."
             if len(funcs) == 1:
                 dicts = [d for d in gc.get_referrers(funcs[0])
-                             if isinstance(d, dict)]
+                         if isinstance(d, dict)]
                 if len(dicts) == 1:
                     classes = [c for c in gc.get_referrers(dicts[0])
-                                   if hasattr(c, "__bases__")]
+                               if hasattr(c, "__bases__")]
                     if len(classes) == 1:
                         # ditto for new.classobj()
                         clsname = classes[0].__name__
@@ -604,8 +614,8 @@ class Trace:
                     ignore_it = self.ignore.names(filename, modulename)
                     if not ignore_it:
                         if self.trace:
-                            print (" --- modulename: %s, funcname: %s"
-                                   % (modulename, code.co_name))
+                            print(" --- modulename: %s, funcname: %s"
+                                  % (modulename, code.co_name))
                         return self.localtrace
             else:
                 return None
@@ -652,9 +662,11 @@ class Trace:
                                calledfuncs=self._calledfuncs,
                                callers=self._callers)
 
+
 def _err_exit(msg):
     sys.stderr.write("%s: %s\n" % (sys.argv[0], msg))
     sys.exit(1)
+
 
 def main(argv=None):
     import getopt
@@ -670,7 +682,7 @@ def main(argv=None):
                                          "coverdir=", "listfuncs",
                                          "trackcalls", "timing"])
 
-    except getopt.error, msg:
+    except getopt.error as msg:
         sys.stderr.write("%s: %s\n" % (sys.argv[0], msg))
         sys.stderr.write("Try `%s --help' for more information\n"
                          % sys.argv[0])
@@ -805,7 +817,7 @@ def main(argv=None):
                 '__cached__': None,
             }
             t.runctx(code, globs, globs)
-        except IOError, err:
+        except IOError as err:
             _err_exit("Cannot run file %r because: %s" % (sys.argv[0], err))
         except SystemExit:
             pass
@@ -815,5 +827,6 @@ def main(argv=None):
         if not no_report:
             results.write_results(missing, summary=summary, coverdir=coverdir)
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()

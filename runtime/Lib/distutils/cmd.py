@@ -6,10 +6,13 @@ in the distutils.command package.
 
 __revision__ = "$Id$"
 
-import sys, os, re
+import sys
+import os
+import re
 from distutils.errors import DistutilsOptionError
 from distutils import util, dir_util, file_util, archive_util, dep_util
 from distutils import log
+
 
 class Command:
     """Abstract base class for defining command classes, the "worker bees"
@@ -43,7 +46,6 @@ class Command:
     # defined.  The canonical example is the "install" command.
     sub_commands = []
 
-
     # -- Creation/initialization methods -------------------------------
 
     def __init__(self, dist):
@@ -56,9 +58,9 @@ class Command:
         from distutils.dist import Distribution
 
         if not isinstance(dist, Distribution):
-            raise TypeError, "dist must be a Distribution instance"
+            raise TypeError("dist must be a Distribution instance")
         if self.__class__ is Command:
-            raise RuntimeError, "Command is an abstract class"
+            raise RuntimeError("Command is an abstract class")
 
         self.distribution = dist
         self.initialize_options()
@@ -102,7 +104,7 @@ class Command:
             else:
                 return myval
         else:
-            raise AttributeError, attr
+            raise AttributeError(attr)
 
     def ensure_finalized(self):
         if not self.finalized:
@@ -132,8 +134,9 @@ class Command:
 
         This method must be implemented by all command classes.
         """
-        raise RuntimeError, \
-              "abstract method -- subclass %s must override" % self.__class__
+        raise RuntimeError(
+            "abstract method -- subclass %s must override" %
+            self.__class__)
 
     def finalize_options(self):
         """Set final values for all the options that this command supports.
@@ -146,9 +149,9 @@ class Command:
 
         This method must be implemented by all command classes.
         """
-        raise RuntimeError, \
-              "abstract method -- subclass %s must override" % self.__class__
-
+        raise RuntimeError(
+            "abstract method -- subclass %s must override" %
+            self.__class__)
 
     def dump_options(self, header=None, indent=""):
         from distutils.fancy_getopt import longopt_xlate
@@ -174,8 +177,9 @@ class Command:
 
         This method must be implemented by all command classes.
         """
-        raise RuntimeError, \
-              "abstract method -- subclass %s must override" % self.__class__
+        raise RuntimeError(
+            "abstract method -- subclass %s must override" %
+            self.__class__)
 
     def announce(self, msg, level=1):
         """If the current verbosity level is of greater than or equal to
@@ -191,7 +195,6 @@ class Command:
         if DEBUG:
             print msg
             sys.stdout.flush()
-
 
     # -- Option validation methods -------------------------------------
     # (these are very handy in writing the 'finalize_options()' method)
@@ -212,8 +215,9 @@ class Command:
             setattr(self, option, default)
             return default
         elif not isinstance(val, str):
-            raise DistutilsOptionError, \
-                  "'%s' must be a %s (got `%s`)" % (option, what, val)
+            raise DistutilsOptionError(
+                "'%s' must be a %s (got `%s`)" %
+                (option, what, val))
         return val
 
     def ensure_string(self, option, default=None):
@@ -245,17 +249,17 @@ class Command:
                 ok = 0
 
             if not ok:
-                raise DistutilsOptionError, \
-                    "'%s' must be a list of strings (got %r)" % \
-                        (option, val)
-
+                raise DistutilsOptionError(
+                    "'%s' must be a list of strings (got %r)" %
+                    (option, val))
 
     def _ensure_tested_string(self, option, tester,
                               what, error_fmt, default=None):
         val = self._ensure_stringlike(option, what, default)
         if val is not None and not tester(val):
-            raise DistutilsOptionError, \
-                  ("error in '%s' option: " + error_fmt) % (option, val)
+            raise DistutilsOptionError(
+                ("error in '%s' option: " + error_fmt) %
+                (option, val))
 
     def ensure_filename(self, option):
         """Ensure that 'option' is the name of an existing file."""
@@ -267,7 +271,6 @@ class Command:
         self._ensure_tested_string(option, os.path.isdir,
                                    "directory name",
                                    "'%s' does not exist or is not a directory")
-
 
     # -- Convenience methods for commands ------------------------------
 
@@ -300,7 +303,6 @@ class Command:
             if getattr(self, dst_option) is None:
                 setattr(self, dst_option,
                         getattr(src_cmd_obj, src_option))
-
 
     def get_finalized_command(self, command, create=1):
         """Wrapper around Distribution's 'get_command_obj()' method: find
@@ -338,21 +340,20 @@ class Command:
                 commands.append(cmd_name)
         return commands
 
-
     # -- External world manipulation -----------------------------------
 
     def warn(self, msg):
         log.warn("warning: %s: %s\n" %
-                (self.get_command_name(), msg))
+                 (self.get_command_name(), msg))
 
     def execute(self, func, args, msg=None, level=1):
         util.execute(func, args, msg, dry_run=self.dry_run)
 
-    def mkpath(self, name, mode=0777):
+    def mkpath(self, name, mode=0o777):
         dir_util.mkpath(name, mode, dry_run=self.dry_run)
 
     def copy_file(self, infile, outfile,
-                   preserve_mode=1, preserve_times=1, link=None, level=1):
+                  preserve_mode=1, preserve_times=1, link=None, level=1):
         """Copy a file respecting verbose, dry-run and force flags.  (The
         former two default to whatever is in the Distribution object, and
         the latter defaults to false for commands that don't define it.)"""
@@ -365,25 +366,25 @@ class Command:
             dry_run=self.dry_run)
 
     def copy_tree(self, infile, outfile,
-                   preserve_mode=1, preserve_times=1, preserve_symlinks=0,
-                   level=1):
+                  preserve_mode=1, preserve_times=1, preserve_symlinks=0,
+                  level=1):
         """Copy an entire directory tree respecting verbose, dry-run,
         and force flags.
         """
         return dir_util.copy_tree(
             infile, outfile,
-            preserve_mode,preserve_times,preserve_symlinks,
+            preserve_mode, preserve_times, preserve_symlinks,
             not self.force,
             dry_run=self.dry_run)
 
-    def move_file (self, src, dst, level=1):
+    def move_file(self, src, dst, level=1):
         """Move a file respecting dry-run flag."""
-        return file_util.move_file(src, dst, dry_run = self.dry_run)
+        return file_util.move_file(src, dst, dry_run=self.dry_run)
 
-    def spawn (self, cmd, search_path=1, level=1):
+    def spawn(self, cmd, search_path=1, level=1):
         """Spawn an external command respecting dry-run flag."""
         from distutils.spawn import spawn
-        spawn(cmd, search_path, dry_run= self.dry_run)
+        spawn(cmd, search_path, dry_run=self.dry_run)
 
     def make_archive(self, base_name, format, root_dir=None, base_dir=None,
                      owner=None, group=None):
@@ -408,8 +409,8 @@ class Command:
         if isinstance(infiles, str):
             infiles = (infiles,)
         elif not isinstance(infiles, (list, tuple)):
-            raise TypeError, \
-                  "'infiles' must be a string, or a list or tuple of strings"
+            raise TypeError(
+                "'infiles' must be a string, or a list or tuple of strings")
 
         if exec_msg is None:
             exec_msg = "generating %s from %s" % \
@@ -430,6 +431,7 @@ class Command:
 # still be useful for 'install_headers', though, so I'm keeping it around
 # for the time being.
 
+
 class install_misc(Command):
     """Common base class for installing some files in a subdirectory.
     Currently used by install_data and install_scripts.
@@ -437,7 +439,7 @@ class install_misc(Command):
 
     user_options = [('install-dir=', 'd', "directory to install the files to")]
 
-    def initialize_options (self):
+    def initialize_options(self):
         self.install_dir = None
         self.outfiles = []
 

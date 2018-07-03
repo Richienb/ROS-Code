@@ -13,12 +13,15 @@ from StringIO import StringIO
 from test import test_support
 from java.lang import StringBuilder
 
+
 class UnicodeTestCase(unittest.TestCase):
 
     def test_simplejson_plane_bug(self):
         # a bug exposed by simplejson: unicode __add__ was always
         # forcing the basic plane
-        chunker = re.compile(r'(.*?)(["\\\x00-\x1f])', re.VERBOSE | re.MULTILINE | re.DOTALL)
+        chunker = re.compile(
+            r'(.*?)(["\\\x00-\x1f])',
+            re.VERBOSE | re.MULTILINE | re.DOTALL)
         orig = u'z\U0001d120x'
         quoted1 = u'"z\U0001d120x"'
         quoted2 = '"' + orig + '"'
@@ -74,10 +77,13 @@ class UnicodeTestCase(unittest.TestCase):
     def test_raw_unicode_escape(self):
         foo = u'\U00100000'
         self.assertEqual(foo.encode('raw_unicode_escape'), '\\U00100000')
-        self.assertEqual(foo.encode('raw_unicode_escape').decode('raw_unicode_escape'),
-                         foo)
+        self.assertEqual(
+            foo.encode('raw_unicode_escape').decode('raw_unicode_escape'), foo)
         for bar in '\\u', '\\u000', '\\U00000':
-            self.assertRaises(UnicodeDecodeError, bar.decode, 'raw_unicode_escape')
+            self.assertRaises(
+                UnicodeDecodeError,
+                bar.decode,
+                'raw_unicode_escape')
 
     def test_encode_decimal(self):
         self.assertEqual(int(u'\u0039\u0032'), 92)
@@ -85,7 +91,7 @@ class UnicodeTestCase(unittest.TestCase):
         self.assertEqual(int(u' \u001F\u0966\u096F\u0039'), 99)
         self.assertEqual(long(u'\u0663'), 3)
         self.assertEqual(float(u'\u0663.\u0661'), 3.1)
-        self.assertEqual(complex(u'\u0663.\u0661'), 3.1+0j)
+        self.assertEqual(complex(u'\u0663.\u0661'), 3.1 + 0j)
 
     def test_unstateful_end_of_data(self):
         # http://bugs.jython.org/issue1368
@@ -114,8 +120,8 @@ class UnicodeTestCase(unittest.TestCase):
         self.assertRaises(ValueError, unichr, 0xdfff)
 
     def test_concat(self):
-        self.assertRaises(UnicodeDecodeError, lambda : u'' + '毛泽东')
-        self.assertRaises(UnicodeDecodeError, lambda : '毛泽东' + u'')
+        self.assertRaises(UnicodeDecodeError, lambda: u'' + '毛泽东')
+        self.assertRaises(UnicodeDecodeError, lambda: '毛泽东' + u'')
 
     def test_join(self):
         self.assertRaises(UnicodeDecodeError, u''.join, ['foo', '毛泽东'])
@@ -128,12 +134,17 @@ class UnicodeTestCase(unittest.TestCase):
         try:
             EURO_SIGN.encode()
         except UnicodeEncodeError:
-            # This default encoding can't handle the encoding the Euro sign.  Skip the test
+            # This default encoding can't handle the encoding the Euro sign.
+            # Skip the test
             return
 
         f = open(test_support.TESTFN, "w")
-        self.assertRaises(UnicodeEncodeError, f, write, EURO_SIGN,
-                "Shouldn't be able to write out a Euro sign without first encoding")
+        self.assertRaises(
+            UnicodeEncodeError,
+            f,
+            write,
+            EURO_SIGN,
+            "Shouldn't be able to write out a Euro sign without first encoding")
         f.close()
 
         f = open(test_support.TESTFN, "w")
@@ -168,7 +179,7 @@ class UnicodeMaterial(object):
 
     base = tuple(u'abcdefghijklmnopqrstuvwxyz')
     supp = tuple(map(unichr, range(0x10000, 0x1000c)))
-    used = sorted(set(base+supp))
+    used = sorted(set(base + supp))
 
     def __init__(self, size=20, pred=None, ran=None):
         ''' Create size chars choosing an SP char at i where
@@ -187,7 +198,7 @@ class UnicodeMaterial(object):
         self.random = ran
 
         if pred is None:
-            pred = lambda ran, j : ran.random() < DEFAULT_RATE
+            def pred(ran, j): return ran.random() < DEFAULT_RATE
 
         # Generate the list
         r = list()
@@ -212,13 +223,13 @@ class UnicodeMaterial(object):
             that would make the material any longer
         '''
         if p is None:
-            p = max(0, (self.size-len(target)) // 2)
+            p = max(0, (self.size - len(target)) // 2)
 
         n = 0
         for t in target:
-            if p+n >= self.size:
-                break;
-            self.ref[p+n] = t
+            if p + n >= self.size:
+                break
+            self.ref[p + n] = t
             n += 1
 
         self.target = target[:n]
@@ -267,7 +278,6 @@ class UnicodeIndexMixTest(unittest.TestCase):
 
         self.material = mat
 
-
     def test_getitem(self):
         # Test map from to code point index to internal representation
         # Fails in Jython 2.7b3
@@ -289,8 +299,8 @@ class UnicodeIndexMixTest(unittest.TestCase):
             n = 1
             while n <= m.size:
                 for i in range(m.size - n):
-                    exp = u''.join(m.ref[i:i+n])
-                    self.assertEqual(m.text[i:i+n], exp)
+                    exp = u''.join(m.ref[i:i + n])
+                    self.assertEqual(m.text[i:i + n], exp)
                 n *= 3
 
         for m in self.material:
@@ -307,7 +317,8 @@ class UnicodeIndexMixTest(unittest.TestCase):
                 u = m.text
                 while start < m.size:
                     i = u.find(c, start)
-                    if i < 0: break
+                    if i < 0:
+                        break
                     self.assertEqual(u[i], c)
                     self.assertGreaterEqual(i, start)
                     start = i + 1
@@ -315,11 +326,11 @@ class UnicodeIndexMixTest(unittest.TestCase):
         def check_find_str(m, t):
             # Check find returns correct index for string target
             i = m.text.find(t)
-            self.assertEqual(list(t), m.ref[i:i+len(t)])
+            self.assertEqual(list(t), m.ref[i:i + len(t)])
 
         targets = [
             u"this",
-            u"ab\U00010041de", 
+            u"ab\U00010041de",
             u"\U00010041\U00010042\U00010042xx",
             u"xx\U00010041\U00010042\U00010043yy",
         ]
@@ -342,7 +353,8 @@ class UnicodeIndexMixTest(unittest.TestCase):
                 u = m.text
                 while True:
                     i = u.rfind(c, 0, end)
-                    if i < 0: break
+                    if i < 0:
+                        break
                     self.assertLess(i, end)
                     self.assertEqual(u[i], c)
                     end = i
@@ -350,11 +362,11 @@ class UnicodeIndexMixTest(unittest.TestCase):
         def check_rfind_str(m, t):
             # Check rfind returns correct index for string target
             i = m.text.rfind(t)
-            self.assertEqual(list(t), m.ref[i:i+len(t)])
+            self.assertEqual(list(t), m.ref[i:i + len(t)])
 
         targets = [
             u"this",
-            u"ab\U00010041de", 
+            u"ab\U00010041de",
             u"\U00010041\U00010042\U00010042xx",
             u"xx\U00010041\U00010042\U00010043yy",
         ]
@@ -393,13 +405,13 @@ class UnicodeIndexMixTest(unittest.TestCase):
                 # Java StringBuilder with two private-use characters:
                 sb = insert_sb(mat.text, 0xe000, 0xf000)
                 # Check this is acceptable
-                #print repr(unicode(sb))
-                self.assertEqual(len(unicode(sb)), len(mat)+2)
+                # print repr(unicode(sb))
+                self.assertEqual(len(unicode(sb)), len(mat) + 2)
 
                 # Java StringBuilder with private-use and lone surrogate:
                 sb = insert_sb(mat.text, 0xe000, surr)
                 # Check this is detected
-                #print repr(unicode(sb))
+                # print repr(unicode(sb))
                 self.assertRaises(ValueError, unicode, sb)
 
 
@@ -407,6 +419,7 @@ class UnicodeFormatTestCase(unittest.TestCase):
 
     def test_unicode_mapping(self):
         assertTrue = self.assertTrue
+
         class EnsureUnicode(dict):
             def __missing__(self, key):
                 assertTrue(isinstance(key, unicode))
@@ -503,12 +516,14 @@ class UnicodeFormatStrTest(unittest.TestCase):
         class C:
             def __init__(self, x=100):
                 self._x = x
+
             def __format__(self, spec):
                 return spec
 
         class D:
             def __init__(self, x):
                 self.x = x
+
             def __format__(self, spec):
                 return str(self.x)
 
@@ -516,6 +531,7 @@ class UnicodeFormatStrTest(unittest.TestCase):
         class E:
             def __init__(self, x):
                 self.x = x
+
             def __str__(self):
                 return 'E(' + self.x + ')'
 
@@ -523,6 +539,7 @@ class UnicodeFormatStrTest(unittest.TestCase):
         class F:
             def __init__(self, x):
                 self.x = x
+
             def __repr__(self):
                 return 'F(' + self.x + ')'
 
@@ -530,8 +547,10 @@ class UnicodeFormatStrTest(unittest.TestCase):
         class G:
             def __init__(self, x):
                 self.x = x
+
             def __str__(self):
                 return "string is " + self.x
+
             def __format__(self, format_spec):
                 if format_spec == 'd':
                     return 'G(' + self.x + ')'
@@ -549,7 +568,6 @@ class UnicodeFormatStrTest(unittest.TestCase):
         class J(int):
             def __format__(self, format_spec):
                 return int.__format__(self * 2, format_spec)
-
 
         self.assertEqual(u''.format(), '')
         self.assertEqual(u'abc'.format(), 'abc')
@@ -575,9 +593,9 @@ class UnicodeFormatStrTest(unittest.TestCase):
         self.assertEqual(u'}}x{{'.format(), '}x{')
 
         # weird field names
-        self.assertEqual(u"{0[foo-bar]}".format({'foo-bar':'baz'}), 'baz')
-        self.assertEqual(u"{0[foo bar]}".format({'foo bar':'baz'}), 'baz')
-        self.assertEqual(u"{0[ ]}".format({' ':3}), '3')
+        self.assertEqual(u"{0[foo-bar]}".format({'foo-bar': 'baz'}), 'baz')
+        self.assertEqual(u"{0[foo bar]}".format({'foo bar': 'baz'}), 'baz')
+        self.assertEqual(u"{0[ ]}".format({' ': 3}), '3')
 
         self.assertEqual(u'{foo._x}'.format(foo=C(20)), '20')
         self.assertEqual(u'{1}{0}'.format(D(10), D(20)), '2010')
@@ -587,7 +605,8 @@ class UnicodeFormatStrTest(unittest.TestCase):
         self.assertEqual(u'{0[1][0]}'.format(['abc', ['def']]), 'def')
         self.assertEqual(u'{0[1][0].x}'.format(['abc', [D('def')]]), 'def')
 
-        self.assertIsInstance(u'{0[1][0].x}'.format(['abc', [D('def')]]), unicode)
+        self.assertIsInstance(u'{0[1][0].x}'.format(
+            ['abc', [D('def')]]), unicode)
 
         # strings
         self.assertEqual(u'{0:.3s}'.format('abc'), 'abc')
@@ -640,16 +659,15 @@ class UnicodeFormatStrTest(unittest.TestCase):
             self.assertEqual(u'{0:^10s}'.format(E('data')), ' E(data)  ')
             self.assertEqual(u'{0:>15s}'.format(G('data')), ' string is data')
 
-        #FIXME: not supported in Jython yet:
+        # FIXME: not supported in Jython yet:
         if not test_support.is_jython:
             self.assertEqual(u"{0:date: %Y-%m-%d}".format(I(year=2007,
-                                                           month=8,
-                                                           day=27)),
+                                                            month=8,
+                                                            day=27)),
                              "date: 2007-08-27")
 
             # test deriving from a builtin type and overriding __format__
             self.assertEqual(u"{0}".format(J(10)), "20")
-
 
         # string format specifiers
         self.assertEqual(u'{0:}'.format('a'), 'a')
@@ -657,11 +675,30 @@ class UnicodeFormatStrTest(unittest.TestCase):
         # computed format specifiers
         self.assertEqual(u"{0:.{1}}".format('hello world', 5), 'hello')
         self.assertEqual(u"{0:.{1}s}".format('hello world', 5), 'hello')
-        self.assertEqual(u"{0:.{precision}s}".format('hello world', precision=5), 'hello')
-        self.assertEqual(u"{0:{width}.{precision}s}".format('hello world', width=10, precision=5), 'hello     ')
-        self.assertEqual(u"{0:{width}.{precision}s}".format('hello world', width='10', precision='5'), 'hello     ')
+        self.assertEqual(
+            u"{0:.{precision}s}".format(
+                'hello world',
+                precision=5),
+            'hello')
+        self.assertEqual(
+            u"{0:{width}.{precision}s}".format(
+                'hello world',
+                width=10,
+                precision=5),
+            'hello     ')
+        self.assertEqual(
+            u"{0:{width}.{precision}s}".format(
+                'hello world',
+                width='10',
+                precision='5'),
+            'hello     ')
 
-        self.assertIsInstance(u"{0:{width}.{precision}s}".format('hello world', width='10', precision='5'), unicode)
+        self.assertIsInstance(
+            u"{0:{width}.{precision}s}".format(
+                'hello world',
+                width='10',
+                precision='5'),
+            unicode)
 
         # test various errors
         self.assertRaises(ValueError, u'{'.format)
@@ -672,7 +709,7 @@ class UnicodeFormatStrTest(unittest.TestCase):
         self.assertRaises(ValueError, u'}a'.format)
         self.assertRaises(IndexError, u'{0}'.format)
         self.assertRaises(IndexError, u'{1}'.format, u'abc')
-        self.assertRaises(KeyError,   u'{x}'.format)
+        self.assertRaises(KeyError, u'{x}'.format)
         self.assertRaises(ValueError, u"}{".format)
         self.assertRaises(ValueError, u"{".format)
         self.assertRaises(ValueError, u"}".format)
@@ -682,15 +719,15 @@ class UnicodeFormatStrTest(unittest.TestCase):
         self.assertRaises(ValueError, u"{0.}".format, 0)
         self.assertRaises(IndexError, u"{0[}".format)
         self.assertRaises(ValueError, u"{0[}".format, [])
-        self.assertRaises(KeyError,   u"{0]}".format)
+        self.assertRaises(KeyError, u"{0]}".format)
         self.assertRaises(ValueError, u"{0.[]}".format, 0)
         self.assertRaises(ValueError, u"{0..foo}".format, 0)
         self.assertRaises(ValueError, u"{0[0}".format, 0)
         self.assertRaises(ValueError, u"{0[0:foo}".format, 0)
-        self.assertRaises(KeyError,   u"{c]}".format)
+        self.assertRaises(KeyError, u"{c]}".format)
         self.assertRaises(ValueError, u"{{ {{{0}}".format, 0)
         self.assertRaises(ValueError, u"{0}}".format, 0)
-        self.assertRaises(KeyError,   u"{foo}".format, bar=3)
+        self.assertRaises(KeyError, u"{foo}".format, bar=3)
         self.assertRaises(ValueError, u"{0!x}".format, 3)
         self.assertRaises(ValueError, u"{0!}".format, 0)
         self.assertRaises(ValueError, u"{0!rs}".format, 0)
@@ -720,6 +757,7 @@ class UnicodeFormatStrTest(unittest.TestCase):
         class C:
             def __init__(self, x=100):
                 self._x = x
+
             def __format__(self, spec):
                 return spec
 
@@ -728,7 +766,7 @@ class UnicodeFormatStrTest(unittest.TestCase):
         self.assertEqual(u'{!r}'.format('s'), "'s'")
         self.assertEqual(u'{._x}'.format(C(10)), '10')
         self.assertEqual(u'{[1]}'.format([1, 2]), '2')
-        self.assertEqual(u'{[a]}'.format({'a':4, 'b':2}), '4')
+        self.assertEqual(u'{[a]}'.format({'a': 4, 'b': 2}), '4')
         self.assertEqual(u'a{}b{}c'.format(0, 1), 'a0b1c')
 
         self.assertEqual(u'a{:{}}b'.format('x', '^10'), 'a    x     b')
@@ -759,7 +797,12 @@ class StringModuleUnicodeTest(unittest.TestCase):
         fmt = string.Formatter()
         assertEqualAndUnicode(fmt.format(u"foo"), "foo")
         assertEqualAndUnicode(fmt.format(u"foo{0}", "bar"), "foobar")
-        assertEqualAndUnicode(fmt.format(u"foo{1}{0}-{1}", "bar", 6), "foo6bar-6")
+        assertEqualAndUnicode(
+            fmt.format(
+                u"foo{1}{0}-{1}",
+                "bar",
+                6),
+            "foo6bar-6")
         assertEqualAndUnicode(fmt.format(u"-{arg!r}-", arg='test'), "-'test'-")
 
         # override get_value ############################################
@@ -778,9 +821,10 @@ class StringModuleUnicodeTest(unittest.TestCase):
                 else:
                     string.Formatter.get_value(key, args, kwds)
 
-        fmt = NamespaceFormatter({'greeting':'hello'})
-        assertEqualAndUnicode(fmt.format(u"{greeting}, world!"), 'hello, world!')
-
+        fmt = NamespaceFormatter({'greeting': 'hello'})
+        assertEqualAndUnicode(
+            fmt.format(u"{greeting}, world!"),
+            'hello, world!')
 
         # override format_field #########################################
         class CallFormatter(string.Formatter):
@@ -788,8 +832,11 @@ class StringModuleUnicodeTest(unittest.TestCase):
                 return format(value(), format_spec)
 
         fmt = CallFormatter()
-        assertEqualAndUnicode(fmt.format(u'*{0}*', lambda : 'result'), '*result*')
-
+        assertEqualAndUnicode(
+            fmt.format(
+                u'*{0}*',
+                lambda: 'result'),
+            '*result*')
 
         # override convert_field ########################################
         class XFormatter(string.Formatter):
@@ -799,8 +846,12 @@ class StringModuleUnicodeTest(unittest.TestCase):
                 return super(XFormatter, self).convert_field(value, conversion)
 
         fmt = XFormatter()
-        assertEqualAndUnicode(fmt.format(u"{0!r}:{0!x}", 'foo', 'foo'), "'foo':None")
-
+        assertEqualAndUnicode(
+            fmt.format(
+                u"{0!r}:{0!x}",
+                'foo',
+                'foo'),
+            "'foo':None")
 
         # override parse ################################################
         class BarFormatter(string.Formatter):
@@ -816,7 +867,11 @@ class StringModuleUnicodeTest(unittest.TestCase):
                         yield field, None, None, None
 
         fmt = BarFormatter()
-        assertEqualAndUnicode(fmt.format(u'*|+0:^10s|*', 'foo'), '*   foo    *')
+        assertEqualAndUnicode(
+            fmt.format(
+                u'*|+0:^10s|*',
+                'foo'),
+            '*   foo    *')
 
         # test all parameters used
         class CheckAllUsedFormatter(string.Formatter):
@@ -840,7 +895,14 @@ class StringModuleUnicodeTest(unittest.TestCase):
         self.assertEqual(fmt.format(u"{0}", 10), "10")
         self.assertEqual(fmt.format(u"{0}{i}", 10, i=100), "10100")
         self.assertEqual(fmt.format(u"{0}{i}{1}", 10, 20, i=100), "1010020")
-        self.assertRaises(ValueError, fmt.format, u"{0}{i}{1}", 10, 20, i=100, j=0)
+        self.assertRaises(
+            ValueError,
+            fmt.format,
+            u"{0}{i}{1}",
+            10,
+            20,
+            i=100,
+            j=0)
         self.assertRaises(ValueError, fmt.format, u"{0}", 10, 20)
         self.assertRaises(ValueError, fmt.format, u"{0}", 10, 20, i=100)
         self.assertRaises(ValueError, fmt.format, u"{i}", 10, 20, i=100)
@@ -848,13 +910,13 @@ class StringModuleUnicodeTest(unittest.TestCase):
 
 def test_main():
     test_support.run_unittest(
-                UnicodeTestCase,
-                UnicodeIndexMixTest,
-                UnicodeFormatTestCase,
-                UnicodeStdIOTestCase,
-                UnicodeFormatStrTest,
-                StringModuleUnicodeTest,
-            )
+        UnicodeTestCase,
+        UnicodeIndexMixTest,
+        UnicodeFormatTestCase,
+        UnicodeStdIOTestCase,
+        UnicodeFormatStrTest,
+        StringModuleUnicodeTest,
+    )
 
 
 if __name__ == "__main__":

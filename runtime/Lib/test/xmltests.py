@@ -6,11 +6,13 @@ import test.test_support
 
 test.test_support.verbose = 0
 
+
 def runtest(name):
     __import__(name)
     module = sys.modules[name]
     if hasattr(module, "test_main"):
         module.test_main()
+
 
 runtest("test.test_minidom")
 runtest("test.test_pyexpat")

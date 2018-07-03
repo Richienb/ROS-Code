@@ -46,7 +46,7 @@ class BinASCIITest(unittest.TestCase):
             try:
                 a = b2a(self.type2test(raw))
                 res = a2b(self.type2test(a))
-            except Exception, err:
+            except Exception as err:
                 self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
             if fb == 'b2a_hqx':
                 # b2a_hqx returns a tuple
@@ -64,7 +64,7 @@ class BinASCIITest(unittest.TestCase):
         MAX_BASE64 = 57
         lines = []
         for i in range(0, len(self.rawdata), MAX_BASE64):
-            b = self.type2test(self.rawdata[i:i+MAX_BASE64])
+            b = self.type2test(self.rawdata[i:i + MAX_BASE64])
             a = binascii.b2a_base64(b)
             lines.append(a)
         res = ""
@@ -80,7 +80,7 @@ class BinASCIITest(unittest.TestCase):
         MAX_BASE64 = 57
         lines = []
         for i in range(0, len(self.data), MAX_BASE64):
-            b = self.type2test(self.rawdata[i:i+MAX_BASE64])
+            b = self.type2test(self.rawdata[i:i + MAX_BASE64])
             a = binascii.b2a_base64(b)
             lines.append(a)
 
@@ -90,6 +90,7 @@ class BinASCIITest(unittest.TestCase):
             c = chr(i)
             if c not in valid:
                 fillers += c
+
         def addnoise(line):
             noise = fillers
             ratio = len(line) // len(noise)
@@ -116,7 +117,7 @@ class BinASCIITest(unittest.TestCase):
         MAX_UU = 45
         lines = []
         for i in range(0, len(self.data), MAX_UU):
-            b = self.type2test(self.rawdata[i:i+MAX_UU])
+            b = self.type2test(self.rawdata[i:i + MAX_UU])
             a = binascii.b2a_uu(b)
             lines.append(a)
         res = ""
@@ -126,13 +127,13 @@ class BinASCIITest(unittest.TestCase):
             res += b
         self.assertEqual(res, self.rawdata)
 
-        self.assertEqual(binascii.a2b_uu("\x7f"), "\x00"*31)
-        self.assertEqual(binascii.a2b_uu("\x80"), "\x00"*32)
-        self.assertEqual(binascii.a2b_uu("\xff"), "\x00"*31)
+        self.assertEqual(binascii.a2b_uu("\x7f"), "\x00" * 31)
+        self.assertEqual(binascii.a2b_uu("\x80"), "\x00" * 32)
+        self.assertEqual(binascii.a2b_uu("\xff"), "\x00" * 31)
         self.assertRaises(binascii.Error, binascii.a2b_uu, "\xff\x00")
         self.assertRaises(binascii.Error, binascii.a2b_uu, "!!!!")
 
-        self.assertRaises(binascii.Error, binascii.b2a_uu, 46*"!")
+        self.assertRaises(binascii.Error, binascii.b2a_uu, 46 * "!")
 
         # Issue #7701 (crash on a pydebug build)
         self.assertEqual(binascii.b2a_uu('x'), '!>   \n')
@@ -170,7 +171,7 @@ class BinASCIITest(unittest.TestCase):
     def test_qp(self):
         # A test for SF bug 534347 (segfaults without the proper fix)
         try:
-            binascii.a2b_qp("", **{1:1})
+            binascii.a2b_qp("", **{1: 1})
         except TypeError:
             pass
         else:
@@ -185,14 +186,18 @@ class BinASCIITest(unittest.TestCase):
             "=FF\r\n=FF\r\n=FF"
         )
         self.assertEqual(
-            binascii.b2a_qp("0"*75+"\xff\r\n\xff\r\n\xff"),
-            "0"*75+"=\r\n=FF\r\n=FF\r\n=FF"
+            binascii.b2a_qp("0" * 75 + "\xff\r\n\xff\r\n\xff"),
+            "0" * 75 + "=\r\n=FF\r\n=FF\r\n=FF"
         )
 
         self.assertEqual(binascii.b2a_qp('\0\n'), '=00\n')
         self.assertEqual(binascii.b2a_qp('\0\n', quotetabs=True), '=00\n')
         self.assertEqual(binascii.b2a_qp('foo\tbar\t\n'), 'foo\tbar=09\n')
-        self.assertEqual(binascii.b2a_qp('foo\tbar\t\n', quotetabs=True), 'foo=09bar=09\n')
+        self.assertEqual(
+            binascii.b2a_qp(
+                'foo\tbar\t\n',
+                quotetabs=True),
+            'foo=09bar=09\n')
 
         self.assertEqual(binascii.b2a_qp('.'), '=2E')
         self.assertEqual(binascii.b2a_qp('.\n'), '=2E\n')
@@ -209,7 +214,7 @@ class BinASCIITest(unittest.TestCase):
             f = getattr(binascii, func)
             try:
                 f(empty)
-            except Exception, err:
+            except Exception as err:
                 self.fail("{}({!r}) raises {!r}".format(func, empty, err))
 
 
@@ -231,6 +236,7 @@ def test_main():
                               ArrayBinASCIITest,
                               BytearrayBinASCIITest,
                               MemoryviewBinASCIITest)
+
 
 if __name__ == "__main__":
     test_main()

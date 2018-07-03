@@ -4,6 +4,7 @@ from test import test_support
 from test.pickletester import AbstractPickleTests
 from test.pickletester import AbstractPickleModuleTests
 
+
 class OptimizedPickleTests(AbstractPickleTests, AbstractPickleModuleTests):
 
     def dumps(self, arg, proto=0, fast=0):
@@ -14,6 +15,7 @@ class OptimizedPickleTests(AbstractPickleTests, AbstractPickleModuleTests):
 
     module = pickle
     error = KeyError
+
 
 def test_main():
     test_support.run_unittest(OptimizedPickleTests)

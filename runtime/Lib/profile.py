@@ -34,16 +34,17 @@ __all__ = ["run", "runctx", "help", "Profile"]
 
 # Sample timer for use with
 #i_count = 0
-#def integer_timer():
+# def integer_timer():
 #       global i_count
 #       i_count = i_count + 1
 #       return i_count
-#itimes = integer_timer # replace with C coded timer returning integers
+# itimes = integer_timer # replace with C coded timer returning integers
 
-#**************************************************************************
+# **************************************************************************
 # The following are the static member functions for the profiler class
 # Note that an instance of Profile() is *not* needed to call them.
-#**************************************************************************
+# **************************************************************************
+
 
 def run(statement, filename=None, sort=-1):
     """Run statement under profiler optionally saving results in filename
@@ -66,6 +67,7 @@ def run(statement, filename=None, sort=-1):
     else:
         return prof.print_stats(sort)
 
+
 def runctx(statement, globals, locals, filename=None, sort=-1):
     """Run statement under profiler, supplying your own globals and locals,
     optionally saving results in filename.
@@ -84,9 +86,12 @@ def runctx(statement, globals, locals, filename=None, sort=-1):
         return prof.print_stats(sort)
 
 # Backwards compatibility.
+
+
 def help():
     print "Documentation for the profile module can be found "
     print "in the Python Library Reference, section 'The Python Profiler'."
+
 
 if hasattr(os, "times"):
     def _get_time_times(timer=os.times):
@@ -100,13 +105,16 @@ if hasattr(os, "times"):
 _has_res = 0
 try:
     import resource
-    resgetrusage = lambda: resource.getrusage(resource.RUSAGE_SELF)
+
+    def resgetrusage(): return resource.getrusage(resource.RUSAGE_SELF)
+
     def _get_time_resource(timer=resgetrusage):
         t = timer()
         return t[0] + t[1]
     _has_res = 1
 except ImportError:
     pass
+
 
 class Profile:
     """Profiler class.
@@ -176,7 +184,7 @@ class Profile:
                 self.dispatcher = self.trace_dispatch_i
         else:
             self.timer = timer
-            t = self.timer() # test out timer function
+            t = self.timer()  # test out timer function
             try:
                 length = len(t)
             except TypeError:
@@ -192,6 +200,7 @@ class Profile:
                 # list (for performance).  Note that we can't assume
                 # the timer() result contains two values in all
                 # cases.
+
                 def get_time_timer(timer=timer, sum=sum):
                     return sum(timer())
                 self.get_time = get_time_timer
@@ -208,12 +217,12 @@ class Profile:
         if event == "c_call":
             self.c_func_name = arg.__name__
 
-        if self.dispatch[event](self, frame,t):
+        if self.dispatch[event](self, frame, t):
             t = timer()
             self.t = t[0] + t[1]
         else:
             r = timer()
-            self.t = r[0] + r[1] - t # put back unrecorded delta
+            self.t = r[0] + r[1] - t  # put back unrecorded delta
 
     # Dispatch routine for best timer program (return = scalar, fastest if
     # an integer but float works too -- and time.clock() relies on that).
@@ -235,15 +244,15 @@ class Profile:
 
     def trace_dispatch_mac(self, frame, event, arg):
         timer = self.timer
-        t = timer()/60.0 - self.t - self.bias
+        t = timer() / 60.0 - self.t - self.bias
 
         if event == "c_call":
             self.c_func_name = arg.__name__
 
         if self.dispatch[event](self, frame, t):
-            self.t = timer()/60.0
+            self.t = timer() / 60.0
         else:
-            self.t = timer()/60.0 - t  # put back unrecorded delta
+            self.t = timer() / 60.0 - t  # put back unrecorded delta
 
     # SLOW generic dispatch routine for timer returning lists of numbers
 
@@ -257,7 +266,7 @@ class Profile:
         if self.dispatch[event](self, frame, t):
             self.t = get_time()
         else:
-            self.t = get_time() - t # put back unrecorded delta
+            self.t = get_time() - t  # put back unrecorded delta
 
     # In the event handlers, the first 3 elements of self.cur are unpacked
     # into vrbls w/ 3-letter names.  The last two characters are meant to be
@@ -270,9 +279,8 @@ class Profile:
         rpt, rit, ret, rfn, rframe, rcur = self.cur
         if (rframe is not frame) and rcur:
             return self.trace_dispatch_return(rframe, t)
-        self.cur = rpt, rit+t, ret, rfn, rframe, rcur
+        self.cur = rpt, rit + t, ret, rfn, rframe, rcur
         return 1
-
 
     def trace_dispatch_call(self, frame, t):
         if self.cur and frame.f_back is not self.cur[-2]:
@@ -282,7 +290,7 @@ class Profile:
                                                        rframe, rframe.f_back,
                                                        frame, frame.f_back)
                 self.trace_dispatch_return(rframe, 0)
-                assert (self.cur is None or \
+                assert (self.cur is None or
                         frame.f_back is self.cur[-2]), ("Bad call",
                                                         self.cur[-3])
         fcode = frame.f_code
@@ -296,13 +304,13 @@ class Profile:
             timings[fn] = 0, 0, 0, 0, {}
         return 1
 
-    def trace_dispatch_c_call (self, frame, t):
+    def trace_dispatch_c_call(self, frame, t):
         fn = ("", 0, self.c_func_name)
         self.cur = (t, 0, 0, fn, frame, self.cur)
         timings = self.timings
         if fn in timings:
             cc, ns, tt, ct, callers = timings[fn]
-            timings[fn] = cc, ns+1, tt, ct, callers
+            timings[fn] = cc, ns + 1, tt, ct, callers
         else:
             timings[fn] = 0, 0, 0, 0, {}
         return 1
@@ -344,7 +352,6 @@ class Profile:
 
         return 1
 
-
     dispatch = {
         "call": trace_dispatch_call,
         "exception": trace_dispatch_exception,
@@ -352,8 +359,7 @@ class Profile:
         "c_call": trace_dispatch_c_call,
         "c_exception": trace_dispatch_return,  # the C function returned
         "c_return": trace_dispatch_return,
-        }
-
+    }
 
     # The next few functions play with self.cmd. By carefully preloading
     # our parallel stack, we can force the profiled result to include
@@ -362,7 +368,8 @@ class Profile:
     # very nice :-).
 
     def set_cmd(self, cmd):
-        if self.cur[-1]: return   # already set
+        if self.cur[-1]:
+            return   # already set
         self.cmd = cmd
         self.simulate_call(cmd)
 
@@ -403,11 +410,10 @@ class Profile:
             t = 0
         self.t = get_time() - t
 
-
     def print_stats(self, sort=-1):
         import pstats
         pstats.Stats(self).strip_dirs().sort_stats(sort). \
-                  print_stats()
+            print_stats()
 
     def dump_stats(self, file):
         f = open(file, 'wb')
@@ -427,7 +433,6 @@ class Profile:
             for callcnt in callers.itervalues():
                 nc += callcnt
             self.stats[func] = cc, nc, tt, ct, callers
-
 
     # The following two methods can be called by clients to use
     # a profiler to profile a statement, given as a string.
@@ -455,8 +460,7 @@ class Profile:
         finally:
             sys.setprofile(None)
 
-
-    #******************************************************************
+    # ******************************************************************
     # The following calculates the overhead for using a profiler.  The
     # problem is that it takes a fair amount of time for the profiler
     # to stop the stopwatch (from the time it receives an event).
@@ -494,7 +498,7 @@ class Profile:
     # that this additional feature will slow the heavily optimized
     # event/time ratio (i.e., the profiler would run slower, fur a very
     # low "value added" feature.)
-    #**************************************************************
+    # **************************************************************
 
     def calibrate(self, m, verbose=0):
         if self.__class__ is not Profile:
@@ -569,17 +573,23 @@ class Profile:
             print "mean stopwatch overhead per profile event =", mean
         return mean
 
-#****************************************************************************
+# ****************************************************************************
+
+
 def Stats(*args):
     print 'Report generating functions are in the "pstats" module\a'
+
 
 def main():
     usage = "profile.py [-o output_file_path] [-s sort] scriptfile [arg] ..."
     parser = OptionParser(usage=usage)
     parser.allow_interspersed_args = False
     parser.add_option('-o', '--outfile', dest="outfile",
-        help="Save stats to <outfile>", default=None)
-    parser.add_option('-s', '--sort', dest="sort",
+                      help="Save stats to <outfile>", default=None)
+    parser.add_option(
+        '-s',
+        '--sort',
+        dest="sort",
         help="Sort order when printing to stdout, based on pstats.Stats class",
         default=-1)
 
@@ -604,6 +614,7 @@ def main():
     else:
         parser.print_usage()
     return parser
+
 
 # When invoked as main program, invoke the profiler on a script
 if __name__ == '__main__':

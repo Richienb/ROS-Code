@@ -35,22 +35,23 @@ class whrandom:
     # Without arguments, initialize from current time.
     # With arguments (x, y, z), initialize from them.
     #
-    def __init__(self, x = 0, y = 0, z = 0):
+    def __init__(self, x=0, y=0, z=0):
         self.seed(x, y, z)
     #
     # Set the seed from (x, y, z).
     # These must be integers in the range [0, 256).
     #
-    def seed(self, x = 0, y = 0, z = 0):
+
+    def seed(self, x=0, y=0, z=0):
         if not type(x) == type(y) == type(z) == type(0):
-            raise TypeError, 'seeds must be integers'
+            raise TypeError('seeds must be integers')
         if not (0 <= x < 256 and 0 <= y < 256 and 0 <= z < 256):
-            raise ValueError, 'seeds must be in range(0, 256)'
+            raise ValueError('seeds must be in range(0, 256)')
         if 0 == x == y == z:
             # Initialize from current time
             import time
             t = long(time.time() * 256)
-            t = int((t&0xffffff) ^ (t>>24))
+            t = int((t & 0xffffff) ^ (t >> 24))
             t, x = divmod(t, 256)
             t, y = divmod(t, 256)
             t, z = divmod(t, 256)
@@ -59,6 +60,7 @@ class whrandom:
     #
     # Get the next random number in the range [0.0, 1.0).
     #
+
     def random(self):
         x, y, z = self._seed
         #
@@ -68,20 +70,23 @@ class whrandom:
         #
         self._seed = x, y, z
         #
-        return (x/30269.0 + y/30307.0 + z/30323.0) % 1.0
+        return (x / 30269.0 + y / 30307.0 + z / 30323.0) % 1.0
     #
     # Get a random number in the range [a, b).
     #
+
     def uniform(self, a, b):
-        return a + (b-a) * self.random()
+        return a + (b - a) * self.random()
     #
     # Get a random integer in the range [a, b] including both end points.
     #
+
     def randint(self, a, b):
-        return a + int(self.random() * (b+1-a))
+        return a + int(self.random() * (b + 1 - a))
     #
     # Choose a random element from a non-empty sequence.
     #
+
     def choice(self, seq):
         return seq[int(self.random() * len(seq))]
 

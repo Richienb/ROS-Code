@@ -20,8 +20,11 @@ if not sysconfig.is_python_build():
     # and run the tests in that case too?
     raise unittest.SkipTest('test irrelevant for an installed Python')
 
-basepath = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-                        'Tools')
+basepath = os.path.join(
+    os.path.dirname(
+        os.path.dirname(
+            os.path.dirname(__file__))),
+    'Tools')
 scriptsdir = os.path.join(basepath, 'scripts')
 
 
@@ -46,9 +49,9 @@ class PindentTests(unittest.TestCase):
 
     def pindent(self, source, *args):
         proc = subprocess.Popen(
-                (sys.executable, self.script) + args,
-                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                universal_newlines=True)
+            (sys.executable, self.script) + args,
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            universal_newlines=True)
         out, err = proc.communicate(source)
         self.assertIsNone(err)
         return out
@@ -361,7 +364,7 @@ class PindentTests(unittest.TestCase):
 
 def test_main():
     test_support.run_unittest(*[obj for obj in globals().values()
-                                    if isinstance(obj, type)])
+                                if isinstance(obj, type)])
 
 
 if __name__ == '__main__':
