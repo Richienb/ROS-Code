@@ -28,4 +28,4 @@ utest:
 	autopep8 -i -r -a -a -a $PWD
 	python test_syntax.py
 	pylint $PWD
-	flake8 $PWD
+	flake8 --verbose $PWD
