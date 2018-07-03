@@ -23,8 +23,7 @@ install:
 before_script:
   - autopep8 -v -i -r -a -a -a $PWD/src
   - git add *
-  - git commit -m "Normalised files to follow the PEP8 specification [skip ci]"
-  - git push origin HEAD:master
+  - git diff-index --quiet HEAD || git commit -m "Normalised files to follow the PEP8 specification [skip ci]" && git push origin HEAD:master
   - cd src
 
 script:
