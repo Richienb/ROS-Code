@@ -27,7 +27,7 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-.eggs/ffffffff
+.eggs/
 lib/
 lib64/
 parts/
