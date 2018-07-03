@@ -25,7 +25,11 @@ pipall: requirements.txt
 # Run unit tests
 utest:
 	cd src
+<<<<<<< HEAD
 	autopep8 -i -r -a -a -a $PWD
+=======
+	autopep8 -i -r -a -a $PWD
+>>>>>>> 3be416f81e9063f9f46160756bf717c624e66b6e
 	python test_syntax.py
 	pylint --output-format=text -j 0 $PWD
 	flake8 $PWD
