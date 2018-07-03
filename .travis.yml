@@ -13,12 +13,12 @@ branches:
   - master
 
 before_install:
+  - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
   - git config --global user.email "richiebendall@gmail.com"
   - git config --global user.name "Richienb"
-  
+
 install:
   - pip install -r requirements.txt
-  - git clone https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git ./repo
 
 before_script:
   - cd src
@@ -52,7 +52,7 @@ after_deploy:
      --data '{"purge_everything":true}'
 
 after_success:
-  - cd $TRAVIS_BUILD_DIR/repo/src
+  - cd src
   - autopep8 -v -i -r -a -a -a $PWD
   - git add *
   - git commit -m "Normalised files to follow the PEP8 specification [skip ci]
