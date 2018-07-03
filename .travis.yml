@@ -21,8 +21,11 @@ install:
   - pip install -r requirements.txt
 
 before_script:
-  - cd src
   - autopep8 -v -i -r -a -a -a $PWD
+  - git add *
+  - git commit -m "Normalised files to follow the PEP8 specification [skip ci]
+  - git push
+  - cd src
 
 script:
   - python test_syntax.py
@@ -50,13 +53,6 @@ after_deploy:
      -H "X-Auth-Key: ${cf_api_key}" \
      -H "Content-Type: application/json" \
      --data '{"purge_everything":true}'
-
-after_success:
-  - cd src
-  - autopep8 -v -i -r -a -a -a $PWD
-  - git add *
-  - git commit -m "Normalised files to follow the PEP8 specification [skip ci]
-  - git push
 
 notifications:
   email:          false
