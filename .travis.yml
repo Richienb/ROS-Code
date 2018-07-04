@@ -1,10 +1,10 @@
-sudo:             false
+sudo:              false
 
 cache:
   directories:
   - $TRAVIS_BUILD_DIR/runtime
 
-language:         python
+language:          python
 
 python:
   - 3.6.5
@@ -39,12 +39,12 @@ before_deploy:
   - mkdocs build --verbose --clean --strict
 
 deploy:
-  provider:       pages
-  skip_cleanup:   true
-  github_token:   $github_token
-  local_dir:      site
+  provider:        pages
+  skip_cleanup:    true
+  github_token:    $github_token
+  local_dir:       site
   on:
-    branch:       master
+    branch:        master
 
 after_deploy:
   - |
@@ -55,4 +55,4 @@ after_deploy:
      --data '{"purge_everything":true}'
 
 notifications:
-  email:          false
+  email:           false
