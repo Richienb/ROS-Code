@@ -1,8 +1,9 @@
 sudo:              false
 
-cache:
-  directories:
-  - $TRAVIS_BUILD_DIR/runtime
+addons:
+  apt:
+    packages:
+      - openjdk-7-jre
 
 language:          python
 
@@ -19,6 +20,9 @@ before_install:
 
 install:
   - pip install -r requirements.txt
+  - curl -L -o jython-installer.jar https://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar
+  - java -jar jython-installer.jar --silent --directory runtime --type minimum --include mod
+  - pip install -r requirements.txt --target "$PWD\runtime\Lib\site-packages"
 
 before_script:
   - autopep8 -v -i -r -a -a -a $PWD/src
