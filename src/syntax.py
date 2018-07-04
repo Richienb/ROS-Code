@@ -38,8 +38,6 @@ import keyword
 import importlib
 # String modues
 import string
-from string import printable as charlist
-from string import whitespace as unwanted
 import clipboard
 from colour import Color
 import textwrap
