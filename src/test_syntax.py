@@ -1,5 +1,5 @@
 import unittest as ut
-import syntax as s
+from . import syntax as s
 
 
 class TestCode(ut.TestCase):
