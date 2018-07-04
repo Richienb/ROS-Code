@@ -5,8 +5,27 @@ Main file containing all the commands
 from __future__ import absolute_import, division, print_function, unicode_literals
 from future import standard_library
 standard_library.install_aliases()
-from builtins import (bytes, dict, int, list, object, range, str, ascii, chr, hex,
-                      input, next, oct, open, pow, round, super, filter, map, zip)
+from builtins import (
+    bytes,
+    dict,
+    int,
+    list,
+    object,
+    range,
+    str,
+    ascii,
+    chr,
+    hex,
+    input,
+    next,
+    oct,
+    open,
+    pow,
+    round,
+    super,
+    filter,
+    map,
+    zip)
 # System modules
 from subprocess import call
 import os
@@ -71,7 +90,8 @@ def pipupdate():
 
 def shellinput(initialtext='>> ', splitpart=' '):
     shelluserinput = input(str(initialtext))
-    return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(shelluserinput.split(str(splitpart))):]]
+    return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(
+        shelluserinput.split(str(splitpart))):]]
 
 # Convert colour codes to different formats
 
@@ -283,8 +303,17 @@ def truthorliegame():
 
 def captcha():
     tryanswer = ''
-    numbervalues = {'one': 1, 'two': 2, 'three': 3, 'four': 4,
-                    'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10}
+    numbervalues = {
+        'one': 1,
+        'two': 2,
+        'three': 3,
+        'four': 4,
+        'five': 5,
+        'six': 6,
+        'seven': 7,
+        'eight': 8,
+        'nine': 9,
+        'ten': 10}
     numbertext = ['one', 'two', 'three', 'four',
                   'five', 'six', 'seven', 'eight', 'nine', 'ten']
     if genrandomnum(1, 2) == 2:
@@ -303,7 +332,7 @@ def captcha():
         partb = numbervalues[partb]
     try:
         tryanswer = int(tryanswer)
-    except:
+    except BaseException:
         return False
     return parta + partb == tryanswer
 
@@ -529,10 +558,39 @@ def eulercalc(faces, edges, verticies):
 
 def shapesides(inputtocheck, inputtype='shape'):
     inputtocheck = inputtocheck.lower()
-    shapestosides = {'triangle': 3, 'square': 4, 'pentagon': 5, 'hexagon': 6, 'heptagon': 7, 'octagon': 8, 'nonagon': 9, 'decagon': 10,
-                     'hendecagon': 11, 'dodecagon': 12, 'triskaidecagon': 13, 'tetrakaidecagon': 14, 'pentadecagon': 15, 'hexakaidecagon': 16, 'heptadecagon': 17, 'octakaidecagon': 18, 'enneadecagon': 19, 'Icosagon': 20,
-                     'triacontagon': 30, 'tetracontagon': 40, 'pentacontagon': 50, 'hexacontagon': 60, 'heptacontagon': 70, 'octacontagon': 80, 'enneacontagon': 90, 'hectagon': 100,
-                     'chiliagon': 1000, 'myriagon': 10000, 'megagon': 1000000, 'googolgon': pow(10, 100)}
+    shapestosides = {
+        'triangle': 3,
+        'square': 4,
+        'pentagon': 5,
+        'hexagon': 6,
+        'heptagon': 7,
+        'octagon': 8,
+        'nonagon': 9,
+        'decagon': 10,
+        'hendecagon': 11,
+        'dodecagon': 12,
+        'triskaidecagon': 13,
+        'tetrakaidecagon': 14,
+        'pentadecagon': 15,
+        'hexakaidecagon': 16,
+        'heptadecagon': 17,
+        'octakaidecagon': 18,
+        'enneadecagon': 19,
+        'Icosagon': 20,
+        'triacontagon': 30,
+        'tetracontagon': 40,
+        'pentacontagon': 50,
+        'hexacontagon': 60,
+        'heptacontagon': 70,
+        'octacontagon': 80,
+        'enneacontagon': 90,
+        'hectagon': 100,
+        'chiliagon': 1000,
+        'myriagon': 10000,
+        'megagon': 1000000,
+        'googolgon': pow(
+            10,
+            100)}
     if inputtype == 'shape':
         return shapestosides[inputtocheck]
 
@@ -568,7 +626,7 @@ def texttimes(text, times):
 # Get The Quadrant Of Coordinates
 
 
-def quadrant(xcoord,  ycoord):
+def quadrant(xcoord, ycoord):
     xneg = bool(xcoord < 0)
     yneg = bool(ycoord < 0)
     if xneg is True:
@@ -737,7 +795,7 @@ def average(numbers, averagetype='mean'):
     averagetype = averagetype.lower()
     try:
         statistics.mean(numbers)
-    except:
+    except BaseException:
         raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
     if averagetype == 'mean':
         return statistics.mean(numbers)
@@ -799,7 +857,7 @@ def convertstring(value):
 def opposite(boolean):
     try:
         return not boolean
-    except:
+    except BaseException:
         raise RuntimeError(
             'An Error Has Occured: Nor A Bool Or Len Was Provided (0014)')
 
@@ -839,7 +897,7 @@ def isboolean(value):
 def isnumber(value):
     try:
         return bool(isinteger(value) or isnumber(value))
-    except:
+    except BaseException:
         return False
 
 # Sing Happy Birthday
@@ -932,7 +990,9 @@ def length(value):
         return len(convertstring(value))
     except OverflowError:
         raise RuntimeError(
-            'An Error Has Occured: The Length Exceeds The Limit (', charlimit(), ') (0015)')
+            'An Error Has Occured: The Length Exceeds The Limit (',
+            charlimit(),
+            ') (0015)')
 
 # Simulate A Cow Saying Text
 
@@ -999,7 +1059,7 @@ def platform():
 def less_or_equal(number):
     try:
         return math.floor(number)
-    except:
+    except BaseException:
         raise RuntimeError('An Error Has Occured: Number Not Provided (0016)')
 
 # Join Two Strings
@@ -1039,7 +1099,7 @@ def filedownload(source, destination):
         if not isempty(destination):
             try:
                 urllib.request.urlretrieve(source, destination)
-            except:
+            except BaseException:
                 raise RuntimeError(
                     'An Error Has Occured: File Download Error (0010)')
         else:
@@ -1133,12 +1193,12 @@ def convertbinary(value, argument):
     if argument == 'to':
         try:
             return bin(value)
-        except:
+        except BaseException:
             raise RuntimeError('Invalid Value (0016)')
     elif argument == 'from':
         try:
             return format(value)
-        except:
+        except BaseException:
             raise RuntimeError('Invalid Value (0016)')
 
 # Make The Text Forwards Or Backwards
@@ -1476,7 +1536,11 @@ def enum(arguments):
 # Get The Text Between Two Parts
 
 
-def textbetween(variable, firstnum=None, secondnum=None, locationoftext='regular'):
+def textbetween(
+        variable,
+        firstnum=None,
+        secondnum=None,
+        locationoftext='regular'):
     if locationoftext == 'regular':
         return variable[firstnum:secondnum]
     elif locationoftext == 'toend':
@@ -1535,21 +1599,21 @@ def mailto(to, cc, bcc, subject, body, autorun=True):
             webbrowser.open_new_tab(str(mailurl))
         return str(mailurl)
     mailurl += '?'
-    if not cc is None:
+    if cc is not None:
         mailurl += 'cc=' + str(cc)
         added = True
     added = False
-    if not bcc is None:
+    if bcc is not None:
         if added is True:
             mailurl += '&'
         mailurl += 'bcc=' + str(cc)
         added = True
-    if not subject is None:
+    if subject is not None:
         if added is True:
             mailurl += '&'
         mailurl += 'subject=' + str(subject)
         added = True
-    if not body is None:
+    if body is not None:
         if added is True:
             mailurl += '&'
         mailurl += 'body=' + str(body)
@@ -1592,7 +1656,7 @@ def newtab(url):
 def getbrowser():
     try:
         webbrowser.get(using=None)
-    except:
+    except BaseException:
         return None
 
 # Choose A Random Item From A List
@@ -1677,27 +1741,33 @@ def getdatetime(timedateformat='complete'):
     elif timedateformat == 'year':
         return ((str(datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hour':
-        return (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+        return (((str(datetime.now())).split(' ')
+                 [1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'minute':
-        return (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[1]
+        return (((str(datetime.now())).split(' ')
+                 [1]).split('.')[0]).split(':')[1]
     elif timedateformat == 'second':
-        return (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[2]
+        return (((str(datetime.now())).split(' ')
+                 [1]).split('.')[0]).split(':')[2]
     elif timedateformat == 'millisecond':
         return (str(datetime.now())).split('.')[1]
     elif timedateformat == 'yearmonthday':
         return (str(datetime.now())).split(' ')[0]
     elif timedateformat == 'daymonthyear':
-        return ((str(datetime.now())).split(' ')[0]).split('-')[2] + '-' + ((str(datetime.now())).split(' ')[0]).split('-')[1] + '-' + ((str(datetime.now())).split(' ')[0]).split('-')[0]
+        return ((str(datetime.now())).split(' ')[0]).split('-')[2] + '-' + ((str(datetime.now())).split(
+            ' ')[0]).split('-')[1] + '-' + ((str(datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hourminutesecond':
         return ((str(datetime.now())).split(' ')[1]).split('.')[0]
     elif timedateformat == 'secondminutehour':
-        return (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[2] + ':' + (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+        return (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[2] + ':' + (((str(datetime.now())).split(
+            ' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'complete':
         return str(datetime.now())
     elif timedateformat == 'datetime':
         return (str(datetime.now())).split('.')[0]
     elif timedateformat == 'timedate':
-        return ((str(datetime.now())).split('.')[0]).split(' ')[1] + ' ' + ((str(datetime.now())).split('.')[0]).split(' ')[0]
+        return ((str(datetime.now())).split('.')[0]).split(' ')[
+            1] + ' ' + ((str(datetime.now())).split('.')[0]).split(' ')[0]
 
 # Get User input
 
@@ -1705,7 +1775,7 @@ def getdatetime(timedateformat='complete'):
 def userinput(prompttext):
     try:
         return input(prompttext)
-    except:
+    except BaseException:
         return input(str(prompttext))
 
 # License Information
@@ -1714,9 +1784,13 @@ def userinput(prompttext):
 def roslicense(raw=False):
     if raw is False:
         print('ROS Code Is licensed Under The Apache License 2.0')
-        print(u'\u2714' + ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+        print(
+            u'\u2714' +
+            ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
         print(u'\u274c' + ' Limitations: Trademark use, Liability And Warranty')
-        print(u'\u2139' + ' Conditions: License and copyright notice And State changes')
+        print(
+            u'\u2139' +
+            ' Conditions: License and copyright notice And State changes')
         print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
     else:
         print('ROS Code Is licensed Under The Apache License 2.0')
