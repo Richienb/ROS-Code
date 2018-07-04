@@ -32,8 +32,8 @@ import os
 import sys
 import secrets
 # Python modules
-import pip
 import warnings
+import pip
 import keyword
 import importlib
 # String modues
