@@ -26,11 +26,11 @@ install:
 
 before_script:
   - cd src
+  - BEFOREHASH=tar cvf - $PWD | sha1sum
   - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive $PWD
   - autoflake --in-place --recursive $PWD
-  - git add *
-  - git commit -m "Tidied code files [skip ci]"
-  - git push origin HEAD:master
+  - pipenv install
+  - ./.travis.vac.sh
 
 script:
   - python test_syntax.py

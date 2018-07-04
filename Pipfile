@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+clipboard = "*"
+colour = "*"
+mkdocs = "*"
+mkdocs-material = "*"
+pymdown-extensions = "*"
+future = "*"
+"flake8" = "*"
+pylint = "*"
+"autopep8" = "*"
+autoflake = "*"
+Pygments = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
