@@ -34,8 +34,6 @@ before_script:
 
 script:
   - python test_syntax.py
-  - pylint $PWD
-  - flake8 --verbose $PWD
   - python run_file.py "test.ros"
   - #python run-line.py "print_message.Hello World"
 
@@ -58,6 +56,10 @@ after_deploy:
      -H "X-Auth-Key: ${cf_api_key}" \
      -H "Content-Type: application/json" \
      --data '{"purge_everything":true}'
+
+after_success:
+  - pylint $PWD
+  - flake8 --verbose $PWD
 
 notifications:
   email:           false
