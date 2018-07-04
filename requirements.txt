@@ -11,5 +11,6 @@ future
 # Unit testing
 flake8
 pylint
-# Auto PEP8
+# Auto Code Fixing
 autopep8
+autoflake

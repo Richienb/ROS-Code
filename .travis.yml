@@ -26,9 +26,10 @@ install:
 
 before_script:
   - cd src
-  - autopep8 -v -i -r -a -a -a $PWD
+  - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive $PWD
+  - autoflake --in-place --recursive
   - git add *
-  - git commit -m --allow-empty "Normalised files to follow the PEP8 specification [skip ci]"
+  - git commit -m --allow-empty "Tidied code files [skip ci]"
   - git push origin HEAD:master
 
 script:
