@@ -14,3 +14,5 @@ pylint
 # Auto Code Fixing
 autopep8
 autoflake
+# Pip Environment Pipfile Generator
+pipenv
