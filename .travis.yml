@@ -30,6 +30,7 @@ before_script:
   - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive $PWD
   - autoflake --in-place --recursive $PWD
   - pipenv install
+  - chmod +x $TRAVIS_BUILD_DIR/.travis.vac.sh
   - $TRAVIS_BUILD_DIR/.travis.vac.sh
 
 script:
