@@ -25,10 +25,10 @@ install:
   - pip install -r requirements.txt --target "$PWD\runtime\Lib\site-packages"
 
 before_script:
-  - autopep8 -v -i -r -a -a -a $PWD/src
+  - cd src
+  - autopep8 -v -i -r -a -a -a $PWD
   - git add *
   - git diff-index --quiet HEAD || git commit -m "Normalised files to follow the PEP8 specification [skip ci]" && git push origin HEAD:master
-  - cd src
 
 script:
   - python test_syntax.py
