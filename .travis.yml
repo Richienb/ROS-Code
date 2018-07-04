@@ -29,7 +29,7 @@ before_script:
   - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive $PWD
   - autoflake --in-place --recursive $PWD
   - git add *
-  - git commit -m --allow-empty "Tidied code files [skip ci]"
+  - git commit -m "Tidied code files [skip ci]"
   - git push origin HEAD:master
 
 script:
