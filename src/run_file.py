@@ -25,9 +25,9 @@ from builtins import (
     map,
     zip)
 # Main Modules
-import syntax
 from sys import argv as args
 from sys import exit as exitexc
+import syntax
 # Initialise Backwards Compatibility
 from future import standard_library
 standard_library.install_aliases()
