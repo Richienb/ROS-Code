@@ -33,7 +33,6 @@ import sys
 import secrets
 # Python modules
 import warnings
-import pip
 import keyword
 import importlib
 # String modues
@@ -59,6 +58,8 @@ from datetime import datetime
 from time import time
 from time import sleep as delayfunc
 import calendar
+# Pip module
+import pip
 
 # Ensure ROS Code storage variables are global
 
