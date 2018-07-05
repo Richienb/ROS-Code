@@ -65,8 +65,7 @@ import pip
 
 
 def ensureglobal():
-    global ros_output
-    global ros_stored
+    global ROS_STORED
 
 
 ensureglobal()
@@ -818,18 +817,18 @@ def average(numbers, averagetype='mean'):
 def throwerror(errortext):
     raise RuntimeError(errortext, ' (0001)')
 
-# Store A Value In The ros_stored Variable
+# Store A Value In The ROS_STORED Variable
 
 
 def store(value):
-    global ros_stored
-    ros_stored = value
+    global ROS_STORED
+    ROS_STORED = value
 
 # Get The Stored Variable
 
 
 def getstored():
-    return ros_stored
+    return ROS_STORED
 
 # Delay For A Specific Amount Of Seconds
 
