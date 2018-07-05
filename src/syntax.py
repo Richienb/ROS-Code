@@ -1173,6 +1173,7 @@ def pyversion(part=None):
 
 # Get the executable used by Python
 
+
 def pyexec():
     return sys.executable
 
@@ -1781,6 +1782,14 @@ def userinput(prompttext):
         return input(prompttext)
     except BaseException:
         return input(str(prompttext))
+
+# Do a quick module test
+
+
+def pingtest(returntrue=False):
+    if returntrue == True:
+        return True
+    print("Pong!")
 
 # License Information
 
