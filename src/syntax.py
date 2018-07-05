@@ -1171,6 +1171,11 @@ def pyversion(part=None):
         return sys.version_info
     return sys.version_info[part]
 
+# Get the executable used by Python
+
+def pyexec():
+    return sys.executable
+
 # Print Python copyright information
 
 
