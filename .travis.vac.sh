@@ -5,7 +5,7 @@ cd ..
 git add Pipfile Pipfile.lock
 git commit -m "Added Pipfiles [skip ci]"
 
-if [ "$BEFOREHASH" == tar cvf - $PWD | sha1sum ]
+if [ "$BEFOREHASH" != "$AFTERHASH" ]
 then
     git push origin HEAD:master
 fi
