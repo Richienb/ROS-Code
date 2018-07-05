@@ -65,6 +65,7 @@ import pip
 
 
 def ensureglobal():
+    ROS_STORED = None
     global ROS_STORED
 
 
