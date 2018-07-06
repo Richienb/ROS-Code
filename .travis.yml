@@ -31,8 +31,8 @@ before_script:
   - autoflake --in-place --recursive $PWD
   - pipenv install
   - AFTERHASH=tar cvf - $PWD | sha1sum
-  - chmod +x $TRAVIS_BUILD_DIR/.travis.vac.sh
-  - $TRAVIS_BUILD_DIR/.travis.vac.sh
+  - chmod +x $TRAVIS_BUILD_DIR/ci/verifycommit.sh
+  - $TRAVIS_BUILD_DIR/ci/verifycommit.sh
 
 script:
   - python test_syntax.py
