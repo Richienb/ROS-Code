@@ -17,21 +17,17 @@ before_install:
   - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
   - git config --global user.email "richiebendall@gmail.com"
   - git config --global user.name "Richienb"
+  - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
 
 install:
   - pip install -r requirements.txt
-  - curl -L -o jython-installer.jar https://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar
-  - java -jar jython-installer.jar --silent --directory runtime --type minimum --include mod --verbose
-  - pip install -r requirements.txt --target "$PWD\runtime\Lib\site-packages"
+  - $TRAVIS_BUILD_DIR/ci/installjython.sh
 
 before_script:
   - cd src
   - BEFOREHASH=tar cvf - $PWD | sha1sum
-  - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive $PWD
-  - autoflake --in-place --recursive $PWD
-  - pipenv install
+  - $TRAVIS_BUILD_DIR/ci/autoop.sh
   - AFTERHASH=tar cvf - $PWD | sha1sum
-  - chmod +x $TRAVIS_BUILD_DIR/ci/verifycommit.sh
   - $TRAVIS_BUILD_DIR/ci/verifycommit.sh
 
 script:
