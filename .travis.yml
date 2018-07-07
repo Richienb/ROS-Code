@@ -26,7 +26,7 @@ before_install:
 
 install:
   - pip install -r requirements.txt
-  - $TRAVIS_BUILD_DIR/ci/installjython.sh
+  - $TRAVIS_BUILD_DIR/ci/install-python.sh
 
 before_script:
   - cd src
