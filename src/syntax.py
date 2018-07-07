@@ -63,29 +63,47 @@ import calendar
 import pip
 
 # Exception Conversion Error
+
+
 class ConversionError():
     pass
 
 # Exception Variable Empty
+
+
 class VarEmpty():
     pass
 
 # Exception Wrong Input
+
+
 class WrongInput():
     pass
 
 # Set Errorlevel
-def loglevel(leveltype="warning"):
+
+
+def loglevel(leveltype=None, isequal=False):
     leveltype = leveltype.lower()
-    loglevels = {"none": 0, "debug": 10, "info": 20, "warning": 30, "error": 40, "critical": 50}
+    loglevels = {"none": 0, "debug": 10, "info": 20,
+                 "warning": 30, "error": 40, "critical": 50}
+    if leveltype == None and isequal == False:
+        return logger.getEffectiveLevel()
+    if not leveltype is None and isequal is True:
+        if leveltype in loglevels.values:
+            return leveltype == logger.getEffectiveLevel()
+        elif leveltype in loglevels:
+            return loglevels[leveltype] == logger.getEffectiveLevel()
+        else:
+            raise WrongInput(
+                "Incorrect input provided. It should be none, debug, info, warning, error or critical")
     if leveltype in loglevels.values:
         logging.basicConfig(level=leveltype)
     elif leveltype in loglevels:
         logging.basicConfig(level=loglevels[leveltype])
     else:
-        raise WrongInput("Incorrect input provided. It should be none, debug, info, warning, error or critical")
-
-
+        raise WrongInput(
+            "Incorrect input provided. It should be none, debug, info, warning, error or critical")
 
 
 # Ensure ROS Code storage variables are global
@@ -118,7 +136,8 @@ def shellinput(initialtext='>> ', splitpart=' '):
     try:
         str(initialtext)
     except:
-        raise ConversionError("Cannot convert type " + str(type(initialtext)) + "to str")
+        raise ConversionError("Cannot convert type " +
+                              str(type(initialtext)) + "to str")
     shelluserinput = input(str(initialtext))
     return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(
         shelluserinput.split(str(splitpart))):]]
