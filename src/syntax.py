@@ -31,6 +31,7 @@ from subprocess import call
 import os
 import sys
 import secrets
+import logging
 # Python modules
 import warnings
 import keyword
@@ -68,6 +69,24 @@ class ConversionError():
 # Exception Variable Empty
 class VarEmpty():
     pass
+
+# Exception Wrong Input
+class WrongInput():
+    pass
+
+# Set Errorlevel
+def loglevel(leveltype="warning"):
+    leveltype = leveltype.lower()
+    loglevels = {"none": 0, "debug": 10, "info": 20, "warning": 30, "error": 40, "critical": 50}
+    if leveltype in loglevels.values:
+        logging.basicConfig(level=leveltype)
+    elif leveltype in loglevels:
+        logging.basicConfig(level=loglevels[leveltype])
+    else:
+        raise WrongInput("Incorrect input provided. It should be none, debug, info, warning, error or critical")
+
+
+
 
 # Ensure ROS Code storage variables are global
 
