@@ -828,7 +828,7 @@ def average(numbers, averagetype='mean'):
 
 
 def throwerror(errortext):
-    raise RuntimeError(errortext, ' (0001)')
+    raise RuntimeError(errortext + ' (0001)')
 
 # Store A Value In The ROS_STORED Variable
 
