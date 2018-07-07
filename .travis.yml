@@ -5,6 +5,11 @@ addons:
     packages:
       - openjdk-8-jre
 
+cache:
+  directories:
+    - $TRAVIS_BUILD_DIR/python-source
+    - $TRAVIS_BUILD_DIR/python-compiled
+
 language:          python
 
 python:
