@@ -35,15 +35,17 @@ The versioning conventions closely follow [Semantic Versioning 2.0](https://semv
 Increment the version as described below
 
 Examples of release versions:
-- 2.0.0-release
-- 2.13.9-release
-- 2.65.87-release
+
+- 2.0.0
+- 2.13.9
+- 2.65.87
 
 #### Pre-Release
 
 Increment the version as described below
 
 Examples of release versions:
+
 - 2.0.0-pre1
 - 2.13.9-pre24
 - 2.65.87-pre36
