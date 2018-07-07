@@ -14,9 +14,10 @@ future = "*"
 pylint = "*"
 "autopep8" = "*"
 autoflake = "*"
+pipenv = "*"
 Pygments = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
