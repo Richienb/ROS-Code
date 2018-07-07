@@ -1,5 +1,8 @@
 mkdir python-source
 curl -L -o python-source.tgz https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz
 tar -xvzf ./python-source.tgz -C ./python-source
+cd python-source
 ./configure --prefix=$TRAVIS_BUILD_DIR/python-compiled
 make && make install
+cd ..
+pip install -r requirements.txt --target "$TRAVIS_BUILD_DIR/python-compiled/Lib/site-packages"
