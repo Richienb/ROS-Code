@@ -61,6 +61,14 @@ import calendar
 # Pip module
 import pip
 
+# Exception Conversion Error
+class ConversionError():
+    pass
+
+# Exception Variable Empty
+class VarEmpty():
+    pass
+
 # Ensure ROS Code storage variables are global
 
 
@@ -88,6 +96,10 @@ def pipupdate():
 
 
 def shellinput(initialtext='>> ', splitpart=' '):
+    try:
+        str(initialtext)
+    except:
+        raise ConversionError("Cannot convert type " + str(type(initialtext)) + "to str")
     shelluserinput = input(str(initialtext))
     return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(
         shelluserinput.split(str(splitpart))):]]
