@@ -2,12 +2,17 @@
 
 The following list outlines all the packages used by ROS Code - useful if building from source.
 
-Ensure you already have Python 3.x installed on your system along with Pip as the runtime doesn't have pip installer by default.
+!!! tip "Prerequisites"
+    - Python 3.4 or later
+    - Pip
+    
+!!! tip "Also required if installing runtime"
+    - Java 7 or later
 
-```bat
-:: Install A Package
-:: Replace dir_to_runtime with the directory to the runtime site-packages folder - for example: C:\ROS-Code\runtime\win\Lib\site-packages
-pip install PACKAGE_NAME --target dir_to_runtime
+To quickly fetch the runtime and install all required packages, run the following command:
+
+```sh
+# Command Not Available Yet...
 ```
 
 ??? done "Preinstalled with Python"
