@@ -68,11 +68,6 @@ import pip
 class ConversionError():
     pass
 
-# Exception Variable Empty
-
-
-class VarEmpty():
-    pass
 
 # Exception Wrong Input
 
@@ -80,7 +75,7 @@ class VarEmpty():
 class WrongInput():
     pass
 
-# Set Errorlevel
+# Set Logging Level
 
 
 def loglevel(leveltype=None, isequal=False):
@@ -90,14 +85,14 @@ def loglevel(leveltype=None, isequal=False):
     if leveltype == None and isequal == False:
         return logger.getEffectiveLevel()
     if not leveltype is None and isequal is True:
-        if leveltype in loglevels.values:
+        if leveltype in loglevels.values():
             return leveltype == logger.getEffectiveLevel()
         elif leveltype in loglevels:
             return loglevels[leveltype] == logger.getEffectiveLevel()
         else:
             raise WrongInput(
                 "Incorrect input provided. It should be none, debug, info, warning, error or critical")
-    if leveltype in loglevels.values:
+    if leveltype in loglevels.values():
         logging.basicConfig(level=leveltype)
     elif leveltype in loglevels:
         logging.basicConfig(level=loglevels[leveltype])
@@ -105,6 +100,22 @@ def loglevel(leveltype=None, isequal=False):
         raise WrongInput(
             "Incorrect input provided. It should be none, debug, info, warning, error or critical")
 
+
+loglevel("none")
+
+# Set file to log to
+
+
+def logfile(targetfile="ros.log"):
+    try:
+        str(targetfile)
+    except:
+        raise ConversionError("Cannot convert type " +
+                              str(type(initialtext)) + "to str")
+    try:
+        logging.basicConfig(filename=str(targetfile))
+    except:
+        raise WrongInput("Invalid target file specified")
 
 # Ensure ROS Code storage variables are global
 
