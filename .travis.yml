@@ -25,9 +25,9 @@ install:
 
 before_script:
   - cd src
-  - BEFOREHASH=tar cvf - $PWD | sha1sum
+  - BEFOREHASH=find /my/dir -mindepth 1 -type f -print0 | sort -z | sha1sum
   - $TRAVIS_BUILD_DIR/ci/autoop.sh
-  - AFTERHASH=tar cvf - $PWD | sha1sum
+  - AFTERHASH=find /my/dir -mindepth 1 -type f -print0 | sort -z | sha1sum
   - $TRAVIS_BUILD_DIR/ci/verifycommit.sh
 
 script:
