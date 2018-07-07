@@ -1,0 +1,5 @@
+mkdir python-source
+curl -L -o python-source.tgz https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz
+tar -xvzf ./python-source.tgz -C ./python-source
+./configure --prefix=$TRAVIS_BUILD_DIR/python-compiled
+make && make install
