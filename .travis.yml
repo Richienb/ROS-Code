@@ -8,6 +8,11 @@ addons:
       - build-dep
       - python2.7
 
+cache:
+  directories:
+    - $TRAVIS_BUILD_DIR/python-source
+    - $TRAVIS_BUILD_DIR/python-compiled
+
 language:          python
 
 python:
@@ -24,7 +29,7 @@ before_install:
 
 install:
   - pip install -r requirements.txt
-  - $TRAVIS_BUILD_DIR/ci/installjython.sh
+  - $TRAVIS_BUILD_DIR/ci/install-python.sh
 
 before_script:
   - cd src
@@ -43,12 +48,12 @@ before_deploy:
   - mkdocs build --verbose --clean --strict
 
 deploy:
-  provider:        pages
-  skip_cleanup:    true
-  github_token:    $github_token
-  local_dir:       site
-  on:
-    branch:        master
+  - provider:        pages
+    skip_cleanup:    true
+    github_token:    $github_token
+    local_dir:       site
+    on:
+      branch:        master
 
 after_deploy:
   - |
