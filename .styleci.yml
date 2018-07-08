@@ -1,9 +1,0 @@
-preset: symfony
-linting: true
-
-php: false
-js: false
-ts: false
-css: false
-vue: false
-py: true
