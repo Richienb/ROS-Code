@@ -1,29 +1,6 @@
 """
 Encodes and runs a line of ROS Code
 """
-# Backwards Compatibility
-from builtins import (
-    bytes,
-    dict,
-    int,
-    list,
-    object,
-    range,
-    str,
-    ascii,
-    chr,
-    hex,
-    input,
-    next,
-    oct,
-    open,
-    pow,
-    round,
-    super,
-    filter,
-    map,
-    zip)
-from __future__ import absolute_import, division, print_function, unicode_literals
 # Main Modules
 from sys import argv as args
 from sys import exit as exitexc
