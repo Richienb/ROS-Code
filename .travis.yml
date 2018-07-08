@@ -4,9 +4,6 @@ addons:
   apt:
     packages:
       - openjdk-8-jre
-      - build-essential
-      - build-dep
-      - python2.7
 
 cache:
   directories:
