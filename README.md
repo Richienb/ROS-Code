@@ -1,4 +1,4 @@
-# Welcome To The ROS Code 2.0
+# Welcome To ROS Code 2.0
 
 ROS Code is a revolutionary, modern and pleasing programming language to code in featuring a streamlined and speedy installation, a  very straightforward and simplistic syntax and is provided as a Python 3 library.
 
