@@ -226,6 +226,12 @@ def paraspace(paragraphspaces=1):
     for i in range(paragraphspaces):
         print('', end='\n')
 
+# Add leading 0s to a number
+
+
+def leadingzero(number, minlength):
+    return str(number).zfill(int(minlength))
+
 # Get the absolute value of a number
 
 
