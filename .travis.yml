@@ -64,8 +64,20 @@ jobs:
       script:
         - python test_syntax.py
         - python run_file.py "test.ros"
+    - stage: documentation building
+
+      # Only run if on pull request
+      if: "$TRAVIS_PULL_REQUEST" != "false"
+
+      # Build the documentation
+      script:
+        - mkdocs build --verbose --clean --strict
+
 
     - stage:             documentation deployment # Deploy the documentation
+
+      # Only run if on branch
+      if: "$TRAVIS_PULL_REQUEST" = "false"
 
       # Ensure script is skipped
       script:
