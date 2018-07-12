@@ -1,80 +1,50 @@
-sudo:                        false
+sudo:                    false
+
+language:                python
+python:                  3.6.5
+branches:                master
+
+before_install:
+  - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
+  - git config --global user.email "richiebendall@gmail.com"
+  - git config --global user.name "Richienb"
+  - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
+
+install:
+  - pip install -r requirements.txt
 
 jobs:
   include:
-    - stage:                 optimisation
-      language:              python
-      python:                3.6.5
-      branches:              master
-      before_install:
-        - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
-        - git config --global user.email "richiebendall@gmail.com"
-        - git config --global user.name "Richienb"
-        - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
-      install:
-        - pip install -r requirements.txt
+    - stage:             optimisation
       script:
         - cd src
         - BEFOREHASH=find /my/dir -mindepth 1 -type f -print0 | sort -z | sha1sum
         - $TRAVIS_BUILD_DIR/ci/autoop.sh
         - AFTERHASH=find /my/dir -mindepth 1 -type f -print0 | sort -z | sha1sum
         - $TRAVIS_BUILD_DIR/ci/verifycommit.sh
-    - stage:                 code testing
-      language:              python
-      python:                3.6.5
-      branches:              master
-      before_install:
-        - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
-        - git config --global user.email "richiebendall@gmail.com"
-        - git config --global user.name "Richienb"
-      install:
-        - pip install -r requirements.txt
+    - stage:             code testing
       script:
         - python test_syntax.py
         - python run_file.py "test.ros"
       after_script:
         - pylint $PWD
         - flake8 --verbose $PWD
-    - stage:                 python building
-      branches:              master
-      before_install:
-        - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
-      cache:
-        directories:
-          - $TRAVIS_BUILD_DIR/python-source
-          - $TRAVIS_BUILD_DIR/python-compiled
-      addons:
-        apt:
-          packages:
-            - build-essential
-            - build-dep
-            - python2.7
-      script:
-        - $TRAVIS_BUILD_DIR/ci/install-python.sh
-    - stage:                 documentation deployment
-      language:              python
-      python:                3.6.5
-      branches:              master
-      before_install:
-        - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
-        - git config --global user.email "richiebendall@gmail.com"
-        - git config --global user.name "Richienb"
-      install:
-        - pip install -r requirements.txt
+    - stage:             documentation deployment
+      script:            null
       before_deploy:
         - mkdocs build --verbose --clean --strict
       deploy:
-        - provider:          pages
-          skip_cleanup:      true
-          github_token:      $github_token
-          local_dir:         site
+        - provider:      pages
+          skip_cleanup:  true
+          github_token:  $github_token
+          local_dir:     site
           on:
-            branch:          master
+            branch:      master
       after_deploy:
         - |
           curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
            -H "X-Auth-Email: ${email}" \
-           -H "X-Auth-Key:   ${cf_api_key}" \
+           -H "X-Auth-Key: ${cf_api_key}" \
            -H "Content-Type: application/json" \
            --data '{"purge_everything":true}'
 install:
@@ -98,19 +68,19 @@ before_deploy:
   - mkdocs build --verbose --clean --strict
 
 deploy:
-  - provider:                pages
-    skip_cleanup:            true
-    github_token:            $github_token
-    local_dir:               site
+  - provider:            pages
+    skip_cleanup:        true
+    github_token:        $github_token
+    local_dir:           site
     on:
-      branch:                master
+      branch:            master
 
 after_deploy:
   - |
     curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
-     -H "X-Auth-Email:       ${email}" \
-     -H "X-Auth-Key:         ${cf_api_key}" \
-     -H "Content-Type:       application/json" \
+     -H "X-Auth-Email:   ${email}" \
+     -H "X-Auth-Key:     ${cf_api_key}" \
+     -H "Content-Type:   application/json" \
      --data '{"purge_everything":true}'
 
 after_success:
@@ -118,4 +88,4 @@ after_success:
   - flake8 --verbose $PWD
 
 notifications:
-  email:                     false
+  email:                 false
