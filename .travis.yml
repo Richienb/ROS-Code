@@ -51,6 +51,7 @@ jobs:
 
       # Lint Code (script can't fail)
       after_script:
+        - cd src
         - pylint $PWD
         - flake8 --verbose $PWD
 
