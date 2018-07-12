@@ -57,9 +57,9 @@ def loglevel(leveltype=None, isequal=False):
     leveltype = leveltype.lower()
     loglevels = {"none": 0, "debug": 10, "info": 20,
                  "warning": 30, "error": 40, "critical": 50}
-    if leveltype == None and isequal == False:
+    if leveltype is None and isequal == False:
         return logger.getEffectiveLevel()
-    if not leveltype is None and isequal is True:
+    if leveltype is not None and isequal is True:
         if leveltype in loglevels.values():
             return leveltype == logger.getEffectiveLevel()
         elif leveltype in loglevels:
@@ -84,12 +84,12 @@ loglevel("none")
 def logfile(targetfile="ros.log"):
     try:
         str(targetfile)
-    except:
+    except BaseException:
         raise ConversionError("Cannot convert type " +
                               str(type(initialtext)) + "to str")
     try:
         logging.basicConfig(filename=str(targetfile))
-    except:
+    except BaseException:
         raise WrongInput("Invalid target file specified")
 
 # Ensure ROS Code storage variables are global
@@ -121,7 +121,7 @@ def pipupdate():
 def shellinput(initialtext='>> ', splitpart=' '):
     try:
         str(initialtext)
-    except:
+    except BaseException:
         raise ConversionError("Cannot convert type " +
                               str(type(initialtext)) + "to str")
     shelluserinput = input(str(initialtext))
@@ -1829,7 +1829,7 @@ def userinput(prompttext):
 
 
 def pingtest(returntrue=False):
-    if returntrue == True:
+    if returntrue:
         return True
     print("Pong!")
 
