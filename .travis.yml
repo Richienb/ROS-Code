@@ -23,6 +23,8 @@ jobs:
         - AFTERHASH=find /my/dir -mindepth 1 -type f -print0 | sort -z | sha1sum
         - $TRAVIS_BUILD_DIR/ci/verifycommit.sh
     - stage:             code testing
+      before_script:
+        - cd src
       script:
         - python test_syntax.py
         - python run_file.py "test.ros"
