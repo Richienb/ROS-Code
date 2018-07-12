@@ -1,42 +1,61 @@
+# Disable sudo
 sudo:                    false
 
+# Set build language
 language:                python
 python:                  3.6.5
+
+# Set build branch
 branches:                master
 
+# Run some pre-install scripts
 before_install:
   - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
   - git config --global user.email "richiebendall@gmail.com"
   - git config --global user.name "Richienb"
   - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
 
+# Install necessary dependencies
 install:
   - pip install -r requirements.txt
 
+# All of the jobs
 jobs:
   include:
-    - stage:             optimisation
+    - stage:             optimisation # Optimise the code
       before_script:
         - cd src
         - BEFOREHASH=find $TRAVIS_BUILD_DIR/src -mindepth 1 -type f -print0 | sort -z | sha1sum
+
       script:
         - $TRAVIS_BUILD_DIR/ci/autoop.sh
+
       after_script:
         - AFTERHASH=find $TRAVIS_BUILD_DIR/src -mindepth 1 -type f -print0 | sort -z | sha1sum
         - $TRAVIS_BUILD_DIR/ci/verifycommit.sh
-    - stage:             code testing
+    - stage:             need to optimise # Find everything to optimise
+      script:            null
+
+      after_script:
+        - cd src
+        - pylint $PWD
+        - flake8 --verbose $PWD
+
+    - stage:             code testing # Test the code
       before_script:
         - cd src
+
       script:
         - python test_syntax.py
         - python run_file.py "test.ros"
-      after_script:
-        - pylint $PWD
-        - flake8 --verbose $PWD
-    - stage:             documentation deployment
+
+    - stage:             documentation deployment # Deploy the documentation
+
       script:            null
+
       before_deploy:
         - mkdocs build --verbose --clean --strict
+
       deploy:
         - provider:      pages
           skip_cleanup:  true
@@ -44,6 +63,7 @@ jobs:
           local_dir:     site
           on:
             branch:      master
+
       after_deploy:
         - |
           curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
