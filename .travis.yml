@@ -23,39 +23,57 @@ install:
 jobs:
   include:
     - stage:             optimisation # Optimise the code
-      before_script:
-        - cd src
-        - BEFOREHASH=find $TRAVIS_BUILD_DIR/src -mindepth 1 -type f -print0 | sort -z | sha1sum
-
       script:
-        - $TRAVIS_BUILD_DIR/ci/autoop.sh
+
+        # Optimise files
+        - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive $PWD
+        - autoflake --in-place --recursive $PWD
+
+        # Commit
+        - git add * && git commit -m "Tidied code files [skip ci]"
+
+        # Remake pipfiles
+        - rm -f Pipfile & rm -f Pipfile.lock
+        - pipenv install
+
+        # Commit
+        - git add Pipfile Pipfile.lock && git commit -m "Added Pipfiles [skip ci]"
 
       after_script:
-        - AFTERHASH=find $TRAVIS_BUILD_DIR/src -mindepth 1 -type f -print0 | sort -z | sha1sum
-        - $TRAVIS_BUILD_DIR/ci/verifycommit.sh
+        # Push changes (script can't fail)
+        - git push origin HEAD:master
+
     - stage:             need to optimise # Find everything to optimise
+
+      # Ensure script is skipped
       script:            null
 
+      # Lint Code (script can't fail)
       after_script:
-        - cd src
         - pylint $PWD
         - flake8 --verbose $PWD
 
-    - stage:             code testing # Test the code
+    - stage:             code testing # Run unit tests
+
+      # Navigate to source code directory
       before_script:
         - cd src
 
+      # Run unit tests
       script:
         - python test_syntax.py
         - python run_file.py "test.ros"
 
     - stage:             documentation deployment # Deploy the documentation
 
+      # Ensure script is skipped
       script:            null
 
+      # Build the documentation
       before_deploy:
         - mkdocs build --verbose --clean --strict
 
+      # Deploy the documentation
       deploy:
         - provider:      pages
           skip_cleanup:  true
@@ -64,6 +82,7 @@ jobs:
           on:
             branch:      master
 
+      # Clear the cache on Cloudflare
       after_deploy:
         - |
           curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
@@ -72,5 +91,6 @@ jobs:
            -H "Content-Type: application/json" \
            --data '{"purge_everything":true}'
 
+# Disable build status notifications
 notifications:
   email:                 false
