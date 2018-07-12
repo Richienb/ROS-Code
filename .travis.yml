@@ -30,17 +30,17 @@ jobs:
         - autoflake --in-place --recursive $PWD
 
         # Commit
-        - git add * && git commit -m "Tidied code files [skip ci]"
+        - git add * && git diff-index --quiet HEAD || git commit -m "Tidied code files [skip ci]"
 
         # Remake pipfiles
         - rm -f Pipfile & rm -f Pipfile.lock
         - pipenv install
 
         # Commit
-        - git add Pipfile Pipfile.lock && git commit -m "Added Pipfiles [skip ci]"
+        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "Added Pipfiles [skip ci]"
 
       after_script:
-        # Push changes (script can't fail)
+        # Push changes
         - git push origin HEAD:master
 
     - stage:             need to optimise # Find everything to optimise
