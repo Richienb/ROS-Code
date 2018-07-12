@@ -16,11 +16,13 @@ install:
 jobs:
   include:
     - stage:             optimisation
-      script:
+      before_script:
         - cd src
-        - BEFOREHASH=find /my/dir -mindepth 1 -type f -print0 | sort -z | sha1sum
+        - BEFOREHASH=find $TRAVIS_BUILD_DIR/src -mindepth 1 -type f -print0 | sort -z | sha1sum
+      script:
         - $TRAVIS_BUILD_DIR/ci/autoop.sh
-        - AFTERHASH=find /my/dir -mindepth 1 -type f -print0 | sort -z | sha1sum
+      after_script:
+        - AFTERHASH=find $TRAVIS_BUILD_DIR/src -mindepth 1 -type f -print0 | sort -z | sha1sum
         - $TRAVIS_BUILD_DIR/ci/verifycommit.sh
     - stage:             code testing
       before_script:
