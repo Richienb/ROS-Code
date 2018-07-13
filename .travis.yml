@@ -19,10 +19,23 @@ before_install:
 install:
   - pip install -r requirements.txt
 
+# The order for executing stages
+stages:
+  - stage: optimisation
+  - stage: need to optimise
+  - stage: code testing
+  - stage: documentation building
+    # Only run if on pull request
+    if: [[ "$TRAVIS_PULL_REQUEST" != "false" ]]
+  - name:                documentation deployment
+
+    # Only run if on branch
+    if:                  "$TRAVIS_PULL_REQUEST" = "false"
+
 # All of the jobs
 jobs:
   include:
-    - stage: backwards compatibility # Make the code backwards compatible
+    - stage:             optimisation # Make the code backwards compatible
 
       script:
         - for i in *.py; do pasteurize -w $i; done
@@ -31,7 +44,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "Added Backwards Compatibility [skip ci]"
         - git push origin HEAD:master
 
-    - stage:             optimisation # Optimise the code
+    - # Optimise the code
       script:
 
         # Optimise files
@@ -74,10 +87,8 @@ jobs:
       script:
         - python test_syntax.py
         - python run_file.py "test.ros"
-    - stage: documentation building
 
-      # Only run if on pull request
-      if: "$TRAVIS_PULL_REQUEST" != "false"
+    - stage:             documentation building
 
       # Build the documentation
       script:
@@ -85,9 +96,6 @@ jobs:
 
 
     - stage:             documentation deployment # Deploy the documentation
-
-      # Only run if on branch
-      if: "$TRAVIS_PULL_REQUEST" = "false"
 
       # Ensure script is skipped
       script:
