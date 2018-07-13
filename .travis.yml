@@ -25,12 +25,7 @@ stages:
   - name:                 need to optimise
   - name:                 code testing
   - name:                 documentation building
-    # Only run if on pull request
-    if:                   [ $TRAVIS_PULL_REQUEST != "false" ]
-
   - name:                 documentation deployment
-    # Only run if on branch
-    if:                   [ $TRAVIS_PULL_REQUEST = "false" ]
 
 # All of the jobs
 jobs:
@@ -89,12 +84,18 @@ jobs:
 
     - stage:              documentation building
 
+      # Only run if on pull request
+      if:                   [ $TRAVIS_PULL_REQUEST != "false" ]
+
       # Build the documentation
       script:
         - mkdocs build --verbose --clean --strict
 
 
     - stage:              documentation deployment # Deploy the documentation
+
+      # Only run if on branch
+      if:                   [ $TRAVIS_PULL_REQUEST = "false" ]
 
       # Ensure script is skipped
       script:             true
