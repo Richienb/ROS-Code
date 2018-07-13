@@ -60,7 +60,7 @@ jobs:
     - # Make the code backwards compatible
 
       script:
-        - for i in *.py; do pasteurize -w $i; done
+        - for i in *.py;do pasteurize -w "$i";done
 
       after_script:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
@@ -68,7 +68,7 @@ jobs:
     - stage:              need to optimise # Find everything to optimise
 
       # Ensure script is skipped
-      script: true
+      script:             true
 
       # Lint Code (script can't fail)
       after_script:
@@ -97,7 +97,7 @@ jobs:
     - stage:              documentation deployment # Deploy the documentation
 
       # Ensure script is skipped
-      script: true
+      script:             true
 
       # Build the documentation
       before_deploy:
