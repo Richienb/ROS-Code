@@ -68,8 +68,7 @@ jobs:
     - stage:              need to optimise # Find everything to optimise
 
       # Ensure script is skipped
-      script:
-        - null
+      script: true
 
       # Lint Code (script can't fail)
       after_script:
@@ -98,8 +97,7 @@ jobs:
     - stage:              documentation deployment # Deploy the documentation
 
       # Ensure script is skipped
-      script:
-        - null
+      script: true
 
       # Build the documentation
       before_deploy:
