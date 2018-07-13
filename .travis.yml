@@ -25,26 +25,19 @@ stages:
   - stage: need to optimise
   - stage: code testing
   - stage: documentation building
+
     # Only run if on pull request
-    if: [[ "$TRAVIS_PULL_REQUEST" != "false" ]]
+    if: [ $TRAVIS_PULL_REQUEST != "false" ]
   - name:                documentation deployment
 
     # Only run if on branch
-    if:                  "$TRAVIS_PULL_REQUEST" = "false"
+    if: [ $TRAVIS_PULL_REQUEST = "false" ]
 
 # All of the jobs
 jobs:
   include:
-    - stage:             optimisation # Make the code backwards compatible
+    - stage: optimisation # Optimise the code
 
-      script:
-        - for i in *.py; do pasteurize -w $i; done
-
-      after_script:
-        - git add * && git diff-index --quiet HEAD || git commit -m "Added Backwards Compatibility [skip ci]"
-        - git push origin HEAD:master
-
-    - # Optimise the code
       script:
 
         # Optimise files
@@ -52,19 +45,27 @@ jobs:
         - autoflake --in-place --recursive $PWD
 
         # Commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "Tidied code files [skip ci]"
+        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Tidied code files [skip ci]"
 
         # Remake pipfiles
         - rm -f Pipfile & rm -f Pipfile.lock
         - pipenv install
 
         # Commit
-        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "Added Pipfiles [skip ci]"
+        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Added Pipfiles [skip ci]"
 
       after_script:
         # Push changes
         - git push origin HEAD:master
 
+    - # Make the code backwards compatible
+
+      script:
+        - for i in *.py; do pasteurize -w $i; done
+
+      after_script:
+        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
+        - git push origin HEAD:master
     - stage:             need to optimise # Find everything to optimise
 
       # Ensure script is skipped
@@ -108,6 +109,7 @@ jobs:
       # Deploy the documentation
       deploy:
         - provider:      pages
+          github_commit: "CI | Updated Documentation [skip ci]"
           skip_cleanup:  true
           github_token:  $github_token
           local_dir:     site
