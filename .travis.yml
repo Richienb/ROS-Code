@@ -22,6 +22,15 @@ install:
 # All of the jobs
 jobs:
   include:
+    - stage: backwards compatibility # Make the code backwards compatible
+
+      script:
+        - for i in *.py; do pasteurize -w $i; done
+
+      after_script:
+        - git add * && git diff-index --quiet HEAD || git commit -m "Added Backwards Compatibility [skip ci]"
+        - git push origin HEAD:master
+
     - stage:             optimisation # Optimise the code
       script:
 
