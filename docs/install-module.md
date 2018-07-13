@@ -7,8 +7,7 @@ Use the following code to clone the ROS Code repository and extract the `ros.py`
     ```yml
     install:
       - git clone https://github.com/Richienb/ROS-Code.git
-      - mv $PWD/ROS-Code/src/syntax.py $PWD/ROS-Code/src/ros.py
-      - cp -r $PWD/ROS-Code/src/ros.py .
+      - mv ./ROS-Code/src/syntax.py ./ros.py
       - rmdir $PWD/ROS-Code
     ```
 
@@ -16,8 +15,7 @@ Use the following code to clone the ROS Code repository and extract the `ros.py`
 
     ```sh
     $ git clone https://github.com/Richienb/ROS-Code.git
-    $ mv /ROS-Code/src/syntax.py /ROS-Code/src/ros.py
-    $ cp -r /ROS-Code/src/ros.py .
+    $ mv ./ROS-Code/src/syntax.py ./ros.py
     $ rmdir ROS-Code
     ```
 
@@ -25,7 +23,6 @@ Use the following code to clone the ROS Code repository and extract the `ros.py`
 
     ```bat
     git clone https://github.com/Richienb/ROS-Code.git
-    rename ROS-Code/src/syntax.py ros.py
-    copy ROS-Code/src/ros.py /
+    move ./ROS-Code/src/syntax.py ./ros.py
     rmdir ROS-Code
     ```
