@@ -36,22 +36,31 @@ jobs:
       if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
 
       script:
-
         # Optimise files
         - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive $PWD
         - autoflake --in-place --recursive $PWD
 
+      after_script:
         # Commit
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Tidied code files [skip ci]"
 
+        # Push changes
+        - git push origin HEAD:master
+
+    - # Update Pipfiles
+
+      # Only run if on branch
+      if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
+
+      script:
         # Remake pipfiles
         - rm -f Pipfile & rm -f Pipfile.lock
         - pipenv install
 
-        # Commit
-        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Added Pipfiles [skip ci]"
-
       after_script:
+        # Commit
+        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Updated Pipfiles [skip ci]"
+
         # Push changes
         - git push origin HEAD:master
 
