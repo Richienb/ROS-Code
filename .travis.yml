@@ -1,12 +1,12 @@
 # Disable sudo
-sudo:                    false
+sudo:                     false
 
 # Set build language
-language:                python
-python:                  3.6.5
+language:                 python
+python:                   3.6.5
 
 # Set build branch
-branches:                master
+branches:                 master
 
 # Run some pre-install scripts
 before_install:
@@ -21,22 +21,21 @@ install:
 
 # The order for executing stages
 stages:
-  - stage: optimisation
-  - stage: need to optimise
-  - stage: code testing
-  - stage: documentation building
-
+  - name:                 optimisation
+  - name:                 need to optimise
+  - name:                 code testing
+  - name:                 documentation building
     # Only run if on pull request
-    if: [ $TRAVIS_PULL_REQUEST != "false" ]
-  - name:                documentation deployment
+    if:                   [ $TRAVIS_PULL_REQUEST != "false" ]
 
+  - name:                 documentation deployment
     # Only run if on branch
-    if: [ $TRAVIS_PULL_REQUEST = "false" ]
+    if:                   [ $TRAVIS_PULL_REQUEST = "false" ]
 
 # All of the jobs
 jobs:
   include:
-    - stage: optimisation # Optimise the code
+    - stage:              optimisation # Optimise the code
 
       script:
 
@@ -66,7 +65,7 @@ jobs:
       after_script:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
         - git push origin HEAD:master
-    - stage:             need to optimise # Find everything to optimise
+    - stage:              need to optimise # Find everything to optimise
 
       # Ensure script is skipped
       script:
@@ -78,7 +77,7 @@ jobs:
         - pylint $PWD
         - flake8 --verbose $PWD
 
-    - stage:             code testing # Run unit tests
+    - stage:              code testing # Run unit tests
 
       # Navigate to source code directory
       before_script:
@@ -89,14 +88,14 @@ jobs:
         - python test_syntax.py
         - python run_file.py "test.ros"
 
-    - stage:             documentation building
+    - stage:              documentation building
 
       # Build the documentation
       script:
         - mkdocs build --verbose --clean --strict
 
 
-    - stage:             documentation deployment # Deploy the documentation
+    - stage:              documentation deployment # Deploy the documentation
 
       # Ensure script is skipped
       script:
@@ -108,13 +107,13 @@ jobs:
 
       # Deploy the documentation
       deploy:
-        - provider:      pages
-          github_commit: "CI | Updated Documentation [skip ci]"
-          skip_cleanup:  true
-          github_token:  $github_token
-          local_dir:     site
+        - provider:       pages
+          github_commit:  "CI | Updated Documentation [skip ci]"
+          skip_cleanup:   true
+          github_token:   $github_token
+          local_dir:      site
           on:
-            branch:      master
+            branch:       master
 
       # Clear the cache on Cloudflare
       after_deploy:
@@ -127,4 +126,4 @@ jobs:
 
 # Disable build status notifications
 notifications:
-  email:                 false
+  email:                  false
