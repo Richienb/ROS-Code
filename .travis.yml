@@ -55,11 +55,12 @@ jobs:
     - # Make the code backwards compatible
 
       script:
-        - for i in *.py;do pasteurize -w "$i";done
+        - for file in ./*.py; do pasteurize -w "$file"; done
 
       after_script:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
         - git push origin HEAD:master
+
     - stage:              need to optimise # Find everything to optimise
 
       # Ensure script is skipped
@@ -85,7 +86,7 @@ jobs:
     - stage:              documentation building
 
       # Only run if on pull request
-      if:                   [ $TRAVIS_PULL_REQUEST != "false" ]
+      if:                 [ $TRAVIS_PULL_REQUEST != "false" ]
 
       # Build the documentation
       script:
@@ -95,7 +96,7 @@ jobs:
     - stage:              documentation deployment # Deploy the documentation
 
       # Only run if on branch
-      if:                   [ $TRAVIS_PULL_REQUEST = "false" ]
+      if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
 
       # Ensure script is skipped
       script:             true
