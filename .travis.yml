@@ -54,9 +54,15 @@ jobs:
 
     - # Make the code backwards compatible
 
+      # Navigate to the source code directory
+      before_script:
+        - cd src
+
+      # Perform optimisations
       script:
         - for file in ./*.py; do pasteurize -w "$file"; done
 
+      # Commit and push changes
       after_script:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
         - git push origin HEAD:master
