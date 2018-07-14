@@ -122,7 +122,7 @@ jobs:
         
       # Check for spelling errors
       script:
-        - spellcheck
+        - pyspelling
 
     - stage:              documentation # Build the documentation (for pull request)
 
