@@ -101,9 +101,9 @@ jobs:
       after_script:
         - cd src
         - pylint $PWD
-        - flake8 --verbose $PWD
+        - flake8 $PWD
 
-    - stage:              code testing # Run unit tests
+    - stage:              checks & testing # Run unit tests
 
       # Navigate to source code directory
       before_script:
@@ -113,6 +113,16 @@ jobs:
       script:
         - python test_syntax.py
         - python run_file.py "test.ros"
+        
+    - # Check for spelling mistakes
+    
+      # Install required dependency
+      install:
+        - pip install pyspelling
+        
+      # Check for spelling errors
+      script:
+        - spellcheck
 
     - stage:              documentation # Build the documentation (for pull request)
 
