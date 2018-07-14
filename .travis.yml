@@ -122,7 +122,7 @@ jobs:
         - python test_syntax.py
         - python run_file.py "test.ros"
 
-    - stage:              documentation building
+    - stage:              documentation # Build the documentation (for pull request)
 
       # Only run if on pull request
       if:                 type = pull_request
@@ -132,7 +132,7 @@ jobs:
         - mkdocs build --verbose --clean --strict
 
 
-    - stage:              documentation deployment # Deploy the documentation
+    - # Build and deploy the documentation
 
       # Only run if on branch
       if:                 type != pull_request
