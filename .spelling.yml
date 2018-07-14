@@ -1,0 +1,41 @@
+documents:
+- name: Python Source
+  parser: pyspelling.parsers.python_parser
+  file_patterns:
+    - '*.py'
+  sources:
+  - pyspelling
+  default_encoding: utf-8
+- name: Markdown
+  parser: pyspelling.parsers.markdown_parser
+  file_patterns:
+    - '*.md'
+    - '*.markdown'
+  options:
+    markdown_extensions:
+      - pymdownx.arithmatex
+      - pymdownx.betterem:
+        smart_enable: all
+      - pymdownx.caret
+      - pymdownx.critic
+      - pymdownx.details
+      - pymdownx.emoji
+      - pymdownx.inlinehilite
+      - pymdownx.magiclink
+      - pymdownx.mark
+      - pymdownx.smartsymbols
+      - pymdownx.superfences
+      - pymdownx.tasklist:
+          custom_checkbox: true
+      - pymdownx.tilde
+      - markdown.extensions.tables
+      - markdown.extensions.codehilite:
+          guess_lang: false
+      - markdown.extensions.def_list
+      - markdown.extensions.footnotes
+      - markdown.extensions.meta
+      - markdown.extensions.toc:
+          permalink: true
+      - smarty
+      - admonition
+  default_encoding: utf-8
