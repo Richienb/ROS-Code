@@ -15,7 +15,6 @@ pylint = "*"
 "autopep8" = "*"
 autoflake = "*"
 pipenv = "*"
-pyspelling = "*"
 Pygments = "*"
 
 [dev-packages]
