@@ -19,7 +19,7 @@ before_install:
 install:
   - pip install -r requirements.txt
 
-# The order for executing stages
+# The order for executing build stages
 stages:
   - name:                 optimisation
   - name:                 need to optimise
@@ -30,8 +30,25 @@ stages:
 # All of the jobs
 jobs:
   include:
-    - stage:              optimisation # Optimise the code
+    - stage:              optimisation # Fix the gitignore if nessesary
+      # Only run if on branch
+      if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
+      
+      script:
+        # Reset Gitignore cache
+        - git rm -r --cached .
+        
+        # Add all files to the cache
+        - git add .
+      
+      after_script:
+        # Check and commit
+        - git diff-index --quiet HEAD || git commit -m "CI | Fix the Gitignore [skip ci]"
 
+        # Push changes
+        - git push origin HEAD:master
+        
+    - stage: # Optimise the code with PEP8 and FLAKE8
       # Only run if on branch
       if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
 
@@ -41,7 +58,7 @@ jobs:
         - autoflake --in-place --recursive $PWD
 
       after_script:
-        # Commit
+        # Add, check and commit
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Tidied code files [skip ci]"
 
         # Push changes
@@ -58,7 +75,7 @@ jobs:
         - pipenv install
 
       after_script:
-        # Commit
+        # Add, check and commit
         - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Updated Pipfiles [skip ci]"
 
         # Push changes
@@ -79,7 +96,10 @@ jobs:
 
       # Commit and push changes
       after_script:
+        # Add, check and commit
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
+
+        # Push changes
         - git push origin HEAD:master
 
     - stage:              need to optimise # Find everything to optimise
