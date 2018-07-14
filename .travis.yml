@@ -19,14 +19,6 @@ before_install:
 install:
   - pip install -r requirements.txt
 
-# The order for executing build stages
-stages:
-  - name:                 optimisation
-  - name:                 need to optimise
-  - name:                 code testing
-  - name:                 documentation building
-  - name:                 documentation deployment
-
 # All of the jobs
 jobs:
   include:
