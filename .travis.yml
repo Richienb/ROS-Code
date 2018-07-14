@@ -118,7 +118,7 @@ jobs:
     
       # Install required dependency
       install:
-        - pip install pyspelling
+        - pip install pyspelling pymdown-extensions Pygments
         
       # Check for spelling errors
       script:
