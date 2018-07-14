@@ -16,3 +16,5 @@ autopep8
 autoflake
 # Pip Environment Pipfile Generator
 pipenv
+# Spelling Check
+pyspelling
