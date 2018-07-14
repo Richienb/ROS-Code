@@ -47,8 +47,6 @@ jobs:
         - git push origin HEAD:master
         
     - stage: # Optimise the code with PEP8 and FLAKE8
-      # Only run if on branch
-      if:                 type != pull_request
 
       script:
         # Optimise files
@@ -64,9 +62,6 @@ jobs:
 
     - # Update Pipfiles
 
-      # Only run if on branch
-      if:                 type != pull_request
-
       script:
         # Remake pipfiles
         - rm -f Pipfile & rm -f Pipfile.lock
@@ -80,9 +75,6 @@ jobs:
         - git push origin HEAD:master
 
     - # Make the code backwards compatible
-
-      # Only run if on branch
-      if:                 type != pull_request
 
       # Navigate to the source code directory
       before_script:
@@ -132,7 +124,7 @@ jobs:
         - mkdocs build --verbose --clean --strict
 
 
-    - # Build and deploy the documentation
+    - stage:              documentation # Build and deploy the documentation
 
       # Only run if on branch
       if:                 type != pull_request
