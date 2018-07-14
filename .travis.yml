@@ -92,7 +92,7 @@ jobs:
         # Push changes
         - git push origin HEAD:master
 
-    - stage:              need to optimise # Find everything to optimise
+    - stage:              optimise todo # Find everything to optimise
 
       # Ensure script is skipped
       script:             true
