@@ -24,7 +24,7 @@ jobs:
   include:
     - stage:              optimisation # Fix the gitignore if nessesary
       # Only run if on branch
-      if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
+      if:                 type != pull_request
       
       # Set build language
       language: generic
@@ -48,7 +48,7 @@ jobs:
         
     - stage: # Optimise the code with PEP8 and FLAKE8
       # Only run if on branch
-      if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
+      if:                 type != pull_request
 
       script:
         # Optimise files
@@ -65,7 +65,7 @@ jobs:
     - # Update Pipfiles
 
       # Only run if on branch
-      if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
+      if:                 type != pull_request
 
       script:
         # Remake pipfiles
@@ -82,7 +82,7 @@ jobs:
     - # Make the code backwards compatible
 
       # Only run if on branch
-      if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
+      if:                 type != pull_request
 
       # Navigate to the source code directory
       before_script:
@@ -125,7 +125,7 @@ jobs:
     - stage:              documentation building
 
       # Only run if on pull request
-      if:                 [ $TRAVIS_PULL_REQUEST != "false" ]
+      if:                 type = pull_request
 
       # Build the documentation
       script:
@@ -135,7 +135,7 @@ jobs:
     - stage:              documentation deployment # Deploy the documentation
 
       # Only run if on branch
-      if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
+      if:                 type != pull_request
 
       # Ensure script is skipped
       script:             true
