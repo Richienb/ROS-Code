@@ -37,6 +37,9 @@ jobs:
       # Set build language
       language: generic
       
+      # Disable default install script
+      install: true
+      
       script:
         # Reset Gitignore cache
         - git rm -r --cached .
