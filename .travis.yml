@@ -34,6 +34,9 @@ jobs:
       # Only run if on branch
       if:                 [ $TRAVIS_PULL_REQUEST = "false" ]
       
+      # Set build language
+      language: generic
+      
       script:
         # Reset Gitignore cache
         - git rm -r --cached .
@@ -92,7 +95,7 @@ jobs:
 
       # Perform optimisations
       script:
-        - for file in ./*.py; do pasteurize -w $(basename "$file" .py);done
+        - for file in *.py; do pasteurize -w "$file"; done
 
       # Commit and push changes
       after_script:
