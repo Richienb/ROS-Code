@@ -33,8 +33,8 @@ import textwrap
 from pprint import pprint
 # Math modules
 import math
-import operator
 from math import pi
+import operator
 import statistics
 from math import sqrt
 from random import randint as genrandomnum
