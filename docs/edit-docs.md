@@ -26,21 +26,7 @@ Now you can navigate to the URL shown in the terminal (usually [127.0.0.1:8000](
 ### Building
 
 !!! done "Automatic Building"
-    The documentation will automatically be built via [Travis CI](https://travis-ci.org/Richienb/ROS-Code) if the build succeeds so manually deploying to Github Pages is not needed.
+    The documentation in the master branch will automatically be built via [Travis CI](https://travis-ci.org/Richienb/ROS-Code) if the build succeeds so manually deploying to Github Pages is not needed.
 
-Build the documentation to the `site` folder locally.
-
-```bat
-:: Build the documentation locally
-mkdocs build
-```
-
-Deploy the documentation to the `gh-pages` branch in the repository.
-
-```bat
-:: Deploy the documentation online
-mkdocs gh-deploy
-```
-
-!!! note "Notes"
+!!! note "More Information"
     Read the [mkdocs documentation](https://www.mkdocs.org) for more information.
