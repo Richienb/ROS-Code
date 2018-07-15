@@ -46,7 +46,7 @@ jobs:
         # Push changes
         - git push origin HEAD:master
         
-    - stage: # Optimise the code with PEP8 and FLAKE8
+    - # Optimise the code with PEP8 and FLAKE8
 
       script:
         # Optimise files
