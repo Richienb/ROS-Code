@@ -31,7 +31,8 @@ with open(args[1]) as f:
         if not(value[1].startswith('!')) and IGNORELINE is False:
             if value[1].startswith('mod'):
                 try:
-                    importlib.import_module("ros." + value[1][len(value[1].split(" ")[0]) + 1:])
+                    importlib.import_module(
+                        "ros." + value[1][len(value[1].split(" ")[0]) + 1:])
                 except ModuleNotFoundError:
                     raise ImportError("Error: Unable to import")
             elif value[1].startswith('ext'):
