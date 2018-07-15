@@ -91,31 +91,6 @@ jobs:
 
         # Push changes
         - git push origin HEAD:master
-        
-    - # Beautify the code with unibeautify
-    
-      # Set build language
-      language: node_js
-      
-      # Set build version
-      node_js: "node"
-      
-      # Install YAML beautifier
-      install:
-        - npm i -g align-yaml
-      
-      # Beautify all .yaml and .yml files
-      script:
-        - for file in *.yml; do align -w "$file" 2; done
-        - for file in *.yaml; do align -w "$file" 2; done
-      
-      # Commit and push changes
-      after_script:
-        # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Beautify YAML File [skip ci]"
-
-        # Push changes
-        - git push origin HEAD:master
 
     - stage:              optimise todo # Find everything to optimise
 
