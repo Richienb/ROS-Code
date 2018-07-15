@@ -25,27 +25,27 @@ jobs:
     - stage:              optimisation # Fix the gitignore if nessesary
       # Only run if on branch
       if:                 type != pull_request
-      
+
       # Set build language
       language: generic
-      
+
       # Disable default install script
       install: true
-      
+
       script:
         # Reset Gitignore cache
         - git rm -r --cached .
-        
+
         # Add all files to the cache
         - git add .
-      
+
       after_script:
         # Check and commit
         - git diff-index --quiet HEAD || git commit -m "CI | Fix the Gitignore [skip ci]"
 
         # Push changes
         - git push origin HEAD:master
-        
+
     - # Optimise the code with PEP8 and FLAKE8
 
       script:
@@ -113,13 +113,13 @@ jobs:
       script:
         - python test_syntax.py
         - python run_file.py "test.ros"
-        
+
     - # Check for spelling mistakes
-    
+
       # Install required dependency
       install:
         - pip install pyspelling pymdown-extensions Pygments
-        
+
       # Check for spelling errors
       script:
         - pyspelling
