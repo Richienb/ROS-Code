@@ -10,7 +10,9 @@ from builtins import open
 from builtins import str
 from sys import argv as args
 from sys import exit as exitexc
-import syntax
+from ros import main
+import importlib
+import os.path
 # Initialise Backwards Compatibility
 from future import standard_library
 standard_library.install_aliases()
@@ -27,6 +29,14 @@ with open(args[1]) as f:
     CONTENT = [x.strip() for x in CONTENT if x.strip()]
     for value in enumerate(CONTENT):
         if not(value[1].startswith('!')) and IGNORELINE is False:
+            if value[1].startswith('mod'):
+                try:
+                    importlib.import_module("ros." + value[1][len(value[1].split(" ")[0]) + 1:])
+                except ModuleNotFoundError:
+                    raise ImportError("Error: Unable to import")
+            elif value[1].startswith('ext'):
+                os.path.isfile(value[1][len(value[1].split(" ")[0]) + 1:] + ".ros"):
+                    pass
             firstpart = value[1].split(".")[0]
             lenoffirstpart = len(value[1].split(".")[0])
             afterpart = str(value[1][lenoffirstpart + 1:])
@@ -35,7 +45,7 @@ with open(args[1]) as f:
             printtext = preprint.replace("(", "('")
             lastprinttext = printtext.replace(")", "')")
             try:
-                exec(str("syntax." + lastprinttext))
+                exec(str(lastprinttext))
             except Exception as exc:
                 template = "ERROR: An error of type {0} occured while running line {1} because {2}"
                 message = template.format(
