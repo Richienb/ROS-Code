@@ -140,6 +140,10 @@ jobs:
 
       # Only run if on pull request
       if:                 type = pull_request
+      
+      install:
+        # Install required dependencies
+        - pip install mkdocs mkdocs-material pymdown-extensions pygments
 
       # Build the documentation
       script:
