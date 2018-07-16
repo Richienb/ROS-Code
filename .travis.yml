@@ -91,6 +91,28 @@ jobs:
 
         # Push changes
         - git push origin HEAD:master
+        
+    - # Minify code to a separate directory
+    
+      # Install the required dependency
+      install:
+        - pip install pyminifier
+      
+      # Clear the minification directory
+      before_script:
+        - rm -rf min/*
+      
+      # Minify the code
+      script:
+        - pyminifier -d min src/*.py
+        
+      # Commit and push changes
+      after_script:
+        # Add, check and commit
+        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Minified Files [skip ci]"
+
+        # Push changes
+        - git push origin HEAD:master
 
     - stage:              optimise todo # Find everything to optimise
 
