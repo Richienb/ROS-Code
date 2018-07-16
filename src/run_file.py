@@ -40,7 +40,7 @@ if not os.path.isfile(args[1]):
 
     # Stop execution
     exitexc(1)
-    
+
 # Open the file as read only mode
 f = open(args[1], "r")
 
@@ -56,42 +56,42 @@ CONTENT = [x.strip() for x in CONTENT if x.strip()]
 # For every line in the text file
 for value in enumerate(CONTENT):
 
-	# Check if the line doesn't start with "!" and if ignoreline is false
+        # Check if the line doesn't start with "!" and if ignoreline is false
     if not(value[1].startswith('!')) and IGNORELINE is False:
 
-		# Check if value starts with "mod" for custom ROS module
+                # Check if value starts with "mod" for custom ROS module
         if value[1].startswith('mod'):
 
-			# Try to import the module
+                        # Try to import the module
             try:
 
-				# Import the module
+                                # Import the module
                 importlib.import_module(
                     "ros." + value[1].split(" ")[1])
 
-			# Catch a module not found
+                # Catch a module not found
             except ModuleNotFoundError:
 
-				# Raise a runtime error
+                                # Raise a runtime error
                 raise ImportError("Error: Unable to import")
 
-				# Exit the execution
+                # Exit the execution
                 exitexc(1)
 
-		# Check if the value starts with "ext" for custom user module
+                # Check if the value starts with "ext" for custom user module
         elif value[1].startswith('ext'):
 
-			# Check if the file exists
+                        # Check if the file exists
             if os.path.isfile(value[1].split(" ")[1] + ".ros"):
-                pass # TODO: Allow importing of external packages
+                pass  # TODO: Allow importing of external packages
 
-		# Check if the value starts with "imp" for custom python file
+                # Check if the value starts with "imp" for custom python file
         elif value[1].startswith('imp'):
 
-			# Check if the file exists
+                        # Check if the file exists
             if os.path.isfile(value[1].split(" ")[1] + ".py"):
 
-				# Improt the module
+                                # Improt the module
                 importlib.import_module(value[1].split(" ")[1])
 
         # Render the command
@@ -115,7 +115,7 @@ for value in enumerate(CONTENT):
 
         # Generate the final code to execute
         final = part_mod + "." + part_cmd + "(" + part_args + ")"
-        
+
         # Try to execute the command
         try:
 
