@@ -36,7 +36,7 @@ except IndexError:
 if not os.path.isfile(args[1]):
     print("ERROR: " + args[1] + " is not found.")
     exitexc(1)
-    
+
 f = open(args[1], "r")
 
 with open(args[1]) as f:
@@ -55,7 +55,7 @@ with open(args[1]) as f:
                     exitexc(1)
             elif value[1].startswith('ext'):
                 if os.path.isfile(value[1].split(" ")[1] + ".ros"):
-                    pass # TODO: Allow importing of external packages
+                    pass  # TODO: Allow importing of external packages
             elif value[1].startswith('imp'):
                 if os.path.isfile(value[1].split(" ")[1] + ".py"):
                     importlib.import_module(value[1].split(" ")[1])
