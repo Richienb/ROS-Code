@@ -108,7 +108,7 @@ for value in enumerate(CONTENT):
         # Add quotes around each item to a list
         part_args2 = []
         for part in enumerate(part_args1.split(".")):
-            newpart.append('"' + str(part[1]) + '"')
+            part_args2.append('"' + str(part[1]) + '"')
 
         # Convert the list to a string and remove the box brackets
         part_args = str(part_args2).strip("[").strip("]")
