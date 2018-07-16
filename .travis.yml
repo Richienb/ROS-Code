@@ -96,7 +96,7 @@ jobs:
     
       # Install the required dependency
       install:
-        - pip install pyminifier
+        - pip install https://pypi.python.org/packages/source/p/pyminifier/pyminifier-2.1.tar.gz
       
       # Clear the minification directory
       before_script:
