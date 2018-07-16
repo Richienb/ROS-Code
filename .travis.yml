@@ -48,6 +48,9 @@ jobs:
 
     - # Optimise the code with PEP8 and FLAKE8
 
+      install:
+        - pip install autopep8 autoflake
+
       script:
         # Optimise files
         - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive $PWD
