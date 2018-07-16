@@ -3,77 +3,78 @@
 The following list outlines all the packages used by ROS Code - useful if building from source.
 
 !!! tip "Prerequisites"
-    - Python 3.4 or later
-    - Pip
+    - Python 3.x or later (Also backwards compatible with Python 2.x)
+    - Pip (Refer to the [Pip Documentation](https://pip.pypa.io/en/stable/installing/))
+
+## Executing code
+
+One line install:
+`pip install clipboard colour`
+
+??? summary "Clipboard"
+    The clipboard package allows access to the clipboard to perform related actions.
+    `pip install clipboard`
+
+??? summary "Colour"
+    The colour package includes support colour based operations.
+    `pip install colour`
+        
+### Also required for code execution
+
+???+ summary "Future"
+    The future package allows backwards compatibility with Python 2.x but is also required in Python 3.x to prevent module not found exceptions
+    `pip install future`
+
+> The following packages and steps are already automated in the consistient integration service when pushing to a branch
+
+## Building documentation
+
+One line install:
+`mkdocs mkdocs-material pymdown-extensions Pygments`
+
+??? summary "Mkdocs"
+    The mkdocs package is the core tool for building the documentation.
+    `pip install mkdocs`
+
+??? summary "Mkdocs Material"
+    The mkdocs material package is a addon for mkdocs which enables a Material Design theme.
+    `pip install mkdocs-material`
+
+??? summary "Pymdown Extensions"
+    Pymdown extensions is a package which adds a number of markdown plugins.
+    `pip install pymdown-extensions`
+
+??? summary "Pygments"
+    Pygments is also a package providing markdown plugins.
+    `pip install pygments`
+        
+## Code checking
+
+One line install:
+`pip install flake8 pylint`
     
-!!! tip "Also required if installing runtime"
-    - Java 7 or later
+??? summary "Flake8"
+    Flake8 is a package which checks code against the Flake8 specification
+    `pip install flake8`
+        
+??? summary "Pylint"
+    Pylint is another package, like Flake8 which checks code againt the Pep8 specification
+    `pip install pylint`
+        
+## Automatic code optimisation and fixing
 
-To quickly fetch the runtime and install all required packages, run the following command:
+One line install:
+`pip install autopep8 autoflake`
 
-```sh
-# Command Not Available Yet...
-```
+??? summary "Autopep8"
+    The package Autopep8 optimises what it can to work with the Pep8 specification
+    
+??? summary "Autoflake"
+    The package Autoflake optimises what it can to work with the Flake8 specification
+    
+> This step is automised in the consistient integration service when pushing to a branch
 
-??? done "Preinstalled with Python"
-    \- subprocess
-    \- os
-    \- sys
-    \- secrets
-    \- warnings
-    \- keyword
-    \- importlib
-    \- string
-    \- textwrap
-    \- pprint
-    \- math
-    \- operator
-    \- statistics
-    \- webbrowser
-    \- urllib
-    \- random
-    \- datetime
-    \- time
-    \- calendar
+## Python environment and Pipfile generator
 
-??? help "Installation may be required"
-    ??? summary "Pip"
-        Refer to the [Pip Documentation](https://pip.pypa.io/en/stable/installing/)
-
-!!! example "Helpful notice"
-    All of the packages listed below can be install via the requirements.txt file and Pip
-
-    ```bat
-    :: Navigate to the ROS Code directory
-    cd C:\ROS-Code
-    :: Install the packages
-    pip install -r requirements.txt
-    ```
-
-???+ warning "Installation required"
-
-    ???+ example "One Line Install"
-        `pip install clipboard colour`
-
-    ??? summary "Clipboard"
-        `pip install clipboard`
-
-    ??? summary "Colour"
-        `pip install colour`
-
-???+ warning "Required when building documentation"
-
-    ???+ example "One Line Install"
-        One line install: `mkdocs mkdocs-material pymdown-extensions Pygments`
-
-    ??? summary "Mkdocs"
-        `pip install mkdocs`
-
-    ??? summary "Mkdocs Material"
-        `pip install mkdocs-material`
-
-    ??? summary "Pymdown Extensions"
-        `pip install pymdown-extensions`
-
-    ??? summary "Pygments"
-        `pip install pygments`
+???+ summary "Pipenv"
+    Pipenv is a Python environment and Pipfile generator. It creates a virtual environment to run the code in and generates a Pipfile and Pipfile.lock for usage in the future.
