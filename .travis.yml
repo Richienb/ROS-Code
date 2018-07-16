@@ -66,6 +66,10 @@ jobs:
 
     - # Update Pipfiles
 
+      install:
+        # Install required dependency
+        - pip install pipenv
+
       script:
         # Remake pipfiles
         - rm -f Pipfile & rm -f Pipfile.lock
