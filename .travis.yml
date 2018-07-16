@@ -49,6 +49,7 @@ jobs:
     - # Optimise the code with PEP8 and FLAKE8
 
       install:
+        # Install required dependencies
         - pip install autopep8 autoflake
 
       script:
