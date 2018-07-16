@@ -423,7 +423,7 @@ def modulereload(modulename):
 # Exit the current execution
 
 
-def exitexecution(arguments=None):
+def exitexecution(arguments=0):
     sys.exit(arguments)
 
 # Configure the Python warnings
