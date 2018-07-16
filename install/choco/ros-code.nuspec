@@ -24,9 +24,10 @@ install packages with those elements but they are ignored. Any authoring tools o
     <!-- Note that unstable versions like 0.0.1 can be considered a released version, but it's possible that one can release a 0.0.1-beta before you release a 0.0.1 version. If the version number is final, that is considered a released version and not a
     prerelease. -->
     <version>2.0.0</version>
-    <!-- <packageSourceUrl>Where is this Chocolatey package located (think GitHub)? packageSourceUrl is highly recommended for the community feed</packageSourceUrl>-->
+    <!-- The location of the source -->
+    <packageSourceUrl>https://github.com/Richienb/ROS-Code</packageSourceUrl>
     <!-- owners is a poor name for maintainers of the package. It sticks around by this name for compatibility reasons. It basically means you. -->
-    <!--<owners>__REPLACE_YOUR_NAME__</owners>-->
+    <owners>Richie Bendall</owners>
     <!-- ============================== -->
 
     <!-- == SOFTWARE SPECIFIC SECTION == -->
@@ -54,9 +55,10 @@ install packages with those elements but they are ignored. Any authoring tools o
     <description>ROS Code is a revolutionary, modern and pleasing programming language to code in featuring a streamlined and speedy installation, a very straightforward and simplistic syntax and is provided as a Python 3 library. For more information,
       click [here](https://www.ros-code.ga) To watch the overview video, click [here](https://www.youtube.com/watch?v=lPCTNKA8otA) (you should really watch it).
     </description>
-    <!-- Release Notes --> <releaseNotes>### Initial Release</releaseNotes>
+    <!-- Release Notes -->
+    <releaseNotes>Thanks for choosing ROS Code! All update information will be posted here.</releaseNotes>
     <!-- =============================== -->
-
+    <dependencies> <dependency id="python" version="3.6" /> </dependencies>
     <!-- Specifying dependencies and version ranges? https://docs.nuget.org/create/versioning#specifying-version-ranges-in-.nuspec-files -->
     <!--<dependencies> <dependency id="" version="__MINIMUM_VERSION__" /> <dependency id="" version="[__EXACT_VERSION__]" /> <dependency id="" version="[_MIN_VERSION_INCLUSIVE, MAX_VERSION_INCLUSIVE]" /> <dependency id=""
     version="[_MIN_VERSION_INCLUSIVE, MAX_VERSION_EXCLUSIVE)" /> <dependency id="" /> <dependency id="chocolatey-core.extension" version="1.1.0" /> </dependencies>-->
@@ -69,7 +71,7 @@ install packages with those elements but they are ignored. Any authoring tools o
   </metadata>
   <files>
     <!-- this section controls what actually gets packaged into the Chocolatey package -->
-    <file src="tools\**" target="tools"/>
+    <file src="src/*.py" target="src"/>
     <!--Building from Linux? You may need this instead: <file src="tools/**" target="tools" />-->
   </files>
 </package>
