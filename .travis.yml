@@ -106,6 +106,10 @@ jobs:
 
     - stage:              optimise todo # Find everything to optimise
 
+      install:
+        # Install required dependencies
+        - pip install pylint flake8
+
       # Ensure script is skipped
       script:             true
 
