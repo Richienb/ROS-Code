@@ -156,19 +156,6 @@ jobs:
       script:
         - pyspelling
 
-    - stage:              documentation # Build the documentation (for pull request)
-
-      # Only run if on pull request
-      if:                 type = pull_request
-
-      install:
-        # Install required dependencies
-        - pip install mkdocs mkdocs-material pymdown-extensions pygments
-
-      # Build the documentation
-      script:
-        - mkdocs build --verbose --clean --strict
-
     - # Check Makefile commands
 
       # Skip installation step
@@ -183,37 +170,4 @@ jobs:
         # Uninstall ROS Code
         - make uninstall
 
-    - stage:              documentation # Build and deploy the documentation
-
-      # Only run if on branch
-      if:                 type != pull_request
-
-      # Ensure script is skipped
-      script:             true
-
-      # Build the documentation
-      before_deploy:
-        - mkdocs build --verbose --clean --strict
-
-      # Deploy the documentation
-      deploy:
-        - provider:       pages
-          github_commit:  "CI | Built Documentation [skip ci]"
-          skip_cleanup:   true
-          github_token:   $github_token
-          local_dir:      site
-          on:
-            branch:       master
-
-      # Clear the cache on Cloudflare
-      after_deploy:
-        - |
-          curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
-           -H "X-Auth-Email: ${email}" \
-           -H "X-Auth-Key: ${cf_api_key}" \
-           -H "Content-Type: application/json" \
-           --data '{"purge_everything":true}'
-
-# Disable build status notifications
-notifications:
-  email:                  false
+    - stage:              documentation # Build the documentation (for pull request)
