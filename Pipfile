@@ -6,16 +6,7 @@ name = "pypi"
 [packages]
 clipboard = "*"
 colour = "*"
-mkdocs = "*"
-mkdocs-material = "*"
-pymdown-extensions = "*"
 future = "*"
-"flake8" = "*"
-pylint = "*"
-"autopep8" = "*"
-autoflake = "*"
-pipenv = "*"
-Pygments = "*"
 
 [dev-packages]
 
