@@ -16,16 +16,12 @@ prepare:
 uninstall:
 	rm syntax.py
 	rm run-file.py
-# Install main mkdocs packages
-pipmkdocs:
-	pip install mkdocs mkdocs-material pymdown-extensions Pygments
-# Install all required Pip packages
-pipall: requirements.txt
-	pip install -r requirements.txt
 # Run unit tests
 utest:
+	pip install autopep8 autoflake pylint flake8
 	cd src
-	autopep8 -v -i -r -a -a -a $PWD
+	autopep8 -i -r -a -a -a $PWD
+	autoflake $PWD
 	python test_syntax.py
 	pylint $PWD
 	flake8 --verbose $PWD
