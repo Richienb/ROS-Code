@@ -29,7 +29,7 @@ The following list outlines all the packages used by ROS Code - useful if buildi
 
 ## Building documentation
 
-`pip install mkdocs mkdocs-material pymdown-extensions Pygments`
+`pip install mkdocs mkdocs-material pymdown-extensions pygments`
 
 ??? summary "Mkdocs"
     The mkdocs package is the core tool for building the documentation.
