@@ -14,11 +14,5 @@
 ???+ summary "Uninstall ROS Code"
     `make uninstall`
 
-???+ summary "Install Main mkdocs Packages"
-    `make pipmkdocs`
-
-???+ summary "Install All Required Pip Packages"
-    `make pipall`
-
-???+ summary "Run Unit Tests"
+???+ summary "Optimize code and run unit tests"
     `make utest`
