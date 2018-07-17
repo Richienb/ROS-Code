@@ -93,9 +93,6 @@ def loglevel(leveltype=None, isequal=False):
         raise WrongInput(
             "Incorrect input provided. It should be none, debug, info, warning, error or critical")
 
-
-loglevel("none")
-
 # Set file to log to
 
 
@@ -110,15 +107,24 @@ def logfile(targetfile="ros.log"):
     except BaseException:
         raise WrongInput("Invalid target file specified")
 
+# Set logging status dependant on if debug is enabled
+        
+        
+if __debug__ == True:
+    loglevel("warning")
+    logfile("ros.log")
+else:
+    loglevel("none")
+        
 # Ensure ROS Code storage variables are global
 
 
-def ensureglobal():
+def _ensureglobal():
     global ROS_STORED
     ROS_STORED = None
 
 
-ensureglobal()
+_ensureglobal()
 
 # Execute a command in the terminal/shell
 
