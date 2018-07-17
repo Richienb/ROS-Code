@@ -53,7 +53,7 @@ import calendar
 import pip
 
 # Print a debug message
-if __debug__ == True:
+if __debug__:
     print("Loaded modules. Now loading functions...")
 
 # Exception Conversion Error
@@ -109,14 +109,14 @@ def logfile(targetfile="ros.log"):
         raise WrongInput("Invalid target file specified")
 
 # Set logging status dependant on if debug is enabled
-        
-        
-if __debug__ == True:
+
+
+if __debug__:
     loglevel("warning")
     logfile("ros.log")
 else:
     loglevel("none")
-        
+
 # Ensure ROS Code storage variables are global
 
 
@@ -1879,16 +1879,17 @@ def roslicense(raw=False):
         print('Conditions: License and copyright notice And State changes')
         print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
 
+
 # Print a debug message
-if __debug__ == True:
+if __debug__:
     print("Finished loading functions. ROS Code is ready.")
 
 # Interactive shell if launched directly
 if __name__ == "__main__":
     print(
-    "ROS Code 2.0 | Running on {} {} | Python Version {}.{}.{}".format(
-        platform.system(), platform.release(), list(
-            sys.version_info)[0], list(
+        "ROS Code 2.0 | Running on {} {} | Python Version {}.{}.{}".format(
+            platform.system(), platform.release(), list(
+                sys.version_info)[0], list(
                 sys.version_info)[1], list(
                     sys.version_info)[2]))
     while True:
