@@ -150,14 +150,24 @@ jobs:
         - 2.7
         - 2.6
 
+      # Install required dependencies
+      install:
+        - pip install -r requirements.txt
+        # Install the codecov Pip package
+        - pip install codecov
+
       # Navigate to source code directory
       before_script:
         - cd src
 
       # Run unit tests
       script:
-        - python test_syntax.py
-        - python run_file.py "test.ros"
+        - coverage run test_syntax.py
+        - coverage run run_file.py "test.ros"
+        
+      # Upload results to Codecov
+      after_script:
+        - codecov
 
     - # Check for spelling mistakes
 
