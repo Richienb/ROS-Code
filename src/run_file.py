@@ -10,7 +10,7 @@ from builtins import open
 from builtins import str
 from sys import argv as args
 from sys import exit as exitexc
-from ros import *
+from ros import main
 import importlib
 import os.path
 # Initialise Backwards Compatibility
