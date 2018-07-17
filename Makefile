@@ -1,9 +1,9 @@
 # If code is run with no parameters
 # Prepare ROS Code
 prepare:
-	[ -e ROS-Code ] && rm -rf ROS-Code
-	[ -e ros.py ] && rm -f ros.py
-	[ -e run_file.py ] && rm -f run_file.py
+	rm -rf -- ROS-Code
+	rm -f -- ros.py
+	rm -f -- run_file.py
 	git clone https://github.com/Richienb/ROS-Code.git
 	cd ROS-Code
 	pip install -r requirements.txt
@@ -14,8 +14,8 @@ prepare:
 	rm -f -r -d ROS-Code
 # Uninstall ROS Code
 uninstall:
-	[ -e ros.py ] && rm -f ros.py
-	[ -e run_file.py ] && rm -f run_file.py
+	rm -f -- ros.py
+	rm -f -- run_file.py
 # Run unit tests
 utest:
 	pip install autopep8 autoflake pylint flake8
