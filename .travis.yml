@@ -126,6 +126,7 @@ jobs:
 
       # Test in multiple versions of Python
       python:
+        - 3.6.6
         - 3.6
         - 3.5
         - 3.4
@@ -153,9 +154,6 @@ jobs:
 
     - # Check Makefile commands
 
-       # Set build language
-      language: generic
-
       # Skip installation step
       install: true
 
@@ -167,6 +165,24 @@ jobs:
 
         # Uninstall ROS Code
         - make uninstall
+        
+    - # Check if pip is working correctly
+    
+      # Test in multiple versions of Python
+      python:
+        - 3.6.6
+        - 3.6
+        - 3.5
+        - 3.4
+        - 2.7
+        - 2.6
+    
+      # Install the dependencies
+      install:
+        - pip install -r requirements.txt
+    
+      # Disable the script
+      script: true
 
     - stage:              documentation # Build the documentation (for pull request)
 
