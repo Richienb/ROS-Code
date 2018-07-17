@@ -51,6 +51,10 @@ import calendar
 # Pip module
 import pip
 
+# Print a debug message
+if __debug__ == True:
+    print("Loaded modules. Now loading functions...")
+
 # Exception Conversion Error
 
 
@@ -1867,3 +1871,8 @@ def roslicense(raw=False):
         print('Limitations: Trademark use, Liability And Warranty')
         print('Conditions: License and copyright notice And State changes')
         print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
+
+# Print a debug message
+if __debug__ == True:
+    print("Finished loading functions. ROS Code is ready.")
+        
