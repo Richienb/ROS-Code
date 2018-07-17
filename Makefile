@@ -8,9 +8,8 @@ prepare:
 	cd ROS-Code
 	pip install -r requirements.txt
 	cd ..
-	mv ./ROS-Code/src/syntax.py ./ROS-Code/src/ros.py
-	cp ROS-Code/src/syntax.py .
-	cp ROS-Code/src/run_file.py .
+	cp ./ROS-Code/src/syntax.py ./ros.py
+	cp ROS-Code/src/run_file.py ./run_file.py
 	rm -f -r -d ROS-Code
 # Uninstall ROS Code
 uninstall:
