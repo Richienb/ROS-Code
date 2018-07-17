@@ -10,12 +10,12 @@ prepare:
 	cd ..
 	mv ./ROS-Code/src/syntax.py ./ROS-Code/src/ros.py
 	cp ROS-Code/src/syntax.py .
-	cp ROS-Code/src/run-file.py .
+	cp ROS-Code/src/run_file.py .
 	rm -f -r -d ROS-Code
 # Uninstall ROS Code
 uninstall:
-	rm syntax.py
-	rm run-file.py
+	rm -f ros.py
+	rm -f run_file.py
 # Run unit tests
 utest:
 	pip install autopep8 autoflake pylint flake8
