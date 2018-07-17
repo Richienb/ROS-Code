@@ -29,7 +29,7 @@ jobs:
       # Set build language
       language: generic
 
-      # Disable default install script
+      # Skip installation step
       install: true
 
       script:
@@ -142,6 +142,9 @@ jobs:
         - pyspelling
 
     - # Check Makefile commands
+
+       # Set build language
+      language: generic
 
       # Skip installation step
       install: true
