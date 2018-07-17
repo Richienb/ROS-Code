@@ -219,6 +219,10 @@ jobs:
       # Only run if on branch
       if:                 type != pull_request
 
+      install:
+        # Install required dependencies
+        - pip install mkdocs mkdocs-material pymdown-extensions pygments
+
       # Ensure script is skipped
       script:             true
 
