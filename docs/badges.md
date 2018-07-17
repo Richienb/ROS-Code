@@ -14,7 +14,7 @@
 
 ### Commit Activity
 
-[![Latest Release](https://img.shields.io/github/release/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/releases) [![Last Commit](https://img.shields.io/github/last-commit/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/commits/master) [![Contributers](https://img.shields.io/github/contributors/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/graphs/contributors)
+[![Latest Release](https://img.shields.io/github/release/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/releases) [![Last Commit](https://img.shields.io/github/last-commit/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/commits/master) [![Contributers](https://img.shields.io/github/contributors/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/graphs/contributors) [![Commits Since Last Release](https://img.shields.io/github/commits-since/Richienb/ROS-Code/latest.svg?style=for-the-badge)](https://github.com/Richienb/ROS-Code/commits/master)
 
 ### Programming Languages
 
