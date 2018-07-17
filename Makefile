@@ -1,7 +1,7 @@
 # If code is run with no parameters
 # Prepare ROS Code
 prepare:
-	rm -f -r -d ROS-Code
+	rm -rf ROS-Code
 	rm -f ros.py
 	rm -f run-file.py
 	git clone https://github.com/Richienb/ROS-Code.git
