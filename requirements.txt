@@ -1,18 +1,5 @@
 # Main
 clipboard
 colour
-# mkdocs
-mkdocs
-mkdocs-material
-pymdown-extensions
-Pygments
 # Backwards compatibility
 future
-# Unit testing
-flake8
-pylint
-# Auto Code Fixing
-autopep8
-autoflake
-# Pip Environment Pipfile Generator
-pipenv
