@@ -87,11 +87,11 @@ jobs:
       # Navigate to the source code directory
       before_script:
         - cd src
-      
+
       # Install the required dependency
       install:
         - pip install future
-      
+
       # Perform optimisations
       script:
         - for file in *.py; do pasteurize -w "$file"; done
@@ -144,7 +144,7 @@ jobs:
 
       # Only run if on pull request
       if:                 type = pull_request
-      
+
       install:
         # Install required dependencies
         - pip install mkdocs mkdocs-material pymdown-extensions pygments
@@ -153,6 +153,19 @@ jobs:
       script:
         - mkdocs build --verbose --clean --strict
 
+    - # Check Makefile commands
+
+      # Skip installation step
+      install: true
+
+      # Run makefile commands
+      script:
+
+        # Install ROS Code
+        - make prepare
+
+        # Uninstall ROS Code
+        - make uninstall
 
     - stage:              documentation # Build and deploy the documentation
 
