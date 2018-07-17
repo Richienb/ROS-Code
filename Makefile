@@ -8,7 +8,7 @@ prepare:
 	cd ROS-Code
 	pip install -r requirements.txt
 	cd ..
-	mv $PWD/ROS-Code/src/syntax.py $PWD/ROS-Code/src/ros.py
+	mv ./ROS-Code/src/syntax.py ./ROS-Code/src/ros.py
 	cp ROS-Code/src/syntax.py .
 	cp ROS-Code/src/run-file.py .
 	rm -f -r -d ROS-Code
@@ -20,8 +20,8 @@ uninstall:
 utest:
 	pip install autopep8 autoflake pylint flake8
 	cd src
-	autopep8 -i -r -a -a -a $PWD
-	autoflake $PWD
+	autopep8 -i -r -a -a -a .
+	autoflake .
 	python test_syntax.py
-	pylint $PWD
-	flake8 --verbose $PWD
+	pylint .
+	flake8 .
