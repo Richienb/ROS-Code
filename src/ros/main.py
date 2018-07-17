@@ -248,7 +248,7 @@ def isprime(number):
 
 
 def paraspace(paragraphspaces=1):
-    for i in range(paragraphspaces):
+    for _ in range(paragraphspaces):
         print('', end='\n')
 
 # Add leading 0s to a number
@@ -331,7 +331,7 @@ def diceroll(dicecount=1, dicesize=6, alwayslist=False):
     if dicecount == 1 and alwayslist is False:
         return genrandomnum(1, dicesize)
     resultlist = []
-    for i in range(dicecount):
+    for _ in range(dicecount):
         resultlist.append(genrandomnum(1, dicesize))
     return resultlist
 
@@ -458,7 +458,7 @@ def warnconfig(action='default'):
 
 
 def message_print(text, amount=1):
-    for i in range(amount):
+    for _ in range(amount):
         print(text)
 
 # Automatically solve a simple maths problem
@@ -598,7 +598,7 @@ def factors(number):
 def randstring(length=1):
     charstouse = string.ascii_letters + string.digits + string.punctuation
     newpass = ''
-    for i in range(length):
+    for _ in range(length):
         newpass += str(charstouse[genrandomnum(0, len(charstouse) - 1)])
     return newpass
 
@@ -785,7 +785,7 @@ def fracsimplify(numerator, denominator):
         limit = int(numerator / 2)
     elif numerator < denominator:
         limit = int(denominator / 2)
-    for i in range(2, limit):
+    for _ in range(2, limit):
         checknum = limit - i
         if numerator % checknum == 0 and denominator % checknum == 0:
             numerator = numerator / checknum
@@ -908,7 +908,7 @@ def delay(seconds):
 
 
 def wait_enter(times=1):
-    for i in range(times):
+    for _ in range(times):
         input('')
 
 # Convert A Variable To A String
@@ -1069,16 +1069,16 @@ def cowsay(text='', align='centre'):
     topbar = ' '
     bottombar = ' '
     spacing = ''
-    for i in range(len(text) + 2):
+    for _ in range(len(text) + 2):
         topbar = topbar + '_'
         bottombar = bottombar + '-'
     if align == 'centre' or align == 'center':
-        for ii in range((int(len(topbar) / 2)) + 1):
+        for _ in range((int(len(topbar) / 2)) + 1):
             spacing = spacing + ' '
     elif align == 'left':
         spacing = ' '
     elif align == 'right':
-        for iii in range(len(text) + 2):
+        for _ in range(len(text) + 2):
             spacing = spacing + ' '
     print(topbar)
     print('( ' + cowtext + ' )')
@@ -1780,10 +1780,10 @@ def textalign(text, maxlength, align='left'):
     if align == 'left':
         return text
     elif align == 'centre' or align == 'center':
-        for i in range(int((maxlength - len(text)) / 2)):
+        for _ in range(int((maxlength - len(text)) / 2)):
             spaces += ' '
     elif align == 'right':
-        for i in range(maxlength - len(text)):
+        for _ in range(maxlength - len(text)):
             spaces += ' '
     return spaces + text
 
