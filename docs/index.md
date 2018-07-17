@@ -24,7 +24,3 @@ To watch the overview video, click [here](https://www.youtube.com/watch?v=lPCTNK
 -   Our fast mirror, Mediafire will quickly download all required files.
 -   The express and PUP and PUA free installer will quickly install the application for you with minimal effort.
 -   Bugs and feature requests can be easily posted on the Issues section of the Github repository.
-
-* * *
-
-> Creator: [Richie Bendall](https://www.richie-bendall.ml)
