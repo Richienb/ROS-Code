@@ -3,7 +3,9 @@ sudo:                     false
 
 # Set build language
 language:                 python
-python:                   3.6.5
+
+# Set build language version
+python:                   3.6.6
 
 # Set build branch
 branches:                 master
