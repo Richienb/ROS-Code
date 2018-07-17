@@ -2,18 +2,18 @@
 # Prepare ROS Code
 prepare:
 	rm -rf -- ROS-Code
-	rm -f -- ros.py
+	rm -rf -- ros
 	rm -f -- run_file.py
 	git clone https://github.com/Richienb/ROS-Code.git
 	cd ROS-Code
 	pip install -r requirements.txt
 	cd ..
-	cp ./ROS-Code/src/syntax.py ./ros.py
+	cp -r ./ROS-Code/src/ros ./ros
 	cp ROS-Code/src/run_file.py ./run_file.py
 	rm -f -r -d ROS-Code
 # Uninstall ROS Code
 uninstall:
-	rm -f -- ros.py
+	rm -rf -- ros
 	rm -f -- run_file.py
 # Run unit tests
 utest:
