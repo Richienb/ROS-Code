@@ -46,42 +46,6 @@ jobs:
         # Push changes
         - git push origin HEAD:master
 
-    - # Optimise the code with PEP8 and FLAKE8
-
-      install:
-        # Install required dependencies
-        - pip install autopep8 autoflake
-
-      script:
-        # Optimise files
-        - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive $PWD
-        - autoflake --in-place --recursive $PWD
-
-      after_script:
-        # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Tidied code files [skip ci]"
-
-        # Push changes
-        - git push origin HEAD:master
-
-    - # Update Pipfiles
-
-      install:
-        # Install required dependency
-        - pip install pipenv
-
-      script:
-        # Remake pipfiles
-        - rm -f Pipfile & rm -f Pipfile.lock
-        - pipenv install
-
-      after_script:
-        # Add, check and commit
-        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Updated Pipfiles [skip ci]"
-
-        # Push changes
-        - git push origin HEAD:master
-
     - # Make the code backwards compatible
 
       # Navigate to the source code directory
@@ -100,6 +64,58 @@ jobs:
       after_script:
         # Add, check and commit
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
+
+        # Push changes
+        - git push origin HEAD:master
+
+    - # Optimise the code to work with PEP8
+
+      install:
+        # Install required dependency
+        - pip install autopep8
+
+      script:
+        # Optimise files
+        - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive .
+
+      after_script:
+        # Add, check and commit
+        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
+
+        # Push changes
+        - git push origin HEAD:master
+        
+    - # Optimise the code to work with FLAKE8
+
+      install:
+        # Install required dependency
+        - pip install autoflake
+      
+      script:
+        # Optimise files
+        - autoflake --in-place --recursive .
+        
+      after_script:
+        # Add, check and commit
+        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
+
+        # Push changes
+        - git push origin HEAD:master
+
+    - # Update Pipfiles
+
+      install:
+        # Install required dependency
+        - pip install pipenv
+
+      script:
+        # Remake pipfiles
+        - rm -f Pipfile & rm -f Pipfile.lock
+        - pipenv install
+
+      after_script:
+        # Add, check and commit
+        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Updated Pipfiles [skip ci]"
 
         # Push changes
         - git push origin HEAD:master
