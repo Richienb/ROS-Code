@@ -1,5 +1,6 @@
 # Main
 clipboard
 colour
+loremipsum
 # Backwards compatibility
 future
