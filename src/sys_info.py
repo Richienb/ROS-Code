@@ -60,4 +60,4 @@ def pprint_var():
 
 # Detect direct execution and print ver
 if __name__ == "__main__":
-    printver()
+    print_ver()
