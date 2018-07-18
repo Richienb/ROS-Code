@@ -92,7 +92,7 @@ def logfile(targetfile="ros.log"):
         str(targetfile)
     except BaseException:
         raise errors.ConversionError("Cannot convert type " +
-                              str(type(initialtext)) + "to str")
+                                     str(type(initialtext)) + "to str")
     try:
         logging.basicConfig(filename=str(targetfile))
     except BaseException:
@@ -139,7 +139,7 @@ def shellinput(initialtext='>> ', splitpart=' '):
         str(initialtext)
     except BaseException:
         raise errors.ConversionError("Cannot convert type " +
-                              str(type(initialtext)) + "to str")
+                                     str(type(initialtext)) + "to str")
     shelluserinput = input(str(initialtext))
     return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(
         shelluserinput.split(str(splitpart))):]]
