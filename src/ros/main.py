@@ -54,7 +54,7 @@ import calendar
 # Pip module
 import pip
 # Custom modules
-import errors
+from errors import ConversionError, WrongInput, UnexpectedError
 
 # Print a debug message
 if __debug__:
@@ -75,14 +75,14 @@ def loglevel(leveltype=None, isequal=False):
         elif leveltype in loglevels:
             return loglevels[leveltype] == logger.getEffectiveLevel()
         else:
-            raise errors.WrongInput(
+            raise WrongInput(
                 "Incorrect input provided. It should be none, debug, info, warning, error or critical")
     if leveltype in loglevels.values():
         logging.basicConfig(level=leveltype)
     elif leveltype in loglevels:
         logging.basicConfig(level=loglevels[leveltype])
     else:
-        raise errors.WrongInput(
+        raise WrongInput(
             "Incorrect input provided. It should be none, debug, info, warning, error or critical")
 
 # Set file to log to
@@ -92,12 +92,12 @@ def logfile(targetfile="ros.log"):
     try:
         str(targetfile)
     except BaseException:
-        raise errors.ConversionError("Cannot convert type " +
+        raise ConversionError("Cannot convert type " +
                                      str(type(initialtext)) + "to str")
     try:
         logging.basicConfig(filename=str(targetfile))
     except BaseException:
-        raise errors.WrongInput("Invalid target file specified")
+        raise WrongInput("Invalid target file specified")
 
 # Set logging status dependant on if debug is enabled
 
@@ -139,7 +139,7 @@ def shellinput(initialtext='>> ', splitpart=' '):
     try:
         str(initialtext)
     except BaseException:
-        raise errors.ConversionError("Cannot convert type " +
+        raise ConversionError("Cannot convert type " +
                                      str(type(initialtext)) + "to str")
     shelluserinput = input(str(initialtext))
     return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(
@@ -170,7 +170,7 @@ def colourcode(startcolourcode, destinationcode, longhex=False):
         return c.saturation
     elif destinationcode.lower() == 'lum':
         return c.luminance
-    raise errors.WrongInput("Destination colour code not specified correctly")
+    raise WrongInput("Destination colour code not specified correctly")
 
 # Modify a parameter of a colour code
 
@@ -604,9 +604,9 @@ def randstring(length=1):
 
 def compare(value1, value2, comparison):
     if not isinstance(comparison, str):
-        raise errors.WrongInput("ERROR: comparison argument must be a string")
+        raise WrongInput("ERROR: comparison argument must be a string")
     if comparison not in ['is', 'or', 'and']:
-        raise errors.WrongInput(
+        raise WrongInput(
             "ERROR: comparison argument must be 'is', 'or' or 'and'")
     if comparison == 'is':
         return operator.is_(value1, value2)
