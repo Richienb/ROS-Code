@@ -286,8 +286,11 @@ def prettyprinter(listtoprint, stream=None, indent=1, width=80, depth=None):
     pprint(listtoprint, stream, indent, width, depth)
 
 # Generate a string of Lorem Ipsum
+
+
 def genipsum():
-    # TODO: Make this work. Help: https://loremipsum.readthedocs.io/en/latest/#api
+    # TODO: Make this work. Help:
+    # https://loremipsum.readthedocs.io/en/latest/#api
     pass
 
 # Check if a number is in the Fibonacci sequence
