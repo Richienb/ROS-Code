@@ -86,17 +86,17 @@ jobs:
 
         # Push changes
         - git push origin HEAD:master
-        
+
     - # Optimise the code to work with FLAKE8
 
       install:
         # Install required dependency
         - pip install autoflake
-      
+
       script:
         # Optimise files
         - autoflake --in-place --recursive .
-        
+
       after_script:
         # Add, check and commit
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
@@ -121,7 +121,7 @@ jobs:
 
         # Push changes
         - git push origin HEAD:master
-        
+
     - # Optimise the code with YAPF
 
       install:
@@ -162,9 +162,9 @@ jobs:
 
       # Run unit tests
       script:
-        - coverage run test_syntax.py
+        - coverage run test_syntax.py test
         - coverage run run_file.py "test.ros"
-        
+
       # Upload results to Codecov
       after_script:
         - codecov
@@ -192,9 +192,9 @@ jobs:
 
         # Uninstall ROS Code
         - make uninstall
-        
+
     - # Check if pip is working correctly
-    
+
       # Test in multiple versions of Python
       python:
         - 3.6.6
@@ -203,11 +203,11 @@ jobs:
         - 3.4
         - 2.7
         - 2.6
-    
+
       # Install the dependencies
       install:
         - pip install -r requirements.txt
-    
+
       # Disable the script
       script:                  true
 
