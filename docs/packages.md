@@ -18,6 +18,10 @@ The following list outlines all the packages used by ROS Code - useful if buildi
     The colour package includes support colour based operations.
     `pip install colour`
 
+??? summary "Lorem Ipsum"
+    The loremipsum package is able to generate ipsum on demand.
+    `pip install loremipsum`
+
 ### Also required for code execution
 
 ???+ summary "Future"
