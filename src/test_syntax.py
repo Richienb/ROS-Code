@@ -7,6 +7,7 @@ from future import standard_library
 standard_library.install_aliases()
 import unittest as ut
 from ros import main as s
+from ros.main import WrongInput
 
 
 class TestCode(ut.TestCase):
@@ -170,6 +171,18 @@ class TestCode(ut.TestCase):
         self.assertEqual(type(s.randstring(5)), str)
         self.assertEqual(len(s.randstring()), 1)
         self.assertEqual(type(s.randstring()), str)
+
+    def test_compare(self):
+        self.assertEqual(s.compare(1, 1, "and"), True)
+        self.assertEqual(s.compare(0, 1, "and"), False)
+        self.assertEqual(s.compare(True, True, "and"), True)
+        self.assertEqual(s.compare(False, False, "and"), False)
+        self.assertEqual(s.compare(True, False, "and"), False)
+        self.assertEqual(s.compare(1, 1, "or"), True)
+        self.assertEqual(s.compare(0, 1, "or"), True)
+        self.assertEqual(s.compare(True, False, "or"), True)
+        self.assertEqual(s.compare(1, 1, "is"), True)
+        self.assertEqual(s.compare(0, 1, "is"), False)
 
 
 if __name__ == '__main__':
