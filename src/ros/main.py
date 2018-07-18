@@ -608,8 +608,9 @@ def randstring(length=1):
 def compare(value1, value2, comparison):
     if not isinstance(comparison, str):
         raise WrongInput("ERROR: comparison argument must be a string")
-    if not comparison in ['is', 'or', 'and']:
-        raise WrongInput("ERROR: comparison argument must be 'is', 'or' or 'and'")
+    if comparison not in ['is', 'or', 'and']:
+        raise WrongInput(
+            "ERROR: comparison argument must be 'is', 'or' or 'and'")
     if comparison == 'is':
         return operator.is_(value1, value2)
     elif comparison == 'or':
