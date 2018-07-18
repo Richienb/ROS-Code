@@ -25,8 +25,6 @@
     ```sh
     curl -L -o Makefile https://raw.githubusercontent.com/Richienb/ROS-Code/master/Makefile && make uninstall && rm Makefile
     ```
-    
-
 
 ### As a one-liner
 
@@ -101,8 +99,6 @@ git clone https://github.com/Richienb/ROS-Code.git & cd ROS-Code & pip install -
     ```bat
     rmdir /s /q ROS-Code
     ```
-
-
 
 ### Usage
 

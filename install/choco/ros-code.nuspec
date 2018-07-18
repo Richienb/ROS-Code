@@ -58,7 +58,9 @@ install packages with those elements but they are ignored. Any authoring tools o
     <!-- Release Notes -->
     <releaseNotes>Thanks for choosing ROS Code! All update information will be posted here.</releaseNotes>
     <!-- =============================== -->
-    <dependencies> <dependency id="python" version="3.6" /> </dependencies>
+    <dependencies>
+      <dependency id="python" version="3.6"/>
+    </dependencies>
     <!-- Specifying dependencies and version ranges? https://docs.nuget.org/create/versioning#specifying-version-ranges-in-.nuspec-files -->
     <!--<dependencies> <dependency id="" version="__MINIMUM_VERSION__" /> <dependency id="" version="[__EXACT_VERSION__]" /> <dependency id="" version="[_MIN_VERSION_INCLUSIVE, MAX_VERSION_INCLUSIVE]" /> <dependency id=""
     version="[_MIN_VERSION_INCLUSIVE, MAX_VERSION_EXCLUSIVE)" /> <dependency id="" /> <dependency id="chocolatey-core.extension" version="1.1.0" /> </dependencies>-->

@@ -1,35 +1,35 @@
 # Project Information
-site_name: ROS Code Documentation
-site_description: ROS Code is a revolutionary, modern and pleasing programming language to code in featuring a streamlined and speedy installation, a very straightforward and simplistic syntax and is provided as a Python 3 library.
-site_author: Richie Bendall
-site_url: https://www.ros-code.ga
+site_name:              ROS Code Documentation
+site_description:       ROS Code is a revolutionary, modern and pleasing programming language to code in featuring a streamlined and speedy installation, a very straightforward and simplistic syntax and is provided as a Python 3 library.
+site_author:            Richie Bendall
+site_url:               https://www.ros-code.ga
 
 # Repository
-repo_name: Richienb/ROS-Code
-repo_url: https://github.com/Richienb/ROS-Code
-edit_uri: ""
+repo_name:              Richienb/ROS-Code
+repo_url:               https://github.com/Richienb/ROS-Code
+edit_uri:               ""
 
 # Copyright
-copyright: 'Copyright &copy; 2017 - 2018 Richie Bendall'
+copyright:              'Copyright &copy; 2017 - 2018 Richie Bendall'
 
 # Configuration
 theme:
-  name: material
+  name:                 material
   palette:
-    primary: 'indigo'
-    accent: 'red'
+    primary:            'indigo'
+    accent:             'red'
   font:
-    text: 'Product Sans'
-    code: 'Roboto Mono'
-  language: 'en'
-  favicon: 'assets/images/favicon.ico'
+    text:               'Product Sans'
+    code:               'Roboto Mono'
+  language:             'en'
+  favicon:              'assets/images/favicon.ico'
 
 # Page Tree
 pages:
-    - Home: index.md
+    - Home:             index.md
     - Main:
       - Information Badges: badges.md
-      - Commands: commands.md
+      - Commands:       commands.md
     - Installation:
       - Install As Module: install-module.md
       - Install From Source: install-source.md
@@ -37,30 +37,30 @@ pages:
     - Other:
       - Recommended Syntax: syntax.md
       - Makefile Commands: makefile-commands.md
-      - API Usage: api-usage.md
+      - API Usage:      api-usage.md
     - Contribution:
       - Edit The Documentation: edit-docs.md
       - Edit The Source Code: edit-code.md
-      - Packages Used: packages.md
+      - Packages Used:  packages.md
       - Release Guidelines: release-guidelines.md
-      - Unit Testing: unittesting.md
+      - Unit Testing:   unittesting.md
     - Version 1.0:
-      - Home: versionone.md
-      - Build Status: versionone-buildstatus.md
-      - Enable: versionone-enable.md
+      - Home:           versionone.md
+      - Build Status:   versionone-buildstatus.md
+      - Enable:         versionone-enable.md
       - Download And Install: versionone-install.md
       - Troubleshooting: versionone-troubleshooting.md
     - Fine Print:
       - Code Of Conduct: codeofconduct.md
-      - License: license.md
+      - License:        license.md
 
 # Customization
 extra:
   social:
-    - type: globe
-      link: https://www.richie-bendall.ml
-    - type: github-alt
-      link: https://github.com/Richienb
+    - type:             globe
+      link:             https://www.richie-bendall.ml
+    - type:             github-alt
+      link:             https://github.com/Richienb
 
 extra_css:
   - css/details-support.css
@@ -72,7 +72,7 @@ extra_javascript:
 markdown_extensions:
   - pymdownx.arithmatex
   - pymdownx.betterem:
-      smart_enable: all
+      smart_enable:     all
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
@@ -83,15 +83,15 @@ markdown_extensions:
   - pymdownx.smartsymbols
   - pymdownx.superfences
   - pymdownx.tasklist:
-      custom_checkbox: true
+      custom_checkbox:  true
   - pymdownx.tilde
   - markdown.extensions.tables
   - markdown.extensions.codehilite:
-      guess_lang: false
+      guess_lang:       false
   - markdown.extensions.def_list
   - markdown.extensions.footnotes
   - markdown.extensions.meta
   - markdown.extensions.toc:
-      permalink: true
+      permalink:        true
   - smarty
   - admonition

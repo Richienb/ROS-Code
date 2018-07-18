@@ -10,11 +10,9 @@ To watch the overview video, click [here](https://www.youtube.com/watch?v=lPCTNK
 
 [![Travis Build Status](https://img.shields.io/travis/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge)](https://travis-ci.org/Richienb/ROS-Code) [![CodeFactor Status](https://www.codefactor.io/repository/github/richienb/ros-code/badge?longCache=true&style=for-the-badge)](https://www.codefactor.io/repository/github/richienb/ros-code) ![Codecov Status](https://img.shields.io/codecov/c/github/Richienb/ROS-Code.svg?style=for-the-badge)
 
-
 * * *
 
 [![Chat On Gitter](https://img.shields.io/gitter/room/Richienb/ROS-Code.svg?style=for-the-badge)](https://gitter.im/ROS-Code) [![Chat On Discord](https://img.shields.io/discord/461977906156142601.svg?style=for-the-badge)](https://discordapp.com/invite/KevXkP7)
-
 
 * * *
 
