@@ -605,12 +605,16 @@ def randstring(length=1):
 # Compare 2 Values
 
 
-def compare(value1, value2, comparision):
-    if comparision == 'is':
+def compare(value1, value2, comparison):
+    if not isinstance(comparison, str):
+        raise WrongInput("ERROR: comparison argument must be a string")
+    if not comparison in ['is', 'or', 'and']:
+        raise WrongInput("ERROR: comparison argument must be 'is', 'or' or 'and'")
+    if comparison == 'is':
         return operator.is_(value1, value2)
-    elif comparision == 'or':
+    elif comparison == 'or':
         return operator.or_(value1, value2)
-    elif comparision == 'and':
+    elif comparison == 'and':
         return operator.and_(value1, value2)
 
 # Use Euler's Formula
