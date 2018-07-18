@@ -47,27 +47,17 @@ import urllib
 import datetime
 from datetime import datetime
 from time import time
+from time import timezone as _timezone
 from time import sleep as delayfunc
 import calendar
 # Pip module
 import pip
+# Custom modules
+import errors
 
 # Print a debug message
 if __debug__:
     print("Loaded modules. Now loading functions...")
-
-# Exception Conversion Error
-
-
-class ConversionError(object):
-    pass
-
-
-# Exception Wrong Input
-
-
-class WrongInput(object):
-    pass
 
 # Set Logging Level
 
@@ -84,14 +74,14 @@ def loglevel(leveltype=None, isequal=False):
         elif leveltype in loglevels:
             return loglevels[leveltype] == logger.getEffectiveLevel()
         else:
-            raise WrongInput(
+            raise errors.WrongInput(
                 "Incorrect input provided. It should be none, debug, info, warning, error or critical")
     if leveltype in loglevels.values():
         logging.basicConfig(level=leveltype)
     elif leveltype in loglevels:
         logging.basicConfig(level=loglevels[leveltype])
     else:
-        raise WrongInput(
+        raise errors.WrongInput(
             "Incorrect input provided. It should be none, debug, info, warning, error or critical")
 
 # Set file to log to
@@ -101,12 +91,12 @@ def logfile(targetfile="ros.log"):
     try:
         str(targetfile)
     except BaseException:
-        raise ConversionError("Cannot convert type " +
+        raise errors.ConversionError("Cannot convert type " +
                               str(type(initialtext)) + "to str")
     try:
         logging.basicConfig(filename=str(targetfile))
     except BaseException:
-        raise WrongInput("Invalid target file specified")
+        raise errors.WrongInput("Invalid target file specified")
 
 # Set logging status dependant on if debug is enabled
 
@@ -119,10 +109,11 @@ else:
 
 # Ensure ROS Code storage variables are global
 
+__ros_stored__ = None
+
 
 def _ensureglobal():
-    global ROS_STORED
-    ROS_STORED = None
+    global __ros_stored__
 
 
 _ensureglobal()
@@ -147,7 +138,7 @@ def shellinput(initialtext='>> ', splitpart=' '):
     try:
         str(initialtext)
     except BaseException:
-        raise ConversionError("Cannot convert type " +
+        raise errors.ConversionError("Cannot convert type " +
                               str(type(initialtext)) + "to str")
     shelluserinput = input(str(initialtext))
     return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(
@@ -156,28 +147,29 @@ def shellinput(initialtext='>> ', splitpart=' '):
 # Convert colour codes to different formats
 
 
-def colourcode(colourcode, destinationcode, longhex=False):
-    c = Color(str(colourcode))
-    if destinationcode == 'hex':
+def colourcode(startcolourcode, destinationcode, longhex=False):
+    c = Color(str(startcolourcode))
+    if destinationcode.lower() == 'hex':
         if longhex is True:
             return c.hex_l
         return c.hex
-    elif destinationcode == 'hsl':
+    elif destinationcode.lower() == 'hsl':
         return c.hsl
-    elif destinationcode == 'rgb':
+    elif destinationcode.lower() == 'rgb':
         return c.rgb
-    elif destinationcode == 'red':
+    elif destinationcode.lower() == 'red':
         return c.red
-    elif destinationcode == 'blue':
+    elif destinationcode.lower() == 'blue':
         return c.blue
-    elif destinationcode == 'green':
+    elif destinationcode.lower() == 'green':
         return c.green
-    elif destinationcode == 'hue':
+    elif destinationcode.lower() == 'hue':
         return c.hue
-    elif destinationcode == 'sat':
+    elif destinationcode.lower() == 'sat':
         return c.saturation
-    elif destinationcode == 'lum':
+    elif destinationcode.lower() == 'lum':
         return c.luminance
+    raise errors.WrongInput("Destination colour code not specified correctly")
 
 # Modify a parameter of a colour code
 
@@ -348,8 +340,7 @@ def yesnogame(includemaybe=False):
         return "Yes"
     elif afternum == 2:
         return "No"
-    elif afternum == 3:
-        return "Maybe"
+    return "Maybe"
 
 # Play the truth or lie game
 
@@ -607,9 +598,10 @@ def randstring(length=1):
 
 def compare(value1, value2, comparison):
     if not isinstance(comparison, str):
-        raise WrongInput("ERROR: comparison argument must be a string")
+        raise errors.WrongInput("ERROR: comparison argument must be a string")
     if not comparison in ['is', 'or', 'and']:
-        raise WrongInput("ERROR: comparison argument must be 'is', 'or' or 'and'")
+        raise errors.WrongInput(
+            "ERROR: comparison argument must be 'is', 'or' or 'and'")
     if comparison == 'is':
         return operator.is_(value1, value2)
     elif comparison == 'or':
@@ -889,18 +881,18 @@ def average(numbers, averagetype='mean'):
 def throwerror(errortext):
     raise RuntimeError(errortext + ' (0001)')
 
-# Store A Value In The ROS_STORED Variable
+# Store A Value In The __ros_stored__ Variable
 
 
 def store(value):
-    global ROS_STORED
-    ROS_STORED = value
+    global __ros_stored__
+    __ros_stored__ = value
 
 # Get The Stored Variable
 
 
 def getstored():
-    return ROS_STORED
+    return __ros_stored__
 
 # Delay For A Specific Amount Of Seconds
 
@@ -1120,8 +1112,8 @@ def unilimit():
 # Get The Current Platform
 
 
-def platform():
-    return sys.platform
+def getplatform():
+    return sys.platform()
 
 # Get The Largest Integer Less Than Or Equal To
 
@@ -1651,7 +1643,7 @@ def yearlimit(limittype):
 
 
 def timezone():
-    return time.timezone
+    return _timezone()
 
 # Get A Random Number
 
@@ -1867,7 +1859,7 @@ def pingtest(returntrue=False):
 
 def roslicense(raw=False):
     if raw is False:
-        print('ROS Code Is licensed Under The Apache License 2.0')
+        print('ROS Code is licensed under the Apache License 2.0')
         print(
             u'\u2714' +
             ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
@@ -1890,11 +1882,11 @@ if __debug__:
 
 # Interactive shell if launched directly
 if __name__ == "__main__":
-    print(
-        "ROS Code 2.0 | Running on {} {} | Python Version {}.{}.{}".format(
-            platform.system(), platform.release(), list(
-                sys.version_info)[0], list(
+    VER = "ROS Code 2.0 | Running on {} {} | Python Version {}.{}.{}".format(
+        platform.system(), platform.release(), list(
+            sys.version_info)[0], list(
                 sys.version_info)[1], list(
-                    sys.version_info)[2]))
+                    sys.version_info)[2])
+    print(VER)
     while True:
-        exec(input(">> "))
+        exec("print(" + input(">> ") + ")")
