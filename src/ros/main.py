@@ -599,7 +599,7 @@ def randstring(length=1):
 def compare(value1, value2, comparison):
     if not isinstance(comparison, str):
         raise errors.WrongInput("ERROR: comparison argument must be a string")
-    if not comparison in ['is', 'or', 'and']:
+    if comparison not in ['is', 'or', 'and']:
         raise errors.WrongInput(
             "ERROR: comparison argument must be 'is', 'or' or 'and'")
     if comparison == 'is':
