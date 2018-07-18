@@ -32,6 +32,7 @@ import clipboard
 from colour import Color
 import textwrap
 from pprint import pprint
+import loremipsum as li
 # Math modules
 import math
 from math import pi
@@ -283,6 +284,11 @@ def pykeyword(operation='list', keywordtotest=None):
 
 def prettyprinter(listtoprint, stream=None, indent=1, width=80, depth=None):
     pprint(listtoprint, stream, indent, width, depth)
+
+# Generate a string of Lorem Ipsum
+def genipsum():
+    # TODO: Make this work. Help: https://loremipsum.readthedocs.io/en/latest/#api
+    pass
 
 # Check if a number is in the Fibonacci sequence
 
@@ -722,6 +728,7 @@ def flipcoords(xcoord, ycoord, axis):
 
 
 # Get The Day Of The Week For A Specific Day
+
 def dayofweek(day, month, year, formatresult=True):
     if formatresult is False:
         return calendar.weekday(year, month, day) + 1
