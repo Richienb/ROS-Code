@@ -889,7 +889,7 @@ def average(numbers, averagetype='mean'):
 
 
 def throwerror(errortext):
-    raise RuntimeError(errortext + ' (0001)')
+    raise RuntimeError("Forced Error: " + str(errortext))
 
 # Store A Value In The __ros_stored__ Variable
 
