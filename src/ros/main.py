@@ -68,12 +68,12 @@ def loglevel(leveltype=None, isequal=False):
     loglevels = {"none": 0, "debug": 10, "info": 20,
                  "warning": 30, "error": 40, "critical": 50}
     if leveltype is None and isequal == False:
-        return logger.getEffectiveLevel()
+        return logging.getEffectiveLevel()
     if leveltype is not None and isequal is True:
         if leveltype in loglevels.values():
-            return leveltype == logger.getEffectiveLevel()
+            return leveltype == logging.getEffectiveLevel()
         elif leveltype in loglevels:
-            return loglevels[leveltype] == logger.getEffectiveLevel()
+            return loglevels[leveltype] == logging.getEffectiveLevel()
         else:
             raise WrongInput(
                 "Incorrect input provided. It should be none, debug, info, warning, error or critical")
@@ -93,7 +93,7 @@ def logfile(targetfile="ros.log"):
         str(targetfile)
     except BaseException:
         raise ConversionError("Cannot convert type " +
-                              str(type(initialtext)) + "to str")
+                              str(type(targetfile)) + "to str")
     try:
         logging.basicConfig(filename=str(targetfile))
     except BaseException:
@@ -518,7 +518,7 @@ def autohard(equation):
 
 
 def equation(operation, firstnum, secondnum):
-    if not isnumber(firstnum) and isnumber(secondnum):
+    if not isnum(firstnum) and isnum(secondnum):
         raise RuntimeError(
             'An Error Has Occured: One Of The Values Specified Is Not A Number (0002)')
     if operation == 'plus':
@@ -669,7 +669,7 @@ def shapesides(inputtocheck, inputtype='shape'):
 
 
 def comparenum(value1, value2, comparison):
-    if isnumber(value1) and isnumber(value2):
+    if isnum(value1) and isnum(value2):
         comparison = comparison.lower()
         if comparison == 'equals':
             return value1 == value2
@@ -791,7 +791,7 @@ def fracsimplify(numerator, denominator):
         limit = int(numerator / 2)
     elif numerator < denominator:
         limit = int(denominator / 2)
-    for _ in range(2, limit):
+    for i in range(2, limit):
         checknum = limit - i
         if numerator % checknum == 0 and denominator % checknum == 0:
             numerator = numerator / checknum
@@ -966,9 +966,9 @@ def isboolean(value):
 # Check If A Value Is Able To Be Converted To A Number (Decimal And Integer)
 
 
-def isnumber(value):
+def isnum(value):
     try:
-        return bool(isinteger(value) or isnumber(value))
+        return bool(isinstance(value, int) or isinstance(value, float))
     except BaseException:
         return False
 
@@ -1659,8 +1659,8 @@ def timezone():
 
 
 def randomnum(minimum, maximum):
-    if isnumber(minimum):
-        if isnumber(maximum):
+    if isnum(minimum):
+        if isnum(maximum):
             return genrandomnum(minimum, maximum)
         else:
             raise RuntimeError('Invalid Value (0016)')
