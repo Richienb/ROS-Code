@@ -162,7 +162,7 @@ jobs:
 
       # Run unit tests
       script:
-        - coverage run test_syntax.py test
+        - coverage run test_syntax.py
         - coverage run run_file.py "test.ros"
 
       # Upload results to Codecov
