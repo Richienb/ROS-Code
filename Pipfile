@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 clipboard = "*"
 colour = "*"
+loremipsum = "*"
 future = "*"
 
 [dev-packages]
