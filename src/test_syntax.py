@@ -7,7 +7,6 @@ from future import standard_library
 standard_library.install_aliases()
 import unittest as ut
 from ros import main as s
-from ros.main import WrongInput
 
 
 class TestCode(ut.TestCase):
