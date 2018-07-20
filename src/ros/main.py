@@ -54,7 +54,7 @@ import calendar
 # Pip module
 import pip
 # Custom modules
-from errors import ConversionError, WrongInput, UnexpectedError
+from . import errors
 
 # Print a debug message
 if __debug__:
