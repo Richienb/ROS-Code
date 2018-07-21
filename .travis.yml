@@ -14,7 +14,7 @@ branches:                      master
 before_install:
   - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
   - git config --global user.email "richiebendall@gmail.com"
-  - git config --global user.name "Richienb"
+  - git config --global user.name "ROS Bot"
   - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
 
 # Install necessary dependencies
