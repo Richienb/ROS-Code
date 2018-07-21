@@ -1,1 +1,1 @@
-gource -f --camera-mode track --seconds-per-day 1 --auto-skip-seconds 1 --file-idle-time 0 --bloom-multiplier 1.5 --bloom-intensity 1.0 -e 0.5 --font-colour FAFAFA --background 212121 --font-size 18  --title "ROS Code" --hide mouse,progress
+gource -f -1920x1080 --multi-sampling --camera-mode track --seconds-per-day 1 --auto-skip-seconds 1 --file-idle-time 0 --bloom-multiplier 1.5 --bloom-intensity 1.0 -e 0.5 --font-colour FAFAFA --background 212121 --font-size 18  --title "ROS Code" --hide mouse,progress
