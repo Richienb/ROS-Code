@@ -10,6 +10,7 @@ python:                   3.6.6
 # Set build branch
 branches:                 master
 
+# Cache the cache directory
 cache:
   directories:
     - $HOME/.cache
@@ -169,7 +170,7 @@ jobs:
 
       # Perform optimisations
       script:
-        - for file in *.py; do pyminifier -o $(realpath "$file") $(realpath "$file"); done
+        - for file in *.py; do pyminifier --outfile=$(realpath "$file") --prepend="ROS Code is licensed under the Apache 2.0 License" $(realpath "$file"); done
 
       # Commit and push changes
       after_script:
