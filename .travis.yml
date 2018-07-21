@@ -160,11 +160,12 @@ jobs:
       # Navigate to the source code directory
       before_script:
         - rm -rf min/*
-        - cd src
+        - cp -a src/. min
+        - cd min
 
       # Perform optimisations
       script:
-        - for file in *.py; do pyminifier -d $TRAIVS_BUILD_DIR/min $(realpath "$file"); done
+        - for file in *.py; do pyminifier -d $(realpath "$file") $(realpath "$file"); done
 
       # Commit and push changes
       after_script:
