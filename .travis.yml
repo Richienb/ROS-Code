@@ -50,6 +50,12 @@ jobs:
 
     - # Make the code backwards compatible
 
+      # Install realpath package
+      addons:
+        apt:
+          packages:
+            - realpath
+
       # Navigate to the source code directory
       before_script:
         - cd src
