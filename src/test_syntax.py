@@ -7,6 +7,7 @@ from future import standard_library
 standard_library.install_aliases()
 import unittest as ut
 from ros import main as s
+import keyword
 
 
 class TestCode(ut.TestCase):
@@ -48,7 +49,6 @@ class TestCode(ut.TestCase):
                          'd', 'c', 'b', 'a'])
 
     def test_pykeyword(self):
-        import keyword
         self.assertEqual('None' in keyword.kwlist, True)
         self.assertEqual('and' in keyword.kwlist, True)
         self.assertEqual('assert' in keyword.kwlist, True)
