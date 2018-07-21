@@ -165,7 +165,7 @@ jobs:
 
       # Perform optimisations
       script:
-        - for file in *.py; do pyminifier -d $(realpath "$file") $(realpath "$file"); done
+        - for file in *.py; do pyminifier -o $(realpath "$file") $(realpath "$file"); done
 
       # Commit and push changes
       after_script:
