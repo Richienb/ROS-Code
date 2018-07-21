@@ -231,9 +231,6 @@ jobs:
 
     - # Check if pip is working correctly
 
-      # Disable caching
-      cache:              true
-
       # Test in multiple versions of Python
       python:
         - 3.6.6
