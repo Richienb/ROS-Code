@@ -10,6 +10,10 @@ python:                   3.6.6
 # Set build branch
 branches:                 master
 
+cache:
+  directories:
+    - $HOME/.cache
+
 # Run some pre-install scripts
 before_install:
   - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
