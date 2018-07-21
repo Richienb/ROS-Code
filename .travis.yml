@@ -159,6 +159,7 @@ jobs:
 
       # Navigate to the source code directory
       before_script:
+        - rm -rf min/*
         - cd src
 
       # Perform optimisations
