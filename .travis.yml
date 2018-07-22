@@ -180,16 +180,11 @@ jobs:
         # Push changes
         - git push origin HEAD:master
 
-    - stage:              checks & testing # Run unit tests
+    - stage:              checks & testing # Run unit tests with codecov
 
       # Test in multiple versions of Python
       python:
         - 3.6.6
-        - 3.6
-        - 3.5
-        - 3.4
-        - 2.7
-        - 2.6
 
       # Install required dependencies
       install:
