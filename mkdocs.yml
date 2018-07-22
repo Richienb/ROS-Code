@@ -69,6 +69,7 @@ extra:
       link:             https://blog.richie-bendall.ml
     - type:             google-plus
       link:             https://plus.google.com/104023294057020158565
+  disqus: 'ros-code'
 
 extra_css:
   - css/details-support.css
