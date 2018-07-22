@@ -192,8 +192,11 @@ jobs:
         # Install the codecov Pip package
         - pip install codecov
 
-      # Navigate to source code directory
+      # Before steps before the script
       before_script:
+        # Check if the codecov YAML file is valid
+        - curl --data-binary @codecov.yml https://codecov.io/validate
+        # Navigate to source code directory
         - cd src
 
       # Run unit tests
