@@ -86,6 +86,7 @@ markdown_extensions:
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -104,3 +105,5 @@ markdown_extensions:
       permalink:        true
   - smarty
   - admonition
+  - footnotes
+  - meta
