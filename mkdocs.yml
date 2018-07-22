@@ -52,7 +52,9 @@ pages:
       - Troubleshooting: versionone-troubleshooting.md
     - Fine Print:
       - Code Of Conduct: codeofconduct.md
+        disqus:
       - License:        license.md
+        disqus:
 
 # Customization
 extra:
