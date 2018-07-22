@@ -59,8 +59,16 @@ extra:
   social:
     - type:             globe
       link:             https://www.richie-bendall.ml
-    - type:             github-alt
+    - type:             github
       link:             https://github.com/Richienb
+    - type:             user-circle
+      link:             https://gravatar.com/richienb
+    - type:             youtube
+      link:             https://www.youtube.com/channel/UCxOiLzcbFeW-Ayz_MbgWIXw
+    - type:             blogger
+      link:             https://blog.richie-bendall.ml
+    - type:             google-plus
+      link:             https://plus.google.com/104023294057020158565
 
 extra_css:
   - css/details-support.css
