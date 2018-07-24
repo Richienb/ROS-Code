@@ -36,6 +36,16 @@ install:
 
 jobs:
   include:
+    - stage: pre checks # Check if the code is Python 3 compatible
+
+      install:
+        # Install the required dependency
+        - pip install caniusepython3
+
+      script:
+        # Perform check
+        - caniusepython3 -r requirements.txt
+
     - stage:              optimisation # Fix the ignored files if the gitignore was updated
       # Only run if on branch
       if:                 type != pull_request
