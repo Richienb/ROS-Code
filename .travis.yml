@@ -164,7 +164,7 @@ jobs:
 
       # Perform optimisations
       script:
-        - find  -type f  -name "*.py" -exec file={} && do pyminifier --outfile="$file" --prepend="ROS Code is licensed under the Apache 2.0 License" "$file" +
+        - find  -type f  -name "*.py" -exec file={} && pyminifier --outfile="$file" --prepend="ROS Code is licensed under the Apache 2.0 License" "$file" +
 
       # Commit and push changes
       after_script:
