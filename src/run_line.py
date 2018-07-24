@@ -25,7 +25,7 @@ except IndexError:
 with open(args[1]) as f:
     IGNORELINE = False
     CONTENT = args[1]
-    if not(value[1].startswith('!')) and IGNORELINE is False:
+    if not (value[1].startswith('!')) and IGNORELINE is False:
         FIRSTPART = value[1].split(".")[0]
         LENOFFIRSTPART = len(value[1].split(".")[0])
         AFTERPART = str(value[1][LENOFFIRSTPART + 1:])

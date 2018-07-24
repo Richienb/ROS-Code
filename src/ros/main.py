@@ -65,8 +65,14 @@ if __debug__:
 
 def loglevel(leveltype=None, isequal=False):
     leveltype = leveltype.lower()
-    loglevels = {"none": 0, "debug": 10, "info": 20,
-                 "warning": 30, "error": 40, "critical": 50}
+    loglevels = {
+        "none": 0,
+        "debug": 10,
+        "info": 20,
+        "warning": 30,
+        "error": 40,
+        "critical": 50
+    }
     if leveltype is None and isequal == False:
         return logging.getEffectiveLevel()
     if leveltype is not None and isequal is True:
@@ -76,14 +82,17 @@ def loglevel(leveltype=None, isequal=False):
             return loglevels[leveltype] == logging.getEffectiveLevel()
         else:
             raise WrongInput(
-                "Incorrect input provided. It should be none, debug, info, warning, error or critical")
+                "Incorrect input provided. It should be none, debug, info, warning, error or critical"
+            )
     if leveltype in loglevels.values():
         logging.basicConfig(level=leveltype)
     elif leveltype in loglevels:
         logging.basicConfig(level=loglevels[leveltype])
     else:
         raise WrongInput(
-            "Incorrect input provided. It should be none, debug, info, warning, error or critical")
+            "Incorrect input provided. It should be none, debug, info, warning, error or critical"
+        )
+
 
 # Set file to log to
 
@@ -92,15 +101,15 @@ def logfile(targetfile="ros.log"):
     try:
         str(targetfile)
     except BaseException:
-        raise ConversionError("Cannot convert type " +
-                              str(type(targetfile)) + "to str")
+        raise ConversionError("Cannot convert type " + str(type(targetfile)) +
+                              "to str")
     try:
         logging.basicConfig(filename=str(targetfile))
     except BaseException:
         raise WrongInput("Invalid target file specified")
 
-# Set logging status dependant on if debug is enabled
 
+# Set logging status dependant on if debug is enabled
 
 if __debug__:
     loglevel("warning")
@@ -125,12 +134,14 @@ _ensureglobal()
 def shellcommand(command):
     call(str(command))
 
+
 # Update all the Pip packages
 
 
 def pipupdate():
     packages = [dist.project_name for dist in pip.get_installed_distributions()]
     call('pip install --upgrade ' + ' '.join(packages))
+
 
 # Show a shell based input line and return command and parameters
 
@@ -139,11 +150,14 @@ def shellinput(initialtext='>> ', splitpart=' '):
     try:
         str(initialtext)
     except BaseException:
-        raise ConversionError("Cannot convert type " +
-                              str(type(initialtext)) + "to str")
+        raise ConversionError("Cannot convert type " + str(type(initialtext)) +
+                              "to str")
     shelluserinput = input(str(initialtext))
-    return [shelluserinput.split(str(splitpart))[0], shelluserinput[len(
-        shelluserinput.split(str(splitpart))):]]
+    return [
+        shelluserinput.split(str(splitpart))[0],
+        shelluserinput[len(shelluserinput.split(str(splitpart))):]
+    ]
+
 
 # Convert colour codes to different formats
 
@@ -172,6 +186,7 @@ def colourcode(startcolourcode, destinationcode, longhex=False):
         return c.luminance
     raise WrongInput("Destination colour code not specified correctly")
 
+
 # Modify a parameter of a colour code
 
 
@@ -196,11 +211,13 @@ def changecolour(colourcode, action, amount=100):
         c.luminance = amount / 100
         return c
 
+
 # Fix your code after a cat walked on it
 
 
 def catwalk(text):
     return ' '.join(text.split())
+
 
 # Convert tabs to spaces
 
@@ -208,11 +225,13 @@ def catwalk(text):
 def converttabs(text, spaces):
     return text.replace('\t', ' ' * spaces)
 
+
 # Shorten some text by replacing some of it with a placeholder
 
 
 def shortentext(text, minlength, placeholder='...'):
     return textwrap.shorten(text, minlength, placeholder=str(placeholder))
+
 
 # Wrap text around the screen when given the size
 
@@ -220,11 +239,13 @@ def shortentext(text, minlength, placeholder='...'):
 def wraptext(text, maxlength):
     return textwrap.wrap(text, maxlength)
 
+
 # Unindent some text
 
 
 def unindent(text):
     textwrap.dedent(text)
+
 
 # Check if a number is prime
 
@@ -237,6 +258,7 @@ def isprime(number):
             return False
     return True
 
+
 # Append a paragraph space
 
 
@@ -244,17 +266,20 @@ def paraspace(paragraphspaces=1):
     for _ in range(paragraphspaces):
         print('', end='\n')
 
+
 # Add leading 0s to a number
 
 
 def leadingzero(number, minlength):
     return str(number).zfill(int(minlength))
 
+
 # Get the absolute value of a number
 
 
 def absolutenum(number):
     return abs(number)
+
 
 # Split a string and/or get a specific part
 
@@ -264,11 +289,13 @@ def splitstring(string, split_character=' ', part=None):
         return (str(string).split(split_character))
     return (str(string).split(split_character))[part]
 
+
 # Sort a list into a specific order
 
 
 def sort(listtosort, key=None, reversesort=False):
     return sorted(listtosort, key=key, reverse=reversesort)
+
 
 # Check if a keyword is in the Python keyword dictionary
 
@@ -279,11 +306,13 @@ def pykeyword(operation='list', keywordtotest=None):
     elif operation == 'check':
         return keyword.iskeyword(str(keywordtotest))
 
+
 # Pretty print a list
 
 
 def prettyprinter(listtoprint, stream=None, indent=1, width=80, depth=None):
     pprint(listtoprint, stream, indent, width, depth)
+
 
 # Generate a string of Lorem Ipsum
 
@@ -292,6 +321,7 @@ def genipsum():
     # TODO: Make this work. Help:
     # https://loremipsum.readthedocs.io/en/latest/#api
     pass
+
 
 # Check if a number is in the Fibonacci sequence
 
@@ -309,13 +339,20 @@ def isfib(number):
         else:
             return False
 
+
 # Play paper scissors rock
 
 
 def psrgame(choice):
     choice = choice.lower()
-    choices = {'paper': 1, 'papers': 1, 'scissor': 2,
-               'scissors': 2, 'rock': 3, 'rocks': 3}
+    choices = {
+        'paper': 1,
+        'papers': 1,
+        'scissor': 2,
+        'scissors': 2,
+        'rock': 3,
+        'rocks': 3
+    }
     pcchoice = genrandomnum(0, 3)
     if pcchoice == choices[choice]:
         return 'Tie'
@@ -323,6 +360,7 @@ def psrgame(choice):
         return 'Win'
     elif pcchoice > choices[choice]:
         return 'Loose'
+
 
 # Roll a dice
 
@@ -335,6 +373,7 @@ def diceroll(dicecount=1, dicesize=6, alwayslist=False):
     for _ in range(dicecount):
         resultlist.append(genrandomnum(1, dicesize))
     return resultlist
+
 
 # Play the yes-no game
 
@@ -351,6 +390,7 @@ def yesnogame(includemaybe=False):
         return "No"
     return "Maybe"
 
+
 # Play the truth or lie game
 
 
@@ -363,6 +403,7 @@ def truthorliegame():
     elif truthnum == 3:
         return 'Maybe'
     return 'Lie'
+
 
 # Check if the user is a person by asking a simple maths question
 
@@ -379,9 +420,12 @@ def captcha():
         'seven': 7,
         'eight': 8,
         'nine': 9,
-        'ten': 10}
-    numbertext = ['one', 'two', 'three', 'four',
-                  'five', 'six', 'seven', 'eight', 'nine', 'ten']
+        'ten': 10
+    }
+    numbertext = [
+        'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+        'ten'
+    ]
     if genrandomnum(1, 2) == 2:
         parta = randomitem(numbertext)
     else:
@@ -390,8 +434,8 @@ def captcha():
         partb = randomitem(numbertext)
     else:
         partb = genrandomnum(1, 10)
-    tryanswer = input('CAPTCHA: What\'s ' + str(parta) +
-                      ' + ' + str(partb) + '? Your Answer (In Digits): ')
+    tryanswer = input('CAPTCHA: What\'s ' + str(parta) + ' + ' + str(partb) +
+                      '? Your Answer (In Digits): ')
     if not bool(isinstance(parta, int)):
         parta = numbervalues[parta]
     if not bool(isinstance(partb, int)):
@@ -401,6 +445,7 @@ def captcha():
     except BaseException:
         return False
     return parta + partb == tryanswer
+
 
 # Gets, sets, appends or preceeds the clipboard contents
 
@@ -415,6 +460,7 @@ def clipaction(action='get', text=None):
     elif action == 'preceed':
         clipboard.copy(str(text) + str(clipboard.paste))
 
+
 # Convert 0 or 1 to False or True
 
 
@@ -425,17 +471,20 @@ def bintobool(integer):
         elif integer == 1:
             return True
 
+
 # Reload a module
 
 
 def modulereload(modulename):
     importlib.reload(modulename)
 
+
 # Exit the current execution
 
 
 def exitexecution(arguments=0):
     sys.exit(arguments)
+
 
 # Configure the Python warnings
 
@@ -454,12 +503,14 @@ def warnconfig(action='default'):
     elif action == 'once':
         warnings.filterwarnings('once')
 
+
 # Print a console message
 
 
 def message_print(text, amount=1):
     for _ in range(amount):
         print(text)
+
 
 # Automatically solve a simple maths problem
 
@@ -514,13 +565,15 @@ def autohard(equation):
     elif equation.split(" ")[0] == "tan":
         return math.tan(num1)
 
+
 # Solve a simple maths equation manually (May be deprecated)
 
 
 def equation(operation, firstnum, secondnum):
     if not isnum(firstnum) and isnum(secondnum):
         raise RuntimeError(
-            'An Error Has Occured: One Of The Values Specified Is Not A Number (0002)')
+            'An Error Has Occured: One Of The Values Specified Is Not A Number (0002)'
+        )
     if operation == 'plus':
         return (firstnum + secondnum)
     elif operation == 'minus':
@@ -533,6 +586,7 @@ def equation(operation, firstnum, secondnum):
     else:
         raise RuntimeError(
             'An Error Has Occured: You Entered An Invalid Operation (0003)')
+
 
 # Solve scientific operations manually (May be deprecated)
 
@@ -555,6 +609,7 @@ def scientific(number, operation, number2=None, logbase=10):
     elif operation == 'tan':
         return math.tan(number)
 
+
 # Find the lowest common multiple of 2 numbers
 
 
@@ -569,6 +624,7 @@ def lcm(num1, num2):
         else:
             bigger += 1
 
+
 # Find the lowest common multiple of 2 numbers
 
 
@@ -578,9 +634,10 @@ def hcf(num1, num2):
     else:
         smaller = num1
     for i in range(1, smaller + 1):
-        if((num1 % i == 0) and (num2 % i == 0)):
+        if ((num1 % i == 0) and (num2 % i == 0)):
             hcf = i
     return hcf
+
 
 # Find all the factors of a number
 
@@ -592,6 +649,7 @@ def factors(number):
             factors.append(i)
     return factors
 
+
 # Generate a completely random string
 
 
@@ -601,6 +659,7 @@ def randstring(length=1):
     for _ in range(length):
         newpass += str(charstouse[genrandomnum(0, len(charstouse) - 1)])
     return newpass
+
 
 # Compare 2 Values
 
@@ -618,11 +677,13 @@ def compare(value1, value2, comparison):
     elif comparison == 'and':
         return operator.and_(value1, value2)
 
+
 # Use Euler's Formula
 
 
 def eulercalc(faces, edges, verticies):
     return verticies + edges - faces
+
 
 # Get The Sides Of A Shape
 
@@ -659,11 +720,11 @@ def shapesides(inputtocheck, inputtype='shape'):
         'chiliagon': 1000,
         'myriagon': 10000,
         'megagon': 1000000,
-        'googolgon': pow(
-            10,
-            100)}
+        'googolgon': pow(10, 100)
+    }
     if inputtype == 'shape':
         return shapestosides[inputtocheck]
+
 
 # Compare 2 Numbers
 
@@ -688,11 +749,13 @@ def comparenum(value1, value2, comparison):
         elif comparison == 'more than or equal to':
             return value1 >= value2
 
+
 # Print Text A Specific Amount Of Times
 
 
 def texttimes(text, times):
     return times * str(text)
+
 
 # Get The Quadrant Of Coordinates
 
@@ -708,6 +771,7 @@ def quadrant(xcoord, ycoord):
         if yneg is False:
             return 1
         return 4
+
 
 # Flip Coordinates Over A Specific Axis
 
@@ -732,6 +796,7 @@ def flipcoords(xcoord, ycoord, axis):
 
 # Get The Day Of The Week For A Specific Day
 
+
 def dayofweek(day, month, year, formatresult=True):
     if formatresult is False:
         return calendar.weekday(year, month, day) + 1
@@ -751,6 +816,7 @@ def dayofweek(day, month, year, formatresult=True):
         elif calendar.weekday(year, month, day) == 6:
             return 'Sunday'
 
+
 # Check If A Year Is A Leap Year
 
 
@@ -761,6 +827,7 @@ def leapyear(year, querytype='is'):
     elif querytype == 'closest':
         return year % 4
 
+
 # Return A Random String In Hexadecimal
 
 
@@ -768,6 +835,7 @@ def tokhex(length=10, urlsafe=False):
     if urlsafe is True:
         return secrets.token_urlsafe(length)
     return secrets.token_hex(length)
+
 
 # Show A Type Of Face
 
@@ -780,6 +848,7 @@ def face(facetype='smiley'):
         print('😐')
     elif facetype == 'sad':
         print('☹')
+
 
 # Simplify A Fraction
 
@@ -797,6 +866,7 @@ def fracsimplify(numerator, denominator):
             numerator = numerator / checknum
             denominator = denominator / checknum
     return str(int(numerator)) + '/' + str(int(denominator))
+
 
 # Convert A Circle Measurement
 
@@ -822,6 +892,7 @@ def circleconvert(amount, currentformat, newformat):
         elif newformat == 'diameter':
             return amount / pi
 
+
 # Get The Amount Of Numbers Divisible By A Number
 
 
@@ -831,6 +902,7 @@ def amountdiv(number, minnum, maxnum):
         if number % i == 0:
             amount += 1
     return amount
+
 
 # Get A Constant
 
@@ -848,17 +920,20 @@ def constant(constanttype):
     elif constanttype == 'nan':
         return math.nan
 
+
 # Find The Power Of A Number
 
 
 def power(number, power):
     return math.pow(number, power)
 
+
 # Find The Square Root Of A number
 
 
 def squareroot(number):
     return math.sqrt(number)
+
 
 # Do An Average Command
 
@@ -885,11 +960,13 @@ def average(numbers, averagetype='mean'):
         raise RuntimeError(
             'An Error Has Occured: You Entered An Invalid Operation (0003)')
 
+
 # Throw A Runtime Error
 
 
 def throwerror(errortext):
     raise RuntimeError("Forced Error: " + str(errortext))
+
 
 # Store A Value In The __ros_stored__ Variable
 
@@ -898,17 +975,20 @@ def store(value):
     global __ros_stored__
     __ros_stored__ = value
 
+
 # Get The Stored Variable
 
 
 def getstored():
     return __ros_stored__
 
+
 # Delay For A Specific Amount Of Seconds
 
 
 def delay(seconds):
     delayfunc(seconds)
+
 
 # Waits For The User To Press Enter
 
@@ -917,11 +997,13 @@ def wait_enter(times=1):
     for _ in range(times):
         input('')
 
+
 # Convert A Variable To A String
 
 
 def convertstring(value):
     return str(value)
+
 
 # Return The Opposite Of A Boolean
 
@@ -933,11 +1015,13 @@ def opposite(boolean):
         raise RuntimeError(
             'An Error Has Occured: Nor A Bool Or Len Was Provided (0014)')
 
+
 # Check If A Number Is A Decimal
 
 
 def isdecimal(value):
     return bool(isinstance(value, float))
+
 
 # Check If A Variable Is A String
 
@@ -945,11 +1029,13 @@ def isdecimal(value):
 def isstring(variable):
     return bool(isinstance(variable, str))
 
+
 # Check If A Variable Is A Specific Type
 
 
 def istype(variable, typeexpected):
     return bool(isinstance(variable, typeexpected))
+
 
 # Check If A Number Is An Integer (Full Number)
 
@@ -957,11 +1043,13 @@ def istype(variable, typeexpected):
 def isinteger(value):
     return bool(isinstance(value, int))
 
+
 # Check For A Boolean
 
 
 def isboolean(value):
     return isinstance(value, bool)
+
 
 # Check If A Value Is Able To Be Converted To A Number (Decimal And Integer)
 
@@ -971,6 +1059,7 @@ def isnum(value):
         return bool(isinstance(value, int) or isinstance(value, float))
     except BaseException:
         return False
+
 
 # Sing Happy Birthday
 
@@ -984,6 +1073,7 @@ def happybirthday(person):
     delayfunc(2)
     print('Happy Birthday To You')
 
+
 # Change The Casing Of Text
 
 
@@ -994,6 +1084,7 @@ def case(variable, argument='uppercase'):
         return variable.lower()
     elif argument == 'sentence':
         return str(variable[0].upper()) + str(variable[1:])
+
 
 # Check If A Number Is A Type
 
@@ -1019,6 +1110,7 @@ def numprop(value, propertyexpected):
     elif propertyexpected == 'zero':
         return bool(value == 0)
 
+
 # Toggle A Number Between Positive And Negative
 
 
@@ -1030,11 +1122,13 @@ def posnegtoggle(number):
     elif bool(number == 0):
         return number
 
+
 # Find The Difference Between 2 Numbers
 
 
 def difference(num1, num2):
     return abs(num1 - num2)
+
 
 # Check If A Number Is Divisible By Another Number
 
@@ -1042,17 +1136,20 @@ def difference(num1, num2):
 def divisable(num1, num2):
     return bool(num1 % num2 == 0)
 
+
 # Check If A Variable Is Empty
 
 
 def isempty(variable):
     return bool(variable == '')
 
+
 # Check If A Variable Is Infinite
 
 
 def isinfinite(variable):
     return bool(math.isfinite(variable))
+
 
 # Find The Length Of A Value
 
@@ -1062,9 +1159,9 @@ def length(value):
         return len(convertstring(value))
     except OverflowError:
         raise RuntimeError(
-            'An Error Has Occured: The Length Exceeds The Limit (',
-            charlimit(),
+            'An Error Has Occured: The Length Exceeds The Limit (', charlimit(),
             ') (0015)')
+
 
 # Simulate A Cow Saying Text
 
@@ -1095,11 +1192,13 @@ def cowsay(text='', align='centre'):
     print(spacing + '     U  ||----w | ')
     print(spacing + '        ||     || ')
 
+
 # Get The Corresponding Letter In A String
 
 
 def getletter(variable, letternumber):
     return str(variable)[letternumber - 1]
+
 
 # Check If Something Is On The List
 
@@ -1107,11 +1206,13 @@ def getletter(variable, letternumber):
 def onlist(listtocheck, item):
     return item in listtocheck
 
+
 # Get The Character Limit
 
 
 def charlimit():
     return sys.maxsize
+
 
 # Get The Highest Unicode Value
 
@@ -1119,11 +1220,13 @@ def charlimit():
 def unilimit():
     return sys.maxunicode
 
+
 # Get The Current Platform
 
 
 def getplatform():
     return sys.platform()
+
 
 # Get The Largest Integer Less Than Or Equal To
 
@@ -1134,11 +1237,13 @@ def less_or_equal(number):
     except BaseException:
         raise RuntimeError('An Error Has Occured: Number Not Provided (0016)')
 
+
 # Join Two Strings
 
 
 def jointext(firststring, secondstring):
     return str(firststring) + str(secondstring)
+
 
 # Tools For Directories (If Exists, Make And Delete)
 
@@ -1163,6 +1268,7 @@ def dirtool(operation, directory):
         raise RuntimeError(
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
+
 # Download A File
 
 
@@ -1180,6 +1286,7 @@ def filedownload(source, destination):
     else:
         raise RuntimeError(
             'An Error Has Occured: Source Or Destination Invalid (0011)')
+
 
 # Tools For Files (If Exists, Make And Delete)
 
@@ -1210,6 +1317,7 @@ def file(operation, path):
         raise RuntimeError(
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
+
 # Tools For Text Files
 
 
@@ -1228,6 +1336,7 @@ def text(operation, path, argument):
         else:
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
 
+
 # About Information
 
 
@@ -1235,6 +1344,7 @@ def about():
     print('You Are Using ROS Code')
     print('ROS Code Is licensed Under The Apache License 2.0')
     print('Type "ros.license()" To Read The license')
+
 
 # Get the version of Python
 
@@ -1244,17 +1354,20 @@ def pyversion(part=None):
         return sys.version_info
     return sys.version_info[part]
 
+
 # Get the executable used by Python
 
 
 def pyexec():
     return sys.executable
 
+
 # Print Python copyright information
 
 
 def pycopyright():
     return sys.copyright
+
 
 # Get the value of __name__
 
@@ -1263,6 +1376,7 @@ def pyname(ifmain=False):
     if ifmain is True:
         return __name__ == "__main__"
     return __name__
+
 
 # Convert Text To Binary Form
 
@@ -1279,6 +1393,7 @@ def convertbinary(value, argument):
         except BaseException:
             raise RuntimeError('Invalid Value (0016)')
 
+
 # Make The Text Forwards Or Backwards
 
 
@@ -1290,6 +1405,7 @@ def reversetext(texttoreverse, ignoretype=False):
             return float(str(texttoreverse)[::-1])
         return str(texttoreverse)[::-1]
     return str(texttoreverse)[::-1]
+
 
 # Convert A Time Period To Another One
 
@@ -1506,17 +1622,20 @@ def converttime(time, currentformat, newformat):
         elif newformat == 'centuaries':
             return time * 1000 / 100
 
+
 # Reverse A List
 
 
 def reverselist(listtoreverse):
     return listtoreverse.reverse()
 
+
 # Replace Text In A Variable
 
 
 def replacetext(string, texttofind, texttoreplace):
     return string.replace(texttofind, texttoreplace)
+
 
 # Convert A Base 10 Number To A Custom Base
 
@@ -1534,6 +1653,7 @@ def convertbase(number, base=10):
         integer, mod = divmod(integer, base)
         res += nums[mod]
     return ('' if sign == 1 else '-') + res[::-1]
+
 
 # Convert A ASCII Value To A Symbol
 
@@ -1554,11 +1674,13 @@ def convertascii(value, command='to'):
         raise RuntimeError(
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
+
 # Evaluate A Expression Or Operation
 
 
 def evaluate(evaluation):
     return eval(str(evaluation))
+
 
 # Execute A Line Of Python Code
 
@@ -1566,11 +1688,13 @@ def evaluate(evaluation):
 def execute(execution):
     exec(str(execution))
 
+
 # Get The Type Of A Value
 
 
 def gettype(value):
     return type(value)
+
 
 # Get All Available Characters For A Type
 
@@ -1596,6 +1720,7 @@ def availchar(charactertype):
         raise RuntimeError(
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
+
 # Get The Value Of A Word
 
 
@@ -1605,26 +1730,28 @@ def wordvalue(word):
         total += letternum(word[i])
     return total
 
+
 # Get the Range Of The Length
 
 
 def enum(arguments):
     return enumerate(arguments)
 
+
 # Get The Text Between Two Parts
 
 
-def textbetween(
-        variable,
-        firstnum=None,
-        secondnum=None,
-        locationoftext='regular'):
+def textbetween(variable,
+                firstnum=None,
+                secondnum=None,
+                locationoftext='regular'):
     if locationoftext == 'regular':
         return variable[firstnum:secondnum]
     elif locationoftext == 'toend':
         return variable[firstnum:]
     elif locationoftext == 'tostart':
         return variable[:secondnum]
+
 
 # Get The Number Corresponding To A Letter
 
@@ -1636,6 +1763,7 @@ def letternum(letter):
         for i in range(len(alphaletters)):
             if getletter(letter, 1) == getletter(alphaletters, i + 1):
                 return i + 1
+
 
 # Get Maximum And Minimum Years
 
@@ -1649,11 +1777,13 @@ def yearlimit(limittype):
         raise RuntimeError(
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
+
 # Get The Timezone Code
 
 
 def timezone():
     return _timezone()
+
 
 # Get A Random Number
 
@@ -1666,6 +1796,7 @@ def randomnum(minimum, maximum):
             raise RuntimeError('Invalid Value (0016)')
     else:
         raise RuntimeError('Invalid Value (0016)')
+
 
 # Generate And Run MailTo
 
@@ -1701,6 +1832,7 @@ def mailto(to, cc, bcc, subject, body, autorun=True):
     else:
         return mailurl
 
+
 # Open A Link In A Web Browser
 
 
@@ -1709,6 +1841,7 @@ def openurl(url):
         webbrowser.open(url)
     except webbrowser.Error:
         raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
+
 
 # Open A Link In A New Window Of A Web Browser
 
@@ -1719,6 +1852,7 @@ def newwindow(url):
     except webbrowser.Error:
         raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
 
+
 # Open A Link In A New Tab Of A Web Browser
 
 
@@ -1727,6 +1861,7 @@ def newtab(url):
         webbrowser.open_new_tab(url)
     except webbrowser.Error:
         raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
+
 
 # Get The Name Of The Browser Currently Being Used
 
@@ -1737,6 +1872,7 @@ def getbrowser():
     except BaseException:
         return None
 
+
 # Choose A Random Item From A List
 
 
@@ -1745,6 +1881,7 @@ def randomstr(valuelist):
         return randomitem(valuelist)
     except IndexError:
         raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
+
 
 # Return The List Equally Spaced
 
@@ -1758,6 +1895,7 @@ def spacelist(listtospace):
         output += space
         output += str(listtospace[listnum])
     return output
+
 
 # List Or Count The Numbers Between Two Numbers
 
@@ -1778,6 +1916,7 @@ def numlistbetween(num1, num2, option='list', listoption='string'):
     elif option == 'count':
         return num2 - num1
 
+
 # Align Text When Given Full Length
 
 
@@ -1793,11 +1932,13 @@ def textalign(text, maxlength, align='left'):
             spaces += ' '
     return spaces + text
 
+
 # Get The Time Since 00:00 On 1 January 1970
 
 
 def timesince():
     return time()
+
 
 # Fix The Formatting Of Decimals And Integers
 
@@ -1806,6 +1947,7 @@ def decintfix(decorint=0):
     if str(decorint)[-2:] == '.0':
         return int(decorint)
     return float(decorint)
+
 
 # Get The Current Date Or Time
 
@@ -1819,33 +1961,37 @@ def getdatetime(timedateformat='complete'):
     elif timedateformat == 'year':
         return ((str(datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hour':
-        return (((str(datetime.now())).split(' ')
-                 [1]).split('.')[0]).split(':')[0]
+        return (((str(
+            datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'minute':
-        return (((str(datetime.now())).split(' ')
-                 [1]).split('.')[0]).split(':')[1]
+        return (((str(
+            datetime.now())).split(' ')[1]).split('.')[0]).split(':')[1]
     elif timedateformat == 'second':
-        return (((str(datetime.now())).split(' ')
-                 [1]).split('.')[0]).split(':')[2]
+        return (((str(
+            datetime.now())).split(' ')[1]).split('.')[0]).split(':')[2]
     elif timedateformat == 'millisecond':
         return (str(datetime.now())).split('.')[1]
     elif timedateformat == 'yearmonthday':
         return (str(datetime.now())).split(' ')[0]
     elif timedateformat == 'daymonthyear':
-        return ((str(datetime.now())).split(' ')[0]).split('-')[2] + '-' + ((str(datetime.now())).split(
-            ' ')[0]).split('-')[1] + '-' + ((str(datetime.now())).split(' ')[0]).split('-')[0]
+        return ((str(datetime.now())).split(' ')[0]).split('-')[2] + '-' + (
+            (str(datetime.now())).split(' ')[0]).split('-')[1] + '-' + (
+                (str(datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hourminutesecond':
         return ((str(datetime.now())).split(' ')[1]).split('.')[0]
     elif timedateformat == 'secondminutehour':
-        return (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[2] + ':' + (((str(datetime.now())).split(
-            ' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+        return (((str(datetime.now())).split(' ')[1]).split('.')[0]
+               ).split(':')[2] + ':' + (((str(datetime.now(
+               ))).split(' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(
+                   datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'complete':
         return str(datetime.now())
     elif timedateformat == 'datetime':
         return (str(datetime.now())).split('.')[0]
     elif timedateformat == 'timedate':
-        return ((str(datetime.now())).split('.')[0]).split(' ')[
-            1] + ' ' + ((str(datetime.now())).split('.')[0]).split(' ')[0]
+        return ((str(datetime.now())).split('.')[0]).split(' ')[1] + ' ' + (
+            (str(datetime.now())).split('.')[0]).split(' ')[0]
+
 
 # Get User input
 
@@ -1856,6 +2002,7 @@ def userinput(prompttext):
     except BaseException:
         return input(str(prompttext))
 
+
 # Do a quick module test
 
 
@@ -1863,6 +2010,7 @@ def pingtest(returntrue=False):
     if returntrue:
         return True
     print("Pong!")
+
 
 # License Information
 
@@ -1872,18 +2020,24 @@ def roslicense(raw=False):
         print('ROS Code is licensed under the Apache License 2.0')
         print(
             u'\u2714' +
-            ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+            ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use'
+        )
         print(u'\u274c' + ' Limitations: Trademark use, Liability And Warranty')
+        print(u'\u2139' +
+              ' Conditions: License and copyright notice And State changes')
         print(
-            u'\u2139' +
-            ' Conditions: License and copyright notice And State changes')
-        print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
+            'To View The Full license, Go To: https://rosurl.ga/ROS-Code-license'
+        )
     else:
         print('ROS Code Is licensed Under The Apache License 2.0')
-        print('Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+        print(
+            'Permissions: Commercial use, Modification, Distribution, Patent use And Private use'
+        )
         print('Limitations: Trademark use, Liability And Warranty')
         print('Conditions: License and copyright notice And State changes')
-        print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
+        print(
+            'To View The Full license, Go To: https://rosurl.ga/ROS-Code-license'
+        )
 
 
 # Print a debug message
@@ -1893,10 +2047,10 @@ if __debug__:
 # Interactive shell if launched directly
 if __name__ == "__main__":
     VER = "ROS Code 2.0 | Running on {} {} | Python Version {}.{}.{}".format(
-        platform.system(), platform.release(), list(
-            sys.version_info)[0], list(
-                sys.version_info)[1], list(
-                    sys.version_info)[2])
+        platform.system(), platform.release(),
+        list(sys.version_info)[0],
+        list(sys.version_info)[1],
+        list(sys.version_info)[2])
     print(VER)
     while True:
         exec("print(" + input(">> ") + ")")
