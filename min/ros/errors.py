@@ -2,10 +2,16 @@
 ROS Code Errors File
 This file contains all the code required for declaring errors
 """
+
+
 class ConversionError(object):
- pass
+    pass
+
+
 class WrongInput(object):
- pass
+    pass
+
+
 class UnexpectedError(object):
- pass
+    pass
 # Created by pyminifier (https://github.com/liftoff/pyminifier)
