@@ -170,7 +170,7 @@ jobs:
 
       # Perform optimisations
       script:
-        - for file in *.py; do pyminifier --outfile=$(realpath "$file") --prepend="ROS Code is licensed under the Apache 2.0 License" $(realpath "$file"); done
+        - find  -type f  -name "*.txt" -exec do pyminifier --outfile=$(realpath {}) --prepend="ROS Code is licensed under the Apache 2.0 License" $(realpath {}) +
 
       # Commit and push changes
       after_script:
