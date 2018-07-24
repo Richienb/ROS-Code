@@ -5,22 +5,27 @@ from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import division
 from __future__ import absolute_import
+# Main Modules
 from builtins import open
 from builtins import str
 from sys import argv as args
 from sys import exit as exitexc
 import syntax
+# Initialise Backwards Compatibility
 from future import standard_library
 standard_library.install_aliases()
+
 try:
     args[1]
 except IndexError:
     print("ERROR: No ROS Code file provided in execution arguments")
-    print('Ensure the execution code looks something like this:     python run-file.py message_print("Hello World")')
-with open(args[1])as f:
+    print('Ensure the execution code looks something like this: \
+    python run-file.py message_print("Hello World")')
+
+with open(args[1]) as f:
     IGNORELINE = False
     CONTENT = args[1]
-    if not(value[1].startswith('!'))and IGNORELINE is False:
+    if not(value[1].startswith('!')) and IGNORELINE is False:
         FIRSTPART = value[1].split(".")[0]
         LENOFFIRSTPART = len(value[1].split(".")[0])
         AFTERPART = str(value[1][LENOFFIRSTPART + 1:])
@@ -38,5 +43,5 @@ with open(args[1])as f:
             exitexc(1)
     elif value[1].startswith('!!!'):
         IGNORELINE = not IGNORELINE
+
 exitexc(0)
-# Created by pyminifier (https://github.com/liftoff/pyminifier)

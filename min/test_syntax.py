@@ -11,6 +11,7 @@ import keyword
 
 
 class TestCode(ut.TestCase):
+
     def test_colourcode(self):
         self.assertEqual(s.colourcode('#212121', 'hex', True), '#212121')
 
@@ -19,8 +20,7 @@ class TestCode(ut.TestCase):
 
     def test_catwalk(self):
         self.assertEqual(
-            s.catwalk('this     is    some    text'),
-            'this is some text')
+            s.catwalk('this     is    some    text'), 'this is some text')
 
     def test_isprime(self):
         self.assertEqual(s.isprime(1), False)
@@ -35,14 +35,10 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.absolutenum(3 - 4j), 5.0)
 
     def test_splitstring(self):
-        self.assertEqual(
-            s.splitstring('hello my name'), [
-                'hello', 'my', 'name'])
-        self.assertEqual(
-            s.splitstring(
-                'hello my name',
-                '-'),
-            ['hello my name'])
+        self.assertEqual(s.splitstring('hello my name'),
+                         ['hello', 'my', 'name'])
+        self.assertEqual(s.splitstring(
+            'hello my name', '-'), ['hello my name'])
         self.assertEqual(s.splitstring('hello-my-name', '-'),
                          ['hello', 'my', 'name'])
         self.assertEqual(s.splitstring('hello-my-name', '-', 0), 'hello')
@@ -72,39 +68,39 @@ class TestCode(ut.TestCase):
 
     def test_psrgame(self):
         results = ["Tie", "Win", "Loose"]
-        self.assertEqual(s.psrgame("paper")in results, True)
-        self.assertEqual(s.psrgame("scissor")in results, True)
-        self.assertEqual(s.psrgame("rock")in results, True)
-        self.assertEqual(s.psrgame("papers")in results, True)
-        self.assertEqual(s.psrgame("scissors")in results, True)
-        self.assertEqual(s.psrgame("rocks")in results, True)
+        self.assertEqual(s.psrgame("paper") in results, True)
+        self.assertEqual(s.psrgame("scissor") in results, True)
+        self.assertEqual(s.psrgame("rock") in results, True)
+        self.assertEqual(s.psrgame("papers") in results, True)
+        self.assertEqual(s.psrgame("scissors") in results, True)
+        self.assertEqual(s.psrgame("rocks") in results, True)
 
     def test_diceroll(self):
         results = [1, 2, 3, 4, 5, 6]
         resultsext = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        self.assertEqual(s.diceroll()in results, True)
-        self.assertEqual(s.diceroll()in results, True)
-        self.assertEqual(s.diceroll()in results, True)
-        self.assertEqual(s.diceroll(1, 10)in resultsext, True)
-        self.assertEqual(s.diceroll(1, 10)in resultsext, True)
-        self.assertEqual(s.diceroll(1, 10)in resultsext, True)
+        self.assertEqual(s.diceroll() in results, True)
+        self.assertEqual(s.diceroll() in results, True)
+        self.assertEqual(s.diceroll() in results, True)
+        self.assertEqual(s.diceroll(1, 10) in resultsext, True)
+        self.assertEqual(s.diceroll(1, 10) in resultsext, True)
+        self.assertEqual(s.diceroll(1, 10) in resultsext, True)
         self.assertEqual(isinstance(s.diceroll(5), list), True)
 
     def test_yesnogame(self):
         results = ["Yes", "No"]
         resultsext = ["Yes", "No", "Maybe"]
-        self.assertEqual(s.yesnogame()in results, True)
-        self.assertEqual(s.yesnogame()in results, True)
-        self.assertEqual(s.yesnogame()in results, True)
-        self.assertEqual(s.yesnogame(True)in resultsext, True)
-        self.assertEqual(s.yesnogame(True)in resultsext, True)
-        self.assertEqual(s.yesnogame(True)in resultsext, True)
+        self.assertEqual(s.yesnogame() in results, True)
+        self.assertEqual(s.yesnogame() in results, True)
+        self.assertEqual(s.yesnogame() in results, True)
+        self.assertEqual(s.yesnogame(True) in resultsext, True)
+        self.assertEqual(s.yesnogame(True) in resultsext, True)
+        self.assertEqual(s.yesnogame(True) in resultsext, True)
 
     def test_truthorliegame(self):
         results = ["Truth", "Maybe", "Lie"]
-        self.assertEqual(s.truthorliegame()in results, True)
-        self.assertEqual(s.truthorliegame()in results, True)
-        self.assertEqual(s.truthorliegame()in results, True)
+        self.assertEqual(s.truthorliegame() in results, True)
+        self.assertEqual(s.truthorliegame() in results, True)
+        self.assertEqual(s.truthorliegame() in results, True)
 
     def test_bintobool(self):
         self.assertEqual(s.bintobool(0), False)
@@ -190,4 +186,3 @@ class TestCode(ut.TestCase):
 
 if __name__ == '__main__':
     ut.main()
-# Created by pyminifier (https://github.com/liftoff/pyminifier)
