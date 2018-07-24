@@ -1,1 +1,6 @@
 ;; TODO: Add syntax/grammar specification
+
+
+line = module_name[%x3a parameters]
+
+module_name = name_snake
