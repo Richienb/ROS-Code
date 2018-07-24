@@ -89,7 +89,7 @@ jobs:
 
       script:
         # Optimise files
-        - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive .
+        - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive --exclude min .
 
       after_script:
         # Add, check and commit
@@ -106,11 +106,28 @@ jobs:
 
       script:
         # Optimise files
-        - autoflake --in-place --recursive .
+        - autoflake --in-place --recursive --exclude min .
 
       after_script:
         # Add, check and commit
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
+
+        # Push changes
+        - git push origin HEAD:master
+
+    - # Optimise the code with YAPF
+
+      install:
+        # Install required dependency
+        - pip install yapf futures
+
+      script:
+        # Optimise with yapf
+        - yapf --in-place --recursive --exclude min --style google --parallel .
+
+      after_script:
+        # Add, check and commit
+        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise code with YAPF [skip ci]"
 
         # Push changes
         - git push origin HEAD:master
@@ -129,23 +146,6 @@ jobs:
       after_script:
         # Add, check and commit
         - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Updated Pipfiles [skip ci]"
-
-        # Push changes
-        - git push origin HEAD:master
-
-    - # Optimise the code with YAPF
-
-      install:
-        # Install required dependency
-        - pip install yapf futures
-
-      script:
-        # Optimise with yapf
-        - yapf --in-place --recursive --style google --parallel src
-
-      after_script:
-        # Add, check and commit
-        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Optimise code with YAPF [skip ci]"
 
         # Push changes
         - git push origin HEAD:master
