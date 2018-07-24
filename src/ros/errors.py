@@ -16,6 +16,7 @@ class ConversionError(object):
 class WrongInput(object):
     pass
 
+
 # Exception Unexpected Error
 
 

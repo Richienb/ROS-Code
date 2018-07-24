@@ -35,18 +35,17 @@ class TestCode(ut.TestCase):
         self.assertEqual(s.absolutenum(3 - 4j), 5.0)
 
     def test_splitstring(self):
-        self.assertEqual(s.splitstring('hello my name'),
-                         ['hello', 'my', 'name'])
-        self.assertEqual(s.splitstring(
-            'hello my name', '-'), ['hello my name'])
-        self.assertEqual(s.splitstring('hello-my-name', '-'),
-                         ['hello', 'my', 'name'])
+        self.assertEqual(
+            s.splitstring('hello my name'), ['hello', 'my', 'name'])
+        self.assertEqual(s.splitstring('hello my name', '-'), ['hello my name'])
+        self.assertEqual(
+            s.splitstring('hello-my-name', '-'), ['hello', 'my', 'name'])
         self.assertEqual(s.splitstring('hello-my-name', '-', 0), 'hello')
 
     def test_sort(self):
         self.assertEqual(s.sort(['d', 'a', 'c', 'b']), ['a', 'b', 'c', 'd'])
-        self.assertEqual(s.sort(['d', 'a', 'c', 'b'], None, True), [
-                         'd', 'c', 'b', 'a'])
+        self.assertEqual(
+            s.sort(['d', 'a', 'c', 'b'], None, True), ['d', 'c', 'b', 'a'])
 
     def test_pykeyword(self):
         self.assertEqual('None' in keyword.kwlist, True)

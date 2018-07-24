@@ -56,23 +56,22 @@ CONTENT = [x.strip() for x in CONTENT if x.strip()]
 # For every line in the text file
 for value in enumerate(CONTENT):
 
-        # Check if the line doesn't start with "!" and if ignoreline is false
-    if not(value[1].startswith('!')) and IGNORELINE is False:
+    # Check if the line doesn't start with "!" and if ignoreline is false
+    if not (value[1].startswith('!')) and IGNORELINE is False:
 
-                # Check if value starts with "mod" for custom ROS module
+        # Check if value starts with "mod" for custom ROS module
         if value[1].startswith('mod'):
 
-                        # Try to import the module
+            # Try to import the module
             try:
 
-                                # Import the module
-                importlib.import_module(
-                    "ros." + value[1].split(" ")[1])
+                # Import the module
+                importlib.import_module("ros." + value[1].split(" ")[1])
 
                 # Catch a module not found
             except ModuleNotFoundError:
 
-                                # Raise a runtime error
+                # Raise a runtime error
                 raise ImportError("Error: Unable to import")
 
                 # Exit the execution
@@ -81,17 +80,17 @@ for value in enumerate(CONTENT):
                 # Check if the value starts with "ext" for custom user module
         elif value[1].startswith('ext'):
 
-                        # Check if the file exists
+            # Check if the file exists
             if os.path.isfile(value[1].split(" ")[1] + ".ros"):
                 pass  # TODO: Allow importing of external packages
 
                 # Check if the value starts with "imp" for custom python file
         elif value[1].startswith('imp'):
 
-                        # Check if the file exists
+            # Check if the file exists
             if os.path.isfile(value[1].split(" ")[1] + ".py"):
 
-                                # Improt the module
+                # Improt the module
                 importlib.import_module(value[1].split(" ")[1])
 
         # Render the command
