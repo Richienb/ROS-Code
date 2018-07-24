@@ -1,35 +1,42 @@
-# Disable sudo
+# Disable sudo to speed up build
 sudo:                     false
 
-# Set build language
+# Set the build language
 language:                 python
 
-# Set build language version
+# Set the build language version
 python:                   3.6.6
 
 # Set build branch
 branches:                 master
 
-# Cache the cache directory
 cache:
   directories:
+    # Cache the .cache directory
     - $HOME/.cache
+    # Cache the .thumbs directory
+    - $HOME/.thumbs
 
-# Run some pre-install scripts
 before_install:
+  # Configure access token to enable pushing to the repository
   - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
-  - git config --global user.email "richiebendall@gmail.com"
+
+  # Set commit username
   - git config --global user.name "ROS Bot"
+
+  # Set commit email
+  - git config --global user.email "richiebendall@gmail.com"
+
+  # Make all shell files in ci executable
   - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
 
-# Install necessary dependencies
 install:
+  # Install dependencies from requirements.txt
   - pip install -r requirements.txt
 
-# All of the jobs
 jobs:
   include:
-    - stage:              optimisation # Fix the gitignore if nessesary
+    - stage:              optimisation # Fix the ignored files if the gitignore was updated
       # Only run if on branch
       if:                 type != pull_request
 
@@ -43,7 +50,7 @@ jobs:
         # Reset Gitignore cache
         - git rm -r --cached .
 
-        # Add all files to the cache
+        # Add afll files to the cache
         - git add .
 
       after_script:
@@ -55,25 +62,18 @@ jobs:
 
     - # Make the code backwards compatible
 
-      # Install required package
-      addons:
-        apt:
-          packages:
-            - realpath
-
-      # Install the required dependency
       install:
+        # Install the required dependency
         - pip install future
 
-      # Navigate to the source code directory
       before_script:
+        # Navigate to the source code directory
         - cd src
 
-      # Perform optimisations
       script:
-        - for file in *.py; do pasteurize -w $(realpath "$file"); done
+        # Perform optimisations
+        - find  -type f  -name "*.py" -exec pasteurize -w "{}" \;
 
-      # Commit and push changes
       after_script:
         # Add, check and commit
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
@@ -156,17 +156,21 @@ jobs:
       install:
         - pip install pyminifier
 
-      # Navigate to the source code directory
+      # Perform before script steps
       before_script:
+        # Clear min
         - rm -rf min/*
+
+        # Copy the contents of src to min
         - cp -a src/. min
+
+        # Navigate to min
         - cd min
 
-      # Perform optimisations
       script:
+        # Perform optimisations
         - find  -type f  -name "*.py" -exec pyminifier --outfile="{}" --prepend="$TRAVIS_BUILD_DIR/misc/minifier-append.txt" "{}" \;
 
-      # Commit and push changes
       after_script:
         # Add, check and commit
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Minified Files [skip ci]"
@@ -176,40 +180,50 @@ jobs:
 
     - stage:              checks & testing # Run unit tests with codecov
 
-      # Test in multiple versions of Python
-      python:
-        - 3.6.6
+      before_install:
+        # Check if the codecov YAML file is valid
+        - curl --data-binary @codecov.yml https://codecov.io/validate
 
-      # Install required dependencies
+        # Configure access token to enable pushing to the repository
+        - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
+
+        # Set commit username
+        - git config --global user.name "ROS Bot"
+
+        # Set commit email
+        - git config --global user.email "richiebendall@gmail.com"
+
+        # Make all shell files in ci executable
+        - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
+
       install:
+        # Install dependencies from requirements.txt
         - pip install -r requirements.txt
+
         # Install the codecov Pip package
         - pip install codecov
 
-      # Before steps before the script
       before_script:
-        # Check if the codecov YAML file is valid
-        - curl --data-binary @codecov.yml https://codecov.io/validate
         # Navigate to source code directory
         - cd src
 
-      # Run unit tests
       script:
+        # Run unit tests
         - coverage run test_syntax.py
         - coverage run run_file.py "test.ros"
 
-      # Upload results to Codecov
       after_script:
+        # Upload results to Codecov
         - codecov
 
     - # Check for spelling mistakes
 
-      # Install required dependency
       install:
+        # Install required dependencies
         - pip install pyspelling pymdown-extensions Pygments
 
-      # Check for spelling errors
       script:
+        # Check for spelling errors
         - pyspelling
 
     - # Check Makefile commands
@@ -217,19 +231,18 @@ jobs:
       # Skip installation step
       install:            true
 
-      # Run makefile commands
       script:
 
-        # Install ROS Code
+        # Run makefile command to install ROS Code
         - make prepare
 
-        # Uninstall ROS Code
+        # Run makefile command to uninstall ROS Code
         - make uninstall
 
     - # Check if pip is working correctly
 
-      # Test in multiple versions of Python
       python:
+        # Test in multiple versions of Python
         - 3.6.6
         - 3.6
         - 3.5
@@ -237,8 +250,8 @@ jobs:
         - 2.7
         - 2.6
 
-      # Install the dependencies
       install:
+        # Install dependencies from requirements.txt
         - pip install -r requirements.txt
 
       # Disable the script
@@ -253,8 +266,8 @@ jobs:
         # Install required dependencies
         - pip install mkdocs mkdocs-material pymdown-extensions pygments
 
-      # Build the documentation
       script:
+        # Build the documentation
         - mkdocs build --verbose --clean --strict
 
     - stage:              documentation # Build and deploy the documentation
@@ -269,8 +282,8 @@ jobs:
       # Ensure script is skipped
       script:             true
 
-      # Build the documentation
       before_deploy:
+        # Build the documentation
         - mkdocs build --verbose --clean --strict
 
       # Deploy the documentation
@@ -292,6 +305,6 @@ jobs:
            -H "Content-Type: application/json" \
            --data '{"purge_everything":true}'
 
-# Disable build status notifications
 notifications:
+  # Disable emails for build status notifications
   email:                  false
