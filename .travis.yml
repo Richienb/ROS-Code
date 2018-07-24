@@ -152,12 +152,6 @@ jobs:
 
     - # Minify the code to seperate directory
 
-      # Install required package
-      addons:
-        apt:
-          packages:
-            - realpath
-
       # Install the required dependency
       install:
         - pip install pyminifier
@@ -170,7 +164,7 @@ jobs:
 
       # Perform optimisations
       script:
-        - find  -type f  -name "*.txt" -exec do pyminifier --outfile=$(realpath {}) --prepend="ROS Code is licensed under the Apache 2.0 License" $(realpath {}) +
+        - find  -type f  -name "*.py" -exec do pyminifier --outfile={} --prepend="ROS Code is licensed under the Apache 2.0 License" {} +
 
       # Commit and push changes
       after_script:
