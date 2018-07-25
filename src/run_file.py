@@ -84,13 +84,13 @@ for value in enumerate(CONTENT):
             if os.path.isfile(value[1].split(" ")[1] + ".ros"):
                 pass  # TODO: Allow importing of external packages
 
-                # Check if the value starts with "imp" for custom python file
+        # Check if the value starts with "imp" for custom python file
         elif value[1].startswith('imp'):
 
             # Check if the file exists
             if os.path.isfile(value[1].split(" ")[1] + ".py"):
 
-                # Improt the module
+                # Import the module
                 importlib.import_module(value[1].split(" ")[1])
 
         # Render the command
