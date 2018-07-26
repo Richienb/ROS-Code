@@ -36,7 +36,7 @@ install:
 
 jobs:
   include:
-    - stage: pre checks # Check if the code is Python 3 compatible
+    - stage:              pre script # Check if the code is Python 3 compatible
 
       install:
         # Install the required dependency
@@ -46,7 +46,8 @@ jobs:
         # Perform check
         - caniusepython3 -r requirements.txt
 
-    - stage:              optimisation # Fix the ignored files if the gitignore was updated
+    - stage:              pre optimisation # Fix the ignored files if the gitignore was updated
+
       # Only run if on branch
       if:                 type != pull_request
 
@@ -91,7 +92,7 @@ jobs:
         # Push changes
         - git push origin HEAD:master
 
-    - # Optimise the code to work with PEP8
+    - stage:              optimisation # Optimise the code to work with PEP8
 
       install:
         # Install required dependency
@@ -142,7 +143,7 @@ jobs:
         # Push changes
         - git push origin HEAD:master
 
-    - # Update Pipfiles
+    - stage:              post optimisations # Update Pipfiles
 
       install:
         # Install required dependency
@@ -251,23 +252,10 @@ jobs:
 
     - # Check if pip is working correctly
 
-      python:
-        # Test in multiple versions of Python
-        - 3.6.6
-        - 3.6
-        - 3.5
-        - 3.4
-        - 2.7
-        - 2.6
-
-      install:
-        # Install dependencies from requirements.txt
-        - pip install -r requirements.txt
-
       # Disable the script
       script:             true
 
-    - stage:              documentation # Build the documentation (for pull request)
+    - stage:              Deployment testing # Build the documentation (for pull request)
 
       # Only run if on pull request
       if:                 type = pull_request
@@ -280,7 +268,7 @@ jobs:
         # Build the documentation
         - mkdocs build --verbose --clean --strict
 
-    - stage:              documentation # Build and deploy the documentation
+    - stage:              Deployment # Build and deploy the documentation
 
       # Only run if on branch
       if:                 type != pull_request
@@ -314,6 +302,20 @@ jobs:
            -H "X-Auth-Key: ${cf_api_key}" \
            -H "Content-Type: application/json" \
            --data '{"purge_everything":true}'
+
+    - # Deploy to GitHub releases
+
+      # Ensure script is skipped
+      script:             true
+
+      # Deploy to GitHub releases
+      provider:           releases
+      api_key:            $github_token
+      file_glob:          true
+      file:               min/*
+      skip_cleanup:       true
+      on:
+        branch:           master
 
 notifications:
   # Disable emails for build status notifications
