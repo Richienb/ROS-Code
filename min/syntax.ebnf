@@ -1,6 +1,7 @@
-;; TODO: Add syntax/grammar specification
 
-<statement> ::= <command> | <command> ": " <argument> { ", " <argument> }
+TODO: Add syntax / grammar specification
 
-argument ::= <string>
-command ::= <string>
+<statement > : : = <command > | < command > ": " < argument > {", " < argument > }
+
+argument:: = <string >
+command:: = <string >
