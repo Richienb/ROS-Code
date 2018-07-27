@@ -308,15 +308,22 @@ jobs:
       # Ensure script is skipped
       script:             true
 
+      before_deploy:
+        # Zip the min directory
+        - zip min/* source.zip
+
       # Deploy to GitHub releases
       deploy:
-        - provider:           releases
-          api_key:            $github_token
-          file_glob:          true
-          file:               min/*
-          skip_cleanup:       true
+        - provider:       releases
+          name:           edge release
+          body:           This is an edge release - a release which is built in realtime since the latest source code commit.
+          api_key:        $github_token
+          file:           source.zip
+          prerelease:     true
+          skip_cleanup:   true
           on:
-            branch:           master
+            branch:       master
+            condition:    $TRAVIS_COMMIT_RANGE = *"src"*
 
 notifications:
   # Disable emails for build status notifications
