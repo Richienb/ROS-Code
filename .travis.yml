@@ -69,7 +69,7 @@ jobs:
         - git diff-index --quiet HEAD || git commit -m "CI | Fix the Gitignore [skip ci]"
 
         # Push changes
-        - until git push; do sleep 1; done;
+        - until git push HEAD:master; do sleep 1; done;
 
     - # Make the code backwards compatible
 
@@ -90,7 +90,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
 
         # Push changes
-        - until git push; do sleep 1; done;
+        - until git push HEAD:master; do sleep 1; done;
 
     - # Optimise the code to work with PEP8
 
@@ -107,7 +107,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
 
         # Push changes
-        - until git push; do sleep 1; done;
+        - until git push HEAD:master; do sleep 1; done;
 
     - # Optimise the code to work with FLAKE8
 
@@ -124,7 +124,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
 
         # Push changes
-        - until git push; do sleep 1; done;
+        - until git push HEAD:master; do sleep 1; done;
 
     - # Optimise the code with YAPF
 
@@ -141,7 +141,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise code with YAPF [skip ci]"
 
         # Push changes
-        - until git push; do sleep 1; done;
+        - until git push HEAD:master; do sleep 1; done;
 
     - # Update Pipfiles
 
@@ -159,7 +159,7 @@ jobs:
         - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Updated Pipfiles [skip ci]"
 
         # Push changes
-        - until git push; do sleep 1; done;
+        - until git push HEAD:master; do sleep 1; done;
 
     - # Minify the code to seperate directory
 
@@ -187,7 +187,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Minified Files [skip ci]"
 
         # Push changes
-        - until git push; do sleep 1; done;
+        - until git push HEAD:master; do sleep 1; done;
 
     - stage:              checks & testing # Run unit tests with codecov
 
