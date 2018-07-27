@@ -309,13 +309,14 @@ jobs:
       script:             true
 
       # Deploy to GitHub releases
-      provider:           releases
-      api_key:            $github_token
-      file_glob:          true
-      file:               min/*
-      skip_cleanup:       true
-      on:
-        branch:           master
+      deploy:
+        - provider:           releases
+          api_key:            $github_token
+          file_glob:          true
+          file:               min/*
+          skip_cleanup:       true
+          on:
+            branch:           master
 
 notifications:
   # Disable emails for build status notifications
