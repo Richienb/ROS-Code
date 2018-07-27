@@ -100,7 +100,7 @@ jobs:
 
       script:
         # Optimise files
-        - autopep8 --verbose --in-place --recursive --aggressive --aggressive --aggressive --exclude min .
+        - autopep8 --verbose --in-place --recursive --aggressive --aggressive --exclude ./min .
 
       after_script:
         # Add, check and commit
