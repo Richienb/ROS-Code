@@ -36,7 +36,7 @@ install:
 
 jobs:
   include:
-    - stage:              pre build # Check if the code is Python 3 compatible
+    - stage:              pre-build # Check if the code is Python 3 compatible
 
       install:
         # Install the required dependency
@@ -61,7 +61,7 @@ jobs:
         # Reset Gitignore cache
         - git rm -r --cached .
 
-        # Add afll files to the cache
+        # Add all files to the cache
         - git add .
 
       after_script:
@@ -161,7 +161,7 @@ jobs:
         # Push changes
         - until git push origin HEAD:master; do git pull && git commit --amend -m"$(git log -1 --pretty=%B)"; done;
 
-    - # Minify the code to seperate directory
+    - # Minify the code to separate directory
 
       # Install the required dependency
       install:
