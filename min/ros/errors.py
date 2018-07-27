@@ -8,16 +8,10 @@ from __future__ import division
 from __future__ import absolute_import
 from future import standard_library
 standard_library.install_aliases()
-
-
 class ConversionError(object):
-    pass
-
-
+ pass
 class WrongInput(object):
-    pass
-
-
+ pass
 class UnexpectedError(object):
-    pass
+ pass
 # Created by pyminifier (https://github.com/liftoff/pyminifier)
