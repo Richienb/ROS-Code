@@ -37,11 +37,7 @@ class TestCode(ut.TestCase):
     def test_splitstring(self):
         self.assertEqual(
             s.splitstring('hello my name'), ['hello', 'my', 'name'])
-        self.assertEqual(
-            s.splitstring(
-                'hello my name',
-                '-'),
-            ['hello my name'])
+        self.assertEqual(s.splitstring('hello my name', '-'), ['hello my name'])
         self.assertEqual(
             s.splitstring('hello-my-name', '-'), ['hello', 'my', 'name'])
         self.assertEqual(s.splitstring('hello-my-name', '-', 0), 'hello')
