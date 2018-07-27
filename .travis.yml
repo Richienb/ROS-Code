@@ -323,6 +323,9 @@ jobs:
 
     - # Deploy to GitHub releases
 
+      # Ensure the install step is skipped
+      install:            true
+
       # Ensure script is skipped
       script:             true
 
@@ -333,8 +336,8 @@ jobs:
       # Deploy to GitHub releases
       deploy:
         - provider:       releases
-          name:           edge release
-          body:           This is an edge release - a release which is built in realtime since the latest source code commit.
+          name:           Bleeding edge release
+          body:           This is a bleeding edge release - built in realtime since the latest source code commit.
           api_key:        $github_token
           file:           source.zip
           prerelease:     true
