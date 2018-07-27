@@ -36,7 +36,7 @@ install:
 
 jobs:
   include:
-    - stage:              pre script # Check if the code is Python 3 compatible
+    - stage:              pre build # Check if the code is Python 3 compatible
 
       install:
         # Install the required dependency
@@ -46,7 +46,7 @@ jobs:
         # Perform check
         - caniusepython3 -r requirements.txt
 
-    - stage:              pre optimisation # Fix the ignored files if the gitignore was updated
+    - stage:              optimisation # Fix the ignored files if the gitignore was updated
 
       # Only run if on branch
       if:                 type != pull_request
@@ -69,7 +69,7 @@ jobs:
         - git diff-index --quiet HEAD || git commit -m "CI | Fix the Gitignore [skip ci]"
 
         # Push changes
-        - git push origin HEAD:master
+        - until git push; do sleep 1; done;
 
     - # Make the code backwards compatible
 
@@ -90,9 +90,9 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
 
         # Push changes
-        - git push origin HEAD:master
+        - until git push; do sleep 1; done;
 
-    - stage:              optimisation # Optimise the code to work with PEP8
+    - # Optimise the code to work with PEP8
 
       install:
         # Install required dependency
@@ -107,7 +107,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
 
         # Push changes
-        - git push origin HEAD:master
+        - until git push; do sleep 1; done;
 
     - # Optimise the code to work with FLAKE8
 
@@ -124,7 +124,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
 
         # Push changes
-        - git push origin HEAD:master
+        - until git push; do sleep 1; done;
 
     - # Optimise the code with YAPF
 
@@ -141,9 +141,9 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise code with YAPF [skip ci]"
 
         # Push changes
-        - git push origin HEAD:master
+        - until git push; do sleep 1; done;
 
-    - stage:              post optimisations # Update Pipfiles
+    - # Update Pipfiles
 
       install:
         # Install required dependency
@@ -159,7 +159,7 @@ jobs:
         - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Updated Pipfiles [skip ci]"
 
         # Push changes
-        - git push origin HEAD:master
+        - until git push; do sleep 1; done;
 
     - # Minify the code to seperate directory
 
@@ -187,7 +187,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m "CI | Minified Files [skip ci]"
 
         # Push changes
-        - git push origin HEAD:master
+        - until git push; do sleep 1; done;
 
     - stage:              checks & testing # Run unit tests with codecov
 
