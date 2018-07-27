@@ -2,15 +2,15 @@
 
 # Issues and pull requests with these labels accept reaction comments.
 # Set to `[]` to disable
-exemptLabels: []
+exemptLabels:     []
 
 # Replace matching comments with this message, `{user}` is a placeholder
 # for the comment author. Set to `false` to disable
-reactionComment: >
-  :wave: @{user}, did you mean to use a [reaction](https://git.io/vhzhC) instead?
+reactionComment:  >
+  :wave:          @{user}, did you mean to use a [reaction](https://git.io/vhzhC) instead?
 
 # Limit to only `issues` or `pulls`
-# only: issues
+# only:           issues
 
 # Optionally, specify configuration settings just for `issues` or `pulls`
 # issues:
@@ -21,4 +21,4 @@ reactionComment: >
 #   reactionComment: false
 
 # Repository to extend settings from
-# _extends: repo
+# _extends:       repo
