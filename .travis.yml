@@ -280,7 +280,9 @@ jobs:
 
         # Create the code documentation
         - cd src && python -m pydoc -w ros && cd ..
-        - cp -p ./src/ros.html ./site/commands/index.html
+        
+        # Copy the output of the code documentation to the site
+        - mkdir ./site/commands && cp -rf ./src/ros.html ./site/commands/index.html
 
       # Deploy the documentation
       deploy:
