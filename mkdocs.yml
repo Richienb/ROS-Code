@@ -29,7 +29,6 @@ pages:
     - Home:             index.md
     - Main:
       - Information Badges: badges.md
-      - Commands:       commands.md
     - Installation:
       - Install As Module: install-module.md
       - Install From Source: install-source.md
@@ -46,6 +45,7 @@ pages:
       - Unit Testing:   unittesting.md
     - Version 1.0:
       - Home:           versionone.md
+      - Commands:       versionone-commands.md
       - Build Status:   versionone-buildstatus.md
       - Enable:         versionone-enable.md
       - Download And Install: versionone-install.md
