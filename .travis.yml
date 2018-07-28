@@ -71,27 +71,6 @@ jobs:
         # Push changes
         - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m "$PRE_MESSAGE"; done;
 
-    - # Make the code backwards compatible
-
-      install:
-        # Install the required dependency
-        - pip install future
-
-      before_script:
-        # Navigate to the source code directory
-        - cd src
-
-      script:
-        # Perform optimisations
-        - find  -type f  -name "*.py" -exec pasteurize -w "{}" \;
-
-      after_script:
-        # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Added Backwards Compatibility [skip ci]"
-
-        # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m "$PRE_MESSAGE"; done;
-
     - # Optimise the code to work with PEP8
 
       install:
