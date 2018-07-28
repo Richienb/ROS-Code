@@ -45,9 +45,6 @@ jobs:
       script:
         # Perform check
         - caniusepython3 -r requirements.txt
-        - cd src
-        - python -m pydoc -w ros
-        - ls
 
     - stage:              optimisation # Fix the ignored files if the gitignore was updated
 
@@ -280,6 +277,10 @@ jobs:
       before_deploy:
         # Build the documentation
         - mkdocs build --verbose --clean --strict
+
+        # Create the code documentation
+        - cd src && python -m pydoc -w ros && cd ..
+        - cp -p ./src/ros.html ./site/commands/index.html
 
       # Deploy the documentation
       deploy:
