@@ -241,7 +241,7 @@ def changecolour(colourcode, action, amount=100):
 
     """
 
-    c = Color(colourcode)
+    c = colour.Color(colourcode)
     if action == 'red':
         c.red = amount / 100
         return c
