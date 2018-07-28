@@ -1,10 +1,3 @@
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-from builtins import str
-from future import standard_library
-standard_library.install_aliases()
 import unittest as ut
 from ros import main as s
 import keyword
@@ -37,7 +30,8 @@ class TestCode(ut.TestCase):
     def test_splitstring(self):
         self.assertEqual(
             s.splitstring('hello my name'), ['hello', 'my', 'name'])
-        self.assertEqual(s.splitstring('hello my name', '-'), ['hello my name'])
+        self.assertEqual(s.splitstring(
+            'hello my name', '-'), ['hello my name'])
         self.assertEqual(
             s.splitstring('hello-my-name', '-'), ['hello', 'my', 'name'])
         self.assertEqual(s.splitstring('hello-my-name', '-', 0), 'hello')
