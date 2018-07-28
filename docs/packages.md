@@ -33,7 +33,7 @@ The following list outlines all the packages used by ROS Code - useful if buildi
 
 ## Building documentation
 
-`pip install mkdocs mkdocs-material pymdown-extensions pygments`
+`pip install mkdocs mkdocs-material pymdown-extensions pygments sphinx`
 
 ??? summary "Mkdocs"
     The mkdocs package is the core tool for building the documentation.
@@ -50,6 +50,10 @@ The following list outlines all the packages used by ROS Code - useful if buildi
 ??? summary "Pygments"
     Pygments is also a package providing markdown plugins.
     `pip install pygments`
+
+??? summary "Sphinx"
+    The Sphinx package is responsible for generating the commands documentation.
+    `pip install -U sphinx`
 
 ## Code checking
 
