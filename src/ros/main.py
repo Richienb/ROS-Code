@@ -1,23 +1,12 @@
 """
-Main file containing all the commands
+
+ROS Code commands file
+This file contains all the commands in ROS Code
+
 """
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
 # System modules
-from builtins import input
-from builtins import range
-from builtins import chr
-from builtins import open
-from builtins import round
-from builtins import int
-from builtins import str
-from future import standard_library
-standard_library.install_aliases()
-from builtins import object
 import platform
-from subprocess import call
+import subprocess
 import os
 import sys
 import secrets
@@ -29,27 +18,22 @@ import importlib
 # String modues
 import string
 import clipboard
-from colour import Color
+import colour
 import textwrap
-from pprint import pprint
-import loremipsum as li
+import pprint
+import loremipsum
 # Math modules
 import math
-from math import pi
 import operator
 import statistics
-from math import sqrt
-from random import randint as genrandomnum
-from random import choice as randomitem
+import math
+import random
 # Web modules
 import webbrowser
 import urllib
 # Time modules
 import datetime
-from datetime import datetime
-from time import time
-from time import timezone as _timezone
-from time import sleep as delayfunc
+import time
 import calendar
 # Pip module
 import pip
@@ -60,10 +44,22 @@ from . import errors
 if __debug__:
     print("Loaded modules. Now loading functions...")
 
-# Set Logging Level
-
 
 def loglevel(leveltype=None, isequal=False):
+    """
+
+    Set the logging level of ROS Code
+
+    without arguments:
+    Gives you the logging level
+
+    leveltype:
+    Choose the logging level. Possible choices are none (0), debug (10), info (20), warning (30), error (40) and critical (50)
+
+    isequal:
+    Instead of setting the level, returns True if the level is equal to leveltype. Otherwise, returns False
+
+    """
     leveltype = leveltype.lower()
     loglevels = {
         "none": 0,
@@ -94,10 +90,16 @@ def loglevel(leveltype=None, isequal=False):
         )
 
 
-# Set file to log to
-
-
 def logfile(targetfile="ros.log"):
+    """
+
+    Set the file for ROS Code to log to
+
+    targetfile:
+    Change the file to log to. By default it is ros.log
+
+    """
+
     try:
         str(targetfile)
     except BaseException:
@@ -128,69 +130,117 @@ def _ensureglobal():
 
 _ensureglobal()
 
-# Execute a command in the terminal/shell
-
 
 def shellcommand(command):
-    call(str(command))
+    """
 
+    Execute a command in the host's terminal/shell/bash
 
-# Update all the Pip packages
+    command:
+    Specify the command to be executed
+
+    """
+
+    subprocess.call(str(command))
 
 
 def pipupdate():
+    """
+
+    Update all currently installed pip packages
+
+    """
+
     packages = [dist.project_name for dist in pip.get_installed_distributions()]
-    call('pip install --upgrade ' + ' '.join(packages))
+    subprocess.call('pip install --upgrade ' + ' '.join(packages))
 
 
 # Show a shell based input line and return command and parameters
 
 
 def shellinput(initialtext='>> ', splitpart=' '):
+    """
+
+    Give the user a shell like interface to enter commands which are returned as a multi part list containing the command and each of the arguments
+
+    initialtext:
+    Set the text to be displayed as the prompt. Default is '>>'.
+
+    splitpart:
+    The character to split when generating the list item. Default is ' '. Set to '' or None to skip splitting.
+
+    """
+
     try:
         str(initialtext)
     except BaseException:
         raise ConversionError("Cannot convert type " + str(type(initialtext)) +
                               "to str")
     shelluserinput = input(str(initialtext))
-    return [
-        shelluserinput.split(str(splitpart))[0],
-        shelluserinput[len(shelluserinput.split(str(splitpart))):]
-    ]
+    if splitpart == '' or splitpart == None:
+        return shelluserinput
+    commands = []
+    for item in enumerate(shelluserinput.split(splitpart)):
+        thelist.append(item[1])
+    return commands
 
 
-# Convert colour codes to different formats
+def colourcode(startcolourcode, destinationtype, longhex=False):
+    """
 
+    Convert a colour code from one format to another
 
-def colourcode(startcolourcode, destinationcode, longhex=False):
-    c = Color(str(startcolourcode))
-    if destinationcode.lower() == 'hex':
+    startcolourcode:
+    Set the colour code to convert from
+
+    destinationtype:
+    Set the colour code type to convert to. Possible options are hex, hsl, rgb, red, blue, green, hue, sat and lum
+
+    longhex:
+    If converting to hex, provided the long and unsimplified version. Default is False.
+
+    """
+
+    c = colour.Color(str(startcolourcode))
+    if destinationtype.lower() == 'hex':
         if longhex is True:
             return c.hex_l
         return c.hex
-    elif destinationcode.lower() == 'hsl':
+    elif destinationtype.lower() == 'hsl':
         return c.hsl
-    elif destinationcode.lower() == 'rgb':
+    elif destinationtype.lower() == 'rgb':
         return c.rgb
-    elif destinationcode.lower() == 'red':
+    elif destinationtype.lower() == 'red':
         return c.red
-    elif destinationcode.lower() == 'blue':
+    elif destinationtype.lower() == 'blue':
         return c.blue
-    elif destinationcode.lower() == 'green':
+    elif destinationtype.lower() == 'green':
         return c.green
-    elif destinationcode.lower() == 'hue':
+    elif destinationtype.lower() == 'hue':
         return c.hue
-    elif destinationcode.lower() == 'sat':
+    elif destinationtype.lower() == 'sat':
         return c.saturation
-    elif destinationcode.lower() == 'lum':
+    elif destinationtype.lower() == 'lum':
         return c.luminance
     raise WrongInput("Destination colour code not specified correctly")
 
 
-# Modify a parameter of a colour code
-
-
 def changecolour(colourcode, action, amount=100):
+    """
+
+    Modify a parameter of a colour code
+
+    colourcode:
+    The colourcode representing the colour to convert from.
+
+    action:
+    The action to perform on the colour. Possible options are red, blue, green, hue, sat, lum
+
+    amount:
+    The percentage of the action to perform. For example: 100 means apply 100% of the colour (no change). Default is 100.
+
+    """
+
     c = Color(colourcode)
     if action == 'red':
         c.red = amount / 100
@@ -212,45 +262,94 @@ def changecolour(colourcode, action, amount=100):
         return c
 
 
-# Fix your code after a cat walked on it
-
-
 def catwalk(text):
+    """
+
+    Replace multiple spaces with a single space
+    For example replace 'this  is    a long  sentence' with 'this is a long sentence'
+
+    text:
+    Specify the text to fix
+
+    """
+
     return ' '.join(text.split())
 
 
-# Convert tabs to spaces
+def converttabs(text, spaces=4):
+    """
 
+    Convert all the tabs to a specific amount of spaces
 
-def converttabs(text, spaces):
+    text:
+    The text to convert tabs to spaces on
+
+    spaces:
+    The amount of spaces to replace tabs to. Default is 4.
+
+    """
+
     return text.replace('\t', ' ' * spaces)
 
 
-# Shorten some text by replacing some of it with a placeholder
-
-
 def shortentext(text, minlength, placeholder='...'):
+    """
+
+    Shorten some text by replacing the last part with a placeholder (such as '...')
+
+    text:
+    The text to shorten
+
+    minlength:
+    The minimum length before a shortening will occur
+
+    placeholder:
+    The text to append after removing protruding text. Default is '...'.
+
+    """
+
     return textwrap.shorten(text, minlength, placeholder=str(placeholder))
 
 
-# Wrap text around the screen when given the size
-
-
 def wraptext(text, maxlength):
+    """
+
+    Wrap text around the execution window according to a given size
+
+    text:
+    The text to be wraped
+
+    maxlength:
+    The amount of text until a wrap will be added
+
+    """
+
     return textwrap.wrap(text, maxlength)
 
 
-# Unindent some text
-
-
 def unindent(text):
-    textwrap.dedent(text)
+    """
 
+    Remove indention for some text
 
-# Check if a number is prime
+    text:
+    The text to unindent
+
+    """
+
+    return textwrap.dedent(text)
 
 
 def isprime(number):
+    """
+
+    Check if a number is a prime number
+
+    number:
+    The number to check
+
+    """
+
     if number == 1:
         return False
     for i in range(2, int(number**0.5) + 1):
@@ -259,48 +358,103 @@ def isprime(number):
     return True
 
 
-# Append a paragraph space
-
-
 def paraspace(paragraphspaces=1):
+    """
+
+    Print 1 or more paragraph spaces in the terminal output
+
+    paragraphspaces:
+    The amount of paragraph spaces to print. Default is 1.
+
+    """
+
     for _ in range(paragraphspaces):
         print('', end='\n')
 
 
-# Add leading 0s to a number
-
-
 def leadingzero(number, minlength):
+    """
+
+    Add leading zeros to a number
+
+    number:
+    Number to add the leading zeros to
+
+    minlength:
+    If the number is shorter than this length than add leading zeros to make the length correct
+
+
+    """
+
     return str(number).zfill(int(minlength))
 
 
-# Get the absolute value of a number
-
-
 def absolutenum(number):
+    """
+
+    Get the absolute value for a number
+
+    number:
+    The number to get the absolute value for
+
+    """
+
     return abs(number)
 
 
-# Split a string and/or get a specific part
-
-
 def splitstring(string, split_character=' ', part=None):
+    """
+
+    Split a string based on a character and get the parts as a list
+
+    string:
+    The string to split
+
+    split_character:
+    The character to split for the string. Default is ' '.
+
+    part:
+    Get a specific part of the list. Default is None.
+
+    """
+
     if part is None:
-        return (str(string).split(split_character))
-    return (str(string).split(split_character))[part]
-
-
-# Sort a list into a specific order
+        return str(string).split(split_character)
+    return str(string).split(split_character)[part]
 
 
 def sort(listtosort, key=None, reversesort=False):
+    """
+
+    Sort a list alphabetically
+
+    listtosort:
+    The list which will be sorted
+
+    key:
+    The key to use when sorting. Default is None.
+
+    reverse:
+    If to sort backwards. Default is False.
+
+    """
+
     return sorted(listtosort, key=key, reverse=reversesort)
 
 
-# Check if a keyword is in the Python keyword dictionary
-
-
 def pykeyword(operation='list', keywordtotest=None):
+    """
+
+    Check if a keyword exists in the Python keyword dictionary
+
+    operation:
+    Whether to list or check the keywords. Possible options are list and check. Default is 'list'.
+
+    keywordtotest:
+    The keyword to test for if operation is 'check'. Default is None.
+
+    """
+
     if operation == 'list':
         return str(keyword.kwlist)
     elif operation == 'check':
@@ -311,7 +465,7 @@ def pykeyword(operation='list', keywordtotest=None):
 
 
 def prettyprinter(listtoprint, stream=None, indent=1, width=80, depth=None):
-    pprint(listtoprint, stream, indent, width, depth)
+    pprint.pprint(listtoprint, stream, indent, width, depth)
 
 
 # Generate a string of Lorem Ipsum
@@ -353,7 +507,7 @@ def psrgame(choice):
         'rock': 3,
         'rocks': 3
     }
-    pcchoice = genrandomnum(0, 3)
+    pcchoice = random.randint(0, 3)
     if pcchoice == choices[choice]:
         return 'Tie'
     elif pcchoice < choices[choice]:
@@ -368,10 +522,10 @@ def psrgame(choice):
 def diceroll(dicecount=1, dicesize=6, alwayslist=False):
     dicecount = int(dicecount)
     if dicecount == 1 and alwayslist is False:
-        return genrandomnum(1, dicesize)
+        return random.randint(1, dicesize)
     resultlist = []
     for _ in range(dicecount):
-        resultlist.append(genrandomnum(1, dicesize))
+        resultlist.append(random.randint(1, dicesize))
     return resultlist
 
 
@@ -383,7 +537,7 @@ def yesnogame(includemaybe=False):
         maxnum = 3
     else:
         maxnum = 2
-    afternum = genrandomnum(1, maxnum)
+    afternum = random.randint(1, maxnum)
     if afternum == 1:
         return "Yes"
     elif afternum == 2:
@@ -395,7 +549,7 @@ def yesnogame(includemaybe=False):
 
 
 def truthorliegame():
-    truthnum = genrandomnum(1, 4)
+    truthnum = random.randint(1, 4)
     if truthnum == 1:
         return 'Truth'
     elif truthnum == 2:
@@ -426,14 +580,14 @@ def captcha():
         'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
         'ten'
     ]
-    if genrandomnum(1, 2) == 2:
-        parta = randomitem(numbertext)
+    if random.randint(1, 2) == 2:
+        parta = random.choice(numbertext)
     else:
-        parta = genrandomnum(1, 10)
-    if genrandomnum(1, 2) == 2:
-        partb = randomitem(numbertext)
+        parta = random.randint(1, 10)
+    if random.randint(1, 2) == 2:
+        partb = random.choice(numbertext)
     else:
-        partb = genrandomnum(1, 10)
+        partb = random.randint(1, 10)
     tryanswer = input('CAPTCHA: What\'s ' + str(parta) + ' + ' + str(partb) +
                       '? Your Answer (In Digits): ')
     if not bool(isinstance(parta, int)):
@@ -657,7 +811,7 @@ def randstring(length=1):
     charstouse = string.ascii_letters + string.digits + string.punctuation
     newpass = ''
     for _ in range(length):
-        newpass += str(charstouse[genrandomnum(0, len(charstouse) - 1)])
+        newpass += str(charstouse[random.randint(0, len(charstouse) - 1)])
     return newpass
 
 
@@ -880,17 +1034,17 @@ def circleconvert(amount, currentformat, newformat):
         if newformat == 'diameter':
             return amount * 2
         elif newformat == 'circumference':
-            return amount * 2 * pi
+            return amount * 2 * math.pi
     elif currentformat == 'diameter':
         if newformat == 'radius':
             return amount / 2
         elif newformat == 'circumference':
-            return amount * pi
+            return amount * math.pi
     elif currentformat == 'circumference':
         if newformat == 'radius':
-            return amount / pi / 2
+            return amount / math.pi / 2
         elif newformat == 'diameter':
-            return amount / pi
+            return amount / math.pi
 
 
 # Get The Amount Of Numbers Divisible By A Number
@@ -987,7 +1141,7 @@ def getstored():
 
 
 def delay(seconds):
-    delayfunc(seconds)
+    time.sleep(seconds)
 
 
 # Waits For The User To Press Enter
@@ -1066,11 +1220,11 @@ def isnum(value):
 
 def happybirthday(person):
     print('Happy Birthday To You')
-    delayfunc(2)
+    time.sleep(2)
     print('Happy Birthday To You')
-    delayfunc(2)
+    time.sleep(2)
     print('Happy Birthday Dear ' + str(case(person, argument='sentence')))
-    delayfunc(2)
+    time.sleep(2)
     print('Happy Birthday To You')
 
 
@@ -1094,7 +1248,7 @@ def numprop(value, propertyexpected):
         x = (math.sqrt(8 * value + 1) - 1) / 2
         return bool(x - int(x) > 0)
     elif propertyexpected == 'square':
-        return sqrt(value).is_integer()
+        return math.sqrt(value).is_integer()
     elif propertyexpected == 'cube':
         x = value**(1 / 3)
         x = int(round(x))
@@ -1159,7 +1313,8 @@ def length(value):
         return len(convertstring(value))
     except OverflowError:
         raise RuntimeError(
-            'An Error Has Occured: The Length Exceeds The Limit (', charlimit(),
+            'An Error Has Occured: The Length Exceeds The Limit (', charlimit(
+            ),
             ') (0015)')
 
 
@@ -1782,7 +1937,7 @@ def yearlimit(limittype):
 
 
 def timezone():
-    return _timezone()
+    return time.timezone
 
 
 # Get A Random Number
@@ -1791,7 +1946,7 @@ def timezone():
 def randomnum(minimum, maximum):
     if isnum(minimum):
         if isnum(maximum):
-            return genrandomnum(minimum, maximum)
+            return random.randint(minimum, maximum)
         else:
             raise RuntimeError('Invalid Value (0016)')
     else:
@@ -1878,7 +2033,7 @@ def getbrowser():
 
 def randomstr(valuelist):
     try:
-        return randomitem(valuelist)
+        return random.choice(valuelist)
     except IndexError:
         raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 
@@ -1937,7 +2092,7 @@ def textalign(text, maxlength, align='left'):
 
 
 def timesince():
-    return time()
+    return time.time()
 
 
 # Fix The Formatting Of Decimals And Integers
@@ -1981,9 +2136,9 @@ def getdatetime(timedateformat='complete'):
         return ((str(datetime.now())).split(' ')[1]).split('.')[0]
     elif timedateformat == 'secondminutehour':
         return (((str(datetime.now())).split(' ')[1]).split('.')[0]
-               ).split(':')[2] + ':' + (((str(datetime.now(
-               ))).split(' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(
-                   datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+                ).split(':')[2] + ':' + (((str(datetime.now(
+                ))).split(' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(
+                    datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'complete':
         return str(datetime.now())
     elif timedateformat == 'datetime':
