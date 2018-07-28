@@ -82,11 +82,14 @@ jobs:
         - autopep8 --verbose --in-place --recursive --aggressive --aggressive --exclude min/* .
 
       after_script:
+        # Set commit content
+        - COMMIT_CONTENT="CI | Optimise the code to work with PEP8 [skip ci]"
+
         # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
+        - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m "$PRE_MESSAGE"; done;
+        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
 
     - # Optimise the code to work with FLAKE8
 
@@ -99,11 +102,14 @@ jobs:
         - autoflake --in-place --recursive --exclude min .
 
       after_script:
+        # Set commit content
+        - COMMIT_CONTENT="CI | Optimise the code to work with PEP8 [skip ci]"
+
         # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise the code to work with PEP8 [skip ci]"
+        - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m "$PRE_MESSAGE"; done;
+        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
 
     - # Optimise the code with YAPF
 
@@ -116,11 +122,14 @@ jobs:
         - yapf --in-place --recursive --exclude min --style google --parallel .
 
       after_script:
+        # Set commit content
+        - COMMIT_CONTENT="CI | Optimise code with YAPF [skip ci]"
+
         # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Optimise code with YAPF [skip ci]"
+        - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m "$PRE_MESSAGE"; done;
+        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
 
     - # Update Pipfiles
 
@@ -134,11 +143,14 @@ jobs:
         - pipenv install
 
       after_script:
+        # Set commit content
+        - COMMIT_CONTENT="CI | Updated Pipfiles [skip ci]"
+
         # Add, check and commit
-        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "CI | Updated Pipfiles [skip ci]"
+        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m "$PRE_MESSAGE"; done;
+        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
 
     - # Minify the code to separate directory
 
@@ -162,11 +174,14 @@ jobs:
         - find  -type f  -name "*.py" -exec pyminifier --outfile="{}" --prepend="$TRAVIS_BUILD_DIR/misc/minifier-append.txt" "{}" \;
 
       after_script:
+        # Set commit content
+        - COMMIT_CONTENT="CI | Minified Files [skip ci]"
+
         # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "CI | Minified Files [skip ci]"
+        - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m "$PRE_MESSAGE"; done;
+        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
 
     - stage:              checks & testing # Run unit tests with codecov
 
@@ -284,6 +299,9 @@ jobs:
 
     - # Deploy to GitHub releases
 
+      # Ensure the install step is skipped
+      install:            true
+
       # Ensure script is skipped
       script:             true
 
@@ -294,8 +312,8 @@ jobs:
       # Deploy to GitHub releases
       deploy:
         - provider:       releases
-          name:           edge release
-          body:           This is an edge release - a release which is built in realtime since the latest source code commit.
+          name:           Bleeding edge release
+          body:           This is a bleeding edge release - built in realtime since the latest source code commit.
           api_key:        $github_token
           file:           source.zip
           prerelease:     true
