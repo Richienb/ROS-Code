@@ -46,11 +46,8 @@ jobs:
         # Perform check
         - caniusepython3 -r requirements.txt
 
-    - stage:              optimisation # Fix the ignored files if the gitignore was updated
-
-      # Only run if on branch
-      if:                 type != pull_request
-
+    - # Fix the ignored files if the gitignore was updated     
+      
       # Set build language
       language:           generic
 
@@ -65,13 +62,19 @@ jobs:
         - git add .
 
       after_script:
+        # Set commit content
+        - COMMIT_CONTENT="CI | Fix the Gitignore [skip ci]"
+      
         # Check and commit
-        - git diff-index --quiet HEAD || git commit -m "CI | Fix the Gitignore [skip ci]"
+        - git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m "$PRE_MESSAGE"; done;
+        - until git push origin HEAD:master; do git pull && git commit --amend -m $COMMIT_CONTENT; done;
 
-    - # Optimise the code to work with PEP8
+    - stage:              optimisation # Optimise the code to work with PEP8
+
+      # Only run if on branch
+      if:                 type != pull_request
 
       install:
         # Install required dependency
