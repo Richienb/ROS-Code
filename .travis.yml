@@ -45,6 +45,8 @@ jobs:
       script:
         # Perform check
         - caniusepython3 -r requirements.txt
+        - python -m pydoc -w
+        - ls
 
     - stage:              optimisation # Fix the ignored files if the gitignore was updated
 
