@@ -282,10 +282,13 @@ jobs:
         - mkdocs build --verbose --clean --strict
 
         # Create the code documentation
-        - cd src && python -m pydoc -w ros && cd ..
+        - cd src
+        - python -m pydoc -w ros
+        - cd ..
         
         # Copy the output of the code documentation to the site
-        - mkdir ./site/commands && cp -rf ./src/ros.html ./site/commands/index.html
+        - mkdir ./site/commands
+        - find  -type f  -name "*.html" -exec cp -rf {} ./site/commands/{}
 
       # Deploy the documentation
       deploy:
