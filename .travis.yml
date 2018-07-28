@@ -288,7 +288,7 @@ jobs:
         
         # Copy the output of the code documentation to the site
         - mkdir ./site/commands
-        - find  -type f  -name "*.html" -exec cp -rf {} ./site/commands/{}
+        - find  -type f  -name "*.html" -exec cp -rf {} ./site/commands/{} \;
 
       # Deploy the documentation
       deploy:
