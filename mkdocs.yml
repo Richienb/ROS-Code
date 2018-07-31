@@ -52,7 +52,8 @@ pages:
       - Troubleshooting: versionone-troubleshooting.md
     - Fine Print:
       - Code Of Conduct: codeofconduct.md
-      - License:        license.md
+      - Code License:   license.md
+      - Documentation License: docs-license.md
 
 # Customization
 extra:
@@ -69,7 +70,7 @@ extra:
       link:             https://blog.richie-bendall.ml
     - type:             google-plus
       link:             https://plus.google.com/104023294057020158565
-  disqus: 'ros-code'
+  disqus:               'ros-code'
 
 extra_css:
   - css/details-support.css
