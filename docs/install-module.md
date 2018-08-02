@@ -7,15 +7,15 @@ Use the following code to clone the ROS Code repository and extract the `ros.py`
     ```yml
     install:
       - git clone https://github.com/Richienb/ROS-Code.git
-      - mv ./ROS-Code/src/syntax.py ./ros.py
-      - rmdir $PWD/ROS-Code
+      - mv ./ROS-Code/src/ros .
+      - rmdir ./ROS-Code
     ```
 
 !!! example "Insert ROS Code as a Python 3.x module in Terminal"
 
     ```sh
     $ git clone https://github.com/Richienb/ROS-Code.git
-    $ mv ./ROS-Code/src/syntax.py ./ros.py
+    $ mv ./ROS-Code/src/ros .
     $ rmdir ROS-Code
     ```
 
@@ -23,6 +23,6 @@ Use the following code to clone the ROS Code repository and extract the `ros.py`
 
     ```bat
     git clone https://github.com/Richienb/ROS-Code.git
-    move ./ROS-Code/src/syntax.py ./ros.py
+    move ./ROS-Code/src/ros .
     rmdir ROS-Code
     ```
