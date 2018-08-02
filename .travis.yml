@@ -330,7 +330,7 @@ jobs:
           skip_cleanup:   true
           on:
             branch:       master
-            condition:    $TRAVIS_COMMIT_RANGE = *"src"*
+            condition:    $(git status --porcelain) = *"src"*
 
 notifications:
   # Disable emails for build status notifications
