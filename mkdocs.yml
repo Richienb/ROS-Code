@@ -19,8 +19,8 @@ theme:
     primary:            'indigo'
     accent:             'red'
   font:
-    text:               'Product Sans'
-    code:               'Roboto Mono'
+    text:               'Montserrat'
+    code:               'Fira Mono'
   language:             'en'
   favicon:              'assets/images/favicon.ico'
 
