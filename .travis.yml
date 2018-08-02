@@ -14,8 +14,6 @@ cache:
   directories:
     # Cache the .cache directory
     - $HOME/.cache
-    # Cache the .thumbs directory
-    - $HOME/.thumbs
 
 before_install:
   # Configure access token to enable pushing to the repository
@@ -46,8 +44,8 @@ jobs:
         # Perform check
         - caniusepython3 -r requirements.txt
 
-    - # Fix the ignored files if the gitignore was updated     
-      
+    - # Fix the ignored files if the gitignore was updated
+
       # Set build language
       language:           generic
 
@@ -64,7 +62,7 @@ jobs:
       after_script:
         # Set commit content
         - COMMIT_CONTENT="CI | Fix the Gitignore [skip ci]"
-      
+
         # Check and commit
         - git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
@@ -285,7 +283,7 @@ jobs:
         - cd src
         - python -m pydoc -w ros
         - cd ..
-        
+
         # Copy the output of the code documentation to the site
         - mkdir ./site/commands
         - cp -rf ./src/ros.html ./site/commands/index.html
