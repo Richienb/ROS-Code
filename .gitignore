@@ -4,10 +4,13 @@
 # stackdump files
 *.stackdump
 
-# ignore Make file git cloning
-ROS-Code/
+# Make file Git cloning
+INSTALL-ROS-Code/
 
-# Gitignore Batch, Linux, MacOS, Python, Windows, PowerShell
+# ROS Code cache
+__roscache__/
+
+# Gitignore Batch, Linux, Mac OS, Python, Windows, PowerShell
 
 ### Batch ###
 # BatchFiles
