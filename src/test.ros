@@ -5,5 +5,5 @@ This line should be ignored
 and this one as well
 !!!
 
-main.message_print.Hello World
-main.message_print.This is multiple line!
+main.message_print: Hello World
+main.message_print: This is multiple line!
