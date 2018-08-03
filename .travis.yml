@@ -216,7 +216,7 @@ jobs:
       script:
         # Run unit tests
         - coverage run test_syntax.py
-        - coverage run run_file.py "test.ros"
+        - coverage run run_file.py "legacytest.ros"
 
       after_script:
         # Upload results to Codecov
