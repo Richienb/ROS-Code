@@ -67,7 +67,7 @@ jobs:
         - git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do git pull && git commit --amend -m $COMMIT_CONTENT; done;
+        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
 
     - stage:              optimisation # Optimise the code to work with PEP8
 
@@ -90,7 +90,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
+        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
 
     - # Optimise the code to work with FLAKE8
 
@@ -110,7 +110,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
+        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
 
     - # Optimise the code with YAPF
 
@@ -130,7 +130,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
+        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
 
     - # Update Pipfiles
 
@@ -151,7 +151,7 @@ jobs:
         - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
+        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
 
     - # Minify the code to separate directory
 
@@ -182,7 +182,7 @@ jobs:
         - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
 
         # Push changes
-        - until git push origin HEAD:master; do PRE_MESSAGE=$(git log -1 --pretty=%B) && git pull && git commit --amend -m $COMMIT_CONTENT; done;
+        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
 
     - stage:              checks & testing # Run unit tests with codecov
 
