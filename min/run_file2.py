@@ -2,7 +2,6 @@ from sys import argv as args
 import os
 from sys import exit as exitexc
 from hashing import gethash
-import subprocess
 def executepyfile(filename):
  for i in enumerate(open(str(filename)).read().splitlines()):
   try:
