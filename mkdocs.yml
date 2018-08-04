@@ -25,7 +25,7 @@ theme:
   favicon:              'assets/images/favicon.ico'
 
 # Page Tree
-pages:
+nav:
     - Home:             index.md
     - Main:
       - Information Badges: badges.md
