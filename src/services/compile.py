@@ -46,7 +46,7 @@ def compilefile(filename, targetfile):
             continue
 
         # If line doesn't contain ":"
-        if not ":" in i[1]:
+        if ":" not in i[1]:
 
             # Strip all spaces
             i[1] = i[1].strip(" ")
@@ -65,5 +65,6 @@ def compilefile(filename, targetfile):
             pass
 
         # Raise error for compilation
-        raise CompilationError("An error has occurred while compiling. Line {1} is \
+        raise CompilationError(
+            "An error has occurred while compiling. Line {1} is \
          causing this issue.".format(i[0]))

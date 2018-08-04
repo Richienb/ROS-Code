@@ -60,7 +60,8 @@ if not os.path.isfile(args[1]):
     exitexc(1)
 
 # Check if cached file exists
-if os.path.isfile("__roscache__/cache-" + gethash(args[1].split("\\")[-1].split("/")[-1])):
+if os.path.isfile("__roscache__/cache-" +
+                  gethash(args[1].split("\\")[-1].split("/")[-1])):
 
     execlist = ["python", "./__roscache__/cache-" +
                 gethash(args[1].split("\\")[-1].split("/")[-1])]

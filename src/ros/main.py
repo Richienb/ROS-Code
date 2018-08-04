@@ -177,7 +177,7 @@ def shellinput(initialtext='>> ', splitpart=' '):
         raise ConversionError("Cannot convert type " + str(type(initialtext)) +
                               "to str")
     shelluserinput = input(str(initialtext))
-    if splitpart == '' or splitpart == None:
+    if splitpart == '' or splitpart is None:
         return shelluserinput
     commands = []
     for item in enumerate(shelluserinput.split(splitpart)):

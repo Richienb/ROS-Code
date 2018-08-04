@@ -1,57 +1,65 @@
 """
-Main file containing all the commands
+
+ROS Code commands file
+This file contains all the commands in ROS Code
+
 """
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import absolute_import
-from builtins import input
-from builtins import range
-from builtins import chr
-from builtins import open
-from builtins import round
-from builtins import int
-from builtins import str
-from future import standard_library
-standard_library.install_aliases()
-from builtins import object
+# System modules
 import platform
-from subprocess import call
+import subprocess
 import os
 import sys
 import secrets
 import logging
+# Python modules
 import warnings
 import keyword
 import importlib
+# String modues
 import string
 import clipboard
-from colour import Color
+import colour
 import textwrap
-from pprint import pprint
-import loremipsum as li
+import pprint
+import loremipsum
+# Math modules
 import math
-from math import pi
 import operator
 import statistics
-from math import sqrt
-from random import randint as genrandomnum
-from random import choice as randomitem
+import math
+import random
+# Web modules
 import webbrowser
 import urllib
+# Time modules
 import datetime
-from datetime import datetime
-from time import time
-from time import timezone as _timezone
-from time import sleep as delayfunc
+import time
 import calendar
+# Pip module
 import pip
-from.import errors
+# Custom modules
+from . import errors
+
+# Print a debug message
 if __debug__:
     print("Loaded modules. Now loading functions...")
 
 
 def loglevel(leveltype=None, isequal=False):
+    """
+
+    Set the logging level of ROS Code
+
+    without arguments:
+    Gives you the logging level
+
+    leveltype:
+    Choose the logging level. Possible choices are none (0), debug (10), info (20), warning (30), error (40) and critical (50)
+
+    isequal:
+    Instead of setting the level, returns True if the level is equal to leveltype. Otherwise, returns False
+
+    """
     leveltype = leveltype.lower()
     loglevels = {
         "none": 0,
@@ -59,7 +67,8 @@ def loglevel(leveltype=None, isequal=False):
         "info": 20,
         "warning": 30,
         "error": 40,
-        "critical": 50}
+        "critical": 50
+    }
     if leveltype is None and isequal == False:
         return logging.getEffectiveLevel()
     if leveltype is not None and isequal is True:
@@ -69,33 +78,49 @@ def loglevel(leveltype=None, isequal=False):
             return loglevels[leveltype] == logging.getEffectiveLevel()
         else:
             raise WrongInput(
-                "Incorrect input provided. It should be none, debug, info, warning, error or critical")
+                "Incorrect input provided. It should be none, debug, info, warning, error or critical"
+            )
     if leveltype in loglevels.values():
         logging.basicConfig(level=leveltype)
     elif leveltype in loglevels:
         logging.basicConfig(level=loglevels[leveltype])
     else:
         raise WrongInput(
-            "Incorrect input provided. It should be none, debug, info, warning, error or critical")
+            "Incorrect input provided. It should be none, debug, info, warning, error or critical"
+        )
 
 
 def logfile(targetfile="ros.log"):
+    """
+
+    Set the file for ROS Code to log to
+
+    targetfile:
+    Change the file to log to. By default it is ros.log
+
+    """
+
     try:
         str(targetfile)
     except BaseException:
-        raise ConversionError("Cannot convert type " +
-                              str(type(targetfile)) + "to str")
+        raise ConversionError("Cannot convert type " + str(type(targetfile)) +
+                              "to str")
     try:
         logging.basicConfig(filename=str(targetfile))
     except BaseException:
         raise WrongInput("Invalid target file specified")
 
 
+# Set logging status dependant on if debug is enabled
+
 if __debug__:
     loglevel("warning")
     logfile("ros.log")
 else:
     loglevel("none")
+
+# Ensure ROS Code storage variables are global
+
 __ros_stored__ = None
 
 
@@ -107,51 +132,116 @@ _ensureglobal()
 
 
 def shellcommand(command):
-    call(str(command))
+    """
+
+    Execute a command in the host's terminal/shell/bash
+
+    command:
+    Specify the command to be executed
+
+    """
+
+    subprocess.call(str(command))
 
 
 def pipupdate():
+    """
+
+    Update all currently installed pip packages
+
+    """
+
     packages = [dist.project_name for dist in pip.get_installed_distributions()]
-    call('pip install --upgrade ' + ' '.join(packages))
+    subprocess.call('pip install --upgrade ' + ' '.join(packages))
+
+
+# Show a shell based input line and return command and parameters
 
 
 def shellinput(initialtext='>> ', splitpart=' '):
+    """
+
+    Give the user a shell like interface to enter commands which are returned as a multi part list containing the command and each of the arguments
+
+    initialtext:
+    Set the text to be displayed as the prompt. Default is '>>'.
+
+    splitpart:
+    The character to split when generating the list item. Default is ' '. Set to '' or None to skip splitting.
+
+    """
+
     try:
         str(initialtext)
     except BaseException:
-        raise ConversionError("Cannot convert type " +
-                              str(type(initialtext)) + "to str")
+        raise ConversionError("Cannot convert type " + str(type(initialtext)) +
+                              "to str")
     shelluserinput = input(str(initialtext))
-    return[shelluserinput.split(str(splitpart))[0], shelluserinput[len(shelluserinput.split(str(splitpart))):]]
+    if splitpart == '' or splitpart == None:
+        return shelluserinput
+    commands = []
+    for item in enumerate(shelluserinput.split(splitpart)):
+        thelist.append(item[1])
+    return commands
 
 
-def colourcode(startcolourcode, destinationcode, longhex=False):
-    c = Color(str(startcolourcode))
-    if destinationcode.lower() == 'hex':
+def colourcode(startcolourcode, destinationtype, longhex=False):
+    """
+
+    Convert a colour code from one format to another
+
+    startcolourcode:
+    Set the colour code to convert from
+
+    destinationtype:
+    Set the colour code type to convert to. Possible options are hex, hsl, rgb, red, blue, green, hue, sat and lum
+
+    longhex:
+    If converting to hex, provided the long and unsimplified version. Default is False.
+
+    """
+
+    c = colour.Color(str(startcolourcode))
+    if destinationtype.lower() == 'hex':
         if longhex is True:
             return c.hex_l
         return c.hex
-    elif destinationcode.lower() == 'hsl':
+    elif destinationtype.lower() == 'hsl':
         return c.hsl
-    elif destinationcode.lower() == 'rgb':
+    elif destinationtype.lower() == 'rgb':
         return c.rgb
-    elif destinationcode.lower() == 'red':
+    elif destinationtype.lower() == 'red':
         return c.red
-    elif destinationcode.lower() == 'blue':
+    elif destinationtype.lower() == 'blue':
         return c.blue
-    elif destinationcode.lower() == 'green':
+    elif destinationtype.lower() == 'green':
         return c.green
-    elif destinationcode.lower() == 'hue':
+    elif destinationtype.lower() == 'hue':
         return c.hue
-    elif destinationcode.lower() == 'sat':
+    elif destinationtype.lower() == 'sat':
         return c.saturation
-    elif destinationcode.lower() == 'lum':
+    elif destinationtype.lower() == 'lum':
         return c.luminance
     raise WrongInput("Destination colour code not specified correctly")
 
 
 def changecolour(colourcode, action, amount=100):
-    c = Color(colourcode)
+    """
+
+    Modify a parameter of a colour code
+
+    colourcode:
+    The colourcode representing the colour to convert from.
+
+    action:
+    The action to perform on the colour. Possible options are red, blue, green, hue, sat, lum
+
+    amount:
+    The percentage of the action to perform. For example: 100 means apply 100% of the colour (no change). Default is 100.
+
+    """
+
+    c = colour.Color(colourcode)
     if action == 'red':
         c.red = amount / 100
         return c
@@ -173,26 +263,93 @@ def changecolour(colourcode, action, amount=100):
 
 
 def catwalk(text):
+    """
+
+    Replace multiple spaces with a single space
+    For example replace 'this  is    a long  sentence' with 'this is a long sentence'
+
+    text:
+    Specify the text to fix
+
+    """
+
     return ' '.join(text.split())
 
 
-def converttabs(text, spaces):
+def converttabs(text, spaces=4):
+    """
+
+    Convert all the tabs to a specific amount of spaces
+
+    text:
+    The text to convert tabs to spaces on
+
+    spaces:
+    The amount of spaces to replace tabs to. Default is 4.
+
+    """
+
     return text.replace('\t', ' ' * spaces)
 
 
 def shortentext(text, minlength, placeholder='...'):
+    """
+
+    Shorten some text by replacing the last part with a placeholder (such as '...')
+
+    text:
+    The text to shorten
+
+    minlength:
+    The minimum length before a shortening will occur
+
+    placeholder:
+    The text to append after removing protruding text. Default is '...'.
+
+    """
+
     return textwrap.shorten(text, minlength, placeholder=str(placeholder))
 
 
 def wraptext(text, maxlength):
+    """
+
+    Wrap text around the execution window according to a given size
+
+    text:
+    The text to be wraped
+
+    maxlength:
+    The amount of text until a wrap will be added
+
+    """
+
     return textwrap.wrap(text, maxlength)
 
 
 def unindent(text):
-    textwrap.dedent(text)
+    """
+
+    Remove indention for some text
+
+    text:
+    The text to unindent
+
+    """
+
+    return textwrap.dedent(text)
 
 
 def isprime(number):
+    """
+
+    Check if a number is a prime number
+
+    number:
+    The number to check
+
+    """
+
     if number == 1:
         return False
     for i in range(2, int(number**0.5) + 1):
@@ -202,41 +359,125 @@ def isprime(number):
 
 
 def paraspace(paragraphspaces=1):
+    """
+
+    Print 1 or more paragraph spaces in the terminal output
+
+    paragraphspaces:
+    The amount of paragraph spaces to print. Default is 1.
+
+    """
+
     for _ in range(paragraphspaces):
         print('', end='\n')
 
 
 def leadingzero(number, minlength):
+    """
+
+    Add leading zeros to a number
+
+    number:
+    Number to add the leading zeros to
+
+    minlength:
+    If the number is shorter than this length than add leading zeros to make the length correct
+
+
+    """
+
     return str(number).zfill(int(minlength))
 
 
 def absolutenum(number):
+    """
+
+    Get the absolute value for a number
+
+    number:
+    The number to get the absolute value for
+
+    """
+
     return abs(number)
 
 
 def splitstring(string, split_character=' ', part=None):
+    """
+
+    Split a string based on a character and get the parts as a list
+
+    string:
+    The string to split
+
+    split_character:
+    The character to split for the string. Default is ' '.
+
+    part:
+    Get a specific part of the list. Default is None.
+
+    """
+
     if part is None:
-        return(str(string).split(split_character))
-    return(str(string).split(split_character))[part]
+        return str(string).split(split_character)
+    return str(string).split(split_character)[part]
 
 
 def sort(listtosort, key=None, reversesort=False):
+    """
+
+    Sort a list alphabetically
+
+    listtosort:
+    The list which will be sorted
+
+    key:
+    The key to use when sorting. Default is None.
+
+    reverse:
+    If to sort backwards. Default is False.
+
+    """
+
     return sorted(listtosort, key=key, reverse=reversesort)
 
 
 def pykeyword(operation='list', keywordtotest=None):
+    """
+
+    Check if a keyword exists in the Python keyword dictionary
+
+    operation:
+    Whether to list or check the keywords. Possible options are list and check. Default is 'list'.
+
+    keywordtotest:
+    The keyword to test for if operation is 'check'. Default is None.
+
+    """
+
     if operation == 'list':
         return str(keyword.kwlist)
     elif operation == 'check':
         return keyword.iskeyword(str(keywordtotest))
 
 
+# Pretty print a list
+
+
 def prettyprinter(listtoprint, stream=None, indent=1, width=80, depth=None):
-    pprint(listtoprint, stream, indent, width, depth)
+    pprint.pprint(listtoprint, stream, indent, width, depth)
+
+
+# Generate a string of Lorem Ipsum
 
 
 def genipsum():
+    # TODO: Make this work. Help:
+    # https://loremipsum.readthedocs.io/en/latest/#api
     pass
+
+
+# Check if a number is in the Fibonacci sequence
 
 
 def isfib(number):
@@ -253,6 +494,9 @@ def isfib(number):
             return False
 
 
+# Play paper scissors rock
+
+
 def psrgame(choice):
     choice = choice.lower()
     choices = {
@@ -261,8 +505,9 @@ def psrgame(choice):
         'scissor': 2,
         'scissors': 2,
         'rock': 3,
-        'rocks': 3}
-    pcchoice = genrandomnum(0, 3)
+        'rocks': 3
+    }
+    pcchoice = random.randint(0, 3)
     if pcchoice == choices[choice]:
         return 'Tie'
     elif pcchoice < choices[choice]:
@@ -271,14 +516,20 @@ def psrgame(choice):
         return 'Loose'
 
 
+# Roll a dice
+
+
 def diceroll(dicecount=1, dicesize=6, alwayslist=False):
     dicecount = int(dicecount)
     if dicecount == 1 and alwayslist is False:
-        return genrandomnum(1, dicesize)
+        return random.randint(1, dicesize)
     resultlist = []
     for _ in range(dicecount):
-        resultlist.append(genrandomnum(1, dicesize))
+        resultlist.append(random.randint(1, dicesize))
     return resultlist
+
+
+# Play the yes-no game
 
 
 def yesnogame(includemaybe=False):
@@ -286,7 +537,7 @@ def yesnogame(includemaybe=False):
         maxnum = 3
     else:
         maxnum = 2
-    afternum = genrandomnum(1, maxnum)
+    afternum = random.randint(1, maxnum)
     if afternum == 1:
         return "Yes"
     elif afternum == 2:
@@ -294,8 +545,11 @@ def yesnogame(includemaybe=False):
     return "Maybe"
 
 
+# Play the truth or lie game
+
+
 def truthorliegame():
-    truthnum = genrandomnum(1, 4)
+    truthnum = random.randint(1, 4)
     if truthnum == 1:
         return 'Truth'
     elif truthnum == 2:
@@ -303,6 +557,9 @@ def truthorliegame():
     elif truthnum == 3:
         return 'Maybe'
     return 'Lie'
+
+
+# Check if the user is a person by asking a simple maths question
 
 
 def captcha():
@@ -317,32 +574,22 @@ def captcha():
         'seven': 7,
         'eight': 8,
         'nine': 9,
-        'ten': 10}
+        'ten': 10
+    }
     numbertext = [
-        'one',
-        'two',
-        'three',
-        'four',
-        'five',
-        'six',
-        'seven',
-        'eight',
-        'nine',
-        'ten']
-    if genrandomnum(1, 2) == 2:
-        parta = randomitem(numbertext)
+        'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+        'ten'
+    ]
+    if random.randint(1, 2) == 2:
+        parta = random.choice(numbertext)
     else:
-        parta = genrandomnum(1, 10)
-    if genrandomnum(1, 2) == 2:
-        partb = randomitem(numbertext)
+        parta = random.randint(1, 10)
+    if random.randint(1, 2) == 2:
+        partb = random.choice(numbertext)
     else:
-        partb = genrandomnum(1, 10)
-    tryanswer = input(
-        'CAPTCHA: What\'s ' +
-        str(parta) +
-        ' + ' +
-        str(partb) +
-        '? Your Answer (In Digits): ')
+        partb = random.randint(1, 10)
+    tryanswer = input('CAPTCHA: What\'s ' + str(parta) + ' + ' + str(partb) +
+                      '? Your Answer (In Digits): ')
     if not bool(isinstance(parta, int)):
         parta = numbervalues[parta]
     if not bool(isinstance(partb, int)):
@@ -352,6 +599,9 @@ def captcha():
     except BaseException:
         return False
     return parta + partb == tryanswer
+
+
+# Gets, sets, appends or preceeds the clipboard contents
 
 
 def clipaction(action='get', text=None):
@@ -365,20 +615,32 @@ def clipaction(action='get', text=None):
         clipboard.copy(str(text) + str(clipboard.paste))
 
 
+# Convert 0 or 1 to False or True
+
+
 def bintobool(integer):
-    if isinteger(integer)and integer < 2 and integer > -1:
+    if isinteger(integer) and integer < 2 and integer > -1:
         if integer == 0:
             return False
         elif integer == 1:
             return True
 
 
+# Reload a module
+
+
 def modulereload(modulename):
     importlib.reload(modulename)
 
 
+# Exit the current execution
+
+
 def exitexecution(arguments=0):
     sys.exit(arguments)
+
+
+# Configure the Python warnings
 
 
 def warnconfig(action='default'):
@@ -396,9 +658,15 @@ def warnconfig(action='default'):
         warnings.filterwarnings('once')
 
 
+# Print a console message
+
+
 def message_print(text, amount=1):
     for _ in range(amount):
         print(text)
+
+
+# Automatically solve a simple maths problem
 
 
 def autosolve(equation):
@@ -410,16 +678,19 @@ def autosolve(equation):
         num2 = int(equation.split(" ")[2])
     except ValueError:
         num2 = float(equation.split(" ")[2])
-    if equation.split(" ")[1]in["+", "plus", "add"]:
+    if equation.split(" ")[1] in ["+", "plus", "add"]:
         return num1 + num2
-    elif equation.split(" ")[1]in["-", "minus", "subtract"]:
+    elif equation.split(" ")[1] in ["-", "minus", "subtract"]:
         return num1 - num2
-    elif equation.split(" ")[1]in["*", "times", "multiply"]:
+    elif equation.split(" ")[1] in ["*", "times", "multiply"]:
         return num1 * num2
-    elif equation.split(" ")[1]in["/", "divide", "quotient"]:
+    elif equation.split(" ")[1] in ["/", "divide", "quotient"]:
         return num1 / num2
-    elif equation.split(" ")[1]in["%", "remainder", "rem"]:
+    elif equation.split(" ")[1] in ["%", "remainder", "rem"]:
         return num1 % num2
+
+
+# Automatically solve a hard maths problem
 
 
 def autohard(equation):
@@ -449,22 +720,29 @@ def autohard(equation):
         return math.tan(num1)
 
 
+# Solve a simple maths equation manually (May be deprecated)
+
+
 def equation(operation, firstnum, secondnum):
-    if not isnum(firstnum)and isnum(secondnum):
+    if not isnum(firstnum) and isnum(secondnum):
         raise RuntimeError(
-            'An Error Has Occured: One Of The Values Specified Is Not A Number (0002)')
+            'An Error Has Occured: One Of The Values Specified Is Not A Number (0002)'
+        )
     if operation == 'plus':
-        return(firstnum + secondnum)
+        return (firstnum + secondnum)
     elif operation == 'minus':
-        return(firstnum - secondnum)
+        return (firstnum - secondnum)
     elif operation == 'multiply':
-        return(firstnum * secondnum)
+        return (firstnum * secondnum)
     elif operation == 'divide':
         if not secondnum == 0:
-            return(firstnum / secondnum)
+            return (firstnum / secondnum)
     else:
         raise RuntimeError(
             'An Error Has Occured: You Entered An Invalid Operation (0003)')
+
+
+# Solve scientific operations manually (May be deprecated)
 
 
 def scientific(number, operation, number2=None, logbase=10):
@@ -486,6 +764,9 @@ def scientific(number, operation, number2=None, logbase=10):
         return math.tan(number)
 
 
+# Find the lowest common multiple of 2 numbers
+
+
 def lcm(num1, num2):
     if num1 > num2:
         bigger = num1
@@ -498,15 +779,21 @@ def lcm(num1, num2):
             bigger += 1
 
 
+# Find the lowest common multiple of 2 numbers
+
+
 def hcf(num1, num2):
     if num1 > num2:
         smaller = num2
     else:
         smaller = num1
     for i in range(1, smaller + 1):
-        if((num1 % i == 0)and(num2 % i == 0)):
+        if ((num1 % i == 0) and (num2 % i == 0)):
             hcf = i
     return hcf
+
+
+# Find all the factors of a number
 
 
 def factors(number):
@@ -517,18 +804,24 @@ def factors(number):
     return factors
 
 
+# Generate a completely random string
+
+
 def randstring(length=1):
     charstouse = string.ascii_letters + string.digits + string.punctuation
     newpass = ''
     for _ in range(length):
-        newpass += str(charstouse[genrandomnum(0, len(charstouse) - 1)])
+        newpass += str(charstouse[random.randint(0, len(charstouse) - 1)])
     return newpass
+
+
+# Compare 2 Values
 
 
 def compare(value1, value2, comparison):
     if not isinstance(comparison, str):
         raise WrongInput("ERROR: comparison argument must be a string")
-    if comparison not in['is', 'or', 'and']:
+    if comparison not in ['is', 'or', 'and']:
         raise WrongInput(
             "ERROR: comparison argument must be 'is', 'or' or 'and'")
     if comparison == 'is':
@@ -539,8 +832,14 @@ def compare(value1, value2, comparison):
         return operator.and_(value1, value2)
 
 
+# Use Euler's Formula
+
+
 def eulercalc(faces, edges, verticies):
     return verticies + edges - faces
+
+
+# Get The Sides Of A Shape
 
 
 def shapesides(inputtocheck, inputtype='shape'):
@@ -575,15 +874,17 @@ def shapesides(inputtocheck, inputtype='shape'):
         'chiliagon': 1000,
         'myriagon': 10000,
         'megagon': 1000000,
-        'googolgon': pow(
-            10,
-            100)}
+        'googolgon': pow(10, 100)
+    }
     if inputtype == 'shape':
         return shapestosides[inputtocheck]
 
 
+# Compare 2 Numbers
+
+
 def comparenum(value1, value2, comparison):
-    if isnum(value1)and isnum(value2):
+    if isnum(value1) and isnum(value2):
         comparison = comparison.lower()
         if comparison == 'equals':
             return value1 == value2
@@ -603,8 +904,14 @@ def comparenum(value1, value2, comparison):
             return value1 >= value2
 
 
+# Print Text A Specific Amount Of Times
+
+
 def texttimes(text, times):
     return times * str(text)
+
+
+# Get The Quadrant Of Coordinates
 
 
 def quadrant(xcoord, ycoord):
@@ -618,6 +925,9 @@ def quadrant(xcoord, ycoord):
         if yneg is False:
             return 1
         return 4
+
+
+# Flip Coordinates Over A Specific Axis
 
 
 def flipcoords(xcoord, ycoord, axis):
@@ -636,6 +946,9 @@ def flipcoords(xcoord, ycoord, axis):
             return str(ycoord + abs(ycoord) * 2) + ', ' + str(xcoord)
         elif ycoord == 0:
             return str(xcoord) + ', ' + str(ycoord)
+
+
+# Get The Day Of The Week For A Specific Day
 
 
 def dayofweek(day, month, year, formatresult=True):
@@ -658,6 +971,9 @@ def dayofweek(day, month, year, formatresult=True):
             return 'Sunday'
 
 
+# Check If A Year Is A Leap Year
+
+
 def leapyear(year, querytype='is'):
     querytype = querytype.lower()
     if querytype == 'is':
@@ -666,10 +982,16 @@ def leapyear(year, querytype='is'):
         return year % 4
 
 
+# Return A Random String In Hexadecimal
+
+
 def tokhex(length=10, urlsafe=False):
     if urlsafe is True:
         return secrets.token_urlsafe(length)
     return secrets.token_hex(length)
+
+
+# Show A Type Of Face
 
 
 def face(facetype='smiley'):
@@ -680,6 +1002,9 @@ def face(facetype='smiley'):
         print('😐')
     elif facetype == 'sad':
         print('☹')
+
+
+# Simplify A Fraction
 
 
 def fracsimplify(numerator, denominator):
@@ -697,6 +1022,9 @@ def fracsimplify(numerator, denominator):
     return str(int(numerator)) + '/' + str(int(denominator))
 
 
+# Convert A Circle Measurement
+
+
 def circleconvert(amount, currentformat, newformat):
     currentformat = currentformat.lower()
     newformat = newformat.lower()
@@ -706,17 +1034,20 @@ def circleconvert(amount, currentformat, newformat):
         if newformat == 'diameter':
             return amount * 2
         elif newformat == 'circumference':
-            return amount * 2 * pi
+            return amount * 2 * math.pi
     elif currentformat == 'diameter':
         if newformat == 'radius':
             return amount / 2
         elif newformat == 'circumference':
-            return amount * pi
+            return amount * math.pi
     elif currentformat == 'circumference':
         if newformat == 'radius':
-            return amount / pi / 2
+            return amount / math.pi / 2
         elif newformat == 'diameter':
-            return amount / pi
+            return amount / math.pi
+
+
+# Get The Amount Of Numbers Divisible By A Number
 
 
 def amountdiv(number, minnum, maxnum):
@@ -725,6 +1056,9 @@ def amountdiv(number, minnum, maxnum):
         if number % i == 0:
             amount += 1
     return amount
+
+
+# Get A Constant
 
 
 def constant(constanttype):
@@ -741,12 +1075,21 @@ def constant(constanttype):
         return math.nan
 
 
+# Find The Power Of A Number
+
+
 def power(number, power):
     return math.pow(number, power)
 
 
+# Find The Square Root Of A number
+
+
 def squareroot(number):
     return math.sqrt(number)
+
+
+# Do An Average Command
 
 
 def average(numbers, averagetype='mean'):
@@ -772,8 +1115,14 @@ def average(numbers, averagetype='mean'):
             'An Error Has Occured: You Entered An Invalid Operation (0003)')
 
 
+# Throw A Runtime Error
+
+
 def throwerror(errortext):
     raise RuntimeError("Forced Error: " + str(errortext))
+
+
+# Store A Value In The __ros_stored__ Variable
 
 
 def store(value):
@@ -781,12 +1130,21 @@ def store(value):
     __ros_stored__ = value
 
 
+# Get The Stored Variable
+
+
 def getstored():
     return __ros_stored__
 
 
+# Delay For A Specific Amount Of Seconds
+
+
 def delay(seconds):
-    delayfunc(seconds)
+    time.sleep(seconds)
+
+
+# Waits For The User To Press Enter
 
 
 def wait_enter(times=1):
@@ -794,8 +1152,14 @@ def wait_enter(times=1):
         input('')
 
 
+# Convert A Variable To A String
+
+
 def convertstring(value):
     return str(value)
+
+
+# Return The Opposite Of A Boolean
 
 
 def opposite(boolean):
@@ -806,41 +1170,65 @@ def opposite(boolean):
             'An Error Has Occured: Nor A Bool Or Len Was Provided (0014)')
 
 
+# Check If A Number Is A Decimal
+
+
 def isdecimal(value):
     return bool(isinstance(value, float))
+
+
+# Check If A Variable Is A String
 
 
 def isstring(variable):
     return bool(isinstance(variable, str))
 
 
+# Check If A Variable Is A Specific Type
+
+
 def istype(variable, typeexpected):
     return bool(isinstance(variable, typeexpected))
+
+
+# Check If A Number Is An Integer (Full Number)
 
 
 def isinteger(value):
     return bool(isinstance(value, int))
 
 
+# Check For A Boolean
+
+
 def isboolean(value):
     return isinstance(value, bool)
 
 
+# Check If A Value Is Able To Be Converted To A Number (Decimal And Integer)
+
+
 def isnum(value):
     try:
-        return bool(isinstance(value, int)or isinstance(value, float))
+        return bool(isinstance(value, int) or isinstance(value, float))
     except BaseException:
         return False
 
 
+# Sing Happy Birthday
+
+
 def happybirthday(person):
     print('Happy Birthday To You')
-    delayfunc(2)
+    time.sleep(2)
     print('Happy Birthday To You')
-    delayfunc(2)
+    time.sleep(2)
     print('Happy Birthday Dear ' + str(case(person, argument='sentence')))
-    delayfunc(2)
+    time.sleep(2)
     print('Happy Birthday To You')
+
+
+# Change The Casing Of Text
 
 
 def case(variable, argument='uppercase'):
@@ -852,12 +1240,15 @@ def case(variable, argument='uppercase'):
         return str(variable[0].upper()) + str(variable[1:])
 
 
+# Check If A Number Is A Type
+
+
 def numprop(value, propertyexpected):
     if propertyexpected == 'triangular':
         x = (math.sqrt(8 * value + 1) - 1) / 2
         return bool(x - int(x) > 0)
     elif propertyexpected == 'square':
-        return sqrt(value).is_integer()
+        return math.sqrt(value).is_integer()
     elif propertyexpected == 'cube':
         x = value**(1 / 3)
         x = int(round(x))
@@ -874,6 +1265,9 @@ def numprop(value, propertyexpected):
         return bool(value == 0)
 
 
+# Toggle A Number Between Positive And Negative
+
+
 def posnegtoggle(number):
     if bool(number > 0):
         return number - number * 2
@@ -883,20 +1277,35 @@ def posnegtoggle(number):
         return number
 
 
+# Find The Difference Between 2 Numbers
+
+
 def difference(num1, num2):
     return abs(num1 - num2)
+
+
+# Check If A Number Is Divisible By Another Number
 
 
 def divisable(num1, num2):
     return bool(num1 % num2 == 0)
 
 
+# Check If A Variable Is Empty
+
+
 def isempty(variable):
     return bool(variable == '')
 
 
+# Check If A Variable Is Infinite
+
+
 def isinfinite(variable):
     return bool(math.isfinite(variable))
+
+
+# Find The Length Of A Value
 
 
 def length(value):
@@ -904,9 +1313,12 @@ def length(value):
         return len(convertstring(value))
     except OverflowError:
         raise RuntimeError(
-            'An Error Has Occured: The Length Exceeds The Limit (',
-            charlimit(),
+            'An Error Has Occured: The Length Exceeds The Limit (', charlimit(
+            ),
             ') (0015)')
+
+
+# Simulate A Cow Saying Text
 
 
 def cowsay(text='', align='centre'):
@@ -936,24 +1348,42 @@ def cowsay(text='', align='centre'):
     print(spacing + '        ||     || ')
 
 
+# Get The Corresponding Letter In A String
+
+
 def getletter(variable, letternumber):
     return str(variable)[letternumber - 1]
+
+
+# Check If Something Is On The List
 
 
 def onlist(listtocheck, item):
     return item in listtocheck
 
 
+# Get The Character Limit
+
+
 def charlimit():
     return sys.maxsize
+
+
+# Get The Highest Unicode Value
 
 
 def unilimit():
     return sys.maxunicode
 
 
+# Get The Current Platform
+
+
 def getplatform():
     return sys.platform()
+
+
+# Get The Largest Integer Less Than Or Equal To
 
 
 def less_or_equal(number):
@@ -963,8 +1393,14 @@ def less_or_equal(number):
         raise RuntimeError('An Error Has Occured: Number Not Provided (0016)')
 
 
+# Join Two Strings
+
+
 def jointext(firststring, secondstring):
     return str(firststring) + str(secondstring)
+
+
+# Tools For Directories (If Exists, Make And Delete)
 
 
 def dirtool(operation, directory):
@@ -988,6 +1424,9 @@ def dirtool(operation, directory):
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
 
+# Download A File
+
+
 def filedownload(source, destination):
     if not isempty(source):
         if not isempty(destination):
@@ -1002,6 +1441,9 @@ def filedownload(source, destination):
     else:
         raise RuntimeError(
             'An Error Has Occured: Source Or Destination Invalid (0011)')
+
+
+# Tools For Files (If Exists, Make And Delete)
 
 
 def file(operation, path):
@@ -1031,6 +1473,9 @@ def file(operation, path):
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
 
+# Tools For Text Files
+
+
 def text(operation, path, argument):
     operation = operation.lower()
     if operation == 'write':
@@ -1047,10 +1492,16 @@ def text(operation, path, argument):
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
 
 
+# About Information
+
+
 def about():
     print('You Are Using ROS Code')
     print('ROS Code Is licensed Under The Apache License 2.0')
     print('Type "ros.license()" To Read The license')
+
+
+# Get the version of Python
 
 
 def pyversion(part=None):
@@ -1059,18 +1510,30 @@ def pyversion(part=None):
     return sys.version_info[part]
 
 
+# Get the executable used by Python
+
+
 def pyexec():
     return sys.executable
+
+
+# Print Python copyright information
 
 
 def pycopyright():
     return sys.copyright
 
 
+# Get the value of __name__
+
+
 def pyname(ifmain=False):
     if ifmain is True:
         return __name__ == "__main__"
     return __name__
+
+
+# Convert Text To Binary Form
 
 
 def convertbinary(value, argument):
@@ -1086,6 +1549,9 @@ def convertbinary(value, argument):
             raise RuntimeError('Invalid Value (0016)')
 
 
+# Make The Text Forwards Or Backwards
+
+
 def reversetext(texttoreverse, ignoretype=False):
     if ignoretype is False:
         if isinteger(texttoreverse):
@@ -1094,6 +1560,9 @@ def reversetext(texttoreverse, ignoretype=False):
             return float(str(texttoreverse)[::-1])
         return str(texttoreverse)[::-1]
     return str(texttoreverse)[::-1]
+
+
+# Convert A Time Period To Another One
 
 
 def converttime(time, currentformat, newformat):
@@ -1309,19 +1778,28 @@ def converttime(time, currentformat, newformat):
             return time * 1000 / 100
 
 
+# Reverse A List
+
+
 def reverselist(listtoreverse):
     return listtoreverse.reverse()
+
+
+# Replace Text In A Variable
 
 
 def replacetext(string, texttofind, texttoreplace):
     return string.replace(texttofind, texttoreplace)
 
 
+# Convert A Base 10 Number To A Custom Base
+
+
 def convertbase(number, base=10):
     integer = number
     if not integer:
         return '0'
-    sign = 1 if integer > 0 else-1
+    sign = 1 if integer > 0 else -1
     alphanum = string.digits + string.ascii_lowercase
     nums = alphanum[:base]
     res = ''
@@ -1329,7 +1807,10 @@ def convertbase(number, base=10):
     while integer:
         integer, mod = divmod(integer, base)
         res += nums[mod]
-    return('' if sign == 1 else '-') + res[::-1]
+    return ('' if sign == 1 else '-') + res[::-1]
+
+
+# Convert A ASCII Value To A Symbol
 
 
 def convertascii(value, command='to'):
@@ -1349,16 +1830,28 @@ def convertascii(value, command='to'):
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
 
+# Evaluate A Expression Or Operation
+
+
 def evaluate(evaluation):
     return eval(str(evaluation))
+
+
+# Execute A Line Of Python Code
 
 
 def execute(execution):
     exec(str(execution))
 
 
+# Get The Type Of A Value
+
+
 def gettype(value):
     return type(value)
+
+
+# Get All Available Characters For A Type
 
 
 def availchar(charactertype):
@@ -1383,6 +1876,9 @@ def availchar(charactertype):
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
 
+# Get The Value Of A Word
+
+
 def wordvalue(word):
     total = 0
     for i in enumerate(word):
@@ -1390,21 +1886,29 @@ def wordvalue(word):
     return total
 
 
+# Get the Range Of The Length
+
+
 def enum(arguments):
     return enumerate(arguments)
 
 
-def textbetween(
-        variable,
-        firstnum=None,
-        secondnum=None,
-        locationoftext='regular'):
+# Get The Text Between Two Parts
+
+
+def textbetween(variable,
+                firstnum=None,
+                secondnum=None,
+                locationoftext='regular'):
     if locationoftext == 'regular':
         return variable[firstnum:secondnum]
     elif locationoftext == 'toend':
         return variable[firstnum:]
     elif locationoftext == 'tostart':
         return variable[:secondnum]
+
+
+# Get The Number Corresponding To A Letter
 
 
 def letternum(letter):
@@ -1414,6 +1918,9 @@ def letternum(letter):
         for i in range(len(alphaletters)):
             if getletter(letter, 1) == getletter(alphaletters, i + 1):
                 return i + 1
+
+
+# Get Maximum And Minimum Years
 
 
 def yearlimit(limittype):
@@ -1426,18 +1933,27 @@ def yearlimit(limittype):
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
 
+# Get The Timezone Code
+
+
 def timezone():
-    return _timezone()
+    return time.timezone
+
+
+# Get A Random Number
 
 
 def randomnum(minimum, maximum):
     if isnum(minimum):
         if isnum(maximum):
-            return genrandomnum(minimum, maximum)
+            return random.randint(minimum, maximum)
         else:
             raise RuntimeError('Invalid Value (0016)')
     else:
         raise RuntimeError('Invalid Value (0016)')
+
+
+# Generate And Run MailTo
 
 
 def mailto(to, cc, bcc, subject, body, autorun=True):
@@ -1472,11 +1988,17 @@ def mailto(to, cc, bcc, subject, body, autorun=True):
         return mailurl
 
 
+# Open A Link In A Web Browser
+
+
 def openurl(url):
     try:
         webbrowser.open(url)
     except webbrowser.Error:
         raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
+
+
+# Open A Link In A New Window Of A Web Browser
 
 
 def newwindow(url):
@@ -1486,11 +2008,17 @@ def newwindow(url):
         raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
 
 
+# Open A Link In A New Tab Of A Web Browser
+
+
 def newtab(url):
     try:
         webbrowser.open_new_tab(url)
     except webbrowser.Error:
         raise RuntimeError('An Error Has Occured: Unable To Open URL (0017)')
+
+
+# Get The Name Of The Browser Currently Being Used
 
 
 def getbrowser():
@@ -1500,11 +2028,17 @@ def getbrowser():
         return None
 
 
+# Choose A Random Item From A List
+
+
 def randomstr(valuelist):
     try:
-        return randomitem(valuelist)
+        return random.choice(valuelist)
     except IndexError:
         raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
+
+
+# Return The List Equally Spaced
 
 
 def spacelist(listtospace):
@@ -1516,6 +2050,9 @@ def spacelist(listtospace):
         output += space
         output += str(listtospace[listnum])
     return output
+
+
+# List Or Count The Numbers Between Two Numbers
 
 
 def numlistbetween(num1, num2, option='list', listoption='string'):
@@ -1535,6 +2072,9 @@ def numlistbetween(num1, num2, option='list', listoption='string'):
         return num2 - num1
 
 
+# Align Text When Given Full Length
+
+
 def textalign(text, maxlength, align='left'):
     spaces = ''
     if align == 'left':
@@ -1548,8 +2088,14 @@ def textalign(text, maxlength, align='left'):
     return spaces + text
 
 
+# Get The Time Since 00:00 On 1 January 1970
+
+
 def timesince():
-    return time()
+    return time.time()
+
+
+# Fix The Formatting Of Decimals And Integers
 
 
 def decintfix(decorint=0):
@@ -1558,36 +2104,51 @@ def decintfix(decorint=0):
     return float(decorint)
 
 
+# Get The Current Date Or Time
+
+
 def getdatetime(timedateformat='complete'):
     timedateformat = timedateformat.lower()
     if timedateformat == 'day':
-        return((str(datetime.now())).split(' ')[0]).split('-')[2]
+        return ((str(datetime.now())).split(' ')[0]).split('-')[2]
     elif timedateformat == 'month':
-        return((str(datetime.now())).split(' ')[0]).split('-')[1]
+        return ((str(datetime.now())).split(' ')[0]).split('-')[1]
     elif timedateformat == 'year':
-        return((str(datetime.now())).split(' ')[0]).split('-')[0]
+        return ((str(datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hour':
-        return(((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+        return (((str(
+            datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'minute':
-        return(((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[1]
+        return (((str(
+            datetime.now())).split(' ')[1]).split('.')[0]).split(':')[1]
     elif timedateformat == 'second':
-        return(((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[2]
+        return (((str(
+            datetime.now())).split(' ')[1]).split('.')[0]).split(':')[2]
     elif timedateformat == 'millisecond':
-        return(str(datetime.now())).split('.')[1]
+        return (str(datetime.now())).split('.')[1]
     elif timedateformat == 'yearmonthday':
-        return(str(datetime.now())).split(' ')[0]
+        return (str(datetime.now())).split(' ')[0]
     elif timedateformat == 'daymonthyear':
-        return((str(datetime.now())).split(' ')[0]).split('-')[2] + '-' + ((str(datetime.now())).split(' ')[0]).split('-')[1] + '-' + ((str(datetime.now())).split(' ')[0]).split('-')[0]
+        return ((str(datetime.now())).split(' ')[0]).split('-')[2] + '-' + (
+            (str(datetime.now())).split(' ')[0]).split('-')[1] + '-' + (
+                (str(datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hourminutesecond':
-        return((str(datetime.now())).split(' ')[1]).split('.')[0]
+        return ((str(datetime.now())).split(' ')[1]).split('.')[0]
     elif timedateformat == 'secondminutehour':
-        return(((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[2] + ':' + (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+        return (((str(datetime.now())).split(' ')[1]).split('.')[0]
+                ).split(':')[2] + ':' + (((str(datetime.now(
+                ))).split(' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(
+                    datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'complete':
         return str(datetime.now())
     elif timedateformat == 'datetime':
-        return(str(datetime.now())).split('.')[0]
+        return (str(datetime.now())).split('.')[0]
     elif timedateformat == 'timedate':
-        return((str(datetime.now())).split('.')[0]).split(' ')[1] + ' ' + ((str(datetime.now())).split('.')[0]).split(' ')[0]
+        return ((str(datetime.now())).split('.')[0]).split(' ')[1] + ' ' + (
+            (str(datetime.now())).split('.')[0]).split(' ')[0]
+
+
+# Get User input
 
 
 def userinput(prompttext):
@@ -1597,10 +2158,16 @@ def userinput(prompttext):
         return input(str(prompttext))
 
 
+# Do a quick module test
+
+
 def pingtest(returntrue=False):
     if returntrue:
         return True
     print("Pong!")
+
+
+# License Information
 
 
 def roslicense(raw=False):
@@ -1608,29 +2175,37 @@ def roslicense(raw=False):
         print('ROS Code is licensed under the Apache License 2.0')
         print(
             u'\u2714' +
-            ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+            ' Permissions: Commercial use, Modification, Distribution, Patent use And Private use'
+        )
         print(u'\u274c' + ' Limitations: Trademark use, Liability And Warranty')
+        print(u'\u2139' +
+              ' Conditions: License and copyright notice And State changes')
         print(
-            u'\u2139' +
-            ' Conditions: License and copyright notice And State changes')
-        print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
+            'To View The Full license, Go To: https://rosurl.ga/ROS-Code-license'
+        )
     else:
         print('ROS Code Is licensed Under The Apache License 2.0')
-        print('Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
+        print(
+            'Permissions: Commercial use, Modification, Distribution, Patent use And Private use'
+        )
         print('Limitations: Trademark use, Liability And Warranty')
         print('Conditions: License and copyright notice And State changes')
-        print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
+        print(
+            'To View The Full license, Go To: https://rosurl.ga/ROS-Code-license'
+        )
 
 
+# Print a debug message
 if __debug__:
     print("Finished loading functions. ROS Code is ready.")
+
+# Interactive shell if launched directly
 if __name__ == "__main__":
     VER = "ROS Code 2.0 | Running on {} {} | Python Version {}.{}.{}".format(
-        platform.system(), platform.release(), list(
-            sys.version_info)[0], list(
-            sys.version_info)[1], list(
-                sys.version_info)[2])
+        platform.system(), platform.release(),
+        list(sys.version_info)[0],
+        list(sys.version_info)[1],
+        list(sys.version_info)[2])
     print(VER)
     while True:
         exec("print(" + input(">> ") + ")")
-# Created by pyminifier (https://github.com/liftoff/pyminifier)
