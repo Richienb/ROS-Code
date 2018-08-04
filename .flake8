@@ -1,2 +1,4 @@
+# This file is in the TOML format
+
 [flake8]
 exclude = .git,__pycache__
