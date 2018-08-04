@@ -64,7 +64,7 @@ jobs:
         - COMMIT_CONTENT="CI | Fix the Gitignore [skip ci]"
 
         # Check and commit
-        - git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
+        - git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
 
         # Push changes
         - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
@@ -87,7 +87,7 @@ jobs:
         - COMMIT_CONTENT="CI | Optimise the code to work with PEP8 [skip ci]"
 
         # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
+        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
 
         # Push changes
         - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
@@ -107,7 +107,7 @@ jobs:
         - COMMIT_CONTENT="CI | Optimise the code to work with PEP8 [skip ci]"
 
         # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
+        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
 
         # Push changes
         - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
@@ -127,7 +127,7 @@ jobs:
         - COMMIT_CONTENT="CI | Optimise code with YAPF [skip ci]"
 
         # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
+        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
 
         # Push changes
         - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
@@ -148,7 +148,7 @@ jobs:
         - COMMIT_CONTENT="CI | Updated Pipfiles [skip ci]"
 
         # Add, check and commit
-        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
+        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
 
         # Push changes
         - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
@@ -179,7 +179,7 @@ jobs:
         - COMMIT_CONTENT="CI | Minified Files [skip ci]"
 
         # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m $COMMIT_CONTENT
+        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
 
         # Push changes
         - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
