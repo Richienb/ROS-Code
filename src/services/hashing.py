@@ -17,9 +17,12 @@ def _file_as_blockiter(afile, blocksize=65536):
             yield block
             block = afile.read(blocksize)
 
+
 # Function to get the hash
 
 
 def gethash(fname):
-    return [(fname, _hash_bytestr_iter(_file_as_blockiter(
-        open(fname, 'rb')), hashlib.sha256())) for fname in fnamelst]
+    return [(fname,
+             _hash_bytestr_iter(
+                 _file_as_blockiter(open(fname, 'rb')), hashlib.sha256()))
+            for fname in fnamelst]
