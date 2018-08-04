@@ -14,7 +14,7 @@ def compilefile(filename,targetfile):
    i[1]=i[1].replace("!",'"',3)
    compiledlist.append(i[1])
    continue
-  if not ":" in i[1]:
+  if ":" not in i[1]:
    i[1]=i[1].strip(" ")
    i[1]=i[1]+"()"
    compiledlist.append(i[1])

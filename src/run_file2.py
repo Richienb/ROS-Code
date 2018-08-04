@@ -11,7 +11,6 @@ from sys import exit as exitexc
 from hashing import gethash
 
 # Import module to exexute external commands
-import subprocess
 
 
 def executepyfile(filename):
