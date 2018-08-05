@@ -257,7 +257,7 @@ jobs:
 
       install:
         # Install required dependencies
-        - pip install mkdocs mkdocs-material pymdown-extensions pygments
+        - pip install mkdocs==0.17.5 mkdocs-material pymdown-extensions pygments
 
       script:
         # Build the documentation
