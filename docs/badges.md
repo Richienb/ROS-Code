@@ -4,7 +4,8 @@
 
 [![Travis Build Status](https://img.shields.io/travis/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge&logo=travis&label=Travis%20Build)](https://travis-ci.org/Richienb/ROS-Code)
 [![CodeFactor Score](https://www.codefactor.io/repository/github/richienb/ros-code/badge?longCache=true&style=for-the-badge)](https://www.codefactor.io/repository/github/richienb/ros-code)
-[![Codecov Status](https://img.shields.io/codecov/c/github/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge&label=Code%20Coverage)](https://codecov.io/gh/Richienb/ROS-Code)
+[![Codecov Status](https://img.shields.io/codecov/c/github/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge&label=Code%20Coverage)](https://codecov.io/gh/Richienb/ROS-Code) 
+[![Codacy Score](https://img.shields.io/codacy/grade/89a04d97a3b348869c1d2eb3768bfc35.svg?longCache=true&style=for-the-badge&label=Codacy%20Score)](https://app.codacy.com/project/Richienb/ROS-Code/dashboard)
 
 ### Chat
 
