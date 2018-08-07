@@ -1,6 +1,6 @@
 import unittest as ut
-from ros import main as s
 import keyword
+from ros import main as s
 class TestCode(ut.TestCase):
  def test_colourcode(self):
   self.assertEqual(s.colourcode('#212121','hex',True),'#212121')
