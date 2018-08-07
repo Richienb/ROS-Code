@@ -53,7 +53,7 @@ nav:
     - Fine Print:
       - Code Of Conduct: codeofconduct.md
       - Code License:   license.md
-      - Documentation License: docs-license.md
+      - Documentation License: license-docs.md
 
 # Customization
 extra:
