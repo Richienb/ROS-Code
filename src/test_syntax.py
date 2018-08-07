@@ -1,6 +1,6 @@
 import unittest as ut
-from ros import main as s
 import keyword
+from ros import main as s
 
 
 class TestCode(ut.TestCase):
@@ -30,8 +30,7 @@ class TestCode(ut.TestCase):
     def test_splitstring(self):
         self.assertEqual(
             s.splitstring('hello my name'), ['hello', 'my', 'name'])
-        self.assertEqual(s.splitstring(
-            'hello my name', '-'), ['hello my name'])
+        self.assertEqual(s.splitstring('hello my name', '-'), ['hello my name'])
         self.assertEqual(
             s.splitstring('hello-my-name', '-'), ['hello', 'my', 'name'])
         self.assertEqual(s.splitstring('hello-my-name', '-', 0), 'hello')

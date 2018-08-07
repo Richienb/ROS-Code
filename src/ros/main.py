@@ -1313,9 +1313,7 @@ def length(value):
         return len(convertstring(value))
     except OverflowError:
         raise RuntimeError(
-            'An Error Has Occured: The Length Exceeds The Limit (', charlimit(
-            ),
-            ') (0015)')
+            'An Error Has Occured: The Length Exceeds The Limit ('{0}') (0015)'.format(str((charlimit())))
 
 
 # Simulate A Cow Saying Text
@@ -2136,9 +2134,9 @@ def getdatetime(timedateformat='complete'):
         return ((str(datetime.now())).split(' ')[1]).split('.')[0]
     elif timedateformat == 'secondminutehour':
         return (((str(datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[2] + ':' + (((str(datetime.now(
-                ))).split(' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(
-                    datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+               ).split(':')[2] + ':' + (((str(datetime.now(
+               ))).split(' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(
+                   datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'complete':
         return str(datetime.now())
     elif timedateformat == 'datetime':
