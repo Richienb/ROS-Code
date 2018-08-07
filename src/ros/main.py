@@ -1312,8 +1312,7 @@ def length(value):
     try:
         return len(convertstring(value))
     except OverflowError:
-        raise RuntimeError(
-            'An Error Has Occured: The Length Exceeds The Limit ('{0}') (0015)'.format(str((charlimit())))
+        raise RuntimeError('An Error Has Occured: The Length Exceeds The Limit ('{0}') (0015)'.format(str((charlimit())))
 
 
 # Simulate A Cow Saying Text
