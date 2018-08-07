@@ -1312,30 +1312,29 @@ def length(value):
     try:
         return len(convertstring(value))
     except OverflowError:
-        raise RuntimeError(
-            'An Error Has Occured: The Length Exceeds The Limit ('{0}') (0015)'.format(str((charlimit())))
+        raise RuntimeError('An Error Has Occured: The Length Exceeds The Limit ('{0}') (0015)'.format(str((charlimit())))
 
 
 # Simulate A Cow Saying Text
 
 
 def cowsay(text='', align='centre'):
-    align = align.lower()
-    cowtext = str(text)
-    topbar = ' '
-    bottombar = ' '
-    spacing = ''
+    align=align.lower()
+    cowtext=str(text)
+    topbar=' '
+    bottombar=' '
+    spacing=''
     for _ in range(len(text) + 2):
-        topbar = topbar + '_'
-        bottombar = bottombar + '-'
+        topbar=topbar + '_'
+        bottombar=bottombar + '-'
     if align == 'centre' or align == 'center':
         for _ in range((int(len(topbar) / 2)) + 1):
-            spacing = spacing + ' '
+            spacing=spacing + ' '
     elif align == 'left':
-        spacing = ' '
+        spacing=' '
     elif align == 'right':
         for _ in range(len(text) + 2):
-            spacing = spacing + ' '
+            spacing=spacing + ' '
     print(topbar)
     print('( ' + cowtext + ' )')
     print(bottombar)
@@ -1402,7 +1401,7 @@ def jointext(firststring, secondstring):
 
 
 def dirtool(operation, directory):
-    operation = operation.lower()
+    operation=operation.lower()
     if operation == 'exists':
         return bool(os.path.exists(directory))
     elif operation == 'create':
@@ -1445,12 +1444,12 @@ def filedownload(source, destination):
 
 
 def file(operation, path):
-    operation = operation.lower()
+    operation=operation.lower()
     if operation == 'exists':
         return bool(os.path.isfile(path))
     elif operation == 'read':
         if file('exists', path):
-            F = open(path, 'w')
+            F=open(path, 'w')
             return F
         else:
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
@@ -1461,7 +1460,7 @@ def file(operation, path):
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
     elif operation == 'create':
         if not file('exists', path):
-            f = open(path, 'w+')
+            f=open(path, 'w+')
             f.close()
         else:
             raise RuntimeError(
@@ -1475,16 +1474,16 @@ def file(operation, path):
 
 
 def text(operation, path, argument):
-    operation = operation.lower()
+    operation=operation.lower()
     if operation == 'write':
         if file('exists', path):
-            fh = open(path, 'w')
+            fh=open(path, 'w')
             fh.write(argument)
         else:
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
     elif operation == 'append':
         if file('exists', path):
-            fh = open(path, 'a')
+            fh=open(path, 'a')
             fh.write(argument)
         else:
             raise RuntimeError('An Error Has Occured: File Not Found (0012)')
@@ -1564,8 +1563,8 @@ def reversetext(texttoreverse, ignoretype=False):
 
 
 def converttime(time, currentformat, newformat):
-    currentformat = currentformat.lower()
-    newformat = newformat.lower()
+    currentformat=currentformat.lower()
+    newformat=newformat.lower()
     if currentformat == newformat:
         return time
     if currentformat == 'seconds':
@@ -1794,16 +1793,16 @@ def replacetext(string, texttofind, texttoreplace):
 
 
 def convertbase(number, base=10):
-    integer = number
+    integer=number
     if not integer:
         return '0'
-    sign = 1 if integer > 0 else -1
-    alphanum = string.digits + string.ascii_lowercase
-    nums = alphanum[:base]
-    res = ''
+    sign=1 if integer > 0 else -1
+    alphanum=string.digits + string.ascii_lowercase
+    nums=alphanum[:base]
+    res=''
     integer *= sign
     while integer:
-        integer, mod = divmod(integer, base)
+        integer, mod=divmod(integer, base)
         res += nums[mod]
     return ('' if sign == 1 else '-') + res[::-1]
 
@@ -1812,7 +1811,7 @@ def convertbase(number, base=10):
 
 
 def convertascii(value, command='to'):
-    command = command.lower()
+    command=command.lower()
     if command == 'to':
         try:
             return chr(value)
@@ -1878,7 +1877,7 @@ def availchar(charactertype):
 
 
 def wordvalue(word):
-    total = 0
+    total=0
     for i in enumerate(word):
         total += letternum(word[i])
     return total
@@ -1911,8 +1910,8 @@ def textbetween(variable,
 
 def letternum(letter):
     if len(letter) == 1 and isstring(letter):
-        letter = letter.lower
-        alphaletters = availchar('lowercase')
+        letter=letter.lower
+        alphaletters=availchar('lowercase')
         for i in range(len(alphaletters)):
             if getletter(letter, 1) == getletter(alphaletters, i + 1):
                 return i + 1
@@ -1955,7 +1954,7 @@ def randomnum(minimum, maximum):
 
 
 def mailto(to, cc, bcc, subject, body, autorun=True):
-    mailurl = 'mailto:' + str(to)
+    mailurl='mailto:' + str(to)
     if cc is None and bcc is None and subject is None and body is None:
         if autorun is True:
             webbrowser.open_new_tab(str(mailurl))
@@ -1963,23 +1962,23 @@ def mailto(to, cc, bcc, subject, body, autorun=True):
     mailurl += '?'
     if cc is not None:
         mailurl += 'cc=' + str(cc)
-        added = True
-    added = False
+        added=True
+    added=False
     if bcc is not None:
         if added is True:
             mailurl += '&'
         mailurl += 'bcc=' + str(cc)
-        added = True
+        added=True
     if subject is not None:
         if added is True:
             mailurl += '&'
         mailurl += 'subject=' + str(subject)
-        added = True
+        added=True
     if body is not None:
         if added is True:
             mailurl += '&'
         mailurl += 'body=' + str(body)
-        added = True
+        added=True
     if autorun is True:
         webbrowser.open_new_tab(str(mailurl))
     else:
@@ -2040,8 +2039,8 @@ def randomstr(valuelist):
 
 
 def spacelist(listtospace):
-    output = ''
-    space = ''
+    output=''
+    space=''
     output += str(listtospace[0])
     space += ' '
     for listnum in range(1, len(listtospace)):
@@ -2056,13 +2055,13 @@ def spacelist(listtospace):
 def numlistbetween(num1, num2, option='list', listoption='string'):
     if option == 'list':
         if listoption == 'string':
-            output = ''
+            output=''
             output += str(num1)
             for currentnum in range(num1 + 1, num2 + 1):
                 output += ','
                 output += str(currentnum)
         elif listoption == 'list':
-            output = []
+            output=[]
             for currentnum in range(num1, num2 + 1):
                 output.append(str(currentnum))
             return output
@@ -2074,7 +2073,7 @@ def numlistbetween(num1, num2, option='list', listoption='string'):
 
 
 def textalign(text, maxlength, align='left'):
-    spaces = ''
+    spaces=''
     if align == 'left':
         return text
     elif align == 'centre' or align == 'center':
@@ -2106,7 +2105,7 @@ def decintfix(decorint=0):
 
 
 def getdatetime(timedateformat='complete'):
-    timedateformat = timedateformat.lower()
+    timedateformat=timedateformat.lower()
     if timedateformat == 'day':
         return ((str(datetime.now())).split(' ')[0]).split('-')[2]
     elif timedateformat == 'month':
@@ -2199,7 +2198,7 @@ if __debug__:
 
 # Interactive shell if launched directly
 if __name__ == "__main__":
-    VER = "ROS Code 2.0 | Running on {} {} | Python Version {}.{}.{}".format(
+    VER="ROS Code 2.0 | Running on {} {} | Python Version {}.{}.{}".format(
         platform.system(), platform.release(),
         list(sys.version_info)[0],
         list(sys.version_info)[1],
