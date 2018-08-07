@@ -1313,8 +1313,8 @@ def length(value):
         return len(convertstring(value))
     except OverflowError:
         raise RuntimeError(
-            'An Error Has Occured: The Length Exceeds The Limit (',
-            charlimit(),
+            'An Error Has Occured: The Length Exceeds The Limit (', charlimit(
+            ),
             ') (0015)')
 
 
