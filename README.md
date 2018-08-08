@@ -19,5 +19,5 @@ To watch the overview video, click [here](https://www.youtube.com/watch?v=lPCTNK
 
 * * *
 
-### [Read More On The Website](https://www.ros-code.ga)
+### [Read More On The Website](https://richienb.github.io/ROS-Code)
  
