@@ -12,26 +12,28 @@ def compilefile(filename, targetfile):
     # Compile the python command for each line in the list
     for i in enumerate(filelines):
 
-        # If line empty
-        if i[1] in ["", None]:
+        try:
 
-            # Append an empty line
-            compiledlist.append("")
+            # If line empty
+            if i[1] in ["", None]:
 
-            # Skip to next item
-            continue
+                # Append an empty line
+                compiledlist.append("")
 
-        # If line starts with "!"
-        if i[1][0]("!"):
+                # Skip to next item
+                continue
 
-            # Change the first character from "!" to "#"
-            i[1] = i[1].replace("!", '#', 1)
+            # If line starts with "!"
+            if i[1][0]("!"):
 
-            # Append the changed string
-            compiledlist.append(i[1])
+                # Change the first character from "!" to "#"
+                i[1] = i[1].replace("!", "#", 1)
 
-            # Skip to next item
-            continue
+                # Append the changed string
+                compiledlist.append(i[1])
+
+                # Skip to next item
+                continue
 
         # If line starts with !!!
         if i[1].startswith("!!!"):
@@ -62,9 +64,14 @@ def compilefile(filename, targetfile):
 
         # If line contains ":"
         if ":" in i[1]:
-            pass
 
-        # Raise error for compilation
-        raise CompilationError(
-            "An error has occurred while compiling. Line {1} is \
-         causing this issue.".format(i[0]))
+            # Replace the ":"" with "()"
+            i[1] = i[1].replace(":", "(", 1)
+
+
+        except Exception as _:
+
+            # Raise error for compilation
+            raise CompilationError(
+                "An error has occurred while compiling. Line {1} is \
+                causing this issue.".format(i[0]))
