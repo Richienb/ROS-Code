@@ -23,9 +23,11 @@ theme:
     code:               'Fira Mono'
   language:             'en'
   favicon:              'assets/images/favicon.ico'
+  logo:
+    icon: 'code'
 
 # Page Tree
-pages:
+nav:
     - Home:             index.md
     - Main:
       - Information Badges: badges.md
