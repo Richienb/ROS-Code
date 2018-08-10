@@ -68,7 +68,6 @@ def compilefile(filename, targetfile):
             # Replace the ":"" with "()"
             i[1] = i[1].replace(":", "(", 1)
 
-
         except Exception as _:
 
             # Raise error for compilation
