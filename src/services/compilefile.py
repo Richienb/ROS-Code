@@ -2,7 +2,7 @@
 from errors import CompilationError
 
 
-def compilefile(filename, targetfile):
+def compilefile(filename):
 
     # Get all lines of a file and put it in a list
     filelines = open(str(filename)).read().splitlines()
@@ -20,11 +20,8 @@ def compilefile(filename, targetfile):
                 # Append an empty line
                 compiledlist.append("")
 
-                # Skip to next item
-                continue
-
             # If line starts with "!"
-            if i[1][0]("!"):
+            elif i[1][0]("!"):
 
                 # Change the first character from "!" to "#"
                 i[1] = i[1].replace("!", "#", 1)
@@ -35,38 +32,36 @@ def compilefile(filename, targetfile):
                 # Skip to next item
                 continue
 
-        # If line starts with !!!
-        if i[1].startswith("!!!"):
+            # If line starts with !!!
+            elif i[1].startswith("!!!"):
 
-            # Replace first 3 "!"s with """
-            i[1] = i[1].replace("!", '"', 3)
+                # Replace first 3 "!"s with """
+                i[1] = i[1].replace("!", '"', 3)
 
-            # Append the changed string
-            compiledlist.append(i[1])
+                # Append the changed string
+                compiledlist.append(i[1])
 
-            # Skip to next item
-            continue
+            # If line doesn't contain ":"
+            elif ":" not in i[1]:
 
-        # If line doesn't contain ":"
-        if ":" not in i[1]:
+                # Strip all spaces
+                i[1] = i[1].strip(" ")
 
-            # Strip all spaces
-            i[1] = i[1].strip(" ")
+                # Add "()" to the end
+                i[1] = i[1] + "()"
 
-            # Add "()" to the end
-            i[1] = i[1] + "()"
+                # Append the changed string
+                compiledlist.append(i[1])
 
-            # Append the changed string
-            compiledlist.append(i[1])
+            # If line contains ":"
+            elif ":" in i[1]:
 
-            # Skip to next item
-            continue
+                # Replace the ":"" with "()"
+                i[1] = i[1].replace(":", "(", 1)
 
-        # If line contains ":"
-        if ":" in i[1]:
+                compiledlist.append(i[1])
 
-            # Replace the ":"" with "()"
-            i[1] = i[1].replace(":", "(", 1)
+            return compiledlist
 
         except Exception as _:
 
