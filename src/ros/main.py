@@ -2125,36 +2125,39 @@ def getdatetime(timedateformat='complete'):
     elif timedateformat == 'year':
         return ((str(datetime.datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hour':
-        return (((str(datetime.datetime.now())).split(
-            ' ')[1]).split('.')[0]).split(':')[0]
+        return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
+               ).split(':')[0]
     elif timedateformat == 'minute':
-        return (((str(datetime.datetime.now())).split(
-            ' ')[1]).split('.')[0]).split(':')[1]
+        return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
+               ).split(':')[1]
     elif timedateformat == 'second':
-        return (((str(datetime.datetime.now())).split(
-            ' ')[1]).split('.')[0]).split(':')[2]
+        return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
+               ).split(':')[2]
     elif timedateformat == 'millisecond':
         return (str(datetime.datetime.now())).split('.')[1]
     elif timedateformat == 'yearmonthday':
         return (str(datetime.datetime.now())).split(' ')[0]
     elif timedateformat == 'daymonthyear':
-        return ((str(datetime.datetime.now())).split(' ')[0]).split('-')[2] + '-' + (
-            (str(datetime.datetime.now())).split(' ')[0]).split('-')[1] + '-' + (
-                (str(datetime.datetime.now())).split(' ')[0]).split('-')[0]
+        return ((str(datetime.datetime.now())).split(' ')[0]).split(
+            '-')[2] + '-' + ((str(
+                datetime.datetime.now())).split(' ')[0]).split('-')[1] + '-' + (
+                    (str(datetime.datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hourminutesecond':
         return ((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
     elif timedateformat == 'secondminutehour':
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[2] + ':' + (((str(datetime.datetime.now(
-                ))).split(' ')[1]).split('.')[0]).split(':')[1] + ':' + (((str(
-                    datetime.datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+               ).split(':')[2] + ':' + (((str(datetime.datetime.now())).split(
+                   ' ')[1]).split('.')[0]).split(':')[1] + ':' + (
+                       ((str(datetime.datetime.now())).split(' ')[1]
+                       ).split('.')[0]).split(':')[0]
     elif timedateformat == 'complete':
         return str(datetime.datetime.now())
     elif timedateformat == 'datetime':
         return (str(datetime.datetime.now())).split('.')[0]
     elif timedateformat == 'timedate':
-        return ((str(datetime.datetime.now())).split('.')[0]).split(' ')[1] + ' ' + (
-            (str(datetime.datetime.now())).split('.')[0]).split(' ')[0]
+        return ((str(
+            datetime.datetime.now())).split('.')[0]).split(' ')[1] + ' ' + (
+                (str(datetime.datetime.now())).split('.')[0]).split(' ')[0]
 
 
 # Get User input
