@@ -19,7 +19,6 @@ import importlib
 
 # String modues
 import string
-import colour
 import textwrap
 import pprint
 
@@ -41,12 +40,13 @@ import calendar
 # Pip module
 import pip
 
-# Custom modules
-from . import errors
-
 # External Modules
 import clipboard
 import loremipsum
+import colour
+
+# Custom modules
+from . import errors
 
 # Print a debug message
 if __debug__:
