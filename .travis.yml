@@ -47,6 +47,9 @@ jobs:
     - # Check if there are any dependency conflicts
 
       install:
+        # Downgrade Pip to fix issues
+        - pip install pip==9.0.3
+
         # Install the required dependency
         - pip install pip-conflict-checker
 
