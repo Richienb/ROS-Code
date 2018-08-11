@@ -43,6 +43,16 @@ jobs:
       script:
         # Perform check
         - caniusepython3 -r requirements.txt
+        
+    - # Check if there are any dependency conflicts
+
+      install:
+        # Install the required dependency
+        - pip install pip-conflict-checker
+
+      script:
+        # Perform check
+        - pipconflictchecker
 
     - # Fix the ignored files if the gitignore was updated
 
