@@ -11,34 +11,43 @@ import os
 import sys
 import secrets
 import logging
+
 # Python modules
 import warnings
 import keyword
 import importlib
+
 # String modues
 import string
-import clipboard
 import colour
 import textwrap
 import pprint
-import loremipsum
+
 # Math modules
 import math
 import operator
 import statistics
 import math
 import random
+
 # Web modules
 import webbrowser
 import urllib
+
 # Time modules
 import datetime
 import time
 import calendar
+
 # Pip module
 import pip
+
 # Custom modules
 from . import errors
+
+# External Modules
+import clipboard
+import loremipsum
 
 # Print a debug message
 if __debug__:
