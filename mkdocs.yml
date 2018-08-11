@@ -19,7 +19,7 @@ theme:
     primary:            'indigo'
     accent:             'red'
   font:
-    text:               'Montserrat'
+    text:               'Roboto'
     code:               'Fira Mono'
   language:             'en'
   favicon:              'assets/images/favicon.ico'
@@ -35,16 +35,17 @@ nav:
       - Install As Module: install-module.md
       - Install From Source: install-source.md
       - Install Version 1.0: install-old.md
+    - Contribution:
+      - Edit The Documentation: edit-docs.md
+      - Edit The Source Code: edit-code.md
+      - Future Plans: plans.md
+      - Packages Used:  packages.md
+      - Release Guidelines: release-guidelines.md
+      - Unit Testing:   unittesting.md
     - Other:
       - Recommended Syntax: syntax.md
       - Makefile Commands: makefile-commands.md
       - API Usage:      api-usage.md
-    - Contribution:
-      - Edit The Documentation: edit-docs.md
-      - Edit The Source Code: edit-code.md
-      - Packages Used:  packages.md
-      - Release Guidelines: release-guidelines.md
-      - Unit Testing:   unittesting.md
     - Version 1.0:
       - Home:           versionone.md
       - Commands:       versionone-commands.md

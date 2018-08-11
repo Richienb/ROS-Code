@@ -12,7 +12,6 @@ import warnings
 import keyword
 import importlib
 import string
-import colour
 import textwrap
 import pprint
 import math
@@ -25,9 +24,10 @@ import datetime
 import time
 import calendar
 import pip
-from.import errors
 import clipboard
 import loremipsum
+import colour
+from.import errors
 if __debug__:
  print("Loaded modules. Now loading functions...")
 def loglevel(leveltype=None,isequal=False):
