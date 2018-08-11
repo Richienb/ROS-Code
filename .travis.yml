@@ -28,6 +28,12 @@ before_install:
   # Make all shell files in ci executable
   - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
 
+  # Get an array of commits in the last
+  - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
+
+  # Print it out
+  - echo $CHANGED_FILES
+
 install:
   # Install dependencies from requirements.txt
   - pip install -r requirements.txt
@@ -330,7 +336,7 @@ jobs:
           skip_cleanup:   true
           on:
             branch:       master
-            condition:    $(git status --porcelain) = *"src"*
+            condition:    $CHANGED_FILES = *"src"*
 
 notifications:
   # Disable emails for build status notifications
