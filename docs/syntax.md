@@ -1,6 +1,6 @@
 # ROS Code Recommended Syntax
 
-Statement separator-terminator: `\n`
+Statement separator-terminator: *newline*
 
 Secondary separator: `&`
 
