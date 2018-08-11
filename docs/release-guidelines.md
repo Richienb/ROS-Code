@@ -2,52 +2,42 @@
 
 ## Prepare For Release
 
-### Step 1: Fit For Release
+### Step 1: Fit for release
 
-The following guidelines must be satisfied in order to proceed to step 2
+1.  To prevent a sudden flood of releases, the [time](https://time.is/UTC) must be between 00:00 on Sunday and 24:00 on Monday (Times are in UTC)
+2.  The code must also feature 25+ additions, subtractions or changes since the most recent release.
 
-1.  The time must be between 00:00 on Sunday and 24:00 on Monday (Times are in GMT +0)
-2.  The code must feature 25+ additions, subtractions or changes since the most recent release.
+### Step 2: Release type
 
-### Step 2: Release or Pre-release
+If the code is in it's **early stages** ie. the code isn't ready or doesn't work yet then it is considered `alpha`,
+If the code is **runnable but isn't quite complete** then it is considered `beta`, and
+If the code is in a **stable state** then it is considered `stable`.
 
-The following requirements must be met for the release to be considered `Stable`
+### Step 3: What part of the version to increment
 
-1.  The continuous integration build is passing
-2.  The current code is in a state where it is functional
+Increment the **Major** version when you make incompatible API changes,
+Increment the **Minor** version when you add functionality in a backwards-compatible manner, and
+Increment the **Patch** version when you make backwards-compatible bug fixes.
 
-If the requirements were not met, unless in doubt the release should be a pre-release
+### Step 4: Create the release
 
-Other checks **do not** have to pass (for example: CodeFactor) for the release to be considered `stable`
+If a **alpha** version will be released, a descriptive title and description is not required but must contain a short title.
+The format for the version number should resemble this example: `2.23.1-alpha`.
+If it is the second or more consecutive alpha release then follow this example: `2.23.1-alpha.2`.
 
-## Further Guidelines
+If a **beta** version will be released, a descriptive title is required but a description is optional.
+The format for the version number should resemble this example: `2.23.1-beta`.
+If it is the second or more consecutive alpha release then follow this example: `2.23.1-beta.2`.
 
-### Versioning Conventions
+If a **stable** version will be released, ensure a suitable title and description is chosen.
+The format for the version number should resemble this example: `2.23.1`.
 
-The versioning conventions closely follow [Semantic Versioning 2.0](https://semver.org/spec/v2.0.0.html)
+### Step 5: Bump the version in the configuration file
 
--   **Major** version when you make incompatible API changes,
--   **Minor** version when you add functionality in a backwards-compatible manner, and
--   **Patch** version when you make backwards-compatible bug fixes.
+After the release is live, edit the `current_version` section of the `.bumpversion.cfg` file in the root of the repository to match the latest version number.
 
-#### Release
+You could also use the [bumpversion Python CLI](https://github.com/peritus/bumpversion#usage) to do this as well.
 
-Increment the version as described below
+### Attribution
 
-Examples of release versions:
-
--   2.0.0
--   2.13.9
--   2.65.87
-
-#### Pre-Release
-
-Increment the version as described below
-
-Examples of release versions:
-
--   2.0.0-pre1
--   2.13.9-pre24
--   2.65.87-pre36
-
-The numbers after `pre` signify the prerelease revision
+*The release guidelines are derived from [Semantic Versioning 2.0](https://semver.org/spec/v2.0.0.html).*
