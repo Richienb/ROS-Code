@@ -42,6 +42,7 @@ nav:
     - Contribution:
       - Edit The Documentation: edit-docs.md
       - Edit The Source Code: edit-code.md
+      - Future Plans: plans.md
       - Packages Used:  packages.md
       - Release Guidelines: release-guidelines.md
       - Unit Testing:   unittesting.md
