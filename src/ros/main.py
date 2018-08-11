@@ -19,7 +19,6 @@ import importlib
 
 # String modues
 import string
-import colour
 import textwrap
 import pprint
 
@@ -27,7 +26,6 @@ import pprint
 import math
 import operator
 import statistics
-import math
 import random
 
 # Web modules
@@ -42,12 +40,13 @@ import calendar
 # Pip module
 import pip
 
-# Custom modules
-from . import errors
-
 # External Modules
 import clipboard
 import loremipsum
+import colour
+
+# Custom modules
+from . import errors
 
 # Print a debug message
 if __debug__:
@@ -1321,7 +1320,8 @@ def length(value):
     try:
         return len(convertstring(value))
     except OverflowError:
-        raise RuntimeError('An Error Has Occured: The length of the object exceeds \
+        raise RuntimeError(
+            'An Error Has Occured: The length of the object exceeds \
         the limit of {0}'.format(str((charlimit()))))
 
 
@@ -2125,14 +2125,14 @@ def getdatetime(timedateformat='complete'):
     elif timedateformat == 'year':
         return ((str(datetime.datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hour':
-        return (((str(
-            datetime.datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+        return (((str(datetime.datetime.now())).split(
+            ' ')[1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'minute':
-        return (((str(
-            datetime.datetime.now())).split(' ')[1]).split('.')[0]).split(':')[1]
+        return (((str(datetime.datetime.now())).split(
+            ' ')[1]).split('.')[0]).split(':')[1]
     elif timedateformat == 'second':
-        return (((str(
-            datetime.datetime.now())).split(' ')[1]).split('.')[0]).split(':')[2]
+        return (((str(datetime.datetime.now())).split(
+            ' ')[1]).split('.')[0]).split(':')[2]
     elif timedateformat == 'millisecond':
         return (str(datetime.datetime.now())).split('.')[1]
     elif timedateformat == 'yearmonthday':
