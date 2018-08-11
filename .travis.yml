@@ -28,11 +28,13 @@ before_install:
   # Make all shell files in ci executable
   - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
 
-  # Get an array of commits in the last
+  # Get an array of commits in the last push and print it out
   - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
-
-  # Print it out
   - echo $CHANGED_FILES
+
+  # Get the current date and print it out
+  - DATE=`date +%d-%m-%Y`
+  - echo $DATE
 
 install:
   # Install dependencies from requirements.txt
@@ -49,19 +51,6 @@ jobs:
       script:
         # Perform check
         - caniusepython3 -r requirements.txt
-        
-    - # Check if there are any dependency conflicts
-
-      install:
-        # Downgrade Pip to fix issues
-        - pip install pip==9.0.3
-
-        # Install the required dependency
-        - pip install pip-conflict-checker
-
-      script:
-        # Perform check
-        - pipconflictchecker
 
     - # Fix the ignored files if the gitignore was updated
 
@@ -342,13 +331,14 @@ jobs:
       deploy:
         - provider:       releases
           name:           Bleeding edge release
-          body:           This is a bleeding edge release - built in realtime since the latest source code commit.
+          body:           This is a bleeding edge release - built in realtime since the latest source code commit (on $DATE) which passed.
           api_key:        $github_token
           file:           source.zip
           prerelease:     true
           skip_cleanup:   true
           on:
             branch:       master
+            # Check if a change was made to the src directory
             condition:    $CHANGED_FILES = *"src"*
 
 notifications:

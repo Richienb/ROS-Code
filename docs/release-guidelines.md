@@ -1,6 +1,6 @@
 # ROS Code Guidelines For Releasing
 
-## Prepare For Release
+## Prepare for release
 
 ### Step 1: Fit for release
 
@@ -41,3 +41,7 @@ You could also use the [bumpversion Python CLI](https://github.com/peritus/bumpv
 ### Attribution
 
 *The release guidelines are derived from [Semantic Versioning 2.0](https://semver.org/spec/v2.0.0.html).*
+
+## Automatic releases
+
+A new bleeding edge release is created if all [Continuous Integration](https://travis-ci.org/Richienb/ROS-Code) tests pass.
