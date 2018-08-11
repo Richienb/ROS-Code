@@ -1,0 +1,17 @@
+This is what ROS Code is intended to look like:
+
+print_message: "Hello World"
+
+random_num: 1, 3
+
+paraspace: 10
+
+if: foo = 1: print_message: "YES!"
+
+The plan:
+
+1. Check if cache exists
+  a. If not, create a cache and return to step 1
+  b. If so, continue
+
+1. Run the code
