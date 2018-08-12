@@ -347,7 +347,7 @@ jobs:
 
       install:
         # Ensure the latest version of setuptools and wheel is installed
-        - pip install --user --upgrade setuptools wheel
+        - pip install --upgrade setuptools wheel
 
       # Ensure script is skipped
       script:             true
