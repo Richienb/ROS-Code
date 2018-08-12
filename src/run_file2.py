@@ -8,7 +8,7 @@ import os
 from sys import exit as exitexc
 
 # Import module to generate SHA256 hash
-from hashing import gethash
+from services.hashing import gethash
 
 # Import module to exexute external commands
 
@@ -29,7 +29,7 @@ def executepyfile(filename):
             # Print the exception text
             print(
                 "ERROR: An error of type {0} occured while running line {1} because {2}".
-                format(type(exc).__name__, str(value[0] + 1), str(exc.args[0])))
+                format(type(exc).__name__, str(i[0] + 1), str(exc.args[0])))
 
             # Exit the execution with a value of 1
             exitexc(1)

@@ -340,7 +340,7 @@ jobs:
 
       before_deploy:
         # Zip the min directory
-        - zip min/* source.zip
+        - zip -r source.zip min/*
 
       # Deploy to GitHub releases
       deploy:
@@ -367,10 +367,10 @@ jobs:
 
       before_deploy:
         # Copy ROS Code modules to package directory
-        - cp -rf ./min/ros ./pkg-module/ros
+        - cp -rf "./min/ros" "./pkg-module/ros"
 
         # Copy requirements.txt file to package directory
-        - cp -rf ./requirements.txt ./pkg-module/requirements.txt
+        - cp -rf "./requirements.txt" "./pkg-module/requirements.txt"
 
         # Naviage to the package directory
         - cd pkg-module
