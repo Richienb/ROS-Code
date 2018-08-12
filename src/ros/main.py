@@ -468,6 +468,7 @@ def pykeyword(operation='list', keywordtotest=None):
     elif operation == 'check':
         return keyword.iskeyword(str(keywordtotest))
 
+
 # TODO: Add docstrings and document code (will be removed in minification)
 
 # Pretty print a list
@@ -2127,13 +2128,13 @@ def getdatetime(timedateformat='complete'):
         return ((str(datetime.datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hour':
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[0]
+               ).split(':')[0]
     elif timedateformat == 'minute':
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[1]
+               ).split(':')[1]
     elif timedateformat == 'second':
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[2]
+               ).split(':')[2]
     elif timedateformat == 'millisecond':
         return (str(datetime.datetime.now())).split('.')[1]
     elif timedateformat == 'yearmonthday':
@@ -2147,9 +2148,10 @@ def getdatetime(timedateformat='complete'):
         return ((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
     elif timedateformat == 'secondminutehour':
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[2] + ':' + (((str(datetime.datetime.now())).split(
-                    ' ')[1]).split('.')[0]).split(':')[1] + ':' + (
-                        ((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
+               ).split(':')[2] + ':' + (((str(datetime.datetime.now())).split(
+                   ' ')[1]).split('.')[0]).split(':')[1] + ':' + (
+                       ((str(datetime.datetime.now())).split(' ')[1]
+                       ).split('.')[0]).split(':')[0]
     elif timedateformat == 'complete':
         return str(datetime.datetime.now())
     elif timedateformat == 'datetime':
