@@ -38,7 +38,7 @@ import time
 import calendar
 
 # Pip module
-import pip
+import pkg_resources
 
 # External Modules
 import clipboard
@@ -77,7 +77,7 @@ def loglevel(leveltype=None, isequal=False):
         "error": 40,
         "critical": 50
     }
-    if leveltype is None and isequal == False:
+    if leveltype is None and isequal is False:
         return logging.getEffectiveLevel()
     if leveltype is not None and isequal is True:
         if leveltype in loglevels.values():
@@ -159,7 +159,7 @@ def pipupdate():
 
     """
 
-    packages = [dist.project_name for dist in pip.get_installed_distributions()]
+    packages = [d for d in pkg_resources.working_set]
     subprocess.call('pip install --upgrade ' + ' '.join(packages))
 
 
@@ -189,7 +189,7 @@ def shellinput(initialtext='>> ', splitpart=' '):
         return shelluserinput
     commands = []
     for item in enumerate(shelluserinput.split(splitpart)):
-        thelist.append(item[1])
+        commands.append(item[1])
     return commands
 
 
@@ -468,6 +468,7 @@ def pykeyword(operation='list', keywordtotest=None):
     elif operation == 'check':
         return keyword.iskeyword(str(keywordtotest))
 
+# TODO: Add docstrings and document code (will be removed in minification)
 
 # Pretty print a list
 
@@ -2148,8 +2149,7 @@ def getdatetime(timedateformat='complete'):
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
                 ).split(':')[2] + ':' + (((str(datetime.datetime.now())).split(
                     ' ')[1]).split('.')[0]).split(':')[1] + ':' + (
-            ((str(datetime.datetime.now())).split(' ')[1]
-             ).split('.')[0]).split(':')[0]
+                        ((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]).split(':')[0]
     elif timedateformat == 'complete':
         return str(datetime.datetime.now())
     elif timedateformat == 'datetime':
