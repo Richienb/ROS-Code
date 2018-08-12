@@ -23,7 +23,7 @@ import urllib
 import datetime
 import time
 import calendar
-import pip
+import pkg_resources
 import clipboard
 import loremipsum
 import colour
@@ -33,7 +33,7 @@ if __debug__:
 def loglevel(leveltype=None,isequal=False):
  leveltype=leveltype.lower()
  loglevels={"none":0,"debug":10,"info":20,"warning":30,"error":40,"critical":50}
- if leveltype is None and isequal==False:
+ if leveltype is None and isequal is False:
   return logging.getEffectiveLevel()
  if leveltype is not None and isequal is True:
   if leveltype in loglevels.values():
@@ -69,7 +69,7 @@ _ensureglobal()
 def shellcommand(command):
  subprocess.call(str(command))
 def pipupdate():
- packages=[dist.project_name for dist in pip.get_installed_distributions()]
+ packages=[d for d in pkg_resources.working_set]
  subprocess.call('pip install --upgrade '+' '.join(packages))
 def shellinput(initialtext='>> ',splitpart=' '):
  try:
@@ -81,7 +81,7 @@ def shellinput(initialtext='>> ',splitpart=' '):
   return shelluserinput
  commands=[]
  for item in enumerate(shelluserinput.split(splitpart)):
-  thelist.append(item[1])
+  commands.append(item[1])
  return commands
 def colourcode(startcolourcode,destinationtype,longhex=False):
  c=colour.Color(str(startcolourcode))
