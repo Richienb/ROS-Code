@@ -375,6 +375,9 @@ jobs:
         # Naviage to the package directory
         - cd pkg-module
 
+        # Generate the package files
+        - python setup.py sdist bdist_wheel
+
       # Deploy to GitHub releases
       deploy:
         # Upload to PyPi test server
