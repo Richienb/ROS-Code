@@ -11,9 +11,8 @@ python:                   3.6.6
 branches:                 master
 
 cache:
-  directories:
-    # Cache the .cache directory
-    - $HOME/.cache
+    # Ensure pip is cached
+    - pip
 
 before_install:
   # Configure access token to enable pushing to the repository
@@ -310,12 +309,15 @@ jobs:
       after_deploy:
         - |
           curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
-           -H "X-Auth-Email: ${email}" \
+           -H "X-Auth-Email: richiebendall@gmail.com" \
            -H "X-Auth-Key: ${cf_api_key}" \
            -H "Content-Type: application/json" \
            --data '{"purge_everything":true}'
 
     - # Deploy to GitHub releases
+
+      # Set the build language
+      language:           generic
 
       # Ensure the install step is skipped
       install:            true
@@ -338,6 +340,52 @@ jobs:
           skip_cleanup:   true
           on:
             branch:       master
+            # Check if a change was made to the src directory
+            condition:    $CHANGED_FILES = *"src"*
+
+    - # Deploy to PyPi
+
+      install:
+        # Ensure the latest version of setuptools and wheel is installed
+        - pip install --user --upgrade setuptools wheel
+
+      # Ensure script is skipped
+      script:             true
+
+      before_deploy:
+        # Copy ROS Code modules to package directory
+        - cp -rf ./min/ros ./pkg-module/ros
+
+        # Copy requirements.txt file to package directory
+        - cp -rf ./requirements.txt ./pkg-module/requirements.txt
+
+        # Naviage to the package directory
+        - cd pkg-module
+
+      # Deploy to GitHub releases
+      deploy:
+        # Upload to PyPi test server
+        - provider:       pypi
+          user:           "Richienb"
+          password:       $pypi_password
+          skip_cleanup:   true
+          server:         https://test.pypi.org/legacy/
+          on:
+            # Only upload if on master branch
+            branch:       master
+
+            # Check if a change was made to the src directory
+            condition:    $CHANGED_FILES = *"src"*
+
+        # Upload to Pypi
+        - provider:       pypi
+          user:           "Richienb"
+          password:       $pypi_password
+          skip_cleanup:   true
+          on:
+            # Only upload if on master branch
+            branch:       master
+
             # Check if a change was made to the src directory
             condition:    $CHANGED_FILES = *"src"*
 
