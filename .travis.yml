@@ -31,6 +31,9 @@ before_install:
   - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
   - echo $CHANGED_FILES
 
+  # Test commit range
+  - echo $TRAVIS_COMMIT_RANGE
+
   # Get the current date and print it out
   - DATE=`date +%d-%m-%Y`
   - echo $DATE
