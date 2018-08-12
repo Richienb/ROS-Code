@@ -12,11 +12,11 @@ with open("README.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
 
 # parse_requirements() returns generator of pip.req.InstallRequirement objects
-install_reqs = parse_requirements('requirements.txt', session='hack')
+INSTALL_REQS = parse_requirements('requirements.txt', session='hack')
 
-# reqs is a list of requirement
+# REQS is a list of requirement
 # e.g. ['django==1.5.1', 'mezzanine==1.4.6']
-reqs = [str(ir.req) for ir in install_reqs]
+REQS = [str(ir.req) for ir in INSTALL_REQS]
 
 setuptools.setup(
     name="ROS-Code-Module-Only",
@@ -28,7 +28,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Richienb/ROS-Code",
     packages=setuptools.find_packages(),
-    install_requires=reqs,
+    install_requires=REQS,
     classifiers=(
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
