@@ -28,7 +28,7 @@ before_install:
   - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
 
   # Get an array of commits in the last push and print it out
-  - CHANGED_FILES=($(git diff --stat $TRAVIS_COMMIT_RANGE))
+  - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
   - echo $CHANGED_FILES
 
   # Get the current date and print it out
