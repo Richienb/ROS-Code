@@ -1084,7 +1084,7 @@ def constant(constanttype):
     elif constanttype == 'nan':
         return math.nan
     elif constanttype in ['phi', 'golden']:
-        return (1 + 5**0.5) / 2
+        return (1.0 + erf(x / sqrt(2.0))) / 2.0
 
 
 # Find The Power Of A Number
