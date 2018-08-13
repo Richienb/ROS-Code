@@ -535,6 +535,10 @@ def power(number,power):
  return math.pow(number,power)
 def squareroot(number):
  return math.sqrt(number)
+def factorial(n):
+ if n==0:
+  return 1
+ return n*factorial(n-1)
 def average(numbers,averagetype='mean'):
  averagetype=averagetype.lower()
  try:
