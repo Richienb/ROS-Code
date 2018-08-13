@@ -532,7 +532,7 @@ def constant(constanttype):
  elif constanttype=='nan':
   return math.nan
  elif constanttype in['phi','golden']:
-  return(1.0+erf(x/sqrt(2.0)))/2.0
+  return(1+5**0.5)/2
 def power(number,power):
  return math.pow(number,power)
 def squareroot(number):
