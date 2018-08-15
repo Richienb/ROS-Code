@@ -19,7 +19,7 @@ INSTALL_REQS = parse_requirements('requirements.txt', session='hack')
 REQS = [str(ir.req) for ir in INSTALL_REQS]
 
 setuptools.setup(
-    name="ROS-Code-Module-Only",
+    name="ros-code-modules",
     version="2.0.0-pre.6",
     author="Richie Bendall",
     author_email="richiebendall@gmail.com",
