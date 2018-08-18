@@ -23,8 +23,7 @@ setuptools.setup(
     version="2.0.0-pre.6",
     author="Richie Bendall",
     author_email="richiebendall@gmail.com",
-    description=
-    "A Python module/library containing lots of tools to simplify Python development.",
+    description="A Python module/library containing lots of tools to simplify Python development.",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     url="https://github.com/Richienb/ROS-Code",
