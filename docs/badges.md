@@ -34,6 +34,6 @@
 
 ### Miscellaneous
 
-[![Source Code License](https://img.shields.io/github/license/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge&label=Source%20Code%20License)](https://github.com/Richienb/ROS-Code/blob/master/LICENSE.md)
+[![Source Code License](https://img.shields.io/github/license/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge&label=Source%20Code%20License)](https://github.com/Richienb/ROS-Code/blob/master/LICENSE)
 [![Documentation License](https://img.shields.io/badge/Documentation%20License-CC%20BY%203.0-lightgrey.svg?longCache=true&style=for-the-badge)](https://github.com/Richienb/ROS-Code/blob/master/docs/LICENSE.md)
 [![Repository Size](https://img.shields.io/github/repo-size/Richienb/ROS-Code.svg?longCache=true&style=for-the-badge&logo=github&label=Repository%20Size)](https://github.com/Richienb/ROS-Code)
