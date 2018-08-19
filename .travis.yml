@@ -76,7 +76,7 @@ jobs:
               - COMMIT_CONTENT="CI | Fix the Gitignore [skip ci]"
 
               # Commit and push
-              - git add . && ./commitpush.sh
+              - git add . && ./ci/commitpush.sh
 
         - # Check if the pip packages install correctly
         
@@ -98,7 +98,7 @@ jobs:
               - COMMIT_CONTENT="CI | Increment the version number [skip ci]"
 
               # Commit and push
-              - git add .bumpversion.cfg ./pkg-module/setup.py && ./commitpush.sh
+              - git add .bumpversion.cfg ./pkg-module/setup.py && ./ci/commitpush.sh
 
         - stage: Optimisation # Optimise the code with AutoPEP8
 
@@ -118,7 +118,7 @@ jobs:
               - COMMIT_CONTENT="CI | Optimised the code with AutoPEP8 [skip ci]"
 
               # Commit and push
-              - git add . && ./commitpush.sh
+              - git add . && ./ci/commitpush.sh
 
         - # Optimise the code with AutoFlake
 
@@ -135,7 +135,7 @@ jobs:
               - COMMIT_CONTENT="CI | Optimised the code with AutoFlake [skip ci]"
 
               # Commit and push
-              - git add . && ./commitpush.sh
+              - git add . && ./ci/commitpush.sh
 
         - # Optimise the code with Yapf
 
@@ -152,7 +152,7 @@ jobs:
               - COMMIT_CONTENT="CI | Optimised the code with Yapf [skip ci]"
 
               # Commit and push
-              - git add . && ./commitpush.sh
+              - git add . && ./ci/commitpush.sh
                 
         - # Update the Pipfiles
 
@@ -173,7 +173,7 @@ jobs:
               - COMMIT_CONTENT="CI | Regenerated the Pipfiles [skip ci]"
 
               # Commit and push
-              - git add . && ./commitpush.sh
+              - git add . && ./ci/commitpush.sh
 
         - # Minify the code to another directory
 
@@ -185,7 +185,7 @@ jobs:
               # Clear the contents of the minified files directory
               - rm -rf min/*
 
-              # Copy the contens of the source directory to the minified directory
+              # Copy the contents of the source directory to the minified directory
               - cp -a src/. min
 
               # Navigate to the minified directory
@@ -200,7 +200,7 @@ jobs:
               - COMMIT_CONTENT="CI | Minified the source files [skip ci]"
 
               # Commit and push
-              - git add . && ./commitpush.sh
+              - git add . && ./ci/commitpush.sh
 
         - stage: Checks & Testing # Run the unit tests and push the results to Codecov
 
@@ -357,7 +357,7 @@ jobs:
               - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
               - echo $CHANGED_FILES
 
-              # Ensure the latest versin of setuptools and wheel is installed
+              # Ensure the latest version of setuptools and wheel is installed
               - pip install --upgrade setuptools wheel
 
           before_deploy:
@@ -367,7 +367,7 @@ jobs:
               # Copy requirements.txt file to package directory
               - cp -rf "$TRAVIS_BUILD_DIR/requirements.txt" "./pkg-module/requirements.txt"
 
-              # Naviage to the package directory
+              # Navigate to the package directory
               - cd pkg-module
 
               # Generate the package files
