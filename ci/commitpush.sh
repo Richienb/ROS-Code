@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Add files to the cache
-- git add .
-
 # Check and commit
 - git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
 
