@@ -1,425 +1,407 @@
-# Disable sudo to speed up build
-sudo:                     false
+# Disable sudo to speed up the build
+sudo: false
 
-# Set the build language
-language:                 python
+# Set the default build language
+language: python
 
-# Set the build language version
-python:                   3.6.6
+# Set the default build language version
+python: 3.6.6
 
-# Set build branch
-branches:                 master
+# Set the default build branch
+branches: master
 
 cache:
-    # Ensure pip is cached
+    # Ensure pip packages is cached
     - pip
-
-before_install:
-  # Configure access token to enable pushing to the repository
-  - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
-
-  # Set commit username
-  - git config --global user.name "ROS Bot"
-
-  # Set commit email
-  - git config --global user.email "richiebendall@gmail.com"
-
-  # Make all shell files in ci executable
-  - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
-
-install:
-  # Install dependencies from requirements.txt
-  - pip install -r requirements.txt
-
-jobs:
-  include:
-    - stage:              pre-build # Check if the code is Python 3 compatible
-
-      install:
-        # Install the required dependency
-        - pip install caniusepython3
-
-      script:
-        # Perform check
-        - caniusepython3 -r requirements.txt
-
-    - # Check if there are any dependency conflicts
-
-      install:
-        # Downgrade Pip to fix issues
-        - pip install pip==9.0.3
-
-        # Install the required dependency
-        - pip install pip-conflict-checker
-
-      script:
-        # Perform check
-        - pipconflictchecker
-
-    - # Fix the ignored files if the gitignore was updated
-
-      # Set build language
-      language:           generic
-
-      # Skip installation step
-      install:            true
-
-      script:
-        # Reset Gitignore cache
-        - git rm -r --cached .
-
-        # Add all files to the cache
-        - git add .
-
-      after_script:
-        # Set commit content
-        - COMMIT_CONTENT="CI | Fix the Gitignore [skip ci]"
-
-        # Check and commit
-        - git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
-
-        # Push changes
-        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
-        
-    - # Bump the version number
     
-      install
-        # Install the verson bumper
-        - pip install --upgrade bumpversion
-      
-      script:
-        # Bump the version number
-        - CURRENT_VERSION=$($(sed '2!d' "./.bumpversion.cfg"):18)
-        - bumpversion --current-version $CURRENT_VERSION build .bumpversion.cfg
-        - bumpversion --current-version $CURRENT_VERSION build setup.py
+before_install:
+    # Configure the access token to enable repository pushing
+    - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
+    
+    # Set the commit username
+    - git config --global user.name "ROS Bot"
+    
+    # Set the commit email
+    - git config --global user.email "richiebendall@gmail.com"
+
+    # Make all the shell files in the ci folder executable
+    - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
+    
+install:
+    # Install dependencies from the requirements.txt file
+    - pip install -r requirements.txt
+    
+jobs:
+    include:
+        - stage: Pre-build # Check if the code is compatible with Python 3
+
+          install:
+            # Install the checker
+            - pip install caniusepython3
+
+          script:
+            # Perform the check
+            - caniusepython3 -r requirements.txt
+
+        - # Check if there are any dependency conflicts
+
+          install:
+            # Downgrade Pip to fix issues
+            - pip install pip==9.0.3
+
+            # Install the checker
+            - pip install pip-conflict-checker
+
+          script:
+            # Perform the check
+            - pipconflictchecker
+
+        - # Fix the files ignored by Gitignore but still exist
+
+          # Set the build language
+          language:           generic
+
+          # Skip the installation step
+          install:            true
+
+          script:
+              # Reset the Gitignore cache
+              - git rm -r --cached .
+
+              # Read all files to the cache
+              - git add .
+
+          after_script:
+              # Set the commit content
+              - COMMIT_CONTENT="CI | Fix the Gitignore [skip ci]"
+
+              # Commit and push
+              - git add . && ./commitpush.sh
+
+        - # Check if the pip packages install correctly
         
-      after_script:
-        # Set commit content
-        - COMMIT_CONTENT="CI | Increment the version number [skip ci]"
+          # Disable the script
+          script: true
 
-        # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
+        - # Bump the version number
 
-        # Push changes
-        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
+          install:
+              # Install the version bumper
+              - pip install bumpversion
 
-    - stage:              optimisation # Optimise the code to work with PEP8
+          script:
+              # Bump the version number
+              - CURRENT_VERSION=$($(sed '2!d' "./.bumpversion.cfg"):18)
+              - bumpversion --current-version $CURRENT_VERSION build .bumpversion.cfg
+              - bumpversion --current-version $CURRENT_VERSION build setup.py
 
-      # Only run if on branch
-      if:                 type != pull_request
+          after_script:
+              # Set the commit content
+              - COMMIT_CONTENT="CI | Increment the version number [skip ci]"
 
-      install:
-        # Install required dependency
-        - pip install autopep8
+              # Commit and push
+              - git add .bumpversion.cfg setup.py && ./commitpush.sh
 
-      script:
-        # Optimise files
-        - autopep8 --verbose --in-place --recursive --aggressive --aggressive --exclude min .
+        - stage: Optimisation # Optimise the code with AutoPEP8
 
-      after_script:
-        # Set commit content
-        - COMMIT_CONTENT="CI | Optimise the code to work with PEP8 [skip ci]"
+          # Only run if on branch
+          if: type != pull_request
 
-        # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
+          install:
+              # Install the optimiser
+              - pip install autopep8
 
-        # Push changes
-        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
+          script:
+              # Optimise the files
+              - autopep8 --verbose --in-place --recursive --aggressive --aggressive --exclude min .
 
-    - # Optimise the code to work with FLAKE8
+          after_script:
+              # Set the commit content
+              - COMMIT_CONTENT="CI | Optimised the code with AutoPEP8 [skip ci]"
 
-      install:
-        # Install required dependency
-        - pip install autoflake
+              # Commit and push
+              - git add . && ./commitpush.sh
 
-      script:
-        # Optimise files
-        - autoflake --in-place --recursive --exclude min .
+        - # Optimise the code with AutoFlake
 
-      after_script:
-        # Set commit content
-        - COMMIT_CONTENT="CI | Optimise the code to work with PEP8 [skip ci]"
+          install:
+              # Install the optimiser
+              - pip install autoflake
 
-        # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
+          script:
+              # Optimise the files
+              - autoflake --in-place --recursive --exclude min .
 
-        # Push changes
-        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
+          after_script:
+              # Set the commit content
+              - COMMIT_CONTENT="CI | Optimised the code with AutoFlake [skip ci]"
 
-    - # Optimise the code with YAPF
+              # Commit and push
+              - git add . && ./commitpush.sh
 
-      install:
-        # Install required dependency
-        - pip install yapf futures
+        - # Optimise the code with Yapf
 
-      script:
-        # Optimise with yapf
-        - yapf --in-place --recursive --exclude min --style google --parallel .
+          install:
+              # Install the required dependency
+              - pip install yapf futures
 
-      after_script:
-        # Set commit content
-        - COMMIT_CONTENT="CI | Optimise code with YAPF [skip ci]"
+          script:
+              # Optimise the files
+              - yapf --in-place --recursive --exclude min --style google --parallel .
 
-        # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
+          after_script:
+              # Set the commit content
+              - COMMIT_CONTENT="CI | Optimised the code with Yapf [skip ci]"
 
-        # Push changes
-        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
+              # Commit and push
+              - git add . && ./commitpush.sh
+                
+        - # Update the Pipfiles
 
-    - # Update Pipfiles
+          install:
+              # Install the Pipfile generator
+              - pip install pipenv
 
-      install:
-        # Install required dependency
-        - pip install pipenv
+          script:
+              # Remove the old Pipfiles
+              - rm -f Pipfile
+              - rm -f Pipfile.lock
 
-      script:
-        # Remove old pipfiles
-        - rm -f Pipfile & rm -f Pipfile.lock
+              # Create the Pipfiles
+              - pipenv install
+
+          after_script:
+              # Set the commit content
+              - COMMIT_CONTENT="CI | Regenerated the Pipfiles [skip ci]"
+
+              # Commit and push
+              - git add . && ./commitpush.sh
+
+        - # Minify the code to another directory
+
+          install:
+              # Install the minifier
+              - pip install pyminifier
+
+          before_script:
+              # Clear the contents of the minified files directory
+              - rm -rf min/*
+
+              # Copy the contens of the source directory to the minified directory
+              - cp -a src/. min
+
+              # Navigate to the minified directory
+              - cd min
+
+          script:
+              # Perform the minification
+              - find  -type f  -name "*.py" -exec pyminifier --outfile="{}" --prepend="$TRAVIS_BUILD_DIR/misc/minifier-append.txt" "{}" \;
+
+          after_script:
+              # Set the commit content
+              - COMMIT_CONTENT="CI | Minified the source files [skip ci]"
+
+              # Commit and push
+              - git add . && ./commitpush.sh
+
+        - stage: Checks & Testing # Run the unit tests and push the results to Codecov
+
+          install:
+              # Check if the Codecov configuration file is valid
+              - curl --data-binary @codecov.yml https://codecov.io/validate
         
-        # Create pipfiles
-        - pipenv install
+              # Install the dependencies from requirements.txt
+              - pip install -r requirements.txt
 
-      after_script:
-        # Set commit content
-        - COMMIT_CONTENT="CI | Updated Pipfiles [skip ci]"
+              # Install the Codecov Python package
+              - pip install codecov
 
-        # Add, check and commit
-        - git add Pipfile Pipfile.lock && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
+          before_script:
+              # Navigate to the source code directory
+              - cd src
 
-        # Push changes
-        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
+          script:
+              # Run the unit test
+              - coverage run test_syntax.py
 
-    - # Minify the code to separate directory
+              # Run some code
+              - coverage run run_file.py "legacytest.ros"
 
-      # Install the required dependency
-      install:
-        - pip install pyminifier
+          after_script:
+              # Upload the results to Codecov
+              - codecov
 
-      # Perform before script steps
-      before_script:
-        # Clear min
-        - rm -rf min/*
+        - # Check for spelling mistakes
 
-        # Copy the contents of src to min
-        - cp -a src/. min
+          install:
+              # Install the spell checker and mkdocs addons to parse markdown
+              - pip install pyspelling pymdown-extensions Pygments
 
-        # Navigate to min
-        - cd min
+          script:
+              # Check for spelling errors
+              - pyspelling
 
-      script:
-        # Perform optimisations
-        - find  -type f  -name "*.py" -exec pyminifier --outfile="{}" --prepend="$TRAVIS_BUILD_DIR/misc/minifier-append.txt" "{}" \;
+        - # Run Makefile commands
 
-      after_script:
-        # Set commit content
-        - COMMIT_CONTENT="CI | Minified Files [skip ci]"
+          # Skip the installation step
+          install: true
 
-        # Add, check and commit
-        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
+          script:
+              # Run the Makefile command to install ROS Code
+              - make prepare
 
-        # Push changes
-        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
+              # Run the makefile command to uninstall ROS Code
+              - make uninstall
 
-    - stage:              checks & testing # Run unit tests with codecov
+        - stage: Deployment testing # Build the documentation
 
-      install:
-        # Check if the codecov YAML file is valid
-        - curl --data-binary @codecov.yml https://codecov.io/validate
-      
-        # Install dependencies from requirements.txt
-        - pip install -r requirements.txt
+          # Only run if on pull request
+          if: type = pull_request
 
-        # Install the codecov Pip package
-        - pip install codecov
+          install:
+              # Install documentation building dependencies
+              - pip install mkdocs mkdocs-material pymdown-extensions pygments
 
-      before_script:
-        # Navigate to source code directory
-        - cd src
+          script:
+              # Build the documentation
+              - mkdocs build --verbose --clean --strict
 
-      script:
-        # Run unit tests
-        - coverage run test_syntax.py
-        - coverage run run_file.py "legacytest.ros"
+        - stage: Deployment # Build and deploy the documentation
 
-      after_script:
-        # Upload results to Codecov
-        - codecov
+          # Only run if on branch
+          if: type != pull_request
 
-    - # Check for spelling mistakes
+          install:
+              # Install documentation building dependencies
+              - pip install mkdocs mkdocs-material pymdown-extensions pygments
 
-      install:
-        # Install required dependencies
-        - pip install pyspelling pymdown-extensions Pygments
+          # Skip the script
+          script: true
 
-      script:
-        # Check for spelling errors
-        - pyspelling
+          before_deploy:
+              # Build the documentation
+              - mkdocs build --verbose --clean --strict
 
-    - # Check Makefile commands
+              # Create the documentation for the code
+              - cd src
+              - python -m pydoc -w ros
+              - cd ..
 
-      # Skip installation step
-      install:            true
+              # Copy the output of the code documentation to the site
+              - mkdir ./site/commands
+              - cp -rf ./src/ros.html ./site/commands/index.html
 
-      script:
+          # Deploy the documentation
+          deploy:
+              - provider:       pages
+                github_commit:  "CI | Built Documentation [skip ci]"
+                skip_cleanup:   true
+                github_token:   $github_token
+                local_dir:      site
+                on:
+                    branch:       master
 
-        # Run makefile command to install ROS Code
-        - make prepare
+          # Clear the cache on Cloudflare
+          after_deploy:
+              - |
+                curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
+                 -H "X-Auth-Email: richiebendall@gmail.com" \
+                 -H "X-Auth-Key: ${cf_api_key}" \
+                 -H "Content-Type: application/json" \
+                 --data '{"purge_everything":true}'
 
-        # Run makefile command to uninstall ROS Code
-        - make uninstall
+        - # Deploy the code to GitHub Releases
 
-    - # Check if pip is working correctly
+          # Set the build language
+          language:           generic
 
-      # Disable the script
-      script:             true
+          install:
+              # Get an array of commits in the last push and print it out
+              - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
+              - echo $CHANGED_FILES
 
-    - stage:              Deployment testing # Build the documentation (for pull request)
-
-      # Only run if on pull request
-      if:                 type = pull_request
-
-      install:
-        # Install required dependencies
-        - pip install mkdocs mkdocs-material pymdown-extensions pygments
-
-      script:
-        # Build the documentation
-        - mkdocs build --verbose --clean --strict
-
-    - stage:              Deployment # Build and deploy the documentation
-
-      # Only run if on branch
-      if:                 type != pull_request
-
-      install:
-        # Install required dependencies
-        - pip install mkdocs mkdocs-material pymdown-extensions pygments
-
-      # Ensure script is skipped
-      script:             true
-
-      before_deploy:
-        # Build the documentation
-        - mkdocs build --verbose --clean --strict
-
-        # Create the code documentation
-        - cd src
-        - python -m pydoc -w ros
-        - cd ..
-
-        # Copy the output of the code documentation to the site
-        - mkdir ./site/commands
-        - cp -rf ./src/ros.html ./site/commands/index.html
-
-      # Deploy the documentation
-      deploy:
-        - provider:       pages
-          github_commit:  "CI | Built Documentation [skip ci]"
-          skip_cleanup:   true
-          github_token:   $github_token
-          local_dir:      site
-          on:
-            branch:       master
-
-      # Clear the cache on Cloudflare
-      after_deploy:
-        - |
-          curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${cf_zone_id}/purge_cache" \
-           -H "X-Auth-Email: richiebendall@gmail.com" \
-           -H "X-Auth-Key: ${cf_api_key}" \
-           -H "Content-Type: application/json" \
-           --data '{"purge_everything":true}'
-
-    - # Deploy to GitHub releases
-
-      # Set the build language
-      language:           generic
-
-      install:
-        # Get an array of commits in the last push and print it out
-        - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
-        - echo $CHANGED_FILES
+              # Get the current date and print it out
+              - DATE=`date +%d-%m-%Y`
+              - echo $DATE
         
-        # Get the current date and print it out
-        - DATE=`date +%d-%m-%Y`
-        - echo $DATE
-        
-        # Get the current time and print it out
-        - TIME=`date +"%r"`
-        - echo $TIME
+              # Get the current time and print it out
+              - TIME=`date +"%r"`
+              - echo $TIME
 
-      # Ensure script is skipped
-      script:             true
+          # Ensure script is skipped
+          script:             true
 
-      before_deploy:
-        # Zip the min directory
-        - zip -r source.zip min/*
+          before_deploy:
+              # Zip the min directory
+              - zip -r source.zip min/*
 
-      # Deploy to GitHub releases
-      deploy:
-        - provider:       releases
-          name:           $DATE - Bleeding edge release
-          body:           This is a bleeding edge release - built in realtime since the latest source code commit on $DATE at $TIME which passed. The files which were changed are: $CHANGED_FILES
-          api_key:        $github_token
-          file:           source.zip
-          prerelease:     true
-          skip_cleanup:   true
-          tag_name:       $($(sed '2!d' "./.bumpversion.cfg"):18)-edge
-          on:
-            branch:       master
-            # Check if a change was made to the src directory
-            condition:    $CHANGED_FILES = *"src"*
+          # Deploy to GitHub Releases
+          deploy:
+              - provider:       releases
+                name:           $DATE - Bleeding edge release
+                body:           "This is a bleeding edge release - built in realtime since the latest source code commit on $DATE at $TIME which passed. The files which were changed are: $CHANGED_FILES"
+                api_key:        $github_token
+                file:           source.zip
+                prerelease:     true
+                skip_cleanup:   true
+                tag_name:       $($(sed '2!d' "./.bumpversion.cfg"):18)-edge
+                on:
+                    # Only upload if on master branch
+                    branch:       master
 
-    - # Deploy module to PyPi
+                    # Check if a change was made to the source directory
+                    condition:    $CHANGED_FILES = *"src"*
 
-      install:
-        # Get an array of commits in the last push and print it out
-        - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
-        - echo $CHANGED_FILES
-      
-        # Ensure the latest version of setuptools and wheel is installed
-        - pip install --upgrade setuptools wheel
+        - # Deploy module to PyPi
 
-      before_deploy:
-        # Copy ROS Code modules to package directory
-        - cp -rf "$TRAVIS_BUILD_DIR/min/ros" "./pkg-module/ros"
+          install:
+              # Retrieve an array of commit since the last push and print it out
+              - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
+              - echo $CHANGED_FILES
 
-        # Copy requirements.txt file to package directory
-        - cp -rf "$TRAVIS_BUILD_DIR/requirements.txt" "./pkg-module/requirements.txt"
+              # Ensure the latest versin of setuptools and wheel is installed
+              - pip install --upgrade setuptools wheel
 
-        # Naviage to the package directory
-        - cd pkg-module
+          before_deploy:
+              # Copy ROS Code modules to package directory
+              - cp -rf "$TRAVIS_BUILD_DIR/min/ros" "./pkg-module/ros"
 
-        # Generate the package files
-        - python setup.py sdist bdist_wheel
+              # Copy requirements.txt file to package directory
+              - cp -rf "$TRAVIS_BUILD_DIR/requirements.txt" "./pkg-module/requirements.txt"
 
-      # Deploy to GitHub releases
-      deploy:
-        # Upload to PyPi test server
-        - provider:       pypi
-          user:           "Richienb"
-          password:       $pypi_password
-          skip_cleanup:   true
-          server:         https://test.pypi.org/legacy/
-          on:
-            # Only upload if on master branch
-            branch:       master
+              # Naviage to the package directory
+              - cd pkg-module
 
-            # Check if a change was made to the src directory
-            condition:    $CHANGED_FILES = *"src/ros"*
+              # Generate the package files
+              - python setup.py sdist bdist_wheel
 
-        # Upload to Pypi
-        - provider:       pypi
-          user:           "Richienb"
-          password:       $pypi_password
-          skip_cleanup:   true
-          on:
-            # Only upload if on master branch
-            branch:       master
+          # Deploy to GitHub releases
+          deploy:
+              # Upload to PyPi test server
+              - provider:       pypi
+                user:           "Richienb"
+                password:       $pypi_password
+                skip_cleanup:   true
+                server:         https://test.pypi.org/legacy/
+                on:
+                    # Only upload if on master branch
+                    branch:       master
 
-            # Check if a change was made to the src directory
-            condition:    $CHANGED_FILES = *"src/ros"*
+                    # Check if a change was made to the ros directory
+                    condition:    $CHANGED_FILES = *"src/ros"*
+
+              # Upload to Pypi
+              - provider:       pypi
+                user:           "Richienb"
+                password:       $pypi_password
+                skip_cleanup:   true
+                on:
+                    # Only upload if on master branch
+                    branch:       master
+
+                    # Check if a change was made to the ros directory
+                    condition:    $CHANGED_FILES = *"src/ros"*
 
 notifications:
-  # Disable emails for build status notifications
-  email:                  false
+    # Disable build status notifications via email
+    email: false
