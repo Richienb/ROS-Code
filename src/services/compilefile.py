@@ -59,6 +59,10 @@ def compilefile(filename):
                 # Replace the ":"" with "()"
                 i[1] = i[1].replace(":", "(", 1)
 
+                # Append ")" at the end
+                i[1] += ")"
+                
+                # Append the changed string
                 compiledlist.append(i[1])
 
             return compiledlist
