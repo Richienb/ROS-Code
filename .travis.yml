@@ -27,14 +27,6 @@ before_install:
   # Make all shell files in ci executable
   - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
 
-  # Get an array of commits in the last push and print it out
-  - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
-  - echo $CHANGED_FILES
-
-  # Get the current date and print it out
-  - DATE=`date +%d-%m-%Y`
-  - echo $DATE
-
 install:
   # Install dependencies from requirements.txt
   - pip install -r requirements.txt
@@ -85,6 +77,28 @@ jobs:
 
         # Check and commit
         - git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
+
+        # Push changes
+        - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
+        
+    - # Bump the version number
+    
+      install
+        # Install the verson bumper
+        - pip install --upgrade bumpversion
+      
+      script:
+        # Bump the version number
+        - CURRENT_VERSION=$($(sed '2!d' "./.bumpversion.cfg"):18)
+        - bumpversion --current-version $CURRENT_VERSION build .bumpversion.cfg
+        - bumpversion --current-version $CURRENT_VERSION build setup.py
+        
+      after_script:
+        # Set commit content
+        - COMMIT_CONTENT="CI | Increment the version number [skip ci]"
+
+        # Add, check and commit
+        - git add * && git diff-index --quiet HEAD || git commit -m "$COMMIT_CONTENT"
 
         # Push changes
         - until git push origin HEAD:master; do git pull && git commit --amend -m "$COMMIT_CONTENT"; done;
@@ -159,8 +173,10 @@ jobs:
         - pip install pipenv
 
       script:
-        # Remake pipfiles
+        # Remove old pipfiles
         - rm -f Pipfile & rm -f Pipfile.lock
+        
+        # Create pipfiles
         - pipenv install
 
       after_script:
@@ -319,8 +335,18 @@ jobs:
       # Set the build language
       language:           generic
 
-      # Ensure the install step is skipped
-      install:            true
+      install:
+        # Get an array of commits in the last push and print it out
+        - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
+        - echo $CHANGED_FILES
+        
+        # Get the current date and print it out
+        - DATE=`date +%d-%m-%Y`
+        - echo $DATE
+        
+        # Get the current time and print it out
+        - TIME=`date +"%r"`
+        - echo $TIME
 
       # Ensure script is skipped
       script:             true
@@ -333,24 +359,26 @@ jobs:
       deploy:
         - provider:       releases
           name:           $DATE - Bleeding edge release
-          body:           This is a bleeding edge release - built in realtime since the latest source code commit (on $DATE) which passed.
+          body:           This is a bleeding edge release - built in realtime since the latest source code commit on $DATE at $TIME which passed. The files which were changed are: $CHANGED_FILES
           api_key:        $github_token
           file:           source.zip
           prerelease:     true
           skip_cleanup:   true
+          tag_name:       $($(sed '2!d' "./.bumpversion.cfg"):18)-edge
           on:
             branch:       master
             # Check if a change was made to the src directory
             condition:    $CHANGED_FILES = *"src"*
 
-    - # Deploy to PyPi
+    - # Deploy module to PyPi
 
       install:
+        # Get an array of commits in the last push and print it out
+        - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
+        - echo $CHANGED_FILES
+      
         # Ensure the latest version of setuptools and wheel is installed
         - pip install --upgrade setuptools wheel
-
-      # Ensure script is skipped
-      script:             true
 
       before_deploy:
         # Copy ROS Code modules to package directory
@@ -378,7 +406,7 @@ jobs:
             branch:       master
 
             # Check if a change was made to the src directory
-            condition:    $CHANGED_FILES = *"src"*
+            condition:    $CHANGED_FILES = *"src/ros"*
 
         # Upload to Pypi
         - provider:       pypi
@@ -390,7 +418,7 @@ jobs:
             branch:       master
 
             # Check if a change was made to the src directory
-            condition:    $CHANGED_FILES = *"src"*
+            condition:    $CHANGED_FILES = *"src/ros"*
 
 notifications:
   # Disable emails for build status notifications
