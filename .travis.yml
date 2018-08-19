@@ -206,23 +206,10 @@ jobs:
 
     - stage:              checks & testing # Run unit tests with codecov
 
-      before_install:
+      install:
         # Check if the codecov YAML file is valid
         - curl --data-binary @codecov.yml https://codecov.io/validate
-
-        # Configure access token to enable pushing to the repository
-        - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
-
-        # Set commit username
-        - git config --global user.name "ROS Bot"
-
-        # Set commit email
-        - git config --global user.email "richiebendall@gmail.com"
-
-        # Make all shell files in ci executable
-        - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
-
-      install:
+      
         # Install dependencies from requirements.txt
         - pip install -r requirements.txt
 
