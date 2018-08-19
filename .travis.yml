@@ -89,18 +89,20 @@ jobs:
               # Install the version bumper
               - pip install bumpversion
 
+              # Get the current version
+              - CURRENT_VERSION="$($(sed '2!d' "./.bumpversion.cfg"):18)"
+
           script:
               # Bump the version number
-              - CURRENT_VERSION=$($(sed '2!d' "./.bumpversion.cfg"):18)
               - bumpversion --current-version $CURRENT_VERSION build .bumpversion.cfg
-              - bumpversion --current-version $CURRENT_VERSION build setup.py
+              - bumpversion --current-version $CURRENT_VERSION build ./pkg-module/setup.py
 
           after_script:
               # Set the commit content
               - COMMIT_CONTENT="CI | Increment the version number [skip ci]"
 
               # Commit and push
-              - git add .bumpversion.cfg setup.py && ./commitpush.sh
+              - git add .bumpversion.cfg ./pkg-module/setup.py && ./commitpush.sh
 
         - stage: Optimisation # Optimise the code with AutoPEP8
 
