@@ -19,6 +19,7 @@ def compilefile(filename):
     compiledlist.append(i[1])
    elif ":" in i[1]:
     i[1]=i[1].replace(":","(",1)
+    i[1]+=")"
     compiledlist.append(i[1])
    return compiledlist
   except Exception as _:
