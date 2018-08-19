@@ -89,13 +89,10 @@ jobs:
               # Install the version bumper
               - pip install bumpversion
 
-              # Get the current version
-              - CURRENTVERSION=$($(sed '2!d' "./.bumpversion.cfg"):18)
-
           script:
               # Bump the version number
-              - bumpversion --current-version $CURRENTVERSION build .bumpversion.cfg
-              - bumpversion --current-version $CURRENTVERSION build ./pkg-module/setup.py
+              - bumpversion --current-version $($(sed '2!d' "./.bumpversion.cfg"):18) build .bumpversion.cfg
+              - bumpversion --current-version $($(sed '2!d' "./.bumpversion.cfg"):18) build ./pkg-module/setup.py
 
           after_script:
               # Set the commit content
