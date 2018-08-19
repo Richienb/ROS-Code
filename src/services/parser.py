@@ -1,6 +1,5 @@
 
 
-
 def parse(inputtext):
 
     # If text starts with imp

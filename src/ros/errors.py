@@ -5,12 +5,13 @@ This file contains all the code required for declaring errors
 
 # Regular Error and code to inherit
 
+
 class BaseError(object):
- 
+
     def __init__(self, message):
- 
+
         Exception.__init__(message)
- 
+
         self.when = datetime.now()
 
 # Exception Conversion Error
