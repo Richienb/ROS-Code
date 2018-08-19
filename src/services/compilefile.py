@@ -61,7 +61,7 @@ def compilefile(filename):
 
                 # Append ")" at the end
                 i[1] += ")"
-                
+
                 # Append the changed string
                 compiledlist.append(i[1])
 
