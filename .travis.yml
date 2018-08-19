@@ -90,7 +90,7 @@ jobs:
               - pip install bumpversion
 
               # Get the current version
-              - CURRENTVERSION=`$($(sed '2!d' "./.bumpversion.cfg"):18)`
+              - CURRENTVERSION=$($(sed '2!d' "./.bumpversion.cfg"):18)
 
           script:
               # Bump the version number
