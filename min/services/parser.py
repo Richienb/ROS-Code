@@ -1,4 +1,3 @@
-import importlib
 def parse(inputtext):
  if inputtext.startswith("imp"):
   return "import "+inputtext.split(" ")[1]
