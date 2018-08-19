@@ -91,8 +91,8 @@ jobs:
 
           script:
               # Bump the version number
-              - bumpversion build .bumpversion.cfg
-              - bumpversion build ./pkg-module/setup.py
+              - bumpversion --allow-dirty build .bumpversion.cfg
+              - bumpversion --allow-dirty build ./pkg-module/setup.py
 
           after_script:
               # Set the commit content
