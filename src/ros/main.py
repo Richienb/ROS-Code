@@ -887,7 +887,9 @@ def shapesides(inputtocheck, inputtype='shape'):
         'googolgon': pow(10, 100)
     }
     if inputtype == 'shape':
-        return shapestosides[inputtocheck]
+        if inputtocheck in shapestosides:
+            return shapestosides[inputtocheck]
+        return "ngon"
 
 
 # Compare 2 Numbers
