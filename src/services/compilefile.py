@@ -7,7 +7,7 @@ def compilefile(filename):
     # Get all lines of a file and put it in a list
     filelines = open(str(filename)).read().splitlines()
 
-    compiledlist = []
+    compiledlist = ["import ros"]
 
     # Compile the python command for each line in the list
     for i in enumerate(filelines):
