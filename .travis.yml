@@ -1,14 +1,14 @@
 # Disable sudo to speed up the build
-sudo: false
+sudo:                           false
 
 # Set the default build language
-language: python
+language:                       python
 
 # Set the default build language version
-python: 3.6.6
+python:                         3.6.6
 
 # Set the default build branch
-branches: master
+branches:                       master
 
 cache:
     # Ensure pip packages is cached
@@ -33,7 +33,7 @@ install:
     
 jobs:
     include:
-        - stage: Pre-build # Check if the code is compatible with Python 3
+        - stage:                Pre-build # Check if the code is compatible with Python 3
 
           install:
             # Install the checker
@@ -59,10 +59,10 @@ jobs:
         - # Fix the files ignored by Gitignore but still exist
 
           # Set the build language
-          language:           generic
+          language:             generic
 
           # Skip the installation step
-          install:            true
+          install:              true
 
           script:
               # Reset the Gitignore cache
@@ -81,7 +81,7 @@ jobs:
         - # Check if the pip packages install correctly
         
           # Disable the script
-          script: true
+          script:               true
 
         - # Bump the version number
 
@@ -100,10 +100,10 @@ jobs:
               # Commit and push
               - git add .bumpversion.cfg ./pkg-module/setup.py && ./ci/commitpush.sh
 
-        - stage: Optimisation # Optimise the code with AutoPEP8
+        - stage:                Optimisation # Optimise the code with AutoPEP8
 
           # Only run if on branch
-          if: type != pull_request
+          if:                   type != pull_request
 
           install:
               # Install the optimiser
@@ -202,7 +202,7 @@ jobs:
               # Commit and push
               - git add . && ./ci/commitpush.sh
 
-        - stage: Checks & Testing # Run the unit tests and push the results to Codecov
+        - stage:                Checks & Testing # Run the unit tests and push the results to Codecov
 
           install:
               # Check if the Codecov configuration file is valid
@@ -242,7 +242,7 @@ jobs:
         - # Run Makefile commands
 
           # Skip the installation step
-          install: true
+          install:              true
 
           script:
               # Run the Makefile command to install ROS Code
@@ -251,10 +251,10 @@ jobs:
               # Run the makefile command to uninstall ROS Code
               - make uninstall
 
-        - stage: Deployment testing # Build the documentation
+        - stage:                Deployment testing # Build the documentation
 
           # Only run if on pull request
-          if: type = pull_request
+          if:                   type = pull_request
 
           install:
               # Install documentation building dependencies
@@ -264,17 +264,17 @@ jobs:
               # Build the documentation
               - mkdocs build --verbose --clean --strict
 
-        - stage: Deployment # Build and deploy the documentation
+        - stage:                Deployment # Build and deploy the documentation
 
           # Only run if on branch
-          if: type != pull_request
+          if:                   type != pull_request
 
           install:
               # Install documentation building dependencies
               - pip install mkdocs mkdocs-material pymdown-extensions pygments
 
           # Skip the script
-          script: true
+          script:               true
 
           before_deploy:
               # Build the documentation
@@ -297,7 +297,7 @@ jobs:
                 github_token:   $github_token
                 local_dir:      site
                 on:
-                    branch:       master
+                    branch:     master
 
           # Clear the cache on Cloudflare
           after_deploy:
@@ -311,7 +311,7 @@ jobs:
         - # Deploy the code to GitHub Releases
 
           # Set the build language
-          language:           generic
+          language:             generic
 
           install:
               # Get an array of commits in the last push and print it out
@@ -327,7 +327,7 @@ jobs:
               - echo $TIME
 
           # Ensure script is skipped
-          script:             true
+          script:               true
 
           before_deploy:
               # Zip the min directory
@@ -345,10 +345,10 @@ jobs:
                 tag_name:       $($(sed '2!d' "./.bumpversion.cfg"):18)-edge
                 on:
                     # Only upload if on master branch
-                    branch:       master
+                    branch:     master
 
                     # Check if a change was made to the source directory
-                    condition:    $CHANGED_FILES = *"src"*
+                    condition:  $CHANGED_FILES = *"src"*
 
         - # Deploy module to PyPi
 
@@ -361,7 +361,7 @@ jobs:
               - pip install --upgrade setuptools wheel
 
           # Disable the script
-          script: true
+          script:               true
 
           before_deploy:
               # Copy ROS Code modules to package directory
@@ -386,10 +386,10 @@ jobs:
                 server:         https://test.pypi.org/legacy/
                 on:
                     # Only upload if on master branch
-                    branch:       master
+                    branch:     master
 
                     # Check if a change was made to the ros directory
-                    condition:    $CHANGED_FILES = *"src/ros"*
+                    condition:  $CHANGED_FILES = *"src/ros"*
 
               # Upload to Pypi
               - provider:       pypi
@@ -398,11 +398,11 @@ jobs:
                 skip_cleanup:   true
                 on:
                     # Only upload if on master branch
-                    branch:       master
+                    branch:     master
 
                     # Check if a change was made to the ros directory
-                    condition:    $CHANGED_FILES = *"src/ros"*
+                    condition:  $CHANGED_FILES = *"src/ros"*
 
 notifications:
     # Disable build status notifications via email
-    email: false
+    email:                      false
