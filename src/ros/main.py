@@ -1,6 +1,6 @@
 """
 
-ROS Code commands file
+ROS Code Commands
 This file contains all the commands in ROS Code
 
 """
