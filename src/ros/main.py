@@ -916,13 +916,6 @@ def comparenum(value1, value2, comparison):
             return value1 >= value2
 
 
-# Print Text A Specific Amount Of Times
-
-
-def texttimes(text, times):
-    return times * str(text)
-
-
 # Get The Quadrant Of Coordinates
 
 
