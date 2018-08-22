@@ -365,10 +365,10 @@ jobs:
 
           before_deploy:
               # Copy ROS Code modules to package directory
-              - cp -rf "$TRAVIS_BUILD_DIR/min/ros" "./pkg-module/ros"
+              - cp -rf "$TRAVIS_BUILD_DIR/min/ros" "$TRAVIS_BUILD_DIR/pkg-module/ros"
 
               # Copy requirements.txt file to package directory
-              - cp -rf "$TRAVIS_BUILD_DIR/requirements.txt" "./pkg-module/requirements.txt"
+              - cp -rf "$TRAVIS_BUILD_DIR/requirements.txt" "$TRAVIS_BUILD_DIR/pkg-module/requirements.txt"
 
               # Navigate to the package directory
               - cd pkg-module
