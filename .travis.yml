@@ -72,11 +72,8 @@ jobs:
               - git add .
 
           after_script:
-              # Set the commit content
-              - COMMIT_CONTENT="CI | Fix the Gitignore [skip ci]"
-
               # Commit and push
-              - git add . && ./ci/commitpush.sh
+              - git add . && ./ci/commitpush.sh "CI | Fix the Gitignore [skip ci]"
 
         - # Check if the pip packages install correctly
         
@@ -94,11 +91,8 @@ jobs:
               - bumpversion --allow-dirty build .bumpversion.cfg ./pkg-module/setup.py
 
           after_script:
-              # Set the commit content
-              - COMMIT_CONTENT="CI | Increment the version number [skip ci]"
-
               # Commit and push
-              - git add .bumpversion.cfg ./pkg-module/setup.py && ./ci/commitpush.sh
+              - git add .bumpversion.cfg ./pkg-module/setup.py && ./ci/commitpush.sh "CI | Increment the version number [skip ci]"
 
         - stage:                Optimisation # Optimise the code with AutoPEP8
 
@@ -114,11 +108,8 @@ jobs:
               - autopep8 --verbose --in-place --recursive --aggressive --aggressive --exclude min .
 
           after_script:
-              # Set the commit content
-              - COMMIT_CONTENT="CI | Optimised the code with AutoPEP8 [skip ci]"
-
               # Commit and push
-              - git add . && ./ci/commitpush.sh
+              - git add . && ./ci/commitpush.sh "CI | Optimised the code with AutoPEP8 [skip ci]"
 
         - # Optimise the code with AutoFlake
 
@@ -131,11 +122,8 @@ jobs:
               - autoflake --in-place --recursive --exclude min .
 
           after_script:
-              # Set the commit content
-              - COMMIT_CONTENT="CI | Optimised the code with AutoFlake [skip ci]"
-
               # Commit and push
-              - git add . && ./ci/commitpush.sh
+              - git add . && ./ci/commitpush.sh "CI | Optimised the code with AutoFlake [skip ci]"
 
         - # Optimise the code with Yapf
 
@@ -148,11 +136,8 @@ jobs:
               - yapf --in-place --recursive --exclude min --style google --parallel .
 
           after_script:
-              # Set the commit content
-              - COMMIT_CONTENT="CI | Optimised the code with Yapf [skip ci]"
-
               # Commit and push
-              - git add . && ./ci/commitpush.sh
+              - git add . && ./ci/commitpush.sh "CI | Optimised the code with Yapf [skip ci]"
                 
         - # Update the Pipfiles
 
@@ -169,11 +154,8 @@ jobs:
               - pipenv install
 
           after_script:
-              # Set the commit content
-              - COMMIT_CONTENT="CI | Regenerated the Pipfiles [skip ci]"
-
               # Commit and push
-              - git add . && ./ci/commitpush.sh
+              - git add . && ./ci/commitpush.sh "CI | Regenerated the Pipfiles [skip ci]"
 
         - # Minify the code to another directory
 
@@ -196,11 +178,8 @@ jobs:
               - find  -type f  -name "*.py" -exec pyminifier --outfile="{}" --prepend="$TRAVIS_BUILD_DIR/misc/minifier-append.txt" "{}" \;
 
           after_script:
-              # Set the commit content
-              - COMMIT_CONTENT="CI | Minified the source files [skip ci]"
-
               # Commit and push
-              - git add . && ./ci/commitpush.sh
+              - git add . && ./ci/commitpush.sh "CI | Minified the source files [skip ci]"
 
         - stage:                Checks & Testing # Run the unit tests and push the results to Codecov
 
