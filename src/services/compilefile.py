@@ -18,7 +18,7 @@ def compilefile(filename):
         filelines.extend(row)
 
     # Set a final output list
-    compiledlist = ["import ros"]
+    compiledlist = ["from ros import *"]
 
     # Compile the python command for each line in the list
     for i in enumerate(filelines):
