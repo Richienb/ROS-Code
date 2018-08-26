@@ -1,8 +1,8 @@
 name = "ros"
 
 # Ensure ROS Code storage variables are global
-__ros_stored__ = None
 global __ros_stored__
+__ros_stored__ = None
 
 # Activate logging if debug mode enabled
 if __debug__:
