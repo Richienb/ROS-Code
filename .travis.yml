@@ -188,10 +188,10 @@ jobs:
 #              - coverage run test_syntax.py
 #
 #          after_script:
-              # Upload the results to Codecov
+#              # Upload the results to Codecov
 #              - codecov
-
-        - # Check for spelling mistakes
+#
+#        - # Check for spelling mistakes
 
           install:
               # Install the spell checker and mkdocs addons to parse markdown
