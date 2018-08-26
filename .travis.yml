@@ -13,24 +13,24 @@ branches:                       master
 cache:
     # Ensure pip packages is cached
     - pip
-    
+
 before_install:
     # Configure the access token to enable repository pushing
     - git remote set-url origin https://Richienb:${github_token}@github.com/Richienb/ROS-Code.git
-    
+
     # Set the commit username
     - git config --global user.name "ROS Bot"
-    
+
     # Set the commit email
     - git config --global user.email "richiebendall@gmail.com"
 
     # Make all the shell files in the ci folder executable
     - find $TRAVIS_BUILD_DIR/ci -type f -iname "*.sh" -exec chmod +x {} \;
-    
+
 install:
     # Install dependencies from the requirements.txt file
     - pip install -r requirements.txt
-    
+
 jobs:
     include:
         - stage:                Pre-build # Check if the code is compatible with Python 3
@@ -76,7 +76,7 @@ jobs:
               - git add . && ./ci/commitpush.sh "CI | Fix the Gitignore [skip ci]"
 
         - # Check if the pip packages install correctly
-        
+
           # Disable the script
           script:               true
 
@@ -138,7 +138,7 @@ jobs:
           after_script:
               # Commit and push
               - git add . && ./ci/commitpush.sh "CI | Optimised the code with Yapf [skip ci]"
-                
+
         - # Update the Pipfiles
 
           install:
@@ -186,7 +186,7 @@ jobs:
           install:
               # Check if the Codecov configuration file is valid
               - curl --data-binary @codecov.yml https://codecov.io/validate
-        
+
               # Install the dependencies from requirements.txt
               - pip install -r requirements.txt
 
@@ -300,7 +300,7 @@ jobs:
               # Get the current date and print it out
               - DATE=`date +%d-%m-%Y`
               - echo $DATE
-        
+
               # Get the current time and print it out
               - TIME=`date +"%r"`
               - echo $TIME
@@ -321,7 +321,7 @@ jobs:
                 file:           source.zip
                 prerelease:     true
                 skip_cleanup:   true
-                tag_name:       $($(sed '2!d' "./.bumpversion.cfg"):18)
+                tag_name:       $(./ci/getversion.sh)
                 on:
                     # Only upload if on master branch
                     branch:     master
