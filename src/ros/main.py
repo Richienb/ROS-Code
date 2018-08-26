@@ -1323,7 +1323,7 @@ def isinfinite(variable):
 # Check if a variable is essetially "False"
 
 def isfalse(variable):
-    if variable in [0, 0.0, False, [], {}, math.nan]:
+    if variable in [0, 0.0, False, [], {}, math.nan, ""]:
         return True
     return False
 
