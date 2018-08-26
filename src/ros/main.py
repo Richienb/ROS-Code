@@ -15,9 +15,6 @@ import string
 import textwrap
 import pprint
 
-
-
-
 # External Modules
 import loremipsum
 import colour
