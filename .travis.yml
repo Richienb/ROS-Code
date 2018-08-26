@@ -187,9 +187,6 @@ jobs:
               # Run the unit test
               - coverage run test_syntax.py
 
-              # Run some code
-              - coverage run run_file.py "legacytest.ros"
-
           after_script:
               # Upload the results to Codecov
               - codecov
