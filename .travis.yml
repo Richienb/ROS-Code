@@ -357,10 +357,7 @@ jobs:
               # Ensure the latest version of setuptools and wheel is installed
               - pip install --upgrade setuptools wheel
 
-          # Disable the script
-          script:               true
-
-          before_deploy:
+          script:
               # Copy ROS Code modules to package directory
               - cp -rf "$TRAVIS_BUILD_DIR/min/ros" "$TRAVIS_BUILD_DIR/pkg-module/ros"
 
