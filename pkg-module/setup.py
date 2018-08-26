@@ -20,7 +20,7 @@ REQS = [str(ir.req) for ir in INSTALL_REQS]
 
 setuptools.setup(
     name="ros-code-modules",
-    version="2.0.0.7",
+    version="2.0.0.8",
     author="Richie Bendall",
     author_email="richiebendall@gmail.com",
     description="A Python module/library containing lots of tools to simplify Python development.",
