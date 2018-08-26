@@ -6,10 +6,10 @@ from errors import CompilationError
 
 
 def compilefile(filename):
-    
+
     # Set a new variable for holding the file lines
     filelines = []
- 
+
     # Get all lines of a file and put it in a list while handling line splits
     for i in enumerate(open(str(filename)).read().splitlines()):
         data = i[1]

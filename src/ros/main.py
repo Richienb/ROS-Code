@@ -1320,7 +1320,9 @@ def isempty(variable):
 def isinfinite(variable):
     return bool(math.isfinite(variable))
 
+
 # Check if a variable is essetially "False"
+
 
 def isfalse(variable):
     if variable in [0, 0.0, False, [], {}, math.nan, ""]:
@@ -1375,6 +1377,7 @@ def cowsay(text='', align='centre'):
 
 def getletter(variable, letternumber):
     return str(variable)[letternumber - 1]
+
 
 # Check If Something Is On The List
 
