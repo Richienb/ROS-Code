@@ -1,12 +1,23 @@
+# Import CSV Module
+import csv
+
 # Import custom errors module
 from errors import CompilationError
 
 
 def compilefile(filename):
+    
+    # Set a new variable for holding the file lines
+    filelines = []
+ 
+    # Get all lines of a file and put it in a list while handling line splits
+    for i in enumerate(open(str(filename)).read().splitlines()):
+        data = i[1]
+        reader = csv.reader([i[1]], delimiter=';', escapechar='\\')
+        row = [s.strip() for s in next(reader)]
+        filelines.extend(row)
 
-    # Get all lines of a file and put it in a list
-    filelines = open(str(filename)).read().splitlines()
-
+    # Set a final output list
     compiledlist = ["import ros"]
 
     # Compile the python command for each line in the list
@@ -65,11 +76,12 @@ def compilefile(filename):
                 # Append the changed string
                 compiledlist.append(i[1])
 
-            return compiledlist
-
         except Exception as _:
 
             # Raise error for compilation
             raise CompilationError(
                 "An error has occurred while compiling. Line {1} is \
                 causing this issue.".format(i[0]))
+
+    # Return the compiled list
+    return compiledlist
