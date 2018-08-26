@@ -10,20 +10,8 @@ def dayofweek(day, month, year, formatresult=True):
     if formatresult is False:
         return calendar.weekday(year, month, day) + 1
     else:
-        if calendar.weekday(year, month, day) == 0:
-            return 'Monday'
-        elif calendar.weekday(year, month, day) == 1:
-            return 'Tuesday'
-        elif calendar.weekday(year, month, day) == 2:
-            return 'Wednesday'
-        elif calendar.weekday(year, month, day) == 3:
-            return 'Thursday'
-        elif calendar.weekday(year, month, day) == 4:
-            return 'Friday'
-        elif calendar.weekday(year, month, day) == 5:
-            return 'Saturday'
-        elif calendar.weekday(year, month, day) == 6:
-            return 'Sunday'
+        days = {0: 'Monday', 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
+        return days[calendar.weekday(year, month, day)]
 
 
 # Check If A Year Is A Leap Year
