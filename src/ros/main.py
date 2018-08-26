@@ -1352,7 +1352,7 @@ def cowsay(text='', align='centre'):
     for _ in range(len(text) + 2):
         topbar = topbar + '_'
         bottombar = bottombar + '-'
-    if align == 'centre' or align == 'center':
+    if align in ["center", "centre"]:
         for _ in range((int(len(topbar) / 2)) + 1):
             spacing = spacing + ' '
     elif align == 'left':
@@ -1363,11 +1363,11 @@ def cowsay(text='', align='centre'):
     print(topbar)
     print('( ' + cowtext + ' )')
     print(bottombar)
-    print(spacing + 'o   ^__^ ')
-    print(spacing + ' o  (oO)\_______')
-    print(spacing + '    (__)\       )\/\ ')
-    print(spacing + '     U  ||----w | ')
-    print(spacing + '        ||     || ')
+    print(spacing + r'o   ^__^ ')
+    print(spacing + r' o  (oO)\_______')
+    print(spacing + r'    (__)\       )\/\ ')
+    print(spacing + r'     U  ||----w | ')
+    print(spacing + r'        ||     || ')
 
 
 # Get The Corresponding Letter In A String
