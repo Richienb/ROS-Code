@@ -169,27 +169,27 @@ jobs:
 
         - stage:                Checks & Testing # Run the unit tests and push the results to Codecov
 
-          install:
-              # Check if the Codecov configuration file is valid
-              - curl --data-binary @codecov.yml https://codecov.io/validate
-
-              # Install the dependencies from requirements.txt
-              - pip install -r requirements.txt
-
-              # Install the Codecov Python package
-              - pip install codecov
-
-          before_script:
-              # Navigate to the source code directory
-              - cd src
-
-          script:
-              # Run the unit test
-              - coverage run test_syntax.py
-
-          after_script:
+#          install:
+#              # Check if the Codecov configuration file is valid
+#              - curl --data-binary @codecov.yml https://codecov.io/validate
+#
+#              # Install the dependencies from requirements.txt
+#              - pip install -r requirements.txt
+#
+#              # Install the Codecov Python package
+#              - pip install codecov
+#
+#          before_script:
+#              # Navigate to the source code directory
+#              - cd src
+#
+#          script:
+#              # Run the unit test
+#              - coverage run test_syntax.py
+#
+#          after_script:
               # Upload the results to Codecov
-              - codecov
+#              - codecov
 
         - # Check for spelling mistakes
 

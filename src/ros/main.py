@@ -23,7 +23,7 @@ import loremipsum
 import colour
 
 # Custom modules
-from . import errors
+from . import roserrors
 
 
 # Show a shell based input line and return command and parameters

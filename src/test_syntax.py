@@ -1,7 +1,6 @@
 import unittest as ut
 import keyword
-import ros
-
+import ros.main
 
 class TestCode(ut.TestCase):
 
