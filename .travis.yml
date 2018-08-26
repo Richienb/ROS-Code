@@ -321,7 +321,7 @@ jobs:
                 file:           source.zip
                 prerelease:     true
                 skip_cleanup:   true
-                tag_name:       $($(sed '2!d' "./.bumpversion.cfg"):18)-edge
+                tag_name:       $($(sed '2!d' "./.bumpversion.cfg"):18)
                 on:
                     # Only upload if on master branch
                     branch:     master
