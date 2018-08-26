@@ -80,20 +80,6 @@ jobs:
           # Disable the script
           script:               true
 
-        - # Bump the version number
-
-          install:
-              # Install the version bumper
-              - pip install bumpversion
-
-          script:
-              # Bump the version number
-              - bumpversion --allow-dirty build .bumpversion.cfg ./pkg-module/setup.py
-
-          after_script:
-              # Commit and push
-              - git add .bumpversion.cfg ./pkg-module/setup.py && ./ci/commitpush.sh "CI | Increment the version number [skip ci]"
-
         - stage:                Optimisation # Optimise the code with AutoPEP8
 
           # Only run if on branch
@@ -243,6 +229,41 @@ jobs:
               # Build the documentation
               - mkdocs build --verbose --clean --strict
 
+        - # Test if the Pypi package will successfully build
+
+          install:
+              # Ensure the latest version of setuptools and wheel is installed
+              - pip install --upgrade setuptools wheel
+
+          script:
+              # Copy ROS Code modules to package directory
+              - cp -rf "$TRAVIS_BUILD_DIR/min/ros" "$TRAVIS_BUILD_DIR/pkg-module/ros"
+
+              # Copy requirements.txt file to package directory
+              - cp -rf "$TRAVIS_BUILD_DIR/requirements.txt" "$TRAVIS_BUILD_DIR/pkg-module/requirements.txt"
+
+              # Navigate to the package directory
+              - cd pkg-module
+
+              # Generate the package files
+              - python setup.py sdist bdist_wheel
+
+        - stage: Pre Deployment # Bump the version number
+
+          # Only run if on branch
+          if:                   type != pull_request
+
+          install:
+              # Install the version bumper
+              - pip install bumpversion
+
+          script:
+              # Bump the version number
+              - bumpversion --allow-dirty build .bumpversion.cfg ./pkg-module/setup.py
+
+          after_script:
+              # Commit and push
+              - git add .bumpversion.cfg ./pkg-module/setup.py && ./ci/commitpush.sh "CI | Increment the version number [skip ci]"
         - stage:                Deployment # Build and deploy the documentation
 
           # Only run if on branch
@@ -355,7 +376,7 @@ jobs:
               # Generate the package files
               - python setup.py sdist bdist_wheel
 
-          # Deploy to GitHub releases
+          # Deploy to Pypi
           deploy:
               # Upload to PyPi test server
               - provider:       pypi
