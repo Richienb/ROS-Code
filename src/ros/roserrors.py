@@ -3,6 +3,8 @@ ROS Code Errors File
 This file contains all the code required for declaring errors
 """
 
+import datetime
+
 # Regular Error and code to inherit
 
 
