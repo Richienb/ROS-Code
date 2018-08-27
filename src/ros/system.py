@@ -1,9 +1,7 @@
 # System modules
-import platform
 import subprocess
 import os
 import sys
-import secrets
 import logging
 import pkg_resources
 import clipboard
