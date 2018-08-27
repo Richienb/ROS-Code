@@ -59,6 +59,7 @@ def autohard(equation):
     elif equation.split(" ")[0] == "tan":
         return math.tan(num1)
 
+
 # Solve a simple maths equation manually (May be deprecated)
 
 
@@ -101,6 +102,7 @@ def scientific(number, operation, number2=None, logbase=10):
         return math.sin(number)
     elif operation == 'tan':
         return math.tan(number)
+
 
 # Simplify A Fraction
 
@@ -223,6 +225,7 @@ def average(numbers, averagetype='mean'):
         raise RuntimeError(
             'An Error Has Occured: You Entered An Invalid Operation (0003)')
 
+
 # Check If A Number Is A Type
 
 
@@ -259,6 +262,7 @@ def posnegtoggle(number):
     elif bool(number == 0):
         return number
 
+
 # Check If A Variable Is Infinite
 
 
@@ -284,6 +288,7 @@ def less_or_equal(number):
     except BaseException:
         raise RuntimeError('An Error Has Occured: Number Not Provided (0016)')
 
+
 # Compare 2 Values
 
 
@@ -299,6 +304,7 @@ def compare(value1, value2, comparison):
         return operator.or_(value1, value2)
     elif comparison == 'and':
         return operator.and_(value1, value2)
+
 
 # Find all the factors of a number
 
@@ -317,6 +323,7 @@ def factors(number):
 def eulercalc(faces, edges, verticies):
     return verticies + edges - faces
 
+
 # Get A Random Number
 
 
@@ -328,6 +335,7 @@ def randomnum(minimum, maximum):
             raise RuntimeError('Invalid Value (0016)')
     else:
         raise RuntimeError('Invalid Value (0016)')
+
 
 # Check if a number is in the Fibonacci sequence
 
@@ -363,6 +371,7 @@ def isprime(number):
             return False
     return True
 
+
 # Convert A Base 10 Number To A Custom Base
 
 
@@ -380,6 +389,7 @@ def convertbase(number, base=10):
         res += nums[mod]
     return ('' if sign == 1 else '-') + res[::-1]
 
+
 # Check If A Value Is Able To Be Converted To A Number (Decimal And Integer)
 
 
@@ -388,6 +398,7 @@ def isnum(value):
         return bool(isinstance(value, int) or isinstance(value, float))
     except BaseException:
         return False
+
 
 # Get The Quadrant Of Coordinates
 
@@ -424,6 +435,7 @@ def flipcoords(xcoord, ycoord, axis):
             return str(ycoord + abs(ycoord) * 2) + ', ' + str(xcoord)
         elif ycoord == 0:
             return str(xcoord) + ', ' + str(ycoord)
+
 
 # Find the lowest common multiple of 2 numbers
 

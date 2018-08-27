@@ -1,4 +1,3 @@
-
 # Generate a completely random string
 
 
@@ -8,6 +7,7 @@ def randstring(length=1):
     for _ in range(length):
         newpass += str(charstouse[random.randint(0, len(charstouse) - 1)])
     return newpass
+
 
 # Return A Random String In Hexadecimal
 

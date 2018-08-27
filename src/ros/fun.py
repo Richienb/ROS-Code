@@ -41,6 +41,7 @@ def captcha():
         return False
     return parta + partb == tryanswer
 
+
 # Play paper scissors rock
 
 
@@ -104,6 +105,7 @@ def truthorliegame():
     elif truthnum == 3:
         return 'Maybe'
     return 'Lie'
+
 
 # Show A Type Of Face
 

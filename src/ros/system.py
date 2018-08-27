@@ -39,6 +39,7 @@ def pipupdate():
     packages = [d for d in pkg_resources.working_set]
     subprocess.call('pip install --upgrade ' + ' '.join(packages))
 
+
 # Tools For Directories (If Exists, Make And Delete)
 
 
@@ -61,6 +62,7 @@ def dirtool(operation, directory):
     else:
         raise RuntimeError(
             'An Error Has Occured: Invalid Operation Entered (0008)')
+
 
 # Tools For Files (If Exists, Make And Delete)
 
@@ -93,11 +95,13 @@ def file(operation, path):
         raise RuntimeError(
             'An Error Has Occured: Invalid Operation Entered (0008)')
 
+
 # Exit the current execution
 
 
 def exitexecution(arguments=0):
     sys.exit(arguments)
+
 
 # Get The Character Limit
 
@@ -111,6 +115,7 @@ def charlimit():
 
 def unilimit():
     return sys.maxunicode
+
 
 # Get the version of Python
 
@@ -133,6 +138,7 @@ def pyexec():
 
 def pycopyright():
     return sys.copyright
+
 
 # Set logging status dependant on if debug is enabled
 
@@ -202,6 +208,7 @@ def logfile(targetfile="ros.log"):
     except BaseException:
         raise WrongInput("Invalid target file specified")
 
+
 # Gets, sets, appends or preceeds the clipboard contents
 
 
@@ -214,6 +221,7 @@ def clipaction(action='get', text=None):
         clipboard.copy(str(clipboard.paste) + str(text))
     elif action == 'preceed':
         clipboard.copy(str(text) + str(clipboard.paste))
+
 
 # Tools For Text Files
 

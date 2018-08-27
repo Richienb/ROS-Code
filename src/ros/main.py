@@ -22,7 +22,6 @@ import colour
 # Custom modules
 from . import roserrors
 
-
 # Show a shell based input line and return command and parameters
 
 
@@ -217,6 +216,7 @@ def pykeyword(operation='list', keywordtotest=None):
     elif operation == 'check':
         return keyword.iskeyword(str(keywordtotest))
 
+
 # Pretty print a list
 
 
@@ -277,9 +277,6 @@ def message_print(text, amount=1):
         print(text)
 
 
-
-
-
 # Get The Sides Of A Shape
 
 
@@ -322,6 +319,7 @@ def shapesides(inputtocheck, inputtype='shape'):
             return shapestosides[inputtocheck]
         return "ngon"
 
+
 # Check If A Value Is Able To Be Converted To A Number (Decimal And Integer)
 
 
@@ -354,18 +352,6 @@ def comparenum(value1, value2, comparison):
             return value1 >= value2
         elif comparison == 'more than or equal to':
             return value1 >= value2
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Throw A Runtime Error
@@ -628,9 +614,6 @@ def replacetext(string, texttofind, texttoreplace):
     return string.replace(texttofind, texttoreplace)
 
 
-
-
-
 # Get User input
 
 
@@ -639,6 +622,7 @@ def userinput(prompttext):
         return input(prompttext)
     except BaseException:
         return input(str(prompttext))
+
 
 # Evaluate A Expression Or Operation
 
@@ -659,6 +643,7 @@ def execute(execution):
 
 def gettype(value):
     return type(value)
+
 
 # Do a quick module test
 
@@ -758,12 +743,6 @@ def letternum(letter):
                 return i + 1
 
 
-
-
-
-
-
-
 # Return The List Equally Spaced
 
 
@@ -814,9 +793,6 @@ def textalign(text, maxlength, align='left'):
     return spaces + text
 
 
-
-
-
 # Fix The Formatting Of Decimals And Integers
 
 
@@ -824,9 +800,6 @@ def decintfix(decorint=0):
     if str(decorint)[-2:] == '.0':
         return int(decorint)
     return float(decorint)
-
-
-
 
 
 # License Information

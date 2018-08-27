@@ -2,17 +2,20 @@ import unittest as ut
 import keyword
 import ros.main
 
+
 class TestCode(ut.TestCase):
 
     def test_colourcode(self):
         self.assertEqual(ros.main.colourcode('#212121', 'hex', True), '#212121')
 
     def test_changecolour(self):
-        self.assertEqual(str(ros.main.changecolour('#212121', 'red', 10)), '#192121')
+        self.assertEqual(
+            str(ros.main.changecolour('#212121', 'red', 10)), '#192121')
 
     def test_catwalk(self):
         self.assertEqual(
-            ros.string.catwalk('this     is    some    text'), 'this is some text')
+            ros.string.catwalk('this     is    some    text'),
+            'this is some text')
 
     def test_isprime(self):
         self.assertEqual(ros.math.isprime(1), False)
@@ -29,15 +32,18 @@ class TestCode(ut.TestCase):
     def test_splitstring(self):
         self.assertEqual(
             ros.main.splitstring('hello my name'), ['hello', 'my', 'name'])
-        self.assertEqual(ros.main.splitstring('hello my name', '-'), ['hello my name'])
+        self.assertEqual(
+            ros.main.splitstring('hello my name', '-'), ['hello my name'])
         self.assertEqual(
             ros.main.splitstring('hello-my-name', '-'), ['hello', 'my', 'name'])
         self.assertEqual(ros.main.splitstring('hello-my-name', '-', 0), 'hello')
 
     def test_sort(self):
-        self.assertEqual(ros.main.sort(['d', 'a', 'c', 'b']), ['a', 'b', 'c', 'd'])
         self.assertEqual(
-            ros.main.sort(['d', 'a', 'c', 'b'], None, True), ['d', 'c', 'b', 'a'])
+            ros.main.sort(['d', 'a', 'c', 'b']), ['a', 'b', 'c', 'd'])
+        self.assertEqual(
+            ros.main.sort(['d', 'a', 'c', 'b'], None, True),
+            ['d', 'c', 'b', 'a'])
 
     def test_pykeyword(self):
         self.assertEqual(ros.main.pykeyword('check', 'None'), True)
@@ -123,9 +129,12 @@ class TestCode(ut.TestCase):
 
     def test_scientific(self):
         self.assertAlmostEqual(ros.math.scientific(5, "log"), 0.69897000433)
-        self.assertAlmostEqual(ros.math.scientific(0.5, "acos"), 1.0471975511965979)
-        self.assertAlmostEqual(ros.math.scientific(0.5, "asin"), 0.5235987755982989)
-        self.assertAlmostEqual(ros.math.scientific(0.5, "atan"), 0.4636476090008061)
+        self.assertAlmostEqual(
+            ros.math.scientific(0.5, "acos"), 1.0471975511965979)
+        self.assertAlmostEqual(
+            ros.math.scientific(0.5, "asin"), 0.5235987755982989)
+        self.assertAlmostEqual(
+            ros.math.scientific(0.5, "atan"), 0.4636476090008061)
         self.assertAlmostEqual(ros.math.scientific(5, "cos"), 0.28366218546)
         self.assertEqual(ros.math.scientific(5, "hypot", 12), 13)
         self.assertAlmostEqual(ros.math.scientific(5, "sin"), -0.95892427466)

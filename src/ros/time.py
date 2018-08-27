@@ -10,7 +10,15 @@ def dayofweek(day, month, year, formatresult=True):
     if formatresult is False:
         return calendar.weekday(year, month, day) + 1
     else:
-        days = {0: 'Monday', 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
+        days = {
+            0: 'Monday',
+            1: "Tuesday",
+            2: "Wednesday",
+            3: "Thursday",
+            4: "Friday",
+            5: "Saturday",
+            6: "Sunday"
+        }
         return days[calendar.weekday(year, month, day)]
 
 
@@ -23,6 +31,7 @@ def leapyear(year, querytype='is'):
         return calendar.isleap(year)
     elif querytype == 'closest':
         return year % 4
+
 
 # Convert A Time Period To Another One
 
@@ -239,6 +248,7 @@ def converttime(time, currentformat, newformat):
         elif newformat == 'centuaries':
             return time * 1000 / 100
 
+
 # Get Maximum And Minimum Years
 
 
@@ -258,11 +268,13 @@ def yearlimit(limittype):
 def timezone():
     return time.timezone
 
+
 # Get The Time Since 00:00 On 1 January 1970
 
 
 def timesince():
     return time.time()
+
 
 # Get The Current Date Or Time
 
@@ -277,13 +289,13 @@ def getdatetime(timedateformat='complete'):
         return ((str(datetime.datetime.now())).split(' ')[0]).split('-')[0]
     elif timedateformat == 'hour':
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[0]
+               ).split(':')[0]
     elif timedateformat == 'minute':
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[1]
+               ).split(':')[1]
     elif timedateformat == 'second':
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[2]
+               ).split(':')[2]
     elif timedateformat == 'millisecond':
         return (str(datetime.datetime.now())).split('.')[1]
     elif timedateformat == 'yearmonthday':
@@ -297,10 +309,10 @@ def getdatetime(timedateformat='complete'):
         return ((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
     elif timedateformat == 'secondminutehour':
         return (((str(datetime.datetime.now())).split(' ')[1]).split('.')[0]
-                ).split(':')[2] + ':' + (((str(datetime.datetime.now())).split(
-                    ' ')[1]).split('.')[0]).split(':')[1] + ':' + (
-            ((str(datetime.datetime.now())).split(' ')[1]
-             ).split('.')[0]).split(':')[0]
+               ).split(':')[2] + ':' + (((str(datetime.datetime.now())).split(
+                   ' ')[1]).split('.')[0]).split(':')[1] + ':' + (
+                       ((str(datetime.datetime.now())).split(' ')[1]
+                       ).split('.')[0]).split(':')[0]
     elif timedateformat == 'complete':
         return str(datetime.datetime.now())
     elif timedateformat == 'datetime':
