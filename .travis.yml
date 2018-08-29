@@ -84,34 +84,34 @@ jobs:
 
           # Only run if on branch
           if:                   type != pull_request
-
-          install:
-              # Install the optimiser
-              - pip install autopep8
-
-          script:
-              # Optimise the files
-              - autopep8 --verbose --in-place --recursive --aggressive --aggressive --exclude min .
-
-          after_script:
-              # Commit and push
-              - git add . && ./ci/commitpush.sh "CI | Optimised the code with AutoPEP8 [skip ci]"
-
-        - # Optimise the code with AutoFlake
-
-          install:
-              # Install the optimiser
-              - pip install autoflake
-
-          script:
-              # Optimise the files
-              - autoflake --in-place --recursive --exclude min .
-
-          after_script:
-              # Commit and push
-              - git add . && ./ci/commitpush.sh "CI | Optimised the code with AutoFlake [skip ci]"
-
-        - # Optimise the code with Yapf
+#
+#          install:
+#              # Install the optimiser
+#              - pip install autopep8
+#
+#          script:
+#              # Optimise the files
+#              - autopep8 --verbose --in-place --recursive --aggressive --aggressive --exclude min .
+#
+#          after_script:
+#              # Commit and push
+#              - git add . && ./ci/commitpush.sh "CI | Optimised the code with AutoPEP8 [skip ci]"
+#
+#        - # Optimise the code with AutoFlake
+#
+#          install:
+#              # Install the optimiser
+#              - pip install autoflake
+#
+#          script:
+#              # Optimise the files
+#              - autoflake --in-place --recursive --exclude min .
+#
+#          after_script:
+#              # Commit and push
+#              - git add . && ./ci/commitpush.sh "CI | Optimised the code with AutoFlake [skip ci]"
+#
+#        - # Optimise the code with Yapf
 
           install:
               # Install the required dependency
