@@ -5,12 +5,7 @@ import ros.main
 class TestCode(ut.TestCase):
 
     def test_colourcode(self):
-        self.assertEqual(
-            ros.main.colourcode(
-                '#212121',
-                'hex',
-                True),
-            '#212121')
+        self.assertEqual(ros.main.colourcode('#212121', 'hex', True), '#212121')
 
     def test_changecolour(self):
         self.assertEqual(
@@ -38,14 +33,9 @@ class TestCode(ut.TestCase):
             ros.main.splitstring('hello my name'), ['hello', 'my', 'name'])
         self.assertEqual(
             ros.main.splitstring('hello my name', '-'), ['hello my name'])
-        self.assertEqual(ros.main.splitstring(
-            'hello-my-name', '-'), ['hello', 'my', 'name'])
         self.assertEqual(
-            ros.main.splitstring(
-                'hello-my-name',
-                '-',
-                0),
-            'hello')
+            ros.main.splitstring('hello-my-name', '-'), ['hello', 'my', 'name'])
+        self.assertEqual(ros.main.splitstring('hello-my-name', '-', 0), 'hello')
 
     def test_sort(self):
         self.assertEqual(
