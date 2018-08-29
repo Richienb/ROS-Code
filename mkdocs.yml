@@ -36,6 +36,7 @@ nav:
       - Install From Source: install-source.md
       - Install Version 1.0: install-old.md
     - Contribution:
+      - Core Guidelines: guideline.md
       - Edit The Documentation: edit-docs.md
       - Edit The Source Code: edit-code.md
       - Future Plans: plans.md
