@@ -339,7 +339,6 @@ jobs:
                 file:           source.zip
                 prerelease:     true
                 skip_cleanup:   true
-                tag_name:       $(./ci/getversion.sh)
                 on:
                     # Only upload if on master branch
                     branch:     master
