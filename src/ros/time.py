@@ -54,7 +54,8 @@ def leapyear(year):
     
     """
     return bool(calendar.isleap(year))
-    
+
+
 def closeyear(year):
     """
     
@@ -62,7 +63,6 @@ def closeyear(year):
     
     """
     return int(year % 4)
-
 
 
 def converttime(time, currentformat, newformat):
@@ -301,7 +301,8 @@ def minyear():
     
     """
     return datetime.MINYEAR
-        
+
+
 def maxyear():
     """
     
@@ -320,7 +321,6 @@ def timezone():
     return time.timezone
 
 
-
 def timesince():
     """
     
@@ -328,7 +328,6 @@ def timesince():
     
     """
     return time.time()
-
 
 
 def getdatetime(timedateformat='complete'):
@@ -383,7 +382,8 @@ def getdatetime(timedateformat='complete'):
         return ((str(
             datetime.datetime.now())).split('.')[0]).split(' ')[1] + ' ' + (
                 (str(datetime.datetime.now())).split('.')[0]).split(' ')[0]
-    
+
+
 def timeit(command, round=True):
     """
     
