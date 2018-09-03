@@ -3,7 +3,9 @@ import setuptools
 
 # Import urllib request module
 import urllib.request
-requires_file, requires_headers = urllib.request.urlretrieve("https://raw.githubusercontent.com/Richienb/ROS-Code/master/requirements.txt")
+requires_file, requires_headers = urllib.request.urlretrieve(
+    "https://raw.githubusercontent.com/Richienb/ROS-Code/master/requirements.txt"
+)
 
 # Import requirements parser module
 try:  # for pip >= 10
