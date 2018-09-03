@@ -1,12 +1,34 @@
-# Time modules
+"""
+
+All commands based around time functions
+
+"""
 import datetime
 import time
 import calendar
 
-# Get The Day Of The Week For A Specific Day
-
 
 def dayofweek(day, month, year, formatresult=True):
+    """
+    
+    Get the day of the week for a specific day
+    
+    day:
+    The day to include in the search
+    
+    month:
+    The month to include in the search
+    
+    year:
+    The year to include in the search
+    
+    formatresult:
+    Whether or not to format the result.
+    A formatted date would look like: "Monday".
+    A non formatted date would look like: 1.
+    Default is True.
+    
+    """
     if formatresult is False:
         return calendar.weekday(year, month, day) + 1
     else:
@@ -22,21 +44,44 @@ def dayofweek(day, month, year, formatresult=True):
         return days[calendar.weekday(year, month, day)]
 
 
-# Check If A Year Is A Leap Year
+def leapyear(year):
+    """
+    
+    Check if a year in particular is a leap year
+    
+    year:
+    The year to check for
+    
+    """
+    return bool(calendar.isleap(year))
+    
+def closeyear(year):
+    """
+    
+    Find how many years away was the closest leap year to a specific year
+    
+    """
+    return int(year % 4)
 
-
-def leapyear(year, querytype='is'):
-    querytype = querytype.lower()
-    if querytype == 'is':
-        return calendar.isleap(year)
-    elif querytype == 'closest':
-        return year % 4
-
-
-# Convert A Time Period To Another One
 
 
 def converttime(time, currentformat, newformat):
+    """
+    
+    Convert a specific time format to another type
+    
+    time:
+    The time to convert
+    
+    currentformat:
+    The current format of the time.
+    Can be seconds, milliseconds, minutes, hours, days, weeks, fortnights, years, decades, centuaries or millenniums.
+    
+    newformat:
+    The new format of the time.
+    Can be seconds, milliseconds, minutes, hours, days, weeks, fortnights, years, decades, centuaries or millenniums.
+    
+    """
     currentformat = currentformat.lower()
     newformat = newformat.lower()
     if currentformat == newformat:
@@ -249,37 +294,54 @@ def converttime(time, currentformat, newformat):
             return time * 1000 / 100
 
 
-# Get Maximum And Minimum Years
-
-
-def yearlimit(limittype):
-    if limittype == 'min':
-        return datetime.MINYEAR
-    elif limittype == 'max':
-        return datetime.MAXYEAR
-    else:
-        raise RuntimeError(
-            'An Error Has Occured: Invalid Operation Entered (0008)')
-
-
-# Get The Timezone Code
+def minyear():
+    """
+    
+    Get the minimum year allowed by the current OS.
+    
+    """
+    return datetime.MINYEAR
+        
+def maxyear():
+    """
+    
+    Get the maxiumum year allowed by the current OS.
+    
+    """
+    return datetime.MAXYEAR
 
 
 def timezone():
+    """
+    
+    Get the current timezone code.
+    
+    """
     return time.timezone
 
 
-# Get The Time Since 00:00 On 1 January 1970
-
 
 def timesince():
+    """
+    
+    Get the amount of time since 00:00 on 1 January 1970, the raw date before formatting by computers.
+    
+    """
     return time.time()
 
 
-# Get The Current Date Or Time
-
 
 def getdatetime(timedateformat='complete'):
+    """
+    
+    Get the current date or time in a specific format
+    
+    timedateformat:
+    The type of date to query for.
+    Can be day, month, year, hour, minute, second, millisecond, yearmonthday, daymonthyear, hourminutesecond, secondminutehour, complete, datetime or timedate.
+    Default is "complete".
+    
+    """
     timedateformat = timedateformat.lower()
     if timedateformat == 'day':
         return ((str(datetime.datetime.now())).split(' ')[0]).split('-')[2]
@@ -321,3 +383,22 @@ def getdatetime(timedateformat='complete'):
         return ((str(
             datetime.datetime.now())).split('.')[0]).split(' ')[1] + ' ' + (
                 (str(datetime.datetime.now())).split('.')[0]).split(' ')[0]
+    
+def timeit(command, round=True):
+    """
+    
+    Time how long a command takes to execute
+    
+    command:
+    The command to time.
+    
+    round:
+    Whether or not to round the number to an integer. Default is True.
+    
+    """
+    t1 = time.clock()
+    exec(command)
+    t2 = time.clock()
+    if round == True:
+        return int(t2 - t1)
+    return t2 - t1
