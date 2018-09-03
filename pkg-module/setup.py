@@ -1,6 +1,10 @@
 # Import setuptools module
 import setuptools
 
+# Import urllib request module
+import urllib.request
+requires_file, requires_headers = urllib.request.urlretrieve("https://raw.githubusercontent.com/Richienb/ROS-Code/master/requirements.txt")
+
 # Import requirements parser module
 try:  # for pip >= 10
     from pip._internal.req import parse_requirements
@@ -12,7 +16,7 @@ with open("README.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
 
 # parse_requirements() returns generator of pip.req.InstallRequirement objects
-INSTALL_REQS = parse_requirements('requirements.txt', session='hack')
+INSTALL_REQS = parse_requirements(requires_file, session='hack')
 
 # REQS is a list of requirement
 # e.g. ['django==1.5.1', 'mezzanine==1.4.6']
