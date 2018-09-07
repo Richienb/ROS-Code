@@ -10,16 +10,13 @@ setuptools.setup(
     version="2.0.0.17",
     author="Richie Bendall",
     author_email="richiebendall@gmail.com",
-    description="A Python module/library containing lots of tools to simplify Python development.",
+    description=
+    "A Python module/library containing lots of tools to simplify Python development.",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     url="https://github.com/Richienb/ROS-Code",
     packages=setuptools.find_packages(),
-    install_requires=[
-        'clipboard',
-        'colour',
-        'loremipsum'
-    ],
+    install_requires=['clipboard', 'colour', 'loremipsum'],
     classifiers=(
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
