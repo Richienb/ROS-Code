@@ -59,7 +59,7 @@ then
     fi
 
     # Commit the files
-    git commit -m ""
+    git commit -m "$internal_commit_message"
 
     # Try to push changes
     until git push origin HEAD:master
