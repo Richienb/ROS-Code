@@ -3,21 +3,21 @@
 # Syntax: ./commitpush.sh ["<commit_message>"] [<files>…​]
 
 # Tell the user how many arguments were provided
-echo $# arguments were provided
+echo "$# arguments were provided"
 
 # Check if there are any unstaged files
 if [[ $(git diff --exit-code) ]]
 then
 
     # Inform the user that the actions will start
-    echo Actions needed. Executing...
+    echo "Actions needed. Executing..."
 
     # Check if more than 1 commandline argument was provided
-    if (($# >= 2))
+    if (("$#" >= 2))
     then
 
         # Tell the user how many files were provided to stage
-        echo ${expr $# - 2} files were provided to stage
+        echo "$(expr $# - 2) files were provided to stage."
 
         # For every argument after the first argument
         for i in {2..$#}
@@ -30,8 +30,8 @@ then
 
     else
 
-        # Inform the user on the status
-        echo No files to commit providied. Using default: all files.
+        # Tell the user how many files were provided to stage
+        echo "No files were provided to stage. Using default: all files."
 
         # Add all the Git files
         git add .
@@ -43,7 +43,7 @@ then
     then
 
         # Inform the user on the status
-        echo No commit message provided. Using default: "Changed Files".
+        echo "No commit message provided. Using default: Changed Files."
 
         # Check and commit
         internal_commit_message="Changed Files"
@@ -51,7 +51,7 @@ then
     else
 
         # Inform the user on the status
-        echo Using "${"$1"}" as the commit message.
+        echo "Using "${"$1"}" as the commit message."
 
         # Check and commit
         internal_commit_message="$1"
@@ -59,14 +59,14 @@ then
     fi
 
     # Commit the files
-    git commit -m $internal_commit_message
+    git commit -m ""
 
     # Try to push changes
     until git push origin HEAD:master
         do
 
             # Pull the latest changes
-            git pull
+            git pull --no-edit
 
             # Amend the merging commit
             git commit --amend -m "$internal_commit_message"
@@ -76,6 +76,6 @@ then
 else
 
     # Inform the user that no action is needed
-    echo No action needed.
+    echo "No action needed."
 
 fi
