@@ -2,9 +2,6 @@
 
 # Syntax: ./commitpush.sh ["<commit_message>"] [<files>…​]
 
-# Tell the user how many arguments were provided
-echo "$# arguments were provided"
-
 # Check if there are any unstaged files
 if [[ $(git diff --exit-code) ]]
 then
