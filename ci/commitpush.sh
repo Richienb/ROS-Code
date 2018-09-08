@@ -2,12 +2,6 @@
 
 # Syntax: ./commitpush.sh ["<commit_message>"] [<files>…​]
 
-<<<<<<< HEAD
-=======
-# Tell the user how many arguments were provided
-echo "$# arguments were provided"
-
->>>>>>> b6a2a6cf4dc61cd2831cf7019c4f5be6ce02e8cd
 # Check if there are any unstaged files
 if [[ $(git diff --exit-code) ]]
 then
@@ -20,11 +14,7 @@ then
     then
 
         # Tell the user how many files were provided to stage
-<<<<<<< HEAD
         echo "$(expr $# - 2) files were provided to stage."
-=======
-        echo "$(expr $# - 2) files were provided to stage"
->>>>>>> b6a2a6cf4dc61cd2831cf7019c4f5be6ce02e8cd
 
         # For every argument after the first argument
         for i in {2..$#}
@@ -37,13 +27,8 @@ then
 
     else
 
-<<<<<<< HEAD
         # Tell the user how many files were provided to stage
         echo "No files were provided to stage. Using default: all files."
-=======
-        # Inform the user on the status
-        echo "$(expr $# - 2) files were provided to stage"
->>>>>>> b6a2a6cf4dc61cd2831cf7019c4f5be6ce02e8cd
 
         # Add all the Git files
         git add .
@@ -55,11 +40,7 @@ then
     then
 
         # Inform the user on the status
-<<<<<<< HEAD
         echo "No commit message provided. Using default: Changed Files."
-=======
-        echo "No commit message provided. Using default: "Changed Files"."
->>>>>>> b6a2a6cf4dc61cd2831cf7019c4f5be6ce02e8cd
 
         # Check and commit
         internal_commit_message="Changed Files"
