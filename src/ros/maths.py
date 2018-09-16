@@ -452,10 +452,19 @@ def lcm(num1, num2):
         bigger += 1
 
 
-# Find the lowest common multiple of 2 numbers
-
-
 def hcf(num1, num2):
+    """
+
+    Find the lowest common multiple of 2 numbers
+
+    num1:
+    The first number to find the hcf for
+
+    num2:
+    The second number to find the hcf for
+
+    """
+
     if num1 > num2:
         smaller = num2
     else:
