@@ -338,10 +338,16 @@ def randomnum(minimum, maximum):
         raise RuntimeError('Invalid Value (0016)')
 
 
-# Check if a number is in the Fibonacci sequence
-
-
 def isfib(number):
+    """
+
+    Check if a number is in the Fibonacci sequence
+
+    number:
+    Number to check
+
+    """
+
     num1 = 1
     num2 = 1
     while True:
