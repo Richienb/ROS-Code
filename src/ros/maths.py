@@ -391,10 +391,16 @@ def convertbase(number, base=10):
     return ('' if sign == 1 else '-') + res[::-1]
 
 
-# Check If A Value Is Able To Be Converted To A Number (Decimal And Integer)
-
-
 def isnum(value):
+    """
+
+    Check if a value is a type of number (decimal or integer)
+
+    value:
+    The value to check
+
+    """
+
     try:
         return bool(isinstance(value, int) or isinstance(value, float))
     except BaseException:
