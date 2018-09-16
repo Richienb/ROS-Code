@@ -318,10 +318,22 @@ def factors(number):
     return factors
 
 
-# Use Euler's Formula
-
-
 def eulercalc(faces, edges, verticies):
+    """
+
+    Calculate the value of Euler's formula of a shape
+
+    faces:
+    The faces of the shape
+
+    edges:
+    The edges of the shape
+
+    verticies:
+    The verticies of the shape
+
+    """
+
     return verticies + edges - faces
 
 
