@@ -312,7 +312,7 @@ jobs:
 
           install:
               # Get an array of commits in the last push and print it out
-              - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
+              - CHANGED_FILES=$(./ci/fileschanged.sh)
               - echo $CHANGED_FILES
 
               # Get the current date and print it out
@@ -350,7 +350,7 @@ jobs:
 
           install:
               # Retrieve an array of commit since the last push and print it out
-              - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
+              - CHANGED_FILES=$(./ci/fileschanged.sh)
               - echo $CHANGED_FILES
 
               # Ensure the latest version of setuptools and wheel is installed
