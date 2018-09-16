@@ -68,12 +68,9 @@ jobs:
               # Reset the Gitignore cache
               - git rm -r --cached .
 
-              # Read all files to the cache
-              - git add .
-
           after_script:
               # Commit and push
-              - git add . && ./ci/commitpush.sh "CI | Fix the Gitignore [skip ci]"
+              - ./ci/commitpush.sh "CI | Fix the Gitignore [skip ci]"
 
         - # Check if the pip packages install correctly
 
@@ -95,7 +92,7 @@ jobs:
 #
 #          after_script:
 #              # Commit and push
-#              - git add . && ./ci/commitpush.sh "CI | Optimised the code with AutoPEP8 [skip ci]"
+#              - ./ci/commitpush.sh "CI | Optimised the code with AutoPEP8 [skip ci]"
 #
 #        - # Optimise the code with AutoFlake
 #
@@ -109,7 +106,7 @@ jobs:
 #
 #          after_script:
 #              # Commit and push
-#              - git add . && ./ci/commitpush.sh "CI | Optimised the code with AutoFlake [skip ci]"
+#              - ./ci/commitpush.sh "CI | Optimised the code with AutoFlake [skip ci]"
 #
 #        - # Optimise the code with Yapf
 
@@ -123,7 +120,7 @@ jobs:
 
           after_script:
               # Commit and push
-              - git add . && ./ci/commitpush.sh "CI | Optimised the code with Yapf [skip ci]"
+              - ./ci/commitpush.sh "CI | Optimised the code with Yapf [skip ci]"
 
         - # Update the Pipfiles
 
@@ -141,7 +138,7 @@ jobs:
 
           after_script:
               # Commit and push
-              - git add . && ./ci/commitpush.sh "CI | Regenerated the Pipfiles [skip ci]"
+              - ./ci/commitpush.sh "CI | Regenerated the Pipfiles [skip ci]"
 
         - # Minify the code to another directory
 
@@ -165,7 +162,7 @@ jobs:
 
           after_script:
               # Commit and push
-              - git add . && ./ci/commitpush.sh "CI | Minified the source files [skip ci]"
+              - ./ci/commitpush.sh "CI | Minified the source files [skip ci]"
 
         - stage:                Checks & Testing # Run the unit tests and push the results to Codecov
 
@@ -260,7 +257,7 @@ jobs:
 
           after_script:
               # Commit and push
-              - git add .bumpversion.cfg ./pkg-module/setup.py && ./ci/commitpush.sh "CI | Increment the version number [skip ci]"
+              - ./ci/commitpush.sh "CI | Increment the version number [skip ci]" .bumpversion.cfg ./pkg-module/setup.py
         - stage:                Deployment # Build and deploy the documentation
 
           # Only run if on branch
