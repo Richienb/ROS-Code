@@ -3,6 +3,7 @@ import math
 import operator
 import statistics
 import random
+import string
 
 from roserrors import *
 
@@ -462,3 +463,19 @@ def hcf(num1, num2):
     for i in range(1, smaller + 1):
         if ((num1 % i == 0) and (num2 % i == 0)):
             return i
+
+
+def pythrule(first, second):
+    """
+
+    Calculate the area of a right angled trangle based on Pythagoras' Theorem
+
+    first:
+    The length of the first axis (x or y)
+
+    second:
+    The length of the second axis (x or y)
+
+    """
+
+    return (a * b) / 2
