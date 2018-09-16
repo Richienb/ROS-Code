@@ -311,6 +311,15 @@ def compare(value1, value2, comparison):
 
 
 def factors(number):
+    """
+
+    Find all of the factors of a number and return it as a list
+
+    number:
+    The number to find the factors for
+
+    """
+
     factors = []
     for i in range(1, number + 1):
         if number % i == 0:
