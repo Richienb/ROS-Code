@@ -17,7 +17,7 @@ then
         echo "$(expr $# - 2) files were provided to stage."
 
         # For every argument after the first argument
-        for i in {2..$#}
+        for i in "${@:2}"
         do
 
             # Git add the file
@@ -39,34 +39,42 @@ then
     if [ "$#" -eq 0 ]
     then
 
-        # Inform the user on the status
-        echo "No commit message provided. Using default: Changed Files."
+        { # Try
 
-        # Check and commit
-        internal_commit_message="Changed Files"
+            # Commit with an empty message
+            git commit --allow-empty-message -m ""
+
+            # Inform the user on the status
+            echo "No commit message provided. Using empty."
+
+            } || { # Catch
+
+            # Check and commit
+            git commit -m "Changed Files"
+
+            # Inform the user on the status
+            echo "No commit message provided. Using default: Changed Files."
+        }
 
     else
 
         # Inform the user on the status
-        echo "Using "${"$1"}" as the commit message."
+        echo "Using "$1" as the commit message."
 
         # Check and commit
-        internal_commit_message="$1"
+        git commit -m "$1"
 
     fi
 
-    # Commit the files
-    git commit -m "$internal_commit_message"
-
     # Try to push changes
     until git push origin HEAD:master
-        do
+    do
 
-            # Pull the latest changes
-            git pull --no-edit
+        # Pull the latest changes
+        git pull --no-edit
 
-            # Amend the merging commit
-            git commit --amend -m "$internal_commit_message"
+        # Amend the merging commit
+        git commit --amend -m "$internal_commit_message"
 
     done
 
