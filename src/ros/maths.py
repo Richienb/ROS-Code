@@ -438,10 +438,19 @@ def flipcoords(xcoord, ycoord, axis):
             return str(xcoord) + ', ' + str(ycoord)
 
 
-# Find the lowest common multiple of 2 numbers
-
-
 def lcm(num1, num2):
+    """
+
+    Find the lowest common multiple of 2 numbers
+
+    num1:
+    The first number to find the lcm for
+
+    num2:
+    The second number to find the lcm for
+
+    """
+
     if num1 > num2:
         bigger = num1
     else:
@@ -455,7 +464,7 @@ def lcm(num1, num2):
 def hcf(num1, num2):
     """
 
-    Find the lowest common multiple of 2 numbers
+    Find the highest common factor of 2 numbers
 
     num1:
     The first number to find the hcf for
