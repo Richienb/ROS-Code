@@ -14,7 +14,7 @@ then
     then
 
         # Tell the user how many files were provided to stage
-        echo "$(expr $# - 2) files were provided to stage."
+        echo "$(expr $# - 1) files were provided to stage."
 
         # For every argument after the first argument
         for i in "${@:2}"
