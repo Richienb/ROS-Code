@@ -417,10 +417,22 @@ def quadrant(xcoord, ycoord):
         return 4
 
 
-# Flip Coordinates Over A Specific Axis
-
-
 def flipcoords(xcoord, ycoord, axis):
+    """
+
+    Flip the coordinates over a specific axis, to a different quadrant
+
+    xcoord:
+    The x coordinate to flip
+
+    ycoord:
+    The y coordinate to flip
+
+    axis:
+    The axis to flip across. Could be 'x' or 'y'
+
+    """
+
     axis = axis.lower()
     if axis == 'y':
         if xcoord > 0:
