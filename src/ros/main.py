@@ -19,7 +19,7 @@ import loremipsum
 import colour
 
 # Custom modules
-from . import roserrors
+from .roserrors import *
 
 # Show a shell based input line and return command and parameters
 

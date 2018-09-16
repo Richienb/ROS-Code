@@ -5,7 +5,7 @@ import sys
 import logging
 import pkg_resources
 import clipboard
-from roserrors import *
+from .roserrors import *
 
 # Get The Current Platform
 

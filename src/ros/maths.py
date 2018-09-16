@@ -5,7 +5,7 @@ import statistics
 import random
 import string
 
-from roserrors import *
+from .roserrors import *
 
 # Automatically solve a simple maths problem
 
