@@ -161,6 +161,9 @@ jobs:
               - find  -type f  -name "*.py" -exec pyminifier --outfile="{}" --prepend="$TRAVIS_BUILD_DIR/misc/minifier-append.txt" "{}" \;
 
           after_script:
+              # Navigate out of the min directory
+              - cd ..
+
               # Commit and push
               - ./ci/commitpush.sh "CI | Minified the source files [skip ci]"
 
