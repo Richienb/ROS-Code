@@ -373,10 +373,19 @@ def isprime(number):
     return True
 
 
-# Convert A Base 10 Number To A Custom Base
-
-
 def convertbase(number, base=10):
+    """
+
+    Convert a number in base 10 to another base
+
+    number:
+    The number to convert
+
+    base:
+    The base to convert to. Default is 10.
+
+    """
+
     integer = number
     if not integer:
         return '0'
