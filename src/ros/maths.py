@@ -325,10 +325,19 @@ def eulercalc(faces, edges, verticies):
     return verticies + edges - faces
 
 
-# Get A Random Number
+def randomnum(minimum=1, maximum=2):
+    """
 
+    Generate a random number
 
-def randomnum(minimum, maximum):
+    minimum:
+    The minimum number to generate. Default is 1.
+
+    maximum:
+    The maximum number to generate. Default is 10.
+
+    """
+
     if isnum(minimum):
         if isnum(maximum):
             return random.randint(minimum, maximum)
