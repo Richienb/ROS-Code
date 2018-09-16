@@ -28,8 +28,8 @@ def executepyfile(filename):
 
             # Print the exception text
             print(
-                "ERROR: An error of type {0} occured while running line {1} because {2}".
-                format(type(exc).__name__, str(i[0] + 1), str(exc.args[0])))
+                "ERROR: An error of type {0} occured while running line {1} because {2}"
+                .format(type(exc).__name__, str(i[0] + 1), str(exc.args[0])))
 
             # Exit the execution with a value of 1
             exitexc(1)
