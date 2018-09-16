@@ -401,10 +401,19 @@ def isnum(value):
         return False
 
 
-# Get The Quadrant Of Coordinates
-
-
 def quadrant(xcoord, ycoord):
+    """
+
+    Find the quadrant a pair of coordinates are located in
+
+    xcoord:
+    The x coordinate to find the quadrant for
+
+    ycoord:
+    The y coordinate to find the quadrant for
+
+    """
+
     xneg = bool(xcoord < 0)
     yneg = bool(ycoord < 0)
     if xneg is True:
