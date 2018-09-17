@@ -447,7 +447,7 @@ def isnum(value):
     """
 
     try:
-        return bool(isinstance(value, int) or isinstance(value, float))
+        return bool(isinstance(value, (float, int)))
     except BaseException:
         return False
 
@@ -568,4 +568,4 @@ def pythrule(first, second):
 
     """
 
-    return (a * b) / 2
+    return (first * second) / 2
