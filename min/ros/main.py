@@ -157,7 +157,7 @@ def opposite(boolean):
  try:
   return not boolean
  except BaseException:
-  raise RuntimeError('An Error Has Occured: Nor A Bool Or Len Was Provided (0014)')
+  raise RuntimeError('An Error Has Occurred: Nor A Bool Or Len Was Provided (0014)')
 def isdecimal(value):
  return bool(isinstance(value,float))
 def isstring(variable):
@@ -249,11 +249,11 @@ def reverselist(listtoreverse):
  return listtoreverse.reverse()
 def replacetext(string,texttofind,texttoreplace):
  return string.replace(texttofind,texttoreplace)
-def userinput(prompttext):
- try:
-  return input(prompttext)
- except BaseException:
+def userinput(prompttext=""):
+ if sys.version_info>(3,0):
   return input(str(prompttext))
+ else:
+  return raw_input(str(prompttext))
 def evaluate(evaluation):
  return eval(str(evaluation))
 def execute(execution):
@@ -277,7 +277,7 @@ def convertascii(value,command='to'):
   except ValueError:
    raise RuntimeError('Invalid Symbol (0015)')
  else:
-  raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
+  raise RuntimeError('An Error Has Occurred: Invalid Operation Entered (0008)')
 def availchar(charactertype):
  if charactertype=='letters':
   return string.ascii_letters
@@ -296,7 +296,7 @@ def availchar(charactertype):
  elif charactertype=='whitespace':
   return string.whitespace
  else:
-  raise RuntimeError('An Error Has Occured: Invalid Operation Entered (0008)')
+  raise RuntimeError('An Error Has Occurred: Invalid Operation Entered (0008)')
 def wordvalue(word):
  total=0
  for i in enumerate(word):
@@ -363,11 +363,11 @@ def roslicense(raw=False):
   print(u'\u2714'+' Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
   print(u'\u274c'+' Limitations: Trademark use, Liability And Warranty')
   print(u'\u2139'+' Conditions: License and copyright notice And State changes')
-  print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
+  print('To View, The Full license, Go To https://rosurl.ga/ROS-Code-license')
  else:
   print('ROS Code Is licensed Under The Apache License 2.0')
   print('Permissions: Commercial use, Modification, Distribution, Patent use And Private use')
   print('Limitations: Trademark use, Liability And Warranty')
   print('Conditions: License and copyright notice And State changes')
-  print('To View The Full license, Go To: https://rosurl.ga/ROS-Code-license')
+  print('To View, The Full license, Go To https://rosurl.ga/ROS-Code-license')
 # Created by pyminifier (https://github.com/liftoff/pyminifier)
