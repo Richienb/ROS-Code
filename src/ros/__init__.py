@@ -21,7 +21,7 @@ if __name__ == "__main__":
         list(sys.version_info)[2])
     print(VER)
     while True:
-        if (sys.version_info > (3, 0)):
+        if sys.version_info > (3, 0):
             # Python 3 code in this block
             exec("print(" + input(">> ") + ")")
         else:
