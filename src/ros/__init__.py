@@ -27,4 +27,3 @@ if __name__ == "__main__":
         else:
             # Python 2 code in this block
             exec("print(" + raw_input(">> ") + ")")
-     
