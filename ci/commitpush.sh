@@ -70,11 +70,24 @@ then
     until git push origin HEAD:master
     do
 
-        # Pull the latest changes
-        git pull --no-edit
+        # Is the latest commit empty?
+        if [ $(git log -1 --pretty=%B)="" ]; then
+        
+            # Pull the latest changes
+            git pull --no-edit
+        
+            # Amend the merging commit with a custom message
+            git commit --amend -m "Merged branch"
 
-        # Amend the merging commit
-        git commit --amend -m "$internal_commit_message"
+        else
+        
+            # Pull the latest changes
+            git pull --no-edit
+        
+            # Amend the merging commit with the previous message
+            git commit --amend -m "$(git log -1 --pretty=%B)"
+
+        fi
 
     done
 
