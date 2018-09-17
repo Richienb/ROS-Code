@@ -1,7 +1,18 @@
-# Generate a completely random string
+"""
 
+Secure functions.
+
+"""
 
 def randstring(length=1):
+    """
+    
+    Generate a random string consisting of letters, digits and punctuation
+    
+    length:
+    The length of the generated string. Default is 1
+    
+    """
     charstouse = string.ascii_letters + string.digits + string.punctuation
     newpass = ''
     for _ in range(length):

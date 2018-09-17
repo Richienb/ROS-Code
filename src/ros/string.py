@@ -100,7 +100,6 @@ def randomstr(valuelist):
         raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
 
 
-
 def case(text, format='sentence'):
     """
     
