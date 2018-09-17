@@ -14,7 +14,7 @@ then
     then
 
         # Tell the user how many files were provided to stage
-        echo "$(expr $# - 1) files were provided to stage."
+        echo "$(($#-1)) files were provided to stage."
 
         # For every argument after the first argument
         for i in "${@:2}"
@@ -59,7 +59,7 @@ then
     else
 
         # Inform the user on the status
-        echo "Using "$1" as the commit message."
+        echo "Using $1 as the commit message."
 
         # Check and commit
         git commit -m "$1"
