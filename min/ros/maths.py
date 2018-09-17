@@ -259,7 +259,7 @@ def convertbase(number,base=10):
  return('' if sign==1 else '-')+res[::-1]
 def isnum(value):
  try:
-  return bool(isinstance(value,int)or isinstance(value,float))
+  return bool(isinstance(value,(float,int)))
  except BaseException:
   return False
 def quadrant(xcoord,ycoord):
@@ -307,5 +307,5 @@ def hcf(num1,num2):
   if((num1%i==0)and(num2%i==0)):
    return i
 def pythrule(first,second):
- return(a*b)/2
+ return(first*second)/2
 # Created by pyminifier (https://github.com/liftoff/pyminifier)
