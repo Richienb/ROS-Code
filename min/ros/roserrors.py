@@ -2,7 +2,7 @@
 ROS Code Errors File
 This file contains all the code required for declaring errors
 """
-import datetime
+from datetime import datetime
 class BaseError(object):
  def __init__(self,message):
   Exception.__init__(message)
