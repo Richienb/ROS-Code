@@ -10,7 +10,7 @@ import warnings
 import keyword
 import importlib
 
-# String modues
+# String modules
 import string
 import pprint
 
@@ -27,13 +27,13 @@ from .roserrors import *
 def shellinput(initialtext='>> ', splitpart=' '):
     """
 
-    Give the user a shell like interface to enter commands which are returned as a multi part list containing the command and each of the arguments
+    Give the user a shell-like interface to enter commands which are returned as a multi-part list containing the command and each of the arguments
 
     initialtext:
     Set the text to be displayed as the prompt. Default is '>>'.
 
     splitpart:
-    The character to split when generating the list item. Default is ' '. Set to '' or None to skip splitting.
+    The character to split when generating the list item. The default is ' '. Set to '' or None to skip splitting.
 
     """
 
@@ -60,10 +60,10 @@ def colourcode(startcolourcode, destinationtype, longhex=False):
     Set the colour code to convert from
 
     destinationtype:
-    Set the colour code type to convert to. Possible options are hex, hsl, rgb, red, blue, green, hue, sat and lum
+    Set the colour code type to convert to. Possible options are HEX, HSL, RGB, red, blue, green, hue, sat and lum
 
     longhex:
-    If converting to hex, provided the long and unsimplified version. Default is False.
+    If converting to hex, provided the long and unsimplified version. The default is False.
 
     """
 
@@ -97,13 +97,13 @@ def changecolour(colourcode, action, amount=100):
     Modify a parameter of a colour code
 
     colourcode:
-    The colourcode representing the colour to convert from.
+    The colour code representing the colour to convert from.
 
     action:
     The action to perform on the colour. Possible options are red, blue, green, hue, sat, lum
 
     amount:
-    The percentage of the action to perform. For example: 100 means apply 100% of the colour (no change). Default is 100.
+    The percentage of the action to perform. For example, 100 means apply 100% of the colour (no change). The default is 100.
 
     """
 
@@ -134,7 +134,7 @@ def leadingzero(number, minlength):
     Add leading zeros to a number
 
     number:
-    Number to add the leading zeros to
+    The number to add the leading zeros to
 
     minlength:
     If the number is shorter than this length than add leading zeros to make the length correct
@@ -166,10 +166,10 @@ def splitstring(string, split_character=' ', part=None):
     The string to split
 
     split_character:
-    The character to split for the string. Default is ' '.
+    The character to split for the string. The default is ' '.
 
     part:
-    Get a specific part of the list. Default is None.
+    Get a specific part of the list. The default is None.
 
     """
 
@@ -187,10 +187,10 @@ def sort(listtosort, key=None, reversesort=False):
     The list which will be sorted
 
     key:
-    The key to use when sorting. Default is None.
+    The key to use when sorting. The default is None.
 
     reverse:
-    If to sort backwards. Default is False.
+    If to sort backwards. The default is False.
 
     """
 
@@ -203,10 +203,10 @@ def pykeyword(operation='list', keywordtotest=None):
     Check if a keyword exists in the Python keyword dictionary
 
     operation:
-    Whether to list or check the keywords. Possible options are list and check. Default is 'list'.
+    Whether to list or check the keywords. Possible options are list and check. The default is 'list'.
 
     keywordtotest:
-    The keyword to test for if operation is 'check'. Default is None.
+    The keyword to test for if the operation is 'check'. The default is None.
 
     """
 
@@ -405,7 +405,7 @@ def opposite(boolean):
         return not boolean
     except BaseException:
         raise RuntimeError(
-            'An Error Has Occured: Nor A Bool Or Len Was Provided (0014)')
+            'An Error Has Occurred: Nor A Bool Or Len Was Provided (0014)')
 
 
 # Check If A Number Is A Decimal
@@ -604,11 +604,21 @@ def replacetext(string, texttofind, texttoreplace):
 # Get User input
 
 
-def userinput(prompttext):
-    try:
-        return input(prompttext)
-    except BaseException:
+def userinput(prompttext=""):
+    """
+    
+    Get the input of the user via a universally secure method
+    
+    prompttext:
+    The text to display while receiving the data. The default is "".
+    
+    """
+    if sys.version_info > (3, 0):
+        # Python 3 code in this block
         return input(str(prompttext))
+    else:
+        # Python 2 code in this block
+        return raw_input(str(prompttext))
 
 
 # Evaluate A Expression Or Operation
@@ -658,7 +668,7 @@ def convertascii(value, command='to'):
             raise RuntimeError('Invalid Symbol (0015)')
     else:
         raise RuntimeError(
-            'An Error Has Occured: Invalid Operation Entered (0008)')
+            'An Error Has Occurred: Invalid Operation Entered (0008)')
 
 
 # Get All Available Characters For A Type
@@ -683,7 +693,7 @@ def availchar(charactertype):
         return string.whitespace
     else:
         raise RuntimeError(
-            'An Error Has Occured: Invalid Operation Entered (0008)')
+            'An Error Has Occurred: Invalid Operation Entered (0008)')
 
 
 # Get The Value Of A Word
@@ -803,7 +813,7 @@ def roslicense(raw=False):
         print(u'\u2139' +
               ' Conditions: License and copyright notice And State changes')
         print(
-            'To View The Full license, Go To: https://rosurl.ga/ROS-Code-license'
+            'To View, The Full license, Go To https://rosurl.ga/ROS-Code-license'
         )
     else:
         print('ROS Code Is licensed Under The Apache License 2.0')
@@ -813,5 +823,5 @@ def roslicense(raw=False):
         print('Limitations: Trademark use, Liability And Warranty')
         print('Conditions: License and copyright notice And State changes')
         print(
-            'To View The Full license, Go To: https://rosurl.ga/ROS-Code-license'
+            'To View, The Full license, Go To https://rosurl.ga/ROS-Code-license'
         )
