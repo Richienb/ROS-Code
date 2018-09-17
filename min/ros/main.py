@@ -173,16 +173,9 @@ def happybirthday(person):
  time.sleep(2)
  print('Happy Birthday To You')
  time.sleep(2)
- print('Happy Birthday Dear '+str(case(person,argument='sentence')))
+ print('Happy Birthday Dear '+str(person[0].upper())+str(person[1:]))
  time.sleep(2)
  print('Happy Birthday To You')
-def case(variable,argument='uppercase'):
- if argument=='uppercase':
-  return variable.upper()
- elif argument=='lowercase':
-  return variable.lower()
- elif argument=='sentence':
-  return str(variable[0].upper())+str(variable[1:])
 def difference(num1,num2):
  return abs(num1-num2)
 def divisable(num1,num2):

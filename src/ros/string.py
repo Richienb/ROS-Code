@@ -98,3 +98,25 @@ def randomstr(valuelist):
         return random.choice(valuelist)
     except IndexError:
         raise RuntimeError('An Error Has Occured: List Not Specified (0018)')
+
+
+def case(text, format='sentence'):
+    """
+    
+    Change the casing of some text
+    
+    text:
+    The text to change the casing of
+    
+    format:
+    The format of casing to apply to the text. Default is sentence.
+    
+    """
+    if format == 'uppercase':
+        return str(text.upper())
+    elif format == 'lowercase':
+        return str(text.lower())
+    elif format == 'sentence':
+        return str(text[0].upper()) + str(text[1:])
+    elif format == 'caterpillar':
+        return str(text.lower().replace(" ", "_"))
