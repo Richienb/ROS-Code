@@ -1,3 +1,6 @@
+"""
+Secure functions.
+"""
 def randstring(length=1):
  charstouse=string.ascii_letters+string.digits+string.punctuation
  newpass=''
