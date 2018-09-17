@@ -59,7 +59,7 @@ then
     else
 
         # Inform the user on the status
-        echo "Using "$1" as the commit message."
+        echo "Using $1 as the commit message."
 
         # Check and commit
         git commit -m "$1"
