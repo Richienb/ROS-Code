@@ -568,4 +568,4 @@ def pythrule(first, second):
 
     """
 
-    return (a * b) / 2
+    return (first * second) / 2
