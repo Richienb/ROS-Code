@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ros-code-modules",
-    version="2.0.0.24",
+    version="2.0.0.25",
     author="Richie Bendall",
     author_email="richiebendall@gmail.com",
     description=
