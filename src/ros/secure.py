@@ -4,6 +4,7 @@ Secure functions.
 
 """
 
+
 def randstring(length=1):
     """
     
