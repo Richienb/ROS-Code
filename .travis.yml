@@ -293,7 +293,7 @@ jobs:
               - mv -f ./site/commands/html/* ./site/commands
 
               # Remove the unneeded html folder
-              - rm ./site/commands/html
+              - rm -f ./site/commands/html
 
           # Deploy the documentation
           deploy:
