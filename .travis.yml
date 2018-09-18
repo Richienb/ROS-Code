@@ -292,9 +292,6 @@ jobs:
               # Copy the output of the code documentation to the site
               - mv -f ./site/commands/html/* ./site/commands
 
-              # Remove the unneeded html folder
-              - rm -f ./site/commands/html
-
           # Deploy the documentation
           deploy:
               - provider:       pages
