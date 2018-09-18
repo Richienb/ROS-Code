@@ -245,7 +245,7 @@ jobs:
               # Generate the package files
               - python setup.py sdist bdist_wheel
 
-        - stage: Pre Deployment # Bump the version number
+        - stage:                Pre Deployment # Bump the version number
 
           # Only run if on branch
           if:                   type != pull_request
