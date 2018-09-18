@@ -24,13 +24,14 @@ theme:
   language:             'en'
   favicon:              'assets/images/favicon.ico'
   logo:
-    icon: 'code'
+    icon:               'code'
 
 # Page Tree
 nav:
     - Home:             index.md
     - Main:
       - Information Badges: badges.md
+      - Commands: commands.md
     - Installation:
       - Install As Module: install-module.md
       - Install From Source: install-source.md
@@ -39,7 +40,7 @@ nav:
       - Core Guidelines: guideline.md
       - Edit The Documentation: edit-docs.md
       - Edit The Source Code: edit-code.md
-      - Future Plans: plans.md
+      - Future Plans:   plans.md
       - Packages Used:  packages.md
       - Release Guidelines: release-guidelines.md
       - Unit Testing:   unittesting.md

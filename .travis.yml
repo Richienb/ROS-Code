@@ -266,6 +266,12 @@ jobs:
           # Only run if on branch
           if:                   type != pull_request
 
+          addons:
+            apt:
+                packages:
+                    # Install the code documentation builder
+                    - doxygen
+
           install:
               # Install documentation building dependencies
               - pip install mkdocs mkdocs-material pymdown-extensions pygments
@@ -277,14 +283,17 @@ jobs:
               # Build the documentation
               - mkdocs build --verbose --clean --strict
 
+              # Delete the contents of the commands directory
+              - rm -rf ./site/commands/*
+
               # Create the documentation for the code
-              - cd src
-              - python -m pydoc -w ros
-              - cd ..
+              - doxygen
 
               # Copy the output of the code documentation to the site
-              - mkdir ./site/commands
-              - cp -rf ./src/ros.html ./site/commands/index.html
+              - mv -f ./site/commands/html/* ./site/commands
+
+              # Remove the unneeded html folder
+              - rm ./site/commands/html
 
           # Deploy the documentation
           deploy:
