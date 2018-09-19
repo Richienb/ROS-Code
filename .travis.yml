@@ -158,7 +158,7 @@ jobs:
 
           script:
               # Perform the minification
-              - find  -type f  -name "*.py" -exec pyminifier --outfile="{}" --prepend="$TRAVIS_BUILD_DIR/misc/minifier-append.txt" "{}" \;
+              - find -type f -name "*.py" -exec pyminifier --outfile="{}" --prepend="$TRAVIS_BUILD_DIR/misc/minifier-append.txt" "{}" \;
 
           after_script:
               # Navigate out of the min directory
