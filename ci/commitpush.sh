@@ -71,19 +71,19 @@ then
     do
 
         # Is the latest commit empty?
-        if [ $(git log -1 --pretty=%B)="" ]; then
-        
+        if [ $(git log -1 --pretty=%B) = "" ]; then
+
             # Pull the latest changes
             git pull --no-edit
-        
+
             # Amend the merging commit with a custom message
             git commit --amend -m "Merged branch"
 
         else
-        
+
             # Pull the latest changes
             git pull --no-edit
-        
+
             # Amend the merging commit with the previous message
             git commit --amend -m "$(git log -1 --pretty=%B)"
 
