@@ -2,7 +2,7 @@
 site_name:              ROS Code Documentation
 site_description:       ROS Code is a revolutionary, modern and pleasing programming language to code in featuring a streamlined and speedy installation, a very straightforward and simplistic syntax and is provided as a Python 3 library.
 site_author:            Richie Bendall
-site_url:               https://www.ros-code.ga
+site_url:               https://ros-code.richie-bendall.ml
 
 # Repository
 repo_name:              Richienb/ROS-Code
