@@ -20,7 +20,7 @@ theme:
     accent:             'red'
   font:
     text:               'Roboto'
-    code:               'Fira Mono'
+    code:               'Fira Code'
   language:             'en'
   favicon:              'assets/images/favicon.ico'
   logo:
@@ -33,9 +33,8 @@ nav:
       - Information Badges: badges.md
       - Commands: commands.md
     - Installation:
-      - Install As Module: install-module.md
+      - Install Modules: install-modules.md
       - Install From Source: install-source.md
-      - Install Version 1.0: install-old.md
     - Contribution:
       - Core Guidelines: guideline.md
       - Edit The Documentation: edit-docs.md
@@ -48,7 +47,7 @@ nav:
       - Recommended Syntax: syntax.md
       - Makefile Commands: makefile-commands.md
       - API Usage:      api-usage.md
-    - Version 1.0:
+    - Version 1:
       - Home:           versionone.md
       - Commands:       versionone-commands.md
       - Build Status:   versionone-buildstatus.md
@@ -78,16 +77,18 @@ extra:
   disqus:               'ros-code'
 
 extra_css:
-  - css/details-support.css
+  - 'https://cdn.rawgit.com/Richienb/0fc224502155f1f69973c473d5b5c90b/raw/ef234f31347da21d59bf05df308c7f46de7b2807/pymdown-details-polyfill.min.css'
+  - 'https://unpkg.com/firacode@1.205.0/distr/fira_code.css'
 
 extra_javascript:
-  - js/details-support.js
+  - 'https://cdn.rawgit.com/Richienb/0fc224502155f1f69973c473d5b5c90b/raw/1595668df391647b3db06c4179600a29c463870b/pymdown-details-polyfill.min.js'
+  - 'https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js'
 
 # Extensions
 markdown_extensions:
   - pymdownx.arithmatex
   - pymdownx.betterem:
-      smart_enable:     all
+      smart_enable: all
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
@@ -98,16 +99,8 @@ markdown_extensions:
   - pymdownx.smartsymbols
   - pymdownx.superfences
   - pymdownx.tasklist:
-      custom_checkbox:  true
+      custom_checkbox: true
   - pymdownx.tilde
-  - markdown.extensions.tables
-  - markdown.extensions.codehilite:
-      guess_lang:       false
-  - markdown.extensions.def_list
-  - markdown.extensions.footnotes
-  - markdown.extensions.meta
-  - markdown.extensions.toc:
-      permalink:        true
   - smarty
   - admonition
   - footnotes

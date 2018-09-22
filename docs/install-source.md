@@ -3,8 +3,7 @@
 ### Before starting
 
 !!! tip "Prerequisites"
-    \- [Python 3.x](https://www.python.org/downloads/)
-    \- [Git](https://git-scm.com/downloads)
+    [Python 3.x](https://www.python.org/downloads/) and [Git](https://git-scm.com/downloads) are required to install the full ROS Code from source.
 
 !!! tip "Don't have make or curl?"
     [Skip ahead](#as-a-one-liner) for instructions on running all the commands listed in the installation steps in a single line
@@ -12,7 +11,7 @@
 ### Using make and curl
 
 !!! warning "Compatibility"
-    Make and curl is usually only preinstalled in Linux. On other operating systems, `make` and `curl` needs to be manually installed.
+    Make and curl is usually only preinstalled in Linux. On other operating systems, `make` and `curl` need to be manually installed.
 
 !!! example "Install ROS Code"
 

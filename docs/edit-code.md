@@ -12,18 +12,10 @@
 !!! example "Example"
 
     ```bat
-    python run-file.py test.ros
+    python run_file.py test.ros
     ```
 
--   The `run-line.py` file is for executing a single line of code, passed as a runtime variable.
-
-Example:
-
-```bat
-python run-line.py print_message.Hello World
-```
-
--   The `syntax.py` file is for storing all the commands.
+-   The files in the `ros` directory are for storing all the commands.
 
 ??? example "Example"
 
@@ -32,12 +24,4 @@ python run-line.py print_message.Hello World
         print(contents)
     ```
 
-The code above enables functionality for the `print_message.Hello World` command
-
--   The `run.bat` file is just an easier way to run the following code
-
-```bat
-@echo off
-python run-file.py test.ros
-pause
-```
+The code above enables functionality for the `print_message: "Hello World"` command
