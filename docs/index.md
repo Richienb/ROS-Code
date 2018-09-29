@@ -4,7 +4,7 @@
 
 ROS Code is a revolutionary, modern and pleasing programming language to code in featuring a streamlined and speedy installation, a  very straightforward and simplistic syntax and is provided as a Python 3 library.
 
-To watch the overview video, click [here](https://www.youtube.com/watch?v=lPCTNKA8otA) (you should really watch it).
+It is recommended that you to watch the [overview video](https://www.youtube.com/watch?v=lPCTNKA8otA).
 
 ## Continuous Integration Status
 
