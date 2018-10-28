@@ -248,7 +248,7 @@ jobs:
         - stage:                Pre Deployment # Bump the version number
 
           # Only run if on branch
-          if:                   type != pull_request
+          if:                   (type != pull_request) AND (type != cron)
 
           install:
               # Install the version bumper
@@ -261,6 +261,7 @@ jobs:
           after_script:
               # Commit and push
               - ./ci/commitpush.sh "CI | Increment the version number [skip ci]" .bumpversion.cfg ./pkg-module/setup.py
+
         - stage:                Deployment # Build and deploy the documentation
 
           # Only run if on branch
