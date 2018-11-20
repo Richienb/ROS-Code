@@ -1,6 +1,3 @@
-# Disable sudo to speed up the build
-sudo:                           false
-
 # Set the default build language
 language:                       python
 
